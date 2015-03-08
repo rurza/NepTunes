@@ -1,0 +1,16 @@
+PODS:
+  - EGOCache (2.1)
+  - KissXML (5.0)
+  - LastFm (1.15.0):
+    - KissXML (~> 5.0)
+
+DEPENDENCIES:
+  - EGOCache (~> 2.1)
+  - LastFm (~> 1.15)
+
+SPEC CHECKSUMS:
+  EGOCache: bf414333c425fe47f5182351d1dd47ebf72d8352
+  KissXML: e537c38b18ede903ee6de45953a9bd86c131ebe9
+  LastFm: 26cffa0ee5b39a4ad8c9451e882d75ce27036d3e
+
+COCOAPODS: 0.34.4

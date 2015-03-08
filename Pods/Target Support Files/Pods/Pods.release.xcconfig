@@ -1,0 +1,6 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/EGOCache" "${PODS_ROOT}/Headers/Public/KissXML" "${PODS_ROOT}/Headers/Public/LastFm" "$(SDKROOT)/usr/include/libxml2" "$(SDKROOT)/usr/include/libxml2"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/EGOCache" -isystem "${PODS_ROOT}/Headers/Public/KissXML" -isystem "${PODS_ROOT}/Headers/Public/LastFm"
+OTHER_LDFLAGS = -ObjC -l"Pods-EGOCache" -l"Pods-KissXML" -l"Pods-LastFm" -l"xml2"
+OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
+PODS_ROOT = ${SRCROOT}/Pods
