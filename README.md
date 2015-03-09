@@ -1,7 +1,8 @@
 NepTunes
 ========
 
-simple Last.fm client for iTunes
+Simple Last.fm client for iTunes.  
+You can download compiled version [here](http://micropixels.pl/NepTunes/NepTunes.zip).
 
 License
 ========
