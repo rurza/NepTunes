@@ -10,14 +10,14 @@
 	<string>NepTunes</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>B6755AC38AE54A01C071F6D76539502F73E8E873</key>
+		<key>BFA7E93068BE55714567E0E3355DEF72A03D00F2</key>
 		<string>https://github.com/rurza/NepTunes.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>NepTunes.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>B6755AC38AE54A01C071F6D76539502F73E8E873</key>
+		<key>BFA7E93068BE55714567E0E3355DEF72A03D00F2</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B6755AC38AE54A01C071F6D76539502F73E8E873</string>
+	<string>BFA7E93068BE55714567E0E3355DEF72A03D00F2</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>B6755AC38AE54A01C071F6D76539502F73E8E873</string>
+			<string>BFA7E93068BE55714567E0E3355DEF72A03D00F2</string>
 			<key>IDESourceControlWCCName</key>
 			<string>NepTunes</string>
 		</dict>
