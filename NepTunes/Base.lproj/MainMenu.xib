@@ -693,7 +693,7 @@
                             <action selector="switchView:" target="Voe-Tx-rLC" id="vgw-QU-Xec"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="F9940310-66B2-46F4-B3AF-4193BCB5D89A" label="General" paletteLabel="General" tag="2" image="NSSmartBadgeTemplate" selectable="YES" id="eOF-UP-Abo">
+                    <toolbarItem implicitItemIdentifier="F9940310-66B2-46F4-B3AF-4193BCB5D89A" label="General" paletteLabel="General" tag="2" image="NSPreferencesGeneral" selectable="YES" id="eOF-UP-Abo">
                         <connections>
                             <action selector="switchView:" target="Voe-Tx-rLC" id="LjG-C8-u59"/>
                         </connections>
@@ -786,18 +786,8 @@ DQ
             <rect key="frame" x="0.0" y="0.0" width="262" height="124"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nxD-LM-52u">
-                    <rect key="frame" x="14" y="13" width="225" height="32"/>
-                    <buttonCell key="cell" type="push" title="Check for Updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bYU-ME-xmv">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="checkForUpdates:" target="5bF-0p-mld" id="IQL-U3-B1h"/>
-                    </connections>
-                </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d6g-gh-ei9">
-                    <rect key="frame" x="16" y="88" width="221" height="18"/>
+                    <rect key="frame" x="21" y="88" width="221" height="18"/>
                     <buttonCell key="cell" type="check" title="Automatically check for updates" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="9jg-oD-hYM">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -810,7 +800,7 @@ DQ
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oBW-Mv-i4D">
-                    <rect key="frame" x="16" y="58" width="222" height="26"/>
+                    <rect key="frame" x="21" y="58" width="222" height="26"/>
                     <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="86400" imageScaling="proportionallyDown" inset="2" selectedItem="0Eq-RQ-scn" id="d4z-du-uNe">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -827,12 +817,22 @@ DQ
                         <binding destination="5bF-0p-mld" name="selectedTag" keyPath="updateCheckInterval" id="mMs-cx-xFX"/>
                     </connections>
                 </popUpButton>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nxD-LM-52u">
+                    <rect key="frame" x="19" y="13" width="225" height="32"/>
+                    <buttonCell key="cell" type="push" title="Check for Updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bYU-ME-xmv">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="checkForUpdates:" target="5bF-0p-mld" id="IQL-U3-B1h"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="246" y="326"/>
+            <point key="canvasLocation" x="269" y="425"/>
         </customView>
     </objects>
     <resources>
-        <image name="NSSmartBadgeTemplate" width="14" height="14"/>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="lastfm" width="32" height="32"/>
     </resources>
 </document>
