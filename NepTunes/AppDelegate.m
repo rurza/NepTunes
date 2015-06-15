@@ -33,7 +33,6 @@
 @property (weak) IBOutlet NSButton *loginButton;
 @property (weak) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSView *accountView;
-@property (weak) IBOutlet NSView *generalView;
 @property (weak) IBOutlet NSProgressIndicator *indicator;
 
 
@@ -391,9 +390,6 @@
 -(NSView *)viewForTag:(int)tag {
     NSView *view = nil;
     switch (tag) {
-        case 2:
-            view = self.generalView;
-            break;
         case 1:
             view = self.accountView;
             break;

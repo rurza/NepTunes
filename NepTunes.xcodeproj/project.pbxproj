@@ -11,8 +11,6 @@
 		5B41B8A81A222B4E00BAF453 /* DDHotKeyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A41A222B4E00BAF453 /* DDHotKeyTextField.m */; };
 		5B41B8A91A222B4E00BAF453 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A61A222B4E00BAF453 /* DDHotKeyUtilities.m */; };
 		5B41B8AB1A222B6300BAF453 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B41B8AA1A222B6300BAF453 /* Carbon.framework */; };
-		5B566EB41A41F541006DAD66 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B566EB31A41F541006DAD66 /* Sparkle.framework */; };
-		5B574B721A57FF10004107E9 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5B566EB31A41F541006DAD66 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
 		5BDD6B161A1D0C95001D87D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B151A1D0C95001D87D6 /* main.m */; };
@@ -41,7 +39,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5B574B721A57FF10004107E9 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +55,6 @@
 		5B41B8A51A222B4E00BAF453 /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyUtilities.h; sourceTree = "<group>"; };
 		5B41B8A61A222B4E00BAF453 /* DDHotKeyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyUtilities.m; sourceTree = "<group>"; };
 		5B41B8AA1A222B6300BAF453 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		5B566EB31A41F541006DAD66 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		5B74FDD21A1D0EA5000FC78E /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
@@ -82,7 +78,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B41B8AB1A222B6300BAF453 /* Carbon.framework in Frameworks */,
-				5B566EB41A41F541006DAD66 /* Sparkle.framework in Frameworks */,
 				D8C4A752E2C96037C9D41386 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,7 +104,6 @@
 		3FADD2DEFA1DD8585146D47F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5B566EB31A41F541006DAD66 /* Sparkle.framework */,
 				5B41B8AA1A222B6300BAF453 /* Carbon.framework */,
 				0526E64B1C1E28D1C451319F /* libPods.a */,
 			);
@@ -232,7 +226,7 @@
 		5BDD6B051A1D0C95001D87D6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = micropixels;
 				TargetAttributes = {
 					5BDD6B0C1A1D0C95001D87D6 = {
@@ -443,7 +437,7 @@
 			baseConfigurationReference = 10263035E2E364638E5DACEA /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -472,7 +466,7 @@
 			baseConfigurationReference = 55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
