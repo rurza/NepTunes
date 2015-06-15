@@ -10,7 +10,6 @@
 		5B41B8A71A222B4E00BAF453 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A21A222B4E00BAF453 /* DDHotKeyCenter.m */; };
 		5B41B8A81A222B4E00BAF453 /* DDHotKeyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A41A222B4E00BAF453 /* DDHotKeyTextField.m */; };
 		5B41B8A91A222B4E00BAF453 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A61A222B4E00BAF453 /* DDHotKeyUtilities.m */; };
-		5B41B8AB1A222B6300BAF453 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B41B8AA1A222B6300BAF453 /* Carbon.framework */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
 		5BDD6B161A1D0C95001D87D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B151A1D0C95001D87D6 /* main.m */; };
@@ -48,13 +47,13 @@
 		0526E64B1C1E28D1C451319F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		10263035E2E364638E5DACEA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = NepTunes.entitlements; sourceTree = "<group>"; };
 		5B41B8A11A222B4E00BAF453 /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyCenter.h; sourceTree = "<group>"; };
 		5B41B8A21A222B4E00BAF453 /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyCenter.m; sourceTree = "<group>"; };
 		5B41B8A31A222B4E00BAF453 /* DDHotKeyTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyTextField.h; sourceTree = "<group>"; };
 		5B41B8A41A222B4E00BAF453 /* DDHotKeyTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyTextField.m; sourceTree = "<group>"; };
 		5B41B8A51A222B4E00BAF453 /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyUtilities.h; sourceTree = "<group>"; };
 		5B41B8A61A222B4E00BAF453 /* DDHotKeyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyUtilities.m; sourceTree = "<group>"; };
-		5B41B8AA1A222B6300BAF453 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		5B74FDD21A1D0EA5000FC78E /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
@@ -77,7 +76,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B41B8AB1A222B6300BAF453 /* Carbon.framework in Frameworks */,
 				D8C4A752E2C96037C9D41386 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,7 +102,6 @@
 		3FADD2DEFA1DD8585146D47F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5B41B8AA1A222B6300BAF453 /* Carbon.framework */,
 				0526E64B1C1E28D1C451319F /* libPods.a */,
 			);
 			name = Frameworks;
@@ -134,6 +131,7 @@
 		5BDD6B0F1A1D0C95001D87D6 /* NepTunes */ = {
 			isa = PBXGroup;
 			children = (
+				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B191A1D0C95001D87D6 /* MainMenu.xib */,
@@ -232,6 +230,11 @@
 					5BDD6B0C1A1D0C95001D87D6 = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = F58772G67J;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					5BDD6B1F1A1D0C95001D87D6 = {
 						CreatedOnToolsVersion = 6.1;
@@ -437,6 +440,7 @@
 			baseConfigurationReference = 10263035E2E364638E5DACEA /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -466,6 +470,7 @@
 			baseConfigurationReference = 55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
