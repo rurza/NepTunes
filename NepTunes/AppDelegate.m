@@ -297,10 +297,14 @@
 #pragma mark Update menu
 
 -(void)changeState {
+//    NSLog(@"changeState called");
     if ([LastFm sharedInstance].session != nil) {
+//        NSLog(@"Last Fm session");
+
         [self.profileMenuTitle setEnabled:YES];
         self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", [LastFm sharedInstance].username];
         if ([self.iTunes isRunning]) {
+//            NSLog(@"iTunes dziala");
             if (self.iTunes.currentTrack.name != nil) {
                 [self.loveSongMenuTitle setEnabled:YES];
                 [self.similarArtistMenuTtitle setEnabled:YES];
@@ -308,6 +312,7 @@
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love %@ on Last.fm", self.iTunes.currentTrack.name];
             }
             else {
+//                NSLog(@"Obecnie zaden kawalek nie jest odtwarzany");
                 [self.loveSongMenuTitle setEnabled:NO];
                 [self.similarArtistMenuTtitle setEnabled:NO];
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists..."];
@@ -315,6 +320,7 @@
             }
         }
         else {
+//            NSLog(@"iTunes NIE dziala");
             [self.loveSongMenuTitle setEnabled:NO];
             [self.similarArtistMenuTtitle setEnabled:NO];
             self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love song on Last.fm"];
@@ -322,6 +328,7 @@
         }
     }
     else {
+//        NSLog(@"Nie jestem zalogowany!");
         [self.loveSongMenuTitle setEnabled:NO];
         [self.profileMenuTitle setEnabled:NO];
         self.profileMenuTitle.title = [NSString stringWithFormat:@"Profile... (Log in)"];
@@ -344,7 +351,6 @@
         }
     }
 }
-
 
 
 
