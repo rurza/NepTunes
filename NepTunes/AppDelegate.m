@@ -82,40 +82,50 @@
     self.dnc = [NSDistributedNotificationCenter defaultCenter];
     
  [self.dnc addObserver:self
-            selector:@selector(updateTrackInfo)
+              selector:@selector(updateTrackInfo:)
                 name:@"com.apple.iTunes.playerInfo"
               object:nil];
-    [self changeState];
+    [self changeState:nil];
     if ([self.iTunes isRunning]) {
-        [self performSelector:@selector(updateTrackInfo) withObject:nil afterDelay:5];
+        [self performSelector:@selector(updateTrackInfo:) withObject:nil afterDelay:5];
     }
+    
+    
     
 }
 
-- (void)updateTrackInfo {
-    [self performSelector:@selector(updateTrackInfoFromITunes) withObject:nil afterDelay:5];
-    [self changeState];
+- (void)updateTrackInfo:(NSNotification *)note {
+    [self performSelector:@selector(updateTrackInfoFromITunes:) withObject:note afterDelay:5];
+    NSDictionary *trackInfo = [note userInfo];
+
+    [self changeState:trackInfo];
 
 }
 
 
-- (void)updateTrackInfoFromITunes {
+
+- (void)updateTrackInfoFromITunes:(NSNotification*)note {
     if ([self.iTunes isRunning]) {
         //    DEBUG
 //        NSLog(@"DEBUG. iTunes is running. Method updateTrackInfoFromITunes called.");
-        
-        [self nowPlaying];
-        self.scrobbleTime = (int)self.iTunes.currentTrack.duration / 2;
+        NSDictionary *trackInfo = [note userInfo];
+        NSLog(@"trackInfo = %@", trackInfo);
+        NSTimeInterval trackLength = [[trackInfo objectForKey:@"Total Time"] integerValue] / 1000;
+        self.scrobbleTime = trackLength / 2;
+
+        if (self.scrobbleTime > 15) {
+            [self nowPlaying:trackInfo];
+        }
         
         if (self.callTimer) {
             [self.callTimer invalidate];
             self.callTimer = nil;
         }
-        if (self.scrobbleTime >= 15) {
+        if (self.scrobbleTime > 15) {
             self.callTimer = [NSTimer scheduledTimerWithTimeInterval:self.scrobbleTime
                                                               target:self
-                                                            selector:@selector(scrobbleTrack)
-                                                            userInfo:nil
+                                                            selector:@selector(scrobbleTrack:)
+                                                            userInfo:trackInfo
                                                              repeats:NO];
             
         }
@@ -126,33 +136,35 @@
 
 #pragma mark - Last.fm related
 
--(void)nowPlaying {
+-(void)nowPlaying:(NSDictionary *)userInfo {
     if ([LastFm sharedInstance].session != nil) {
-        [[LastFm sharedInstance] sendNowPlayingTrack:self.iTunes.currentTrack.name byArtist:self.iTunes.currentTrack.artist onAlbum:self.iTunes.currentTrack.album withDuration:(self.iTunes.currentTrack.duration / 2) successHandler:^(NSDictionary *result) {
+        NSTimeInterval trackLength = [[userInfo objectForKey:@"Total Time"] integerValue] / 1000;
+        [[LastFm sharedInstance] sendNowPlayingTrack:userInfo[@"Name"] byArtist:userInfo[@"Artist"] onAlbum:userInfo[@"Album"] withDuration:trackLength / 2 successHandler:^(NSDictionary *result) {
 //            NSLog(@"DEBUG. sendNowPlayingTrack works.");
         } failureHandler:^(NSError *error) {
 //            NSLog(@"LastFm error! %@", [error userInfo]);
             if (error.code == -1001) {
 //                NSLog(@"Trying again...");
-                [self nowPlaying];
+                [self nowPlaying:userInfo];
             }
         }];
     }
 }
 
-- (void)scrobbleTrack {
+- (void)scrobbleTrack:(NSDictionary *)userInfo {
     if ([self.iTunes isRunning]) {
         if (self.iTunes.playerState == iTunesEPlSPlaying && [LastFm sharedInstance].session != nil) {
     //        DEBUG
 //            NSLog(@"DEBUG. Track scrobbled. :)");
-            [[LastFm sharedInstance] sendScrobbledTrack:self.iTunes.currentTrack.name byArtist:self.iTunes.currentTrack.artist onAlbum:self.iTunes.currentTrack.album withDuration:self.iTunes.currentTrack.duration atTimestamp:(int)[[NSDate date] timeIntervalSince1970]
+            NSTimeInterval trackLength = [[userInfo objectForKey:@"Total Time"] integerValue] / 1000;
+            [[LastFm sharedInstance] sendScrobbledTrack:userInfo[@"Name"] byArtist:userInfo[@"Artist"] onAlbum:userInfo[@"album"] withDuration:trackLength atTimestamp:(int)[[NSDate date] timeIntervalSince1970]
             successHandler:^(NSDictionary *result) {
                 }
             failureHandler:^(NSError *error) {
 //                NSLog(@"LastFm error! %@", [error userInfo]);
                 if (error.code == -1001) {
 //                    NSLog(@"Trying again...");
-                    [self scrobbleTrack];
+                    [self scrobbleTrack:userInfo];
                 }
             }];
         }
@@ -216,7 +228,7 @@
             self.passwordField.hidden = YES;
             
             [self.loginButton setEnabled:YES];
-            [self changeState];
+            [self changeState:nil];
             [self.loginButton setAction:@selector(logout)];
             [self.indicator stopAnimation:self];
 //            NSLog(@"User logged in!:)");
@@ -256,7 +268,7 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERNAME_KEY];
     self.loginField.hidden = NO;
     self.passwordField.hidden = NO;
-    [self changeState];
+    [self changeState:nil];
     [self.loginButton setAction:@selector(loginClicked:)];
     
 }
@@ -296,7 +308,7 @@
 
 #pragma mark Update menu
 
--(void)changeState {
+-(void)changeState:(NSDictionary *)userInfo {
 //    NSLog(@"changeState called");
     if ([LastFm sharedInstance].session != nil) {
 //        NSLog(@"Last Fm session");

@@ -169,7 +169,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property BOOL fullScreen;  // are visuals displayed using the entire screen?
 @property (copy, readonly) NSString *name;  // the name of the application
 @property BOOL mute;  // has the sound output been muted?
-@property double playerPosition;  // the player’s position within the currently playing track in seconds
+@property double playerPosition;  // the player’s position within the currently playing track in seconds.
 @property (readonly) iTunesEPlS playerState;  // is iTunes stopped, paused, or playing?
 @property (copy, readonly) SBObject *selection;  // the selection visible to the user
 @property NSInteger soundVolume;  // the sound output volume (0 = minimum, 100 = maximum)
@@ -247,7 +247,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property (readonly) BOOL downloaded;  // was this artwork downloaded by iTunes?
 @property (copy, readonly) NSNumber *format;  // the data format for this piece of artwork
 @property NSInteger kind;  // kind or purpose of this piece of artwork
-@property (copy) id rawData;  // data for this artwork, in original format
+@property (copy) NSData *rawData;  // data for this artwork, in original format
 
 
 @end
@@ -287,9 +287,10 @@ typedef enum iTunesEAPD iTunesEAPD;
 
 @property (readonly) NSInteger duration;  // the total length of all songs (in seconds)
 @property (copy) NSString *name;  // the name of the playlist
+@property BOOL loved;  // is this plalist loved?
 @property (copy, readonly) iTunesPlaylist *parent;  // folder which contains this playlist (if any)
 @property BOOL shuffle;  // play the songs in this playlist in random order?
-@property (readonly) long long size;  // the total size of all songs (in bytes)
+@property (readonly) NSInteger size;  // the total size of all songs (in bytes)
 @property iTunesERpt songRepeat;  // playback repeat mode
 @property (readonly) iTunesESpK specialKind;  // special playlist kind
 @property (copy, readonly) NSString *time;  // the length of all songs in MM:SS format
@@ -359,6 +360,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 
 @property (copy) NSString *album;  // the album name of the track
 @property (copy) NSString *albumArtist;  // the album artist of the track
+@property BOOL albumLoved;  // is the album for this track loved?
 @property NSInteger albumRating;  // the rating of the album for this track (0 to 100)
 @property (readonly) iTunesERtK albumRatingKind;  // the rating kind of the album rating for this track
 @property (copy) NSString *artist;  // the artist/source of the track
@@ -387,6 +389,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property (readonly) BOOL iTunesU;  // is this track an iTunes U episode?
 @property (copy, readonly) NSString *kind;  // a text description of the track
 @property (copy) NSString *longDescription;
+@property BOOL loved;  // is this track loved?
 @property (copy) NSString *lyrics;  // the lyrics of the track
 @property (copy, readonly) NSDate *modificationDate;  // the modification date of the content of this track
 @property NSInteger playedCount;  // number of times this track has been played
@@ -423,7 +426,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 // a track on an audio CD
 @interface iTunesAudioCDTrack : iTunesTrack
 
-@property (copy, readonly) id location;  // the location of the file represented by this track
+@property (copy, readonly) NSURL *location;  // the location of the file represented by this track
 
 
 @end
@@ -431,7 +434,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 // a track representing an audio file (MP3, AIFF, etc.)
 @interface iTunesFileTrack : iTunesTrack
 
-@property (copy) id location;  // the location of the file represented by this track
+@property (copy) NSURL *location;  // the location of the file represented by this track
 
 - (void) refresh;  // update file track information from the current information in the track’s file
 
