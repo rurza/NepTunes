@@ -11,29 +11,29 @@
 
 #import "AppDelegate.h"
 #import "iTunes.h"
-#import "LastFmCache.h"
 #import "DDHotKeyCenter.h"
+#import "MusicScrobbler.h"
 
 @interface AppDelegate ()
 
-@property (strong, nonatomic) LastFmCache *lastFmCache;
-@property (strong) NSStatusItem *statusItem;
-@property (strong) iTunesApplication* iTunes;
-@property (strong) NSTimer* callTimer;
-@property (strong) NSDistributedNotificationCenter* dnc;
-@property (strong) NSUserNotificationCenter *center;
+//@property (strong, nonatomic) LastFmCache *lastFmCache;
+@property (strong, nonatomic) NSStatusItem *statusItem;
+//@property (strong) iTunesApplication* iTunes;
+@property (weak, nonatomic) NSTimer* callTimer;
+//@property (strong) NSDistributedNotificationCenter* dnc;
+//@property (strong) NSUserNotificationCenter *center;
 
-
+@property (strong, nonatomic) MusicScrobbler *musicScrobbler;
 @property (strong) IBOutlet NSMenu *statusMenu;
-@property (weak) IBOutlet NSMenuItem *loveSongMenuTitle;
-@property (weak) IBOutlet NSMenuItem *profileMenuTitle;
-@property (weak) IBOutlet NSMenuItem *similarArtistMenuTtitle;
-@property (weak) IBOutlet NSTextField *loginField;
-@property (weak) IBOutlet NSSecureTextField *passwordField;
-@property (weak) IBOutlet NSButton *loginButton;
-@property (weak) IBOutlet NSWindow *window;
-@property (weak) IBOutlet NSView *accountView;
-@property (weak) IBOutlet NSProgressIndicator *indicator;
+@property (weak, nonatomic) IBOutlet NSMenuItem *loveSongMenuTitle;
+@property (weak, nonatomic) IBOutlet NSMenuItem *profileMenuTitle;
+@property (weak, nonatomic) IBOutlet NSMenuItem *similarArtistMenuTtitle;
+@property (weak, nonatomic) IBOutlet NSTextField *loginField;
+@property (weak, nonatomic) IBOutlet NSSecureTextField *passwordField;
+@property (weak, nonatomic) IBOutlet NSButton *loginButton;
+@property (weak, nonatomic) IBOutlet NSWindow *window;
+@property (weak, nonatomic) IBOutlet NSView *accountView;
+@property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
 
 
 
@@ -63,143 +63,86 @@
     self.statusItem.image = icon;
     self.statusItem.menu = self.statusMenu;
     
-    
-    self.lastFmCache = [[LastFmCache alloc] init];
-    [LastFm sharedInstance].apiKey = @"3a26162db61a3c47204396401baf2bf7";
-    [LastFm sharedInstance].apiSecret = @"679d4509ae07a46400dd27a05c7e9885";
-    [LastFm sharedInstance].session = [[NSUserDefaults standardUserDefaults] stringForKey:SESSION_KEY];
-    [LastFm sharedInstance].username = [[NSUserDefaults standardUserDefaults] stringForKey:USERNAME_KEY];
-    [LastFm sharedInstance].cacheDelegate = self.lastFmCache;
-    
-    if ([[NSUserDefaults standardUserDefaults] stringForKey:@"firstLaunch"] == nil) {
+    if (![[NSUserDefaults standardUserDefaults] stringForKey:@"firstLaunch"]) {
         NSLog(@"NepTunes first launch. %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"firstLaunch"]);
         [self openPreferences:self];
         [[NSUserDefaults standardUserDefaults] setObject:@"Launched" forKey:@"firstLaunch"];
     }
     
-
-    self.iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-    self.dnc = [NSDistributedNotificationCenter defaultCenter];
-    
- [self.dnc addObserver:self
-              selector:@selector(updateTrackInfo:)
-                name:@"com.apple.iTunes.playerInfo"
-              object:nil];
-    [self changeState:nil];
-    if ([self.iTunes isRunning]) {
-        [self performSelector:@selector(updateTrackInfo:) withObject:nil afterDelay:5];
-    }
     
     
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                        selector:@selector(updateTrackInfo)
+                                                            name:@"com.apple.iTunes.playerInfo"
+                                                          object:nil];
     
-}
-
-- (void)updateTrackInfo:(NSNotification *)note {
-    [self performSelector:@selector(updateTrackInfoFromITunes:) withObject:note afterDelay:5];
-    NSDictionary *trackInfo = [note userInfo];
-
-    [self changeState:trackInfo];
-
-}
-
-
-
-- (void)updateTrackInfoFromITunes:(NSNotification*)note {
-    if ([self.iTunes isRunning]) {
-        //    DEBUG
-//        NSLog(@"DEBUG. iTunes is running. Method updateTrackInfoFromITunes called.");
-        NSDictionary *trackInfo = [note userInfo];
-        NSLog(@"trackInfo = %@", trackInfo);
-        NSTimeInterval trackLength = [[trackInfo objectForKey:@"Total Time"] integerValue] / 1000;
-        self.scrobbleTime = trackLength / 2;
-
-        if (self.scrobbleTime > 15) {
-            [self nowPlaying:trackInfo];
-        }
-        
-        if (self.callTimer) {
-            [self.callTimer invalidate];
-            self.callTimer = nil;
-        }
-        if (self.scrobbleTime > 15) {
-            self.callTimer = [NSTimer scheduledTimerWithTimeInterval:self.scrobbleTime
-                                                              target:self
-                                                            selector:@selector(scrobbleTrack:)
-                                                            userInfo:trackInfo
-                                                             repeats:NO];
+    
+    [self changeState];
+    if ([self.musicScrobbler.iTunes isRunning]) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self updateTrackInfo];
             
-        }
+        });
     }
-    
 }
+
+- (void)updateTrackInfo {
+    [self changeState];
+    if ([self.musicScrobbler.iTunes isRunning]) {
+        NSLog(@"uruchamiam itunes?!");
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            int scrobbleTime = [self.musicScrobbler.iTunes.currentTrack duration] / 2;
+            
+            if (scrobbleTime > 15) {
+                [self nowPlaying];
+            }
+            
+            if (self.callTimer) {
+                [self.callTimer invalidate];
+                self.callTimer = nil;
+            }
+            
+            if (scrobbleTime > 15) {
+                self.callTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
+                                                                  target:self
+                                                                selector:@selector(scrobble)
+                                                                userInfo:nil
+                                                                 repeats:NO];
+            }
+        });
+    }
+}
+
+
+-(void)scrobble
+{
+    [self.musicScrobbler scrobbleCurrentTrack];
+}
+
+-(void)nowPlaying
+{
+    [self.musicScrobbler nowPlayingCurrentTrack];
+}
+
+
 
 
 #pragma mark - Last.fm related
 
--(void)nowPlaying:(NSDictionary *)userInfo {
-    if ([LastFm sharedInstance].session != nil) {
-        NSTimeInterval trackLength = [[userInfo objectForKey:@"Total Time"] integerValue] / 1000;
-        [[LastFm sharedInstance] sendNowPlayingTrack:userInfo[@"Name"] byArtist:userInfo[@"Artist"] onAlbum:userInfo[@"Album"] withDuration:trackLength / 2 successHandler:^(NSDictionary *result) {
-//            NSLog(@"DEBUG. sendNowPlayingTrack works.");
-        } failureHandler:^(NSError *error) {
-//            NSLog(@"LastFm error! %@", [error userInfo]);
-            if (error.code == -1001) {
-//                NSLog(@"Trying again...");
-                [self nowPlaying:userInfo];
-            }
-        }];
-    }
-}
-
-- (void)scrobbleTrack:(NSDictionary *)userInfo {
-    if ([self.iTunes isRunning]) {
-        if (self.iTunes.playerState == iTunesEPlSPlaying && [LastFm sharedInstance].session != nil) {
-    //        DEBUG
-//            NSLog(@"DEBUG. Track scrobbled. :)");
-            NSTimeInterval trackLength = [[userInfo objectForKey:@"Total Time"] integerValue] / 1000;
-            [[LastFm sharedInstance] sendScrobbledTrack:userInfo[@"Name"] byArtist:userInfo[@"Artist"] onAlbum:userInfo[@"album"] withDuration:trackLength atTimestamp:(int)[[NSDate date] timeIntervalSince1970]
-            successHandler:^(NSDictionary *result) {
-                }
-            failureHandler:^(NSError *error) {
-//                NSLog(@"LastFm error! %@", [error userInfo]);
-                if (error.code == -1001) {
-//                    NSLog(@"Trying again...");
-                    [self scrobbleTrack:userInfo];
-                }
-            }];
-        }
-        else {
-    //        DEBUG
-//            NSLog(@"DEBUG. Track not scrobbled. iTunes paused or/and user not logged in.");
-        }
-    }
-}
 
 -(IBAction)loveSong:(id)sender {
-//    if (!self.iTunes) {
-//        self.iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-//    }
-    if (!self.center) {
-        self.center = [NSUserNotificationCenter defaultUserNotificationCenter];
-    }
     NSUserNotification *notification = [[NSUserNotification alloc] init];
-    [[LastFm sharedInstance] loveTrack:self.iTunes.currentTrack.name artist:self.iTunes.currentTrack.artist successHandler:^(NSDictionary *result)
-     {
-         [notification setTitle:[NSString stringWithFormat:@"%@", self.iTunes.currentTrack.artist]];
-         [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", self.iTunes.currentTrack.name]];
-         [notification setDeliveryDate:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
-         
-         [self.center scheduleNotification:notification];
-         
-     } failureHandler:^(NSError *error) {
-//         NSLog(@"LastFm error! %@", [error userInfo]);
-         if (error.code == -1001) {
-//             NSLog(@"Trying again...");
-             [self loveSong:nil];
-         }
-     }];
-    
+    [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^{
+        [notification setTitle:[NSString stringWithFormat:@"%@", self.musicScrobbler.iTunes.currentTrack.artist]];
+        [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", self.musicScrobbler.iTunes.currentTrack.name]];
+        [notification setDeliveryDate:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
+        
+        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+    }];
 }
+
+/*----------------------------------------------------------------------------------------------------------*/
+
 
 - (IBAction)loginClicked:(id)sender {
     if (!([self.passwordField.stringValue isEqualTo: @""] || [self.loginField.stringValue isEqualTo: @""])) {
@@ -208,34 +151,22 @@
         self.passwordField.hidden = YES;
         [self.loginButton setTitle:@"Logging in..."];
         [self.loginButton setEnabled:NO];
-        [[LastFm sharedInstance] getSessionForUser:self.loginField.stringValue password:self.passwordField.stringValue successHandler:^(NSDictionary *result) {
-            // Save the session into NSUserDefaults. It is loaded on app start up in AppDelegate.
-            [[NSUserDefaults standardUserDefaults] setObject:result[@"key"] forKey:SESSION_KEY];
-            [[NSUserDefaults standardUserDefaults] setObject:result[@"name"] forKey:USERNAME_KEY];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.musicScrobbler.scrobbler getSessionForUser:self.loginField.stringValue password:self.passwordField.stringValue successHandler:^(NSDictionary *result) {
             
-            // Also set the session of the LastFm object
-            [LastFm sharedInstance].session = result[@"key"];
-            [LastFm sharedInstance].username = result[@"name"];
+            [self.musicScrobbler logInWithCredentials:result];
             
-            
-            // Show the logout button
             [self.loginButton setTitle:[NSString stringWithFormat:@"Log out %@", result[@"name"]]];
-            // hide login info
             self.loginField.stringValue = @"";
             self.loginField.hidden = YES;
             self.passwordField.stringValue = @"";
             self.passwordField.hidden = YES;
             
             [self.loginButton setEnabled:YES];
-            [self changeState:nil];
+            [self changeState];
             [self.loginButton setAction:@selector(logout)];
             [self.indicator stopAnimation:self];
-//            NSLog(@"User logged in!:)");
         } failureHandler:^(NSError *error) {
-//            NSLog(@"Failure: %@", [error userInfo]);
             if (error.code == -1001) {
-//                NSLog(@"Trying again...");
                 [self loginClicked:self];
             }
             else {
@@ -255,7 +186,6 @@
         }];
     }
     else {
-//        NSLog(@"Empty user or password");
     }
 }
 
@@ -263,12 +193,10 @@
 
 - (void)logout {
     [self.loginButton setTitle:@"Log in"];
-    [[LastFm sharedInstance] logout];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:SESSION_KEY];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERNAME_KEY];
+    [self.musicScrobbler logOut];
     self.loginField.hidden = NO;
     self.passwordField.hidden = NO;
-    [self changeState:nil];
+    [self changeState];
     [self.loginButton setAction:@selector(loginClicked:)];
     
 }
@@ -277,19 +205,19 @@
 #pragma mark - Menu Bar Items
 
 - (IBAction)showUserProfile:(id)sender {
-    if ([LastFm sharedInstance].session != nil) {
-        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.last.fm/user/%@", [LastFm sharedInstance].username]]];
+    if (self.musicScrobbler.scrobbler.session) {
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.last.fm/user/%@", self.musicScrobbler.scrobbler.username]]];
     }
 }
 
 
 
 -(IBAction)showSimilarArtists:(id)sender {
-    NSString *str = self.iTunes.currentTrack.artist;
+    NSString *str = self.musicScrobbler.iTunes.currentTrack.artist;
     NSString *url = [str stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     NSData *decode = [url dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *ansi = [[NSString alloc] initWithData:decode encoding:NSASCIIStringEncoding];
-
+    
     if (ansi.length > 0) {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.last.fm/music/%@/+similar", ansi]]];
     }
@@ -305,26 +233,23 @@
     [self.window makeKeyAndOrderFront:self];
 }
 
+/*----------------------------------------------------------------------------------------------------------*/
+
 
 #pragma mark Update menu
 
--(void)changeState:(NSDictionary *)userInfo {
-//    NSLog(@"changeState called");
-    if ([LastFm sharedInstance].session != nil) {
-//        NSLog(@"Last Fm session");
-
+-(void)changeState {
+    if (self.musicScrobbler.scrobbler.session) {
         [self.profileMenuTitle setEnabled:YES];
-        self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", [LastFm sharedInstance].username];
-        if ([self.iTunes isRunning]) {
-//            NSLog(@"iTunes dziala");
-            if (self.iTunes.currentTrack.name != nil) {
+        self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", self.musicScrobbler.scrobbler.username];
+        if ([self.musicScrobbler.iTunes isRunning]) {
+            if (self.musicScrobbler.iTunes.currentTrack.name) {
                 [self.loveSongMenuTitle setEnabled:YES];
                 [self.similarArtistMenuTtitle setEnabled:YES];
-                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.iTunes.currentTrack.artist];
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love %@ on Last.fm", self.iTunes.currentTrack.name];
+                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.iTunes.currentTrack.artist];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love %@ on Last.fm", self.musicScrobbler.iTunes.currentTrack.name];
             }
             else {
-//                NSLog(@"Obecnie zaden kawalek nie jest odtwarzany");
                 [self.loveSongMenuTitle setEnabled:NO];
                 [self.similarArtistMenuTtitle setEnabled:NO];
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists..."];
@@ -332,7 +257,6 @@
             }
         }
         else {
-//            NSLog(@"iTunes NIE dziala");
             [self.loveSongMenuTitle setEnabled:NO];
             [self.similarArtistMenuTtitle setEnabled:NO];
             self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love song on Last.fm"];
@@ -340,14 +264,13 @@
         }
     }
     else {
-//        NSLog(@"Nie jestem zalogowany!");
         [self.loveSongMenuTitle setEnabled:NO];
         [self.profileMenuTitle setEnabled:NO];
         self.profileMenuTitle.title = [NSString stringWithFormat:@"Profile... (Log in)"];
-        if ([self.iTunes isRunning]) {
-            if (self.iTunes.currentTrack.name != nil) {
+        if ([self.musicScrobbler.iTunes isRunning]) {
+            if (self.musicScrobbler.iTunes.currentTrack.name) {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love on Last.fm (Log in)"];
-                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.iTunes.currentTrack.artist];
+                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.iTunes.currentTrack.artist];
                 [self.similarArtistMenuTtitle setEnabled:YES];
             }
             else {
@@ -366,30 +289,24 @@
 
 
 
-
-
-
-
-
 #pragma mark - preferences
 
 
 
 -(void)awakeFromNib {
-    
-    [LastFm sharedInstance].session = [[NSUserDefaults standardUserDefaults] stringForKey:SESSION_KEY];
-    [LastFm sharedInstance].username = [[NSUserDefaults standardUserDefaults] stringForKey:USERNAME_KEY];
-    if ([LastFm sharedInstance].session != nil) {
+    self.musicScrobbler = [MusicScrobbler sharedScrobbler];
+    if (self.musicScrobbler.scrobbler.session) {
         self.loginField.hidden = YES;
         self.passwordField.hidden = YES;
-        [self.loginButton setTitle:[NSString stringWithFormat:@"Log out %@", [LastFm sharedInstance].username]];
+        [self.loginButton setTitle:[NSString stringWithFormat:@"Log out %@", self.musicScrobbler.scrobbler.username]];
         [self.loginButton setAction:@selector(logout)];
-        
     }
     [[self window] setContentSize:[self.accountView frame].size];
     [[[self window] contentView ] addSubview:self.accountView];
     [[[self window] contentView] setWantsLayer:YES];
 }
+
+/*----------------------------------------------------------------------------------------------------------*/
 
 
 -(NSRect)newFrameForNewContentView:(NSView *)view {

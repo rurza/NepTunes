@@ -404,7 +404,7 @@
 		265A0AAB3DE9A7D46968537A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0640;
 			};
 			buildConfigurationList = 6A284BDD8524495104F2B943 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
