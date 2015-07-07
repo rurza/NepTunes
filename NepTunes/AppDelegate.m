@@ -16,15 +16,13 @@
 
 @interface AppDelegate ()
 
-//@property (strong, nonatomic) LastFmCache *lastFmCache;
 @property (strong, nonatomic) NSStatusItem *statusItem;
-//@property (strong) iTunesApplication* iTunes;
+
 @property (weak, nonatomic) NSTimer* callTimer;
-//@property (strong) NSDistributedNotificationCenter* dnc;
-//@property (strong) NSUserNotificationCenter *center;
 
 @property (strong, nonatomic) MusicScrobbler *musicScrobbler;
 @property (strong) IBOutlet NSMenu *statusMenu;
+
 @property (weak, nonatomic) IBOutlet NSMenuItem *loveSongMenuTitle;
 @property (weak, nonatomic) IBOutlet NSMenuItem *profileMenuTitle;
 @property (weak, nonatomic) IBOutlet NSMenuItem *similarArtistMenuTtitle;
@@ -34,9 +32,6 @@
 @property (weak, nonatomic) IBOutlet NSWindow *window;
 @property (weak, nonatomic) IBOutlet NSView *accountView;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
-
-
-
 
 @property NSTimeInterval scrobbleTime;
 @property int currentViewTag;
@@ -63,11 +58,10 @@
     self.statusItem.image = icon;
     self.statusItem.menu = self.statusMenu;
     
-    if (![[NSUserDefaults standardUserDefaults] stringForKey:@"firstLaunch"]) {
-        NSLog(@"NepTunes first launch. %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"firstLaunch"]);
-        [self openPreferences:self];
-        [[NSUserDefaults standardUserDefaults] setObject:@"Launched" forKey:@"firstLaunch"];
-    }
+    //    if (![[NSUserDefaults standardUserDefaults] stringForKey:@"firstLaunch"]) {
+    //        NSLog(@"NepTunes first launch. %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"firstLaunch"]);
+    //        [[NSUserDefaults standardUserDefaults] setObject:@"Launched" forKey:@"firstLaunch"];
+    //    }
     
     
     
@@ -75,7 +69,10 @@
                                                         selector:@selector(updateTrackInfo)
                                                             name:@"com.apple.iTunes.playerInfo"
                                                           object:nil];
-    
+    if (!self.musicScrobbler.scrobbler.session) {
+        [self openPreferences:self];
+        
+    }
     
     [self changeState];
     if ([self.musicScrobbler.iTunes isRunning]) {
@@ -89,11 +86,11 @@
 - (void)updateTrackInfo {
     [self changeState];
     if ([self.musicScrobbler.iTunes isRunning]) {
-        NSLog(@"uruchamiam itunes?!");
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            int scrobbleTime = [self.musicScrobbler.iTunes.currentTrack duration] / 2;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSTimeInterval trackLength = (NSTimeInterval)[self.musicScrobbler.iTunes.currentTrack duration];
+            NSTimeInterval scrobbleTime = trackLength / 2;
             
-            if (scrobbleTime > 15) {
+            if (trackLength > 31) {
                 [self nowPlaying];
             }
             
@@ -102,7 +99,7 @@
                 self.callTimer = nil;
             }
             
-            if (scrobbleTime > 15) {
+            if (trackLength > 31) {
                 self.callTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
                                                                   target:self
                                                                 selector:@selector(scrobble)
