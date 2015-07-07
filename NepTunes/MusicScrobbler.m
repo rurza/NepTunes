@@ -34,24 +34,26 @@ static NSString *const kAPISecret = @"";
 
 -(void)scrobbleCurrentTrack
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.iTunes.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
-            //when iTunes is playing right now and when there is user logged in
-            [self.scrobbler sendScrobbledTrack:self.iTunes.currentTrack.name
-                                      byArtist:self.iTunes.currentTrack.artist
-                                       onAlbum:self.iTunes.currentTrack.album
-                                  withDuration:self.iTunes.currentTrack.duration
-                                   atTimestamp:(int)[[NSDate date] timeIntervalSince1970]
-                                successHandler:^(NSDictionary *result) {
-                                    //succesHandler - nothing to do
-                                } failureHandler:^(NSError *error) {
-                                    if (error.code == -1001) {
-                                        [self scrobbleCurrentTrack]; //if there is timeout try again
-                                    }
-                                }];
-        }
-        
-    });
+    if (self.iTunes.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
+        //when iTunes is playing right now and when there is user logged in
+        __weak MusicScrobbler *weakSelf = self;
+        [self.scrobbler sendScrobbledTrack:self.iTunes.currentTrack.name
+                                  byArtist:self.iTunes.currentTrack.artist
+                                   onAlbum:self.iTunes.currentTrack.album
+                              withDuration:self.iTunes.currentTrack.duration
+                               atTimestamp:(int)[[NSDate date] timeIntervalSince1970]
+                            successHandler:^(NSDictionary *result) {
+                                //succesHandler - nothing to do
+                            } failureHandler:^(NSError *error) {
+                                if (error.code == -1001) {
+                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                        [weakSelf scrobbleCurrentTrack];
+                                        
+                                    });
+                                }
+                            }];
+    }
+    
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
@@ -59,21 +61,24 @@ static NSString *const kAPISecret = @"";
 
 -(void)nowPlayingCurrentTrack
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.scrobbler.session && [self.iTunes isRunning]) {
-            [[LastFm sharedInstance] sendNowPlayingTrack:self.iTunes.currentTrack.name
-                                                byArtist:self.iTunes.currentTrack.artist
-                                                 onAlbum:self.iTunes.currentTrack.album
-                                            withDuration:self.iTunes.currentTrack.duration / 2
-                                          successHandler:^(NSDictionary *result) {
-                                          } failureHandler:^(NSError *error) {
-                                              if (error.code == -1001) {
-                                                  [self nowPlayingCurrentTrack];
-                                              }
-                                          }];
-        }
-        
-    });
+    if (self.scrobbler.session && self.iTunes.playerState == iTunesEPlSPlaying) {
+        __weak MusicScrobbler *weakSelf = self;
+        [[LastFm sharedInstance] sendNowPlayingTrack:self.iTunes.currentTrack.name
+                                            byArtist:self.iTunes.currentTrack.artist
+                                             onAlbum:self.iTunes.currentTrack.album
+                                        withDuration:self.iTunes.currentTrack.duration / 2
+                                      successHandler:^(NSDictionary *result) {
+                                          //succesHandler - nothing to do
+                                      } failureHandler:^(NSError *error) {
+                                          if (error.code == -1001) {
+                                              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                                  [weakSelf nowPlayingCurrentTrack];
+                                                  
+                                              });
+                                          }
+                                      }];
+    }
+    
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
@@ -86,7 +91,7 @@ static NSString *const kAPISecret = @"";
                 completion();
             }
         } failureHandler:^(NSError *error) {
-            if (error.code == -1001) {
+            if (error.code == -1001 || error.code == 16) {
                 [self loveCurrentTrackWithCompletionHandler:completion];
             }
         }];
@@ -141,7 +146,7 @@ static NSString *const kAPISecret = @"";
     if (!_iTunes) {
         _iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
     }
-   return _iTunes;
+    return _iTunes;
 }
 
 
