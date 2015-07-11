@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E33b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -15,6 +15,7 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="accountView" destination="85m-tG-GgP" id="oAN-Jn-WaN"/>
+                <outlet property="createAccountButton" destination="Y0d-KG-pj8" id="A75-Yk-wta"/>
                 <outlet property="indicator" destination="QNA-6p-13Z" id="Lho-KM-kia"/>
                 <outlet property="loginButton" destination="bnA-Nm-ZtK" id="CeP-Ae-PVu"/>
                 <outlet property="loginField" destination="SFe-SM-N5c" id="y0L-Vu-irY"/>
@@ -676,7 +677,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="preferencesWindowSize" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="123"/>
@@ -687,17 +688,13 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="frT-m2-VER">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" label="Account" paletteLabel="Account" tag="1" image="lastfm" selectable="YES" id="0Ad-di-EXd">
-                        <connections>
-                            <action selector="switchView:" target="Voe-Tx-rLC" id="vgw-QU-Xec"/>
-                        </connections>
-                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" label="Account" paletteLabel="Account" image="lastfm" selectable="YES" id="0Ad-di-EXd"/>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="0Ad-di-EXd"/>
                 </defaultToolbarItems>
             </toolbar>
-            <point key="canvasLocation" x="-296" y="343.5"/>
+            <point key="canvasLocation" x="-338" y="320.5"/>
         </window>
         <menu autoenablesItems="NO" id="XPD-Mx-1cp">
             <items>
@@ -733,11 +730,11 @@
             <point key="canvasLocation" x="-532" y="10.5"/>
         </menu>
         <customView id="85m-tG-GgP" userLabel="Account">
-            <rect key="frame" x="0.0" y="0.0" width="253" height="139"/>
+            <rect key="frame" x="0.0" y="5" width="253" height="153"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SFe-SM-N5c">
-                    <rect key="frame" x="20" y="97" width="213" height="22"/>
+                    <rect key="frame" x="20" y="111" width="213" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Last.fm username" bezelStyle="round" id="3k9-bs-bSK">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -745,7 +742,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bnA-Nm-ZtK">
-                    <rect key="frame" x="14" y="13" width="225" height="32"/>
+                    <rect key="frame" x="14" y="33" width="225" height="32"/>
                     <buttonCell key="cell" type="push" title="Log in" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AuT-5i-jvX">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -758,7 +755,7 @@ DQ
                     </connections>
                 </button>
                 <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kA7-XP-E0s">
-                    <rect key="frame" x="20" y="67" width="213" height="22"/>
+                    <rect key="frame" x="20" y="81" width="213" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Last.fm password" usesSingleLineMode="YES" bezelStyle="round" id="s84-I8-Vac">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -769,10 +766,20 @@ DQ
                     </secureTextFieldCell>
                 </secureTextField>
                 <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="QNA-6p-13Z">
-                    <rect key="frame" x="118" y="81" width="16" height="16"/>
+                    <rect key="frame" x="118" y="95" width="16" height="16"/>
                 </progressIndicator>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y0d-KG-pj8">
+                    <rect key="frame" x="42" y="14" width="169" height="19"/>
+                    <buttonCell key="cell" type="bevel" title="Don't have an account? Join!" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Pz5-Ta-dSB">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="12" name="HelveticaNeue"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="createNewLastFmAccountInWebBrowser:" target="Voe-Tx-rLC" id="AvZ-fP-6uN"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="16.5" y="107.5"/>
+            <point key="canvasLocation" x="13.5" y="79.5"/>
         </customView>
     </objects>
     <resources>
