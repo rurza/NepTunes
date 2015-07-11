@@ -680,10 +680,10 @@
         <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="preferencesWindowSize" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
-            <rect key="contentRect" x="335" y="390" width="272" height="123"/>
+            <rect key="contentRect" x="335" y="390" width="272" height="215"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="272" height="123"/>
+                <rect key="frame" x="0.0" y="-2" width="272" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="frT-m2-VER">
@@ -694,7 +694,7 @@
                     <toolbarItem reference="0Ad-di-EXd"/>
                 </defaultToolbarItems>
             </toolbar>
-            <point key="canvasLocation" x="-338" y="320.5"/>
+            <point key="canvasLocation" x="-338" y="342.5"/>
         </window>
         <menu autoenablesItems="NO" id="XPD-Mx-1cp">
             <items>
