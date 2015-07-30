@@ -6,11 +6,7 @@
 //  Copyright (c) 2014 micropixels. All rights reserved.
 //
 
-#define SESSION_KEY @"is.rurzynski.lastfm.tunesfm.session"
-#define USERNAME_KEY @"is.rurzynski.lastfm.tunesfm.username"
-
 #import "AppDelegate.h"
-#import "iTunes.h"
 #import "DDHotKeyCenter.h"
 #import "MusicScrobbler.h"
 
@@ -32,10 +28,14 @@
 @property (weak, nonatomic) IBOutlet NSButton *loginButton;
 @property (weak, nonatomic) IBOutlet NSWindow *window;
 @property (weak, nonatomic) IBOutlet NSView *accountView;
+@property (weak) IBOutlet NSView *hotkeyView;
+
 @property (weak, nonatomic) IBOutlet NSButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
 
 @property NSTimeInterval scrobbleTime;
+@property int currentViewTag;
+
 
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)createNewLastFmAccountInWebBrowser:(id)sender;
@@ -82,11 +82,10 @@
 -(void)awakeFromNib {
     self.musicScrobbler = [MusicScrobbler sharedScrobbler];
     if (self.musicScrobbler.scrobbler.session) {
-        [self hideControls:YES];
         [self.loginButton setTitle:[NSString stringWithFormat:@"Log out %@", self.musicScrobbler.scrobbler.username]];
         [self.loginButton setAction:@selector(logout)];
-
     }
+    
     [[self window] setContentSize:[self.accountView frame].size];
     [[[self window] contentView ] addSubview:self.accountView];
     [[[self window] contentView] setWantsLayer:YES];
@@ -161,7 +160,10 @@
     if (!([self.passwordField.stringValue isEqualTo: @""] || [self.loginField.stringValue isEqualTo: @""])) {
         [self.indicator startAnimation:self];
 
-        [self hideControls:YES];
+        self.loginField.hidden = YES;
+        self.passwordField.hidden = YES;
+        [self.createAccountButton setHidden:YES];
+
 
         [self.loginButton setTitle:@"Logging in..."];
         [self.loginButton setEnabled:NO];
@@ -172,7 +174,6 @@
             [self.loginButton setTitle:[NSString stringWithFormat:@"Log out %@", result[@"name"]]];
             self.loginField.stringValue = @"";
             self.passwordField.stringValue = @"";
-            [self hideControls:YES];
             [self.loginButton setEnabled:YES];
             [self changeState];
             [self.loginButton setAction:@selector(logout)];
@@ -184,7 +185,6 @@
             else {
                 [self.indicator stopAnimation:self];
 
-                [self hideControls:NO];
                 self.passwordField.stringValue = @"";
                 [self.loginButton setTitle:@"Log in"];
                 [self.loginButton setEnabled:YES];
@@ -207,7 +207,6 @@
     [self.loginButton setTitle:@"Log in"];
     [self.musicScrobbler logOut];
 
-    [self hideControls:NO];
     [self changeState];
     [self.loginButton setAction:@selector(loginClicked:)];
     
@@ -308,15 +307,61 @@
 
 #pragma mark - preferences
 
-
-/*----------------------------------------------------------------------------------------------------------*/
-
--(void)hideControls:(BOOL)enabled
-{
-    self.loginField.hidden = enabled;
-    self.passwordField.hidden = enabled;
-    [self.createAccountButton setHidden:enabled];
+-(NSRect)newFrameForNewContentView:(NSView *)view {
+    NSWindow *window = self.window;
+    NSRect newFrameRect = [window frameRectForContentRect:[view frame]];
+    NSRect oldFrameRect = [window frame];
+    NSSize newSize = newFrameRect.size;
+    NSSize oldSize = oldFrameRect.size;
+    
+    NSRect frame  = [window frame];
+    frame.size = newSize;
+    frame.origin.y -= (newSize.height - oldSize.height);
+    return frame;
 }
+
+-(NSView *)viewForTag:(int)tag {
+    NSView *view = nil;
+    switch (tag) {
+        case 1:
+            view = self.accountView;
+            break;
+        case 2:
+            view = self.hotkeyView;
+            break;
+        default:
+            view = self.accountView;
+            break;
+    }
+    return view;
+}
+
+
+-(BOOL)validateToolbarItem:(NSToolbarItem *)item {
+    if ([item tag] == self.currentViewTag) return NO;
+    else return YES;
+}
+
+
+
+-(IBAction)switchView:(id)sender {
+    int tag = (int)[sender tag];
+    NSView *view = [self viewForTag:tag];
+    NSView *previousView = [self viewForTag:self.currentViewTag];
+    self.currentViewTag = tag;
+    
+    NSRect newFrame = [self newFrameForNewContentView:view];
+    [NSAnimationContext beginGrouping];
+    
+    if ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) {
+        [[NSAnimationContext currentContext] setDuration:1.0];
+    }
+    [[[[self window] contentView] animator] replaceSubview:previousView with:view];
+    [[[self window] animator] setFrame:newFrame display:YES];
+    
+    [NSAnimationContext endGrouping];
+}
+/*----------------------------------------------------------------------------------------------------------*/
 
 
 

@@ -16,6 +16,7 @@
             <connections>
                 <outlet property="accountView" destination="85m-tG-GgP" id="oAN-Jn-WaN"/>
                 <outlet property="createAccountButton" destination="Y0d-KG-pj8" id="A75-Yk-wta"/>
+                <outlet property="hotkeyView" destination="EKy-34-uDn" id="n5d-GQ-NCM"/>
                 <outlet property="indicator" destination="QNA-6p-13Z" id="Lho-KM-kia"/>
                 <outlet property="loginButton" destination="bnA-Nm-ZtK" id="CeP-Ae-PVu"/>
                 <outlet property="loginField" destination="SFe-SM-N5c" id="y0L-Vu-irY"/>
@@ -677,8 +678,8 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="preferencesWindowSize" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" unifiedTitleAndToolbar="YES"/>
+        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="preferencesWindowSize" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="215"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
@@ -688,10 +689,12 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="frT-m2-VER">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" label="Account" paletteLabel="Account" image="lastfm" selectable="YES" id="0Ad-di-EXd"/>
+                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" label="Account" paletteLabel="Account" tag="1" image="lastfm" selectable="YES" id="0Ad-di-EXd"/>
+                    <toolbarItem implicitItemIdentifier="A2D88D57-9BE8-485F-892C-38C5437A2C51" label="Hotkey" paletteLabel="Hotkey" tag="2" image="NSPreferencesGeneral" selectable="YES" id="Mzg-4i-Orf"/>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="0Ad-di-EXd"/>
+                    <toolbarItem reference="Mzg-4i-Orf"/>
                 </defaultToolbarItems>
             </toolbar>
             <point key="canvasLocation" x="-338" y="342.5"/>
@@ -740,6 +743,13 @@
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <binding destination="Voe-Tx-rLC" name="hidden" keyPath="musicScrobbler.scrobbler.session" id="9p1-yW-msd">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bnA-Nm-ZtK">
                     <rect key="frame" x="14" y="33" width="225" height="32"/>
@@ -764,6 +774,13 @@ DQ
                             <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
+                    <connections>
+                        <binding destination="Voe-Tx-rLC" name="hidden" keyPath="musicScrobbler.scrobbler.session" id="6gq-ip-qOy">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
                 </secureTextField>
                 <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="QNA-6p-13Z">
                     <rect key="frame" x="118" y="95" width="16" height="16"/>
@@ -776,13 +793,35 @@ DQ
                     </buttonCell>
                     <connections>
                         <action selector="createNewLastFmAccountInWebBrowser:" target="Voe-Tx-rLC" id="AvZ-fP-6uN"/>
+                        <binding destination="Voe-Tx-rLC" name="hidden" keyPath="musicScrobbler.scrobbler.session" id="vbJ-a3-eem">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </button>
             </subviews>
             <point key="canvasLocation" x="13.5" y="79.5"/>
         </customView>
+        <customView id="EKy-34-uDn">
+            <rect key="frame" x="0.0" y="-2" width="236" height="125"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TsW-up-y9k" customClass="DDHotKeyTextField">
+                    <rect key="frame" x="20" y="51" width="196" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="g55-im-Ktk">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="115" y="342.5"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="gZh-Qn-zyx"/>
     </objects>
     <resources>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="lastfm" width="32" height="32"/>
     </resources>
 </document>
