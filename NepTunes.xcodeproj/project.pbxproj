@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B41B8A71A222B4E00BAF453 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A21A222B4E00BAF453 /* DDHotKeyCenter.m */; };
-		5B41B8A81A222B4E00BAF453 /* DDHotKeyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A41A222B4E00BAF453 /* DDHotKeyTextField.m */; };
-		5B41B8A91A222B4E00BAF453 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B41B8A61A222B4E00BAF453 /* DDHotKeyUtilities.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
+		5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6E5D41B6BF87300631537 /* HotkeyController.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
 		5BDD6B161A1D0C95001D87D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B151A1D0C95001D87D6 /* main.m */; };
 		5BDD6B181A1D0C95001D87D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B171A1D0C95001D87D6 /* Images.xcassets */; };
@@ -49,17 +47,13 @@
 		10263035E2E364638E5DACEA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = NepTunes.entitlements; sourceTree = "<group>"; };
-		5B41B8A11A222B4E00BAF453 /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyCenter.h; sourceTree = "<group>"; };
-		5B41B8A21A222B4E00BAF453 /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyCenter.m; sourceTree = "<group>"; };
-		5B41B8A31A222B4E00BAF453 /* DDHotKeyTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyTextField.h; sourceTree = "<group>"; };
-		5B41B8A41A222B4E00BAF453 /* DDHotKeyTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyTextField.m; sourceTree = "<group>"; };
-		5B41B8A51A222B4E00BAF453 /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyUtilities.h; sourceTree = "<group>"; };
-		5B41B8A61A222B4E00BAF453 /* DDHotKeyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyUtilities.m; sourceTree = "<group>"; };
 		5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicScrobbler.h; sourceTree = "<group>"; };
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicScrobbler.m; sourceTree = "<group>"; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
 		5BB6D1CB1B43A91800211F28 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
+		5BD6E5D41B6BF87300631537 /* HotkeyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotkeyController.m; sourceTree = "<group>"; };
 		5BDD6B0D1A1D0C95001D87D6 /* NepTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NepTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDD6B111A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -134,6 +128,8 @@
 		5BDD6B0F1A1D0C95001D87D6 /* NepTunes */ = {
 			isa = PBXGroup;
 			children = (
+				5BD6E5D31B6BF87300631537 /* HotkeyController.h */,
+				5BD6E5D41B6BF87300631537 /* HotkeyController.m */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
 				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
@@ -150,12 +146,6 @@
 			children = (
 				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,
 				5BB6D1CB1B43A91800211F28 /* iTunes.h */,
-				5B41B8A11A222B4E00BAF453 /* DDHotKeyCenter.h */,
-				5B41B8A21A222B4E00BAF453 /* DDHotKeyCenter.m */,
-				5B41B8A31A222B4E00BAF453 /* DDHotKeyTextField.h */,
-				5B41B8A41A222B4E00BAF453 /* DDHotKeyTextField.m */,
-				5B41B8A51A222B4E00BAF453 /* DDHotKeyUtilities.h */,
-				5B41B8A61A222B4E00BAF453 /* DDHotKeyUtilities.m */,
 				5BFB29E81A1D800900EA87AA /* dsa_pub.pem */,
 				5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */,
 				5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */,
@@ -328,11 +318,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B41B8A71A222B4E00BAF453 /* DDHotKeyCenter.m in Sources */,
 				5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */,
-				5B41B8A81A222B4E00BAF453 /* DDHotKeyTextField.m in Sources */,
-				5B41B8A91A222B4E00BAF453 /* DDHotKeyUtilities.m in Sources */,
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
+				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
 			);
@@ -466,6 +454,7 @@
 					"-l\"Pods-KissXML\"",
 					"-l\"Pods-LastFm\"",
 					"-l\"xml2\"",
+					"-l\"Pods-MASShortcut\"",
 					"-Wl",
 					"-rpath",
 					"@loader_path/../Frameworks",
@@ -498,6 +487,7 @@
 					"-l\"Pods-KissXML\"",
 					"-l\"Pods-LastFm\"",
 					"-l\"xml2\"",
+					"-l\"Pods-MASShortcut\"",
 					"-Wl",
 					"-rpath",
 					"@loader_path/../Frameworks",

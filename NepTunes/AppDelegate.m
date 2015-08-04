@@ -7,10 +7,13 @@
 //
 
 #import "AppDelegate.h"
-#import "DDHotKeyCenter.h"
 #import "MusicScrobbler.h"
+#import "HotkeyController.h"
+#import <EGOCache.h>
 
-@interface AppDelegate ()
+static NSString *const kUserAvatar = @"userAvatar";
+
+@interface AppDelegate () <NSTextFieldDelegate>
 
 @property (strong, nonatomic) NSStatusItem *statusItem;
 
@@ -19,27 +22,29 @@
 @property (strong, nonatomic) MusicScrobbler *musicScrobbler;
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
 
-@property (weak, nonatomic) IBOutlet NSMenuItem *loveSongMenuTitle;
-@property (weak, nonatomic) IBOutlet NSMenuItem *profileMenuTitle;
-@property (weak, nonatomic) IBOutlet NSMenuItem *similarArtistMenuTtitle;
-
 @property (weak, nonatomic) IBOutlet NSTextField *loginField;
 @property (weak, nonatomic) IBOutlet NSSecureTextField *passwordField;
 @property (weak, nonatomic) IBOutlet NSButton *loginButton;
+@property (weak, nonatomic) IBOutlet NSButton *logoutButton;
+
 @property (weak, nonatomic) IBOutlet NSWindow *window;
 @property (weak, nonatomic) IBOutlet NSView *accountView;
+@property (weak) IBOutlet NSView *loggedInUserView;
 @property (weak) IBOutlet NSView *hotkeyView;
+
+@property (weak, nonatomic) IBOutlet NSImageView *userAvatar;
 
 @property (weak, nonatomic) IBOutlet NSButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
 
 @property NSTimeInterval scrobbleTime;
 @property int currentViewTag;
-
+@property (weak) IBOutlet NSToolbarItem *accountToolbarItem;
+@property (weak) IBOutlet NSToolbarItem *hotkeysToolbarItem;
 
 - (IBAction)loginClicked:(id)sender;
+- (IBAction)logOut:(id)sender;
 - (IBAction)createNewLastFmAccountInWebBrowser:(id)sender;
-
 
 
 @end
@@ -48,8 +53,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
-    DDHotKeyCenter *loveSongHotKey = [DDHotKeyCenter sharedHotKeyCenter];
-    [loveSongHotKey registerHotKeyWithKeyCode:0x25 modifierFlags:NSControlKeyMask|NSCommandKeyMask target:self action:@selector(loveSong:) object:nil];
     
     //System status bar icon
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
@@ -58,15 +61,19 @@
     self.statusItem.image = icon;
     self.statusItem.menu = self.statusMenu;
     
-    
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                         selector:@selector(updateTrackInfo)
                                                             name:@"com.apple.iTunes.playerInfo"
                                                           object:nil];
+    
+    
+    //first launch
     if (!self.musicScrobbler.scrobbler.session) {
         [self openPreferences:self];
-        
     }
+   
+    self.passwordField.delegate = self;
+    self.loginField.delegate = self;
     
     [self changeState];
     if ([self.musicScrobbler.iTunes isRunning]) {
@@ -75,6 +82,7 @@
             
         });
     }
+
 }
 
 
@@ -82,19 +90,31 @@
 -(void)awakeFromNib {
     self.musicScrobbler = [MusicScrobbler sharedScrobbler];
     if (self.musicScrobbler.scrobbler.session) {
-        [self.loginButton setTitle:[NSString stringWithFormat:@"Log out %@", self.musicScrobbler.scrobbler.username]];
-        [self.loginButton setAction:@selector(logout)];
+        self.accountToolbarItem.tag = 0;
+        [[self window] setContentSize:[self.loggedInUserView frame].size];
+        [[[self window] contentView ] addSubview:self.loggedInUserView];
+        [self.logoutButton setTitle:[NSString stringWithFormat:@"Log out %@", self.musicScrobbler.scrobbler.username]];
+        [self setAvatarForUserWithInfo:nil];
     }
-    
-    [[self window] setContentSize:[self.accountView frame].size];
-    [[[self window] contentView ] addSubview:self.accountView];
-    [[[self window] contentView] setWantsLayer:YES];
+    else {
+        [[self window] setContentSize:[self.accountView frame].size];
+        [[[self window] contentView ] addSubview:self.accountView];
+        [self.loginButton setEnabled:NO];
+        self.accountToolbarItem.tag = 1;
+        [self switchView:self.accountToolbarItem];
+
+    }
+//    [[[self window] contentView] setWantsLayer:YES];
+    [self.window recalculateKeyViewLoop];
     
     NSColor *color = [NSColor colorWithSRGBRed:0.2896 green:0.5448 blue:0.9193 alpha:1.0];
     NSMutableAttributedString *colorTitle = [[NSMutableAttributedString alloc] initWithAttributedString:[self.createAccountButton attributedTitle]];
     NSRange titleRange = NSMakeRange(0, [colorTitle length]);
     [colorTitle addAttribute:NSForegroundColorAttributeName value:color range:titleRange];
     [self.createAccountButton setAttributedTitle:colorTitle];
+
+//    self.hotkeyController = [[HotkeyController alloc] init];
+
 }
 
 
@@ -157,7 +177,8 @@
 
 
 - (IBAction)loginClicked:(id)sender {
-    if (!([self.passwordField.stringValue isEqualTo: @""] || [self.loginField.stringValue isEqualTo: @""])) {
+    if (!([self.passwordField.stringValue isEqualTo: @""] || [self.loginField.stringValue isEqualTo: @""]))
+    {
         [self.indicator startAnimation:self];
 
         self.loginField.hidden = YES;
@@ -167,17 +188,31 @@
 
         [self.loginButton setTitle:@"Logging in..."];
         [self.loginButton setEnabled:NO];
-        [self.musicScrobbler.scrobbler getSessionForUser:self.loginField.stringValue password:self.passwordField.stringValue successHandler:^(NSDictionary *result) {
-            
+        [self.musicScrobbler.scrobbler getSessionForUser:self.loginField.stringValue
+                                                password:self.passwordField.stringValue
+                                          successHandler:^(NSDictionary *result)
+        {
+            //login success handler
             [self.musicScrobbler logInWithCredentials:result];
             
-            [self.loginButton setTitle:[NSString stringWithFormat:@"Log out %@", result[@"name"]]];
-            self.loginField.stringValue = @"";
-            self.passwordField.stringValue = @"";
-            [self.loginButton setEnabled:YES];
+            [self.musicScrobbler.scrobbler getInfoForUserOrNil:self.loginField.stringValue successHandler:^(NSDictionary *result) {
+                [self setAvatarForUserWithInfo:result];
+                } failureHandler:^(NSError *error) {
+                NSLog(@"Error info about user. %@", [error localizedDescription]);
+            }];
+            self.accountToolbarItem.tag = 0;
+            [self switchView:self.accountToolbarItem];
             [self changeState];
-            [self.loginButton setAction:@selector(logout)];
+            
             [self.indicator stopAnimation:self];
+            self.loginField.hidden = NO;
+            self.passwordField.hidden = NO;
+            [self.createAccountButton setHidden:NO];
+
+            [self.loginButton setTitle:@"Log in"];
+            [self.logoutButton setTitle:[NSString stringWithFormat:@"Log out %@", result[@"name"]]];
+            self.passwordField.stringValue = @"";
+            
         } failureHandler:^(NSError *error) {
             if (error.code == -1001) {
                 [self loginClicked:self];
@@ -188,6 +223,9 @@
                 self.passwordField.stringValue = @"";
                 [self.loginButton setTitle:@"Log in"];
                 [self.loginButton setEnabled:YES];
+                self.loginField.hidden = NO;
+                self.passwordField.hidden = NO;
+                [self.createAccountButton setHidden:NO];
                 NSAlert *alert = [[NSAlert alloc] init];
                 alert.alertStyle = NSCriticalAlertStyle;
                 alert.informativeText = [error localizedDescription];
@@ -197,20 +235,22 @@
             }
         }];
     }
-    else {
-    }
 }
 
-
-
-- (void)logout {
-    [self.loginButton setTitle:@"Log in"];
+- (IBAction)logOut:(id)sender
+{
+    [self.loginButton setEnabled:NO];
     [self.musicScrobbler logOut];
-
+    if ([[EGOCache globalCache] hasCacheForKey:kUserAvatar]) {
+        [[EGOCache globalCache] removeCacheForKey:kUserAvatar];
+        self.userAvatar.image = nil;
+    }
     [self changeState];
-    [self.loginButton setAction:@selector(loginClicked:)];
-    
+    self.accountToolbarItem.tag = 1;
+    [self switchView:self.accountToolbarItem];
+
 }
+
 
 - (IBAction)createNewLastFmAccountInWebBrowser:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://secure.last.fm/join"]];
@@ -320,17 +360,20 @@
     return frame;
 }
 
--(NSView *)viewForTag:(int)tag {
+-(NSView *)viewForTag:(int)viewtag {
     NSView *view = nil;
-    switch (tag) {
+    switch (viewtag) {
         case 1:
             view = self.accountView;
             break;
         case 2:
             view = self.hotkeyView;
             break;
+        case 0:
+            view = self.loggedInUserView;
+            break;
         default:
-            view = self.accountView;
+            view = self.loggedInUserView;
             break;
     }
     return view;
@@ -345,23 +388,68 @@
 
 
 -(IBAction)switchView:(id)sender {
-    int tag = (int)[sender tag];
-    NSView *view = [self viewForTag:tag];
+
+    int senderTag = (int)[sender tag];
+
+    NSView *view = [self viewForTag:senderTag];
     NSView *previousView = [self viewForTag:self.currentViewTag];
-    self.currentViewTag = tag;
+    self.currentViewTag = senderTag;
     
     NSRect newFrame = [self newFrameForNewContentView:view];
     [NSAnimationContext beginGrouping];
     
     if ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) {
-        [[NSAnimationContext currentContext] setDuration:1.0];
+        [[NSAnimationContext currentContext] setDuration:0.5];
     }
     [[[[self window] contentView] animator] replaceSubview:previousView with:view];
     [[[self window] animator] setFrame:newFrame display:YES];
-    
+
     [NSAnimationContext endGrouping];
+    [self.window recalculateKeyViewLoop];
 }
-/*----------------------------------------------------------------------------------------------------------*/
+
+#pragma mark - NSTextField Delegate
+
+-(void)controlTextDidChange:(NSNotification *)obj
+{
+    if (obj.object == self.passwordField || obj.object == self.loginField) {
+        if ([self.passwordField.stringValue length] > 3 && [self.loginField.stringValue length] > 2) {
+            [self.loginButton setEnabled:YES];
+        }
+        else {
+            [self.loginButton setEnabled:NO];
+        }
+    }
+}
+
+#pragma User Avatar Method
+
+-(void)setAvatarForUserWithInfo:(NSDictionary *)userInfo
+{
+    NSImage *image;
+    if ([userInfo objectForKey:@"image"]) {
+        NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
+        NSImage *avatar = [[NSImage alloc] initWithData:imageData];
+        image = avatar;
+        [[EGOCache globalCache] setImage:avatar forKey:kUserAvatar];
+        self.userAvatar.image = avatar;
+    }
+    else if ([[EGOCache globalCache] hasCacheForKey:kUserAvatar]) {
+        image = [[EGOCache globalCache] imageForKey:kUserAvatar];
+        self.userAvatar.image = image;
+    }
+    else {
+        image = [[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:@"http://cdn.last.fm/flatness/responsive/2/noimage/default_user_140_g2.png"]];
+        self.userAvatar.image = image;
+         [[EGOCache globalCache] setImage:image forKey:kUserAvatar];
+    }
+    if (image) {
+        [self.userAvatar setWantsLayer: YES];
+        self.userAvatar.layer.cornerRadius = 32.0f;
+        self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
+        self.userAvatar.layer.borderWidth = 2.0f;
+    }
+}
 
 
 
