@@ -7,11 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MenuController.h"
+
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-
-
+@property (weak, nonatomic) IBOutlet NSWindow *window;
+@property (weak) IBOutlet MenuController *menuController;
 
 @end
 

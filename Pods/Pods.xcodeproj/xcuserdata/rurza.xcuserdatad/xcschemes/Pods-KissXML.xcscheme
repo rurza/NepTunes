@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "24831C84616E841C4F4C5DC8"
+               BlueprintIdentifier = "5A77233D9327B9A35610A412"
                BuildableName = "libPods-KissXML.a"
                BlueprintName = "Pods-KissXML"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -39,15 +39,6 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "24831C84616E841C4F4C5DC8"
-            BuildableName = "libPods-KissXML.a"
-            BlueprintName = "Pods-KissXML"
-            ReferencedContainer = "container:Pods.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

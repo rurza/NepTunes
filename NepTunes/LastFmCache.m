@@ -42,7 +42,6 @@
     if (age > maxAge) {
         return YES;
     }
-
     return NO;
 }
 

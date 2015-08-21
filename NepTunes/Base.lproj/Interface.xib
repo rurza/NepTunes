@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E33b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -14,15 +14,23 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="accountToolbarItem" destination="0Ad-di-EXd" id="aps-81-AvN"/>
                 <outlet property="accountView" destination="85m-tG-GgP" id="oAN-Jn-WaN"/>
+                <outlet property="createAccountButton" destination="Y0d-KG-pj8" id="A75-Yk-wta"/>
+                <outlet property="hotkeyView" destination="EKy-34-uDn" id="n5d-GQ-NCM"/>
+                <outlet property="hotkeysToolbarItem" destination="Mzg-4i-Orf" id="ahQ-ft-6gr"/>
                 <outlet property="indicator" destination="QNA-6p-13Z" id="Lho-KM-kia"/>
+                <outlet property="loggedInUserView" destination="fhc-ci-TLM" id="NIm-Yn-hlc"/>
                 <outlet property="loginButton" destination="bnA-Nm-ZtK" id="CeP-Ae-PVu"/>
                 <outlet property="loginField" destination="SFe-SM-N5c" id="y0L-Vu-irY"/>
+                <outlet property="logoutButton" destination="Lvr-5g-SEe" id="3GB-Cw-tJL"/>
                 <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="NSL-rZ-qO9"/>
+                <outlet property="menuController" destination="aMi-64-iJ4" id="CS4-Wx-7Bd"/>
                 <outlet property="passwordField" destination="kA7-XP-E0s" id="Bt6-Cr-bnX"/>
                 <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="MCe-OV-CHM"/>
                 <outlet property="similarArtistMenuTtitle" destination="wza-2X-Avd" id="65U-8y-nhd"/>
                 <outlet property="statusMenu" destination="XPD-Mx-1cp" id="vaE-Wu-6z9"/>
+                <outlet property="userAvatar" destination="73S-Ro-Dz1" id="Jh3-Lm-1kl"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="Bhg-fQ-MaR"/>
             </connections>
         </customObject>
@@ -676,76 +684,89 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" unifiedTitleAndToolbar="YES"/>
+        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="preferencesWindowSize" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
-            <rect key="contentRect" x="335" y="390" width="272" height="123"/>
+            <rect key="contentRect" x="335" y="390" width="272" height="215"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="272" height="123"/>
+                <rect key="frame" x="0.0" y="-2" width="272" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="frT-m2-VER">
+            <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="frT-m2-VER">
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" label="Account" paletteLabel="Account" tag="1" image="lastfm" selectable="YES" id="0Ad-di-EXd">
                         <connections>
-                            <action selector="switchView:" target="Voe-Tx-rLC" id="vgw-QU-Xec"/>
+                            <action selector="switchView:" target="Voe-Tx-rLC" id="4qF-p7-5N3"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="A2D88D57-9BE8-485F-892C-38C5437A2C51" label="Hotkeys" paletteLabel="Hotkeys" tag="2" image="NSPreferencesGeneral" selectable="YES" id="Mzg-4i-Orf">
+                        <connections>
+                            <action selector="switchView:" target="Voe-Tx-rLC" id="3CU-Ve-4fw"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="0Ad-di-EXd"/>
+                    <toolbarItem reference="Mzg-4i-Orf"/>
                 </defaultToolbarItems>
             </toolbar>
-            <point key="canvasLocation" x="-296" y="343.5"/>
+            <point key="canvasLocation" x="-338" y="342.5"/>
         </window>
         <menu autoenablesItems="NO" id="XPD-Mx-1cp">
             <items>
-                <menuItem title="Love song on Last.fm" keyEquivalent="l" id="84S-sz-3Q2">
-                    <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                <menuItem title="Love song on Last.fm" id="84S-sz-3Q2">
+                    <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="loveSong:" target="Voe-Tx-rLC" id="bfc-sE-aRw"/>
+                        <action selector="loveSong:" target="aMi-64-iJ4" id="JQg-mk-tzq"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Similar artists..." id="wza-2X-Avd">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showSimilarArtists:" target="Voe-Tx-rLC" id="I0R-md-vIP"/>
+                        <action selector="showSimilarArtists:" target="aMi-64-iJ4" id="WZp-If-zE5"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Profile..." id="f29-yU-Mdy">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showUserProfile:" target="Voe-Tx-rLC" id="Y6h-G9-BAO"/>
+                        <action selector="showUserProfile:" target="aMi-64-iJ4" id="Ee0-Ec-iDi"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Preferences..." keyEquivalent="," id="rQL-im-FvJ">
                     <connections>
-                        <action selector="openPreferences:" target="Voe-Tx-rLC" id="Ex4-xq-zwm"/>
+                        <action selector="openPreferences:" target="aMi-64-iJ4" id="8u7-vc-L1t"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit" keyEquivalent="q" id="nbH-9A-Y7P">
                     <connections>
-                        <action selector="quit:" target="Voe-Tx-rLC" id="a8o-bV-FK0"/>
+                        <action selector="quit:" target="aMi-64-iJ4" id="2mW-JV-Fpz"/>
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-532" y="10.5"/>
+            <point key="canvasLocation" x="-598" y="-39.5"/>
         </menu>
         <customView id="85m-tG-GgP" userLabel="Account">
-            <rect key="frame" x="0.0" y="0.0" width="253" height="139"/>
+            <rect key="frame" x="0.0" y="5" width="253" height="180"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SFe-SM-N5c">
-                    <rect key="frame" x="20" y="97" width="213" height="22"/>
+                    <rect key="frame" x="20" y="138" width="213" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Last.fm username" bezelStyle="round" id="3k9-bs-bSK">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <binding destination="Voe-Tx-rLC" name="hidden" keyPath="musicScrobbler.scrobbler.session" id="9p1-yW-msd">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bnA-Nm-ZtK">
-                    <rect key="frame" x="14" y="13" width="225" height="32"/>
+                    <rect key="frame" x="14" y="51" width="225" height="32"/>
                     <buttonCell key="cell" type="push" title="Log in" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AuT-5i-jvX">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -758,7 +779,7 @@ DQ
                     </connections>
                 </button>
                 <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kA7-XP-E0s">
-                    <rect key="frame" x="20" y="67" width="213" height="22"/>
+                    <rect key="frame" x="20" y="105" width="213" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Last.fm password" usesSingleLineMode="YES" bezelStyle="round" id="s84-I8-Vac">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -767,15 +788,133 @@ DQ
                             <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
+                    <connections>
+                        <binding destination="Voe-Tx-rLC" name="hidden" keyPath="musicScrobbler.scrobbler.session" id="6gq-ip-qOy">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
                 </secureTextField>
                 <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="QNA-6p-13Z">
-                    <rect key="frame" x="118" y="81" width="16" height="16"/>
+                    <rect key="frame" x="118" y="108" width="16" height="16"/>
                 </progressIndicator>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y0d-KG-pj8">
+                    <rect key="frame" x="20" y="16" width="213" height="32"/>
+                    <buttonCell key="cell" type="bevel" title="Don't have an account? Join!" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Pz5-Ta-dSB">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="12" name="HelveticaNeue"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="createNewLastFmAccountInWebBrowser:" target="Voe-Tx-rLC" id="AvZ-fP-6uN"/>
+                        <binding destination="Voe-Tx-rLC" name="hidden" keyPath="musicScrobbler.scrobbler.session" id="vbJ-a3-eem">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="16.5" y="107.5"/>
+            <point key="canvasLocation" x="13.5" y="84"/>
         </customView>
+        <customView id="EKy-34-uDn" userLabel="Hotkey">
+            <rect key="frame" x="0.0" y="0.0" width="336" height="140"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cXZ-R7-HX8" customClass="MASShortcutView">
+                    <rect key="frame" x="190" y="102" width="126" height="19"/>
+                </customView>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aqd-9D-IPf" customClass="MASShortcutView">
+                    <rect key="frame" x="190" y="20" width="126" height="19"/>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4m5-VP-Pgu">
+                    <rect key="frame" x="18" y="62" width="166" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Go to your Last.fm profile:" id="ywp-Bb-xwA">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-2x-JwT">
+                    <rect key="frame" x="18" y="20" width="132" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similiar artists:" id="ES0-8e-W0q">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4E-vj-MXg" customClass="MASShortcutView">
+                    <rect key="frame" x="190" y="61" width="126" height="19"/>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlv-Ke-0SR">
+                    <rect key="frame" x="18" y="103" width="72" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love song:" id="0UW-9q-clF">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="165" y="350"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="gZh-Qn-zyx"/>
+        <customObject id="Frc-Jt-Ein" customClass="HotkeyController">
+            <connections>
+                <outlet property="loveSongView" destination="cXZ-R7-HX8" id="VvM-bO-gHi"/>
+                <outlet property="showSimilarArtistsView" destination="Aqd-9D-IPf" id="QYf-RX-EGp"/>
+                <outlet property="showYourProfileView" destination="t4E-vj-MXg" id="yc3-p3-Nfm"/>
+            </connections>
+        </customObject>
+        <customView id="fhc-ci-TLM">
+            <rect key="frame" x="0.0" y="0.0" width="253" height="169"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="Lvr-5g-SEe">
+                    <rect key="frame" x="14" y="18" width="225" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="213" id="bJM-a4-4Rq"/>
+                        <constraint firstAttribute="height" constant="21" id="zd3-da-x8M"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Log out :(" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nX5-YO-izO">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="logOut:" target="Voe-Tx-rLC" id="PLx-Hm-PrE"/>
+                    </connections>
+                </button>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="73S-Ro-Dz1">
+                    <rect key="frame" x="94" y="71" width="64" height="64"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="64" id="hYJ-C1-t0f"/>
+                        <constraint firstAttribute="height" constant="64" id="qXU-nT-qYM"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="9kg-M5-PKm"/>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Lvr-5g-SEe" secondAttribute="bottom" constant="25" id="32M-G9-Gz5"/>
+                <constraint firstAttribute="centerX" secondItem="73S-Ro-Dz1" secondAttribute="centerX" id="TlU-vr-dkQ"/>
+                <constraint firstAttribute="centerX" secondItem="Lvr-5g-SEe" secondAttribute="centerX" id="mq2-zP-3B2"/>
+                <constraint firstItem="73S-Ro-Dz1" firstAttribute="top" secondItem="fhc-ci-TLM" secondAttribute="top" constant="34" id="z0C-9f-4Jy"/>
+                <constraint firstItem="Lvr-5g-SEe" firstAttribute="top" secondItem="73S-Ro-Dz1" secondAttribute="bottom" constant="25" id="z1g-yj-jpO"/>
+            </constraints>
+            <point key="canvasLocation" x="396.5" y="31.5"/>
+        </customView>
+        <customObject id="aMi-64-iJ4" customClass="MenuController">
+            <connections>
+                <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="H6f-JO-J2t"/>
+                <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="wW7-Da-pNi"/>
+                <outlet property="similarArtistMenuTtitle" destination="wza-2X-Avd" id="v9z-FG-bzu"/>
+                <outlet property="statusMenu" destination="XPD-Mx-1cp" id="gTn-At-Fw2"/>
+            </connections>
+        </customObject>
     </objects>
     <resources>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="lastfm" width="32" height="32"/>
     </resources>
 </document>

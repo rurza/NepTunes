@@ -1,5 +1,6 @@
 #include "Pods-KissXML.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/KissXML" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/EGOCache" "${PODS_ROOT}/Headers/Public/KissXML" "${PODS_ROOT}/Headers/Public/LastFm" ${PODS_KISSXML_HEADER_SEARCH_PATHS}
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/KissXML" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/EGOCache" "${PODS_ROOT}/Headers/Public/KissXML" "${PODS_ROOT}/Headers/Public/LastFm" "${PODS_ROOT}/Headers/Public/MASShortcut" ${PODS_KISSXML_HEADER_SEARCH_PATHS}
 OTHER_LDFLAGS = ${PODS_KISSXML_OTHER_LDFLAGS} -ObjC
 PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES
