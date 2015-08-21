@@ -12,7 +12,7 @@
 static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
 static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
-static NSString *const kAPISecret = @"";
+static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 @interface MusicScrobbler ()
 
