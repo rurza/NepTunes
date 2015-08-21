@@ -7,17 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MenuController.h"
+
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (weak, nonatomic) IBOutlet NSMenuItem *loveSongMenuTitle;
-@property (weak, nonatomic) IBOutlet NSMenuItem *profileMenuTitle;
-@property (weak, nonatomic) IBOutlet NSMenuItem *similarArtistMenuTtitle;
-
--(IBAction)loveSong:(id)sender;
--(IBAction)showUserProfile:(id)sender;
--(IBAction)showSimilarArtists:(id)sender;
-
+@property (weak, nonatomic) IBOutlet NSWindow *window;
+@property (weak) IBOutlet MenuController *menuController;
 
 @end
 

@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
 		5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6E5D41B6BF87300631537 /* HotkeyController.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
 		5BDD6B161A1D0C95001D87D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B151A1D0C95001D87D6 /* main.m */; };
 		5BDD6B181A1D0C95001D87D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B171A1D0C95001D87D6 /* Images.xcassets */; };
-		5BDD6B1B1A1D0C95001D87D6 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B191A1D0C95001D87D6 /* MainMenu.xib */; };
+		5BDD6B1B1A1D0C95001D87D6 /* Interface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B191A1D0C95001D87D6 /* Interface.xib */; };
 		5BDD6B271A1D0C95001D87D6 /* NepTunesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */; };
 		5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B301A1D0CA2001D87D6 /* Podfile */; };
 		5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5BFB29E81A1D800900EA87AA /* dsa_pub.pem */; };
@@ -47,8 +48,10 @@
 		10263035E2E364638E5DACEA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = NepTunes.entitlements; sourceTree = "<group>"; };
+		5B2F4CE51B763C16009F0C53 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
+		5B2F4CE61B763C16009F0C53 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 		5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicScrobbler.h; sourceTree = "<group>"; };
-		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicScrobbler.m; sourceTree = "<group>"; };
+		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
 		5BB6D1CB1B43A91800211F28 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
@@ -57,10 +60,10 @@
 		5BDD6B0D1A1D0C95001D87D6 /* NepTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NepTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDD6B111A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5BDD6B151A1D0C95001D87D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5BDD6B171A1D0C95001D87D6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		5BDD6B1A1A1D0C95001D87D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		5BDD6B1A1A1D0C95001D87D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Interface.xib; sourceTree = "<group>"; };
 		5BDD6B201A1D0C95001D87D6 /* NepTunesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NepTunesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDD6B251A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NepTunesTests.m; sourceTree = "<group>"; };
@@ -128,14 +131,16 @@
 		5BDD6B0F1A1D0C95001D87D6 /* NepTunes */ = {
 			isa = PBXGroup;
 			children = (
-				5BD6E5D31B6BF87300631537 /* HotkeyController.h */,
-				5BD6E5D41B6BF87300631537 /* HotkeyController.m */,
-				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
-				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
+				5BD6E5D31B6BF87300631537 /* HotkeyController.h */,
+				5BD6E5D41B6BF87300631537 /* HotkeyController.m */,
+				5B2F4CE51B763C16009F0C53 /* MenuController.h */,
+				5B2F4CE61B763C16009F0C53 /* MenuController.m */,
+				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
+				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
-				5BDD6B191A1D0C95001D87D6 /* MainMenu.xib */,
+				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
 			);
 			path = NepTunes;
@@ -185,6 +190,7 @@
 				5BDD6B0B1A1D0C95001D87D6 /* Resources */,
 				7D3738EEEB75323A52629190 /* Copy Pods Resources */,
 				5B3751291A1D38DC007106D7 /* CopyFiles */,
+				5BE3C9B31B7BD5F70095DA69 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -267,7 +273,7 @@
 				5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */,
 				5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */,
 				5BDD6B181A1D0C95001D87D6 /* Images.xcassets in Resources */,
-				5BDD6B1B1A1D0C95001D87D6 /* MainMenu.xib in Resources */,
+				5BDD6B1B1A1D0C95001D87D6 /* Interface.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +287,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5BE3C9B31B7BD5F70095DA69 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+		};
 		7D3738EEEB75323A52629190 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -320,6 +339,7 @@
 			files = (
 				5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */,
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
+				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
@@ -345,12 +365,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5BDD6B191A1D0C95001D87D6 /* MainMenu.xib */ = {
+		5BDD6B191A1D0C95001D87D6 /* Interface.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				5BDD6B1A1A1D0C95001D87D6 /* Base */,
 			);
-			name = MainMenu.xib;
+			name = Interface.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

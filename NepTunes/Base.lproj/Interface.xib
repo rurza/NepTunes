@@ -25,6 +25,7 @@
                 <outlet property="loginField" destination="SFe-SM-N5c" id="y0L-Vu-irY"/>
                 <outlet property="logoutButton" destination="Lvr-5g-SEe" id="3GB-Cw-tJL"/>
                 <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="NSL-rZ-qO9"/>
+                <outlet property="menuController" destination="aMi-64-iJ4" id="CS4-Wx-7Bd"/>
                 <outlet property="passwordField" destination="kA7-XP-E0s" id="Bt6-Cr-bnX"/>
                 <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="MCe-OV-CHM"/>
                 <outlet property="similarArtistMenuTtitle" destination="wza-2X-Avd" id="65U-8y-nhd"/>
@@ -717,33 +718,33 @@
                 <menuItem title="Love song on Last.fm" id="84S-sz-3Q2">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="loveSong:" target="Voe-Tx-rLC" id="bfc-sE-aRw"/>
+                        <action selector="loveSong:" target="aMi-64-iJ4" id="JQg-mk-tzq"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Similar artists..." id="wza-2X-Avd">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showSimilarArtists:" target="Voe-Tx-rLC" id="I0R-md-vIP"/>
+                        <action selector="showSimilarArtists:" target="aMi-64-iJ4" id="WZp-If-zE5"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Profile..." id="f29-yU-Mdy">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showUserProfile:" target="Voe-Tx-rLC" id="Y6h-G9-BAO"/>
+                        <action selector="showUserProfile:" target="aMi-64-iJ4" id="Ee0-Ec-iDi"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Preferences..." keyEquivalent="," id="rQL-im-FvJ">
                     <connections>
-                        <action selector="openPreferences:" target="Voe-Tx-rLC" id="Ex4-xq-zwm"/>
+                        <action selector="openPreferences:" target="aMi-64-iJ4" id="8u7-vc-L1t"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit" keyEquivalent="q" id="nbH-9A-Y7P">
                     <connections>
-                        <action selector="quit:" target="Voe-Tx-rLC" id="a8o-bV-FK0"/>
+                        <action selector="quit:" target="aMi-64-iJ4" id="2mW-JV-Fpz"/>
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-532" y="10.5"/>
+            <point key="canvasLocation" x="-598" y="-39.5"/>
         </menu>
         <customView id="85m-tG-GgP" userLabel="Account">
             <rect key="frame" x="0.0" y="5" width="253" height="180"/>
@@ -817,14 +818,14 @@ DQ
             <point key="canvasLocation" x="13.5" y="84"/>
         </customView>
         <customView id="EKy-34-uDn" userLabel="Hotkey">
-            <rect key="frame" x="0.0" y="0.0" width="330" height="140"/>
+            <rect key="frame" x="0.0" y="0.0" width="336" height="140"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cXZ-R7-HX8" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="101" width="120" height="19"/>
+                    <rect key="frame" x="190" y="102" width="126" height="19"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aqd-9D-IPf" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="20" width="120" height="19"/>
+                    <rect key="frame" x="190" y="20" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4m5-VP-Pgu">
                     <rect key="frame" x="18" y="62" width="166" height="17"/>
@@ -843,10 +844,10 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4E-vj-MXg" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="61" width="120" height="19"/>
+                    <rect key="frame" x="190" y="61" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlv-Ke-0SR">
-                    <rect key="frame" x="18" y="102" width="72" height="17"/>
+                    <rect key="frame" x="18" y="103" width="72" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love song:" id="0UW-9q-clF">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -854,7 +855,7 @@ DQ
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="162" y="350"/>
+            <point key="canvasLocation" x="165" y="350"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="gZh-Qn-zyx"/>
         <customObject id="Frc-Jt-Ein" customClass="HotkeyController">
@@ -903,6 +904,14 @@ DQ
             </constraints>
             <point key="canvasLocation" x="396.5" y="31.5"/>
         </customView>
+        <customObject id="aMi-64-iJ4" customClass="MenuController">
+            <connections>
+                <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="H6f-JO-J2t"/>
+                <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="wW7-Da-pNi"/>
+                <outlet property="similarArtistMenuTtitle" destination="wza-2X-Avd" id="v9z-FG-bzu"/>
+                <outlet property="statusMenu" destination="XPD-Mx-1cp" id="gTn-At-Fw2"/>
+            </connections>
+        </customObject>
     </objects>
     <resources>
         <image name="NSPreferencesGeneral" width="32" height="32"/>

@@ -42,19 +42,19 @@ static void *MASObservingContext = &MASObservingContext;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
-        [delegate loveSong:nil];
+        [delegate.menuController loveSong:nil];
      }];
     
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kshowYourProfileShortcut
      toAction:^{
-         [delegate showUserProfile:nil];
+         [delegate.menuController showUserProfile:nil];
      }];
     
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kshowSimilarArtistsShortcut
      toAction:^{
-         [delegate showSimilarArtists:nil];
+         [delegate.menuController showSimilarArtists:nil];
      }];
 }
 
@@ -90,31 +90,31 @@ static void *MASObservingContext = &MASObservingContext;
         
         if ([keyPath isEqualToString:kloveSongShortcut]) {
             if (self.loveSongView.shortcutValue.modifierFlags) {
-                delegate.loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];
-                delegate.loveSongMenuTitle.keyEquivalentModifierMask = self.loveSongView.shortcutValue.modifierFlags;
+                delegate.menuController.loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];
+                delegate.menuController.loveSongMenuTitle.keyEquivalentModifierMask = self.loveSongView.shortcutValue.modifierFlags;
             }
             else {
-                delegate.loveSongMenuTitle.keyEquivalent = @"";
+                delegate.menuController.loveSongMenuTitle.keyEquivalent = @"";
             }
         }
         
         else if ([keyPath isEqualToString:kshowSimilarArtistsShortcut]) {
             if (self.showSimilarArtistsView.shortcutValue.modifierFlags) {
-                delegate.similarArtistMenuTtitle.keyEquivalent = [self.showSimilarArtistsView.shortcutValue.keyCodeString lowercaseString];
-                delegate.similarArtistMenuTtitle.keyEquivalentModifierMask = self.showSimilarArtistsView.shortcutValue.modifierFlags;
+                delegate.menuController.similarArtistMenuTtitle.keyEquivalent = [self.showSimilarArtistsView.shortcutValue.keyCodeString lowercaseString];
+                delegate.menuController.similarArtistMenuTtitle.keyEquivalentModifierMask = self.showSimilarArtistsView.shortcutValue.modifierFlags;
             }
             else {
-                delegate.similarArtistMenuTtitle.keyEquivalent = @"";
+                delegate.menuController.similarArtistMenuTtitle.keyEquivalent = @"";
             }
         }
         
         else if ([keyPath isEqualToString:kshowYourProfileShortcut]) {
             if (self.showYourProfileView.shortcutValue.modifierFlags) {
-                delegate.profileMenuTitle.keyEquivalent = [self.showYourProfileView.shortcutValue.keyCodeString lowercaseString];
-                delegate.profileMenuTitle.keyEquivalentModifierMask = self.showYourProfileView.shortcutValue.modifierFlags;
+                delegate.menuController.profileMenuTitle.keyEquivalent = [self.showYourProfileView.shortcutValue.keyCodeString lowercaseString];
+                delegate.menuController.profileMenuTitle.keyEquivalentModifierMask = self.showYourProfileView.shortcutValue.modifierFlags;
             }
             else {
-                delegate.profileMenuTitle.keyEquivalent = @"";
+                delegate.menuController.profileMenuTitle.keyEquivalent = @"";
             }
         }
     }

@@ -15,9 +15,13 @@
 @property (strong, nonatomic) LastFm *scrobbler;
 @property (strong, nonatomic) LastFmCache *lastfmCache;
 @property (strong, nonatomic) iTunesApplication* iTunes;
-//@property (strong, nonatomic) NSTimer* callTimer;
-//@property (strong, nonatomic) NSDistributedNotificationCenter* distributedNotificationCenter;
-//@property (strong, nonatomic) NSUserNotificationCenter *userNotificationCenter;
+
+@property (strong, nonatomic) NSDictionary *infoAboutCurrentTrack;
+@property (nonatomic, strong) NSString *artist;
+@property (nonatomic, strong) NSString *trackName;
+@property (nonatomic, strong) NSString *album;
+@property (nonatomic) double duration;
+
 
 +(MusicScrobbler *)sharedScrobbler;
 
