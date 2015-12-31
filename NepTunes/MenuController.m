@@ -9,6 +9,7 @@
 #import "MenuController.h"
 #import "MusicScrobbler.h"
 #import "AppDelegate.h"
+#import "Song.h"
 
 @interface MenuController ()
 
@@ -45,8 +46,8 @@
 -(IBAction)loveSong:(id)sender {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^{
-        [notification setTitle:[NSString stringWithFormat:@"%@", self.musicScrobbler.iTunes.currentTrack.artist]];
-        [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", self.musicScrobbler.iTunes.currentTrack.name]];
+        [notification setTitle:[NSString stringWithFormat:@"%@", self.musicScrobbler.currentTrack.artist]];
+        [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", self.musicScrobbler.currentTrack.trackName]];
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
         
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
@@ -64,7 +65,7 @@
 
 
 -(IBAction)showSimilarArtists:(id)sender {
-    NSString *str = self.musicScrobbler.iTunes.currentTrack.artist;
+    NSString *str = self.musicScrobbler.currentTrack.artist;
     NSString *url = [str stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     NSData *decode = [url dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *ansi = [[NSString alloc] initWithData:decode encoding:NSASCIIStringEncoding];
@@ -89,13 +90,13 @@
 -(void)changeState {
     if (self.musicScrobbler.scrobbler.session) {
         [self.profileMenuTitle setEnabled:YES];
-        self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", self.musicScrobbler.scrobbler.username];
+        self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", self.musicScrobbler.username];
         if ([self.musicScrobbler.iTunes isRunning]) {
-            if (self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.musicScrobbler.trackName) {
+            if (self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack.trackName) {
                 [self.loveSongMenuTitle setEnabled:YES];
                 [self.similarArtistMenuTtitle setEnabled:YES];
-                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.artist];
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love %@ on Last.fm", self.musicScrobbler.trackName];
+                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.currentTrack.artist];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love %@ on Last.fm", self.musicScrobbler.currentTrack.trackName];
             }
             else {
                 [self.loveSongMenuTitle setEnabled:NO];
@@ -116,9 +117,9 @@
         [self.profileMenuTitle setEnabled:NO];
         self.profileMenuTitle.title = [NSString stringWithFormat:@"Profile... (Log in)"];
         if ([self.musicScrobbler.iTunes isRunning]) {
-            if (self.musicScrobbler.trackName) {
+            if (self.musicScrobbler.currentTrack.trackName) {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love on Last.fm (Log in)"];
-                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.artist];
+                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.currentTrack.artist];
                 [self.similarArtistMenuTtitle setEnabled:YES];
             }
             else if (self.musicScrobbler.iTunes.currentTrack.name) {

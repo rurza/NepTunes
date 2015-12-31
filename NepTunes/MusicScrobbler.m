@@ -8,9 +8,9 @@
 
 
 #import "MusicScrobbler.h"
+#import "Song.h"
 
-static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
-static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
+
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
@@ -33,6 +33,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     dispatch_once(&onceToken, ^{
         sharedScrobbler = [[MusicScrobbler alloc] init];
         sharedScrobbler.lastfmCache = [[LastFmCache alloc] init];
+        sharedScrobbler.username = [[NSUserDefaults standardUserDefaults] objectForKey:kUsernameKey];
     });
     return sharedScrobbler;
 }
@@ -52,10 +53,10 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             //when iTunes is playing right now and when there is user logged in
             if (!self.iTunes.currentTrack.name && !self.iTunes.currentTrack.artist) {
                 //NSLog(@"Scrobbling method \"alternative\" chosen");
-                [self.scrobbler sendScrobbledTrack:self.trackName
-                                          byArtist:self.artist
-                                           onAlbum:self.album
-                                      withDuration:self.duration
+                [self.scrobbler sendScrobbledTrack:self.currentTrack.trackName
+                                          byArtist:self.currentTrack.artist
+                                           onAlbum:self.currentTrack.album
+                                      withDuration:self.currentTrack.duration
                                        atTimestamp:(int)[[NSDate date] timeIntervalSince1970]
                                     successHandler:^(NSDictionary *result) {
                                         //succesHandler - nothing to do
@@ -110,10 +111,10 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         if (self.scrobbler.session && self.iTunes.playerState == iTunesEPlSPlaying) {
             
             if (!self.iTunes.currentTrack.name && !self.iTunes.currentTrack.artist) {
-                [self.scrobbler sendNowPlayingTrack:self.trackName
-                                           byArtist:self.artist
-                                            onAlbum:self.album
-                                       withDuration:self.duration / 2
+                [self.scrobbler sendNowPlayingTrack:self.currentTrack.trackName
+                                           byArtist:self.currentTrack.artist
+                                            onAlbum:self.currentTrack.album
+                                       withDuration:self.currentTrack.duration / 2
                                      successHandler:^(NSDictionary *result) {
                                          //succesHandler - nothing to do
                                          self.nowPlayingTryCounter = 0;
@@ -158,7 +159,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     if (self.scrobbler.session && self.iTunes.isRunning) {
         if (!self.iTunes.currentTrack.name && !self.iTunes.currentTrack.album) {
-            [self.scrobbler loveTrack:self.trackName artist:self.artist successHandler:^(NSDictionary *result) {
+            [self.scrobbler loveTrack:self.currentTrack.trackName artist:self.currentTrack.artist successHandler:^(NSDictionary *result) {
                 if (completion) {
                     completion();
                 }
@@ -197,7 +198,6 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)logInWithCredentials:(NSDictionary *)info
 {
     [[NSUserDefaults standardUserDefaults] setObject:info[@"key"] forKey:kSessionKey];
-    [[NSUserDefaults standardUserDefaults] setObject:info[@"name"] forKey:kUsernameKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     // Also set the session of the LastFm object
@@ -249,24 +249,25 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)setInfoAboutCurrentTrack:(NSDictionary *)infoAboutCurrentTrack
 {
     _infoAboutCurrentTrack = infoAboutCurrentTrack;
-    _artist = [infoAboutCurrentTrack objectForKey:@"Artist"];
-    _album = [infoAboutCurrentTrack objectForKey:@"Album"];
-    _trackName = [infoAboutCurrentTrack objectForKey:@"Name"];
-    self.duration = [[infoAboutCurrentTrack objectForKey:@"Total Time"] doubleValue] / 1000;
+    NSString *artist = [infoAboutCurrentTrack objectForKey:@"Artist"];
+    NSString *album = [infoAboutCurrentTrack objectForKey:@"Album"];
+    NSString *trackName = [infoAboutCurrentTrack objectForKey:@"Name"];
+    double duration = [[infoAboutCurrentTrack objectForKey:@"Total Time"] doubleValue] / 1000;
+    self.currentTrack = [[Song alloc] initWithTrackName:trackName artist:artist album:album andDuration:duration];
 }
 
--(void)setDuration:(double)duration
-{
-    _duration = duration;
-    if (duration == 0) {
-        _scrobbler.timeoutInterval = 5.0f;
-    }
-    else {
-    _scrobbler.timeoutInterval = duration / 6 - 2;
-    }
-    //NSLog(@"timeout interval for scrobbler == %f", _scrobbler.timeoutInterval);
-
-}
+//-(void)setDuration:(double)duration
+//{
+//    _duration = duration;
+//    if (duration == 0) {
+//        _scrobbler.timeoutInterval = 5.0f;
+//    }
+//    else {
+//    _scrobbler.timeoutInterval = duration / 6 - 2;
+//    }
+//    //NSLog(@"timeout interval for scrobbler == %f", _scrobbler.timeoutInterval);
+//
+//}
 
 
 @end

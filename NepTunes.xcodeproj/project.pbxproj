@@ -10,6 +10,7 @@
 		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
+		5BBD4C501C34562000AFA182 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Song.m */; };
 		5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6E5D41B6BF87300631537 /* HotkeyController.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
 		5BDD6B161A1D0C95001D87D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B151A1D0C95001D87D6 /* main.m */; };
@@ -55,6 +56,8 @@
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
 		5BB6D1CB1B43A91800211F28 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		5BBD4C4E1C34562000AFA182 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
+		5BBD4C4F1C34562000AFA182 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
 		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
 		5BD6E5D41B6BF87300631537 /* HotkeyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotkeyController.m; sourceTree = "<group>"; };
 		5BDD6B0D1A1D0C95001D87D6 /* NepTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NepTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +142,8 @@
 				5B2F4CE61B763C16009F0C53 /* MenuController.m */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
 				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
+				5BBD4C4E1C34562000AFA182 /* Song.h */,
+				5BBD4C4F1C34562000AFA182 /* Song.m */,
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
@@ -225,7 +230,7 @@
 		5BDD6B051A1D0C95001D87D6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = micropixels;
 				TargetAttributes = {
 					5BDD6B0C1A1D0C95001D87D6 = {
@@ -337,6 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BBD4C501C34562000AFA182 /* Song.m in Sources */,
 				5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */,
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
@@ -396,6 +402,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -413,7 +420,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -448,7 +455,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -457,6 +464,7 @@
 			baseConfigurationReference = 10263035E2E364638E5DACEA /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_LINK_OBJC_RUNTIME = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
@@ -479,9 +487,10 @@
 					"-rpath",
 					"@loader_path/../Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -490,6 +499,7 @@
 			baseConfigurationReference = 55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_LINK_OBJC_RUNTIME = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
@@ -512,9 +522,10 @@
 					"-rpath",
 					"@loader_path/../Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -533,6 +544,8 @@
 				);
 				INFOPLIST_FILE = NepTunesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NepTunes.app/Contents/MacOS/NepTunes";
 			};
@@ -549,6 +562,8 @@
 				);
 				INFOPLIST_FILE = NepTunesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NepTunes.app/Contents/MacOS/NepTunes";
 			};

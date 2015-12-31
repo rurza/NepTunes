@@ -10,6 +10,11 @@
 #import "iTunes.h"
 #import "LastFmCache.h"
 
+@class Song;
+
+static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
+static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
+
 @interface MusicScrobbler : NSObject
 
 @property (strong, nonatomic) LastFm *scrobbler;
@@ -17,11 +22,12 @@
 @property (strong, nonatomic) iTunesApplication* iTunes;
 
 @property (strong, nonatomic) NSDictionary *infoAboutCurrentTrack;
-@property (nonatomic, strong) NSString *artist;
-@property (nonatomic, strong) NSString *trackName;
-@property (nonatomic, strong) NSString *album;
-@property (nonatomic) double duration;
-
+@property (nonatomic) NSString *username;
+//@property (nonatomic, strong) NSString *artist;
+//@property (nonatomic, strong) NSString *trackName;
+//@property (nonatomic, strong) NSString *album;
+//@property (nonatomic) double duration;
+@property (nonatomic) Song *currentTrack;
 
 +(MusicScrobbler *)sharedScrobbler;
 

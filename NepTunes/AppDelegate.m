@@ -10,6 +10,7 @@
 #import "MusicScrobbler.h"
 #import "HotkeyController.h"
 #import <EGOCache.h>
+#import "Song.h"
 
 static NSString *const kUserAvatar = @"userAvatar";
 
@@ -100,16 +101,16 @@ static NSString *const kUserAvatar = @"userAvatar";
     //NSLog(@"%@ by %@ with length = %f", self.musicScrobbler.trackName, self.musicScrobbler.artist, self.musicScrobbler.duration);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.musicScrobbler.iTunes.isRunning) {
-            if (self.musicScrobbler.trackName && self.musicScrobbler.artist) {
-                if (self.musicScrobbler.duration == 0) {
-                    self.musicScrobbler.duration = self.musicScrobbler.iTunes.currentTrack.duration;
+            if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist) {
+                if (self.musicScrobbler.currentTrack.duration == 0) {
+                    self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
                 }
             }
             else if (self.musicScrobbler.iTunes.currentTrack.name && self.musicScrobbler.iTunes.currentTrack.album) {
-                self.musicScrobbler.trackName = self.musicScrobbler.iTunes.currentTrack.name;
-                self.musicScrobbler.album = self.musicScrobbler.iTunes.currentTrack.album;
-                self.musicScrobbler.artist = self.musicScrobbler.iTunes.currentTrack.artist;
-                self.musicScrobbler.duration = self.musicScrobbler.iTunes.currentTrack.duration;
+                self.musicScrobbler.currentTrack.trackName = self.musicScrobbler.iTunes.currentTrack.name;
+                self.musicScrobbler.currentTrack.album = self.musicScrobbler.iTunes.currentTrack.album;
+                self.musicScrobbler.currentTrack.artist = self.musicScrobbler.iTunes.currentTrack.artist;
+                self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
                 [self.menuController changeState];
             }
         }
@@ -131,7 +132,7 @@ static NSString *const kUserAvatar = @"userAvatar";
                     trackLength = (NSTimeInterval)self.musicScrobbler.iTunes.currentTrack.duration;
                 }
                 else {
-                    trackLength = (NSTimeInterval)self.musicScrobbler.duration;
+                    trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
                 }
                 NSTimeInterval scrobbleTime = trackLength / 2.0f - 2.0f;
                 
@@ -188,45 +189,49 @@ static NSString *const kUserAvatar = @"userAvatar";
         
         [self.loginButton setTitle:@"Logging in..."];
         [self.loginButton setEnabled:NO];
+        __weak typeof(self) weakSelf = self;
+        self.musicScrobbler.username = self.loginField.stringValue;
         [self.musicScrobbler.scrobbler getSessionForUser:self.loginField.stringValue
                                                 password:self.passwordField.stringValue
                                           successHandler:^(NSDictionary *result)
          {
              //login success handler
-             [self.musicScrobbler logInWithCredentials:result];
+             [weakSelf.musicScrobbler logInWithCredentials:result];
+             [[NSUserDefaults standardUserDefaults] setObject:weakSelf.musicScrobbler.username forKey:kUsernameKey];
+             [[NSUserDefaults standardUserDefaults] synchronize];
              
-             [self.musicScrobbler.scrobbler getInfoForUserOrNil:self.loginField.stringValue successHandler:^(NSDictionary *result) {
-                 [self setAvatarForUserWithInfo:result];
+             [weakSelf.musicScrobbler.scrobbler getInfoForUserOrNil:self.loginField.stringValue successHandler:^(NSDictionary *result) {
+                 [weakSelf setAvatarForUserWithInfo:result];
              } failureHandler:^(NSError *error) {
                  //NSLog(@"Error info about user. %@", [error localizedDescription]);
              }];
-             self.accountToolbarItem.tag = 0;
-             [self switchView:self.accountToolbarItem];
-             [self.menuController changeState];
+             weakSelf.accountToolbarItem.tag = 0;
+             [weakSelf switchView:weakSelf.accountToolbarItem];
+             [weakSelf.menuController changeState];
              
              
-             [self.indicator stopAnimation:self];
-             self.loginField.hidden = NO;
-             self.passwordField.hidden = NO;
-             [self.createAccountButton setHidden:NO];
+             [weakSelf.indicator stopAnimation:weakSelf];
+             weakSelf.loginField.hidden = NO;
+             weakSelf.passwordField.hidden = NO;
+             [weakSelf.createAccountButton setHidden:NO];
              
-             [self.loginButton setTitle:@"Log in"];
-             [self.logoutButton setTitle:[NSString stringWithFormat:@"Log out %@", result[@"name"]]];
-             self.passwordField.stringValue = @"";
+             [weakSelf.loginButton setTitle:@"Log in"];
+             [weakSelf.logoutButton setTitle:[NSString stringWithFormat:@"Log out %@", weakSelf.musicScrobbler.username]];
+             weakSelf.passwordField.stringValue = @"";
              
          } failureHandler:^(NSError *error) {
              if (error.code == -1001) {
-                 [self loginClicked:self];
+                 [weakSelf loginClicked:weakSelf];
              }
              else {
-                 [self.indicator stopAnimation:self];
+                 [weakSelf.indicator stopAnimation:weakSelf];
                  
-                 self.passwordField.stringValue = @"";
-                 [self.loginButton setTitle:@"Log in"];
-                 [self.loginButton setEnabled:YES];
-                 self.loginField.hidden = NO;
-                 self.passwordField.hidden = NO;
-                 [self.createAccountButton setHidden:NO];
+                 weakSelf.passwordField.stringValue = @"";
+                 [weakSelf.loginButton setTitle:@"Log in"];
+                 [weakSelf.loginButton setEnabled:YES];
+                 weakSelf.loginField.hidden = NO;
+                 weakSelf.passwordField.hidden = NO;
+                 [weakSelf.createAccountButton setHidden:NO];
                  NSAlert *alert = [[NSAlert alloc] init];
                  alert.alertStyle = NSCriticalAlertStyle;
                  alert.informativeText = [error localizedDescription];
