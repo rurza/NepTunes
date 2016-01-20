@@ -27,6 +27,7 @@
                 <outlet property="logoutButton" destination="Lvr-5g-SEe" id="3GB-Cw-tJL"/>
                 <outlet property="menuController" destination="aMi-64-iJ4" id="CS4-Wx-7Bd"/>
                 <outlet property="passwordField" destination="kA7-XP-E0s" id="Bt6-Cr-bnX"/>
+                <outlet property="showStatusBarIcon" destination="Ry1-gN-mjN" id="n27-uQ-lD8"/>
                 <outlet property="userAvatar" destination="73S-Ro-Dz1" id="Jh3-Lm-1kl"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="Bhg-fQ-MaR"/>
             </connections>
@@ -815,17 +816,17 @@ DQ
             <point key="canvasLocation" x="13.5" y="78.5"/>
         </customView>
         <customView id="EKy-34-uDn" userLabel="Hotkey">
-            <rect key="frame" x="0.0" y="0.0" width="336" height="178"/>
+            <rect key="frame" x="0.0" y="0.0" width="336" height="198"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cXZ-R7-HX8" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="140" width="126" height="19"/>
+                    <rect key="frame" x="190" y="160" width="126" height="19"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aqd-9D-IPf" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="58" width="126" height="19"/>
+                    <rect key="frame" x="190" y="78" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4m5-VP-Pgu">
-                    <rect key="frame" x="18" y="100" width="166" height="17"/>
+                    <rect key="frame" x="18" y="120" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Go to your Last.fm profile:" id="ywp-Bb-xwA">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -833,7 +834,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-2x-JwT">
-                    <rect key="frame" x="18" y="59" width="132" height="17"/>
+                    <rect key="frame" x="18" y="79" width="132" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similiar artists:" id="ES0-8e-W0q">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -841,10 +842,10 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4E-vj-MXg" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="99" width="126" height="19"/>
+                    <rect key="frame" x="190" y="119" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlv-Ke-0SR">
-                    <rect key="frame" x="18" y="141" width="72" height="17"/>
+                    <rect key="frame" x="18" y="161" width="72" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love song:" id="0UW-9q-clF">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -852,7 +853,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v2-Vg-kK2">
-                    <rect key="frame" x="18" y="18" width="198" height="18"/>
+                    <rect key="frame" x="18" y="38" width="179" height="18"/>
                     <buttonCell key="cell" type="check" title="Launch NepTunes at login" bezelStyle="regularSquare" imagePosition="left" inset="2" id="KSU-AF-bTE">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -861,8 +862,18 @@ DQ
                         <action selector="toggleLaunchAtLogin:" target="Voe-Tx-rLC" id="sjF-Uy-Xbb"/>
                     </connections>
                 </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ry1-gN-mjN">
+                    <rect key="frame" x="18" y="18" width="149" height="18"/>
+                    <buttonCell key="cell" type="check" title="Show status bar icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Xsm-bC-i80">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleShowStatusBarIcon:" target="Voe-Tx-rLC" id="SzJ-Ay-Wmh"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="165" y="369"/>
+            <point key="canvasLocation" x="167" y="372"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="gZh-Qn-zyx"/>
         <customObject id="Frc-Jt-Ein" customClass="HotkeyController">

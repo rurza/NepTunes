@@ -40,6 +40,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 @property (weak, nonatomic) IBOutlet NSButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
 @property (weak) IBOutlet NSButton *launchAtLoginCheckbox;
+@property (weak) IBOutlet NSButton *showStatusBarIcon;
 
 @property NSTimeInterval scrobbleTime;
 @property int currentViewTag;
@@ -55,6 +56,10 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 @implementation AppDelegate
 
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    [self.menuController openPreferences:nil];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self
@@ -65,19 +70,17 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
-    [self updateLaunchAtLoginCheckbox];
+    [self updatePreferencesUI];
     [self terminateHelperApp];
     [self updateTrackInfo:nil];
     
 }
 
--(void)updateLaunchAtLoginCheckbox
+-(void)updatePreferencesUI
 {
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:kLaunchAtLogin] boolValue]) {
-        self.launchAtLoginCheckbox.state =  NSOnState;
-    } else {
-        self.launchAtLoginCheckbox.state =  NSOffState;
-    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.launchAtLoginCheckbox.state = [defaults boolForKey:kLaunchAtLogin];
+    self.showStatusBarIcon.state = [defaults boolForKey:kShowStatusBarIcon];
 }
 
 -(void)terminateHelperApp
@@ -101,6 +104,8 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 }
 
 -(void)awakeFromNib {
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kShowStatusBarIcon: @YES}];
+
     self.musicScrobbler = [MusicScrobbler sharedScrobbler];
     if (self.musicScrobbler.scrobbler.session) {
         self.accountToolbarItem.tag = 0;
@@ -404,6 +409,20 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
+}
+
+-(IBAction)toggleShowStatusBarIcon:(NSButton *)sender
+{
+    if (sender.state) {
+        [self.menuController installStatusBarItem];
+    }
+    else {
+        [self.menuController removeStatusBarItem];
+    }
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@(sender.state) forKey:kShowStatusBarIcon];
+    [defaults synchronize];
 }
 
 
