@@ -17,16 +17,12 @@ static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 
 @interface MusicScrobbler : NSObject
 
-@property (strong, nonatomic) LastFm *scrobbler;
-@property (strong, nonatomic) LastFmCache *lastfmCache;
-@property (strong, nonatomic) iTunesApplication* iTunes;
+@property (nonatomic) LastFm *scrobbler;
+@property (nonatomic) LastFmCache *lastfmCache;
+@property (nonatomic) iTunesApplication* iTunes;
 
-@property (strong, nonatomic) NSDictionary *infoAboutCurrentTrack;
+@property (nonatomic) NSDictionary *infoAboutCurrentTrack;
 @property (nonatomic) NSString *username;
-//@property (nonatomic, strong) NSString *artist;
-//@property (nonatomic, strong) NSString *trackName;
-//@property (nonatomic, strong) NSString *album;
-//@property (nonatomic) double duration;
 @property (nonatomic) Song *currentTrack;
 
 +(MusicScrobbler *)sharedScrobbler;

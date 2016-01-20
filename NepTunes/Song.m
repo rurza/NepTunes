@@ -22,4 +22,8 @@
     return self;
 }
 
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ by %@", self.trackName, self.artist];
+}
 @end

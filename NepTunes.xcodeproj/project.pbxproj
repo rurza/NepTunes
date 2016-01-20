@@ -18,6 +18,8 @@
 		5BDD6B1B1A1D0C95001D87D6 /* Interface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B191A1D0C95001D87D6 /* Interface.xib */; };
 		5BDD6B271A1D0C95001D87D6 /* NepTunesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */; };
 		5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B301A1D0CA2001D87D6 /* Podfile */; };
+		5BF5AA0E1C4EB02B00C4FBA3 /* NepTunesHelperApp.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5BF5AA0C1C4EAFC500C4FBA3 /* NepTunesHelperApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5BF5AA101C4EB06600C4FBA3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */; };
 		5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5BFB29E81A1D800900EA87AA /* dsa_pub.pem */; };
 		D8C4A752E2C96037C9D41386 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0526E64B1C1E28D1C451319F /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -30,14 +32,31 @@
 			remoteGlobalIDString = 5BDD6B0C1A1D0C95001D87D6;
 			remoteInfo = NepTunes;
 		};
+		5BF5AA0B1C4EAFC500C4FBA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5BF5AA071C4EAFC400C4FBA3 /* NepTunesHelperApp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5BF5A9F31C4EAFC400C4FBA3;
+			remoteInfo = NepTunesHelperApp;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		5B3751291A1D38DC007106D7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LoginItems;
+			dstSubfolderSpec = 1;
+			files = (
+				5BF5AA0E1C4EB02B00C4FBA3 /* NepTunesHelperApp.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5BF5AA0D1C4EB00B00C4FBA3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstSubfolderSpec = 7;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +90,8 @@
 		5BDD6B251A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NepTunesTests.m; sourceTree = "<group>"; };
 		5BDD6B301A1D0CA2001D87D6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5BF5AA071C4EAFC400C4FBA3 /* NepTunesHelperApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NepTunesHelperApp.xcodeproj; path = NepTunesHelperApp/NepTunesHelperApp.xcodeproj; sourceTree = "<group>"; };
+		5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		5BFB29E81A1D800900EA87AA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BF5AA101C4EB06600C4FBA3 /* ServiceManagement.framework in Frameworks */,
 				D8C4A752E2C96037C9D41386 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,9 +127,19 @@
 		3FADD2DEFA1DD8585146D47F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */,
 				0526E64B1C1E28D1C451319F /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5BAE70F31C4EC91500779081 /* Hotkeys */ = {
+			isa = PBXGroup;
+			children = (
+				5BD6E5D31B6BF87300631537 /* HotkeyController.h */,
+				5BD6E5D41B6BF87300631537 /* HotkeyController.m */,
+			);
+			name = Hotkeys;
 			sourceTree = "<group>";
 		};
 		5BDD6B041A1D0C95001D87D6 = {
@@ -119,6 +151,7 @@
 				5BDD6B0E1A1D0C95001D87D6 /* Products */,
 				2D4E72722E193F7BAEB5AA5E /* Pods */,
 				3FADD2DEFA1DD8585146D47F /* Frameworks */,
+				5BF5AA071C4EAFC400C4FBA3 /* NepTunesHelperApp.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,10 +167,9 @@
 		5BDD6B0F1A1D0C95001D87D6 /* NepTunes */ = {
 			isa = PBXGroup;
 			children = (
+				5BAE70F31C4EC91500779081 /* Hotkeys */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
-				5BD6E5D31B6BF87300631537 /* HotkeyController.h */,
-				5BD6E5D41B6BF87300631537 /* HotkeyController.m */,
 				5B2F4CE51B763C16009F0C53 /* MenuController.h */,
 				5B2F4CE61B763C16009F0C53 /* MenuController.m */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
@@ -182,6 +214,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		5BF5AA081C4EAFC400C4FBA3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5BF5AA0C1C4EAFC500C4FBA3 /* NepTunesHelperApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -196,6 +236,7 @@
 				7D3738EEEB75323A52629190 /* Copy Pods Resources */,
 				5B3751291A1D38DC007106D7 /* CopyFiles */,
 				5BE3C9B31B7BD5F70095DA69 /* ShellScript */,
+				5BF5AA0D1C4EB00B00C4FBA3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -262,6 +303,12 @@
 			mainGroup = 5BDD6B041A1D0C95001D87D6;
 			productRefGroup = 5BDD6B0E1A1D0C95001D87D6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 5BF5AA081C4EAFC400C4FBA3 /* Products */;
+					ProjectRef = 5BF5AA071C4EAFC400C4FBA3 /* NepTunesHelperApp.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				5BDD6B0C1A1D0C95001D87D6 /* NepTunes */,
@@ -269,6 +316,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		5BF5AA0C1C4EAFC500C4FBA3 /* NepTunesHelperApp.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = NepTunesHelperApp.app;
+			remoteRef = 5BF5AA0B1C4EAFC500C4FBA3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5BDD6B0B1A1D0C95001D87D6 /* Resources */ = {
@@ -504,6 +561,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

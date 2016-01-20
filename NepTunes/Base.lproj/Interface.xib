@@ -20,16 +20,13 @@
                 <outlet property="hotkeyView" destination="EKy-34-uDn" id="n5d-GQ-NCM"/>
                 <outlet property="hotkeysToolbarItem" destination="Mzg-4i-Orf" id="ahQ-ft-6gr"/>
                 <outlet property="indicator" destination="QNA-6p-13Z" id="Lho-KM-kia"/>
+                <outlet property="launchAtLoginCheckbox" destination="3v2-Vg-kK2" id="bFO-cW-QZi"/>
                 <outlet property="loggedInUserView" destination="fhc-ci-TLM" id="NIm-Yn-hlc"/>
                 <outlet property="loginButton" destination="bnA-Nm-ZtK" id="CeP-Ae-PVu"/>
                 <outlet property="loginField" destination="SFe-SM-N5c" id="y0L-Vu-irY"/>
                 <outlet property="logoutButton" destination="Lvr-5g-SEe" id="3GB-Cw-tJL"/>
-                <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="NSL-rZ-qO9"/>
                 <outlet property="menuController" destination="aMi-64-iJ4" id="CS4-Wx-7Bd"/>
                 <outlet property="passwordField" destination="kA7-XP-E0s" id="Bt6-Cr-bnX"/>
-                <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="MCe-OV-CHM"/>
-                <outlet property="similarArtistMenuTtitle" destination="wza-2X-Avd" id="65U-8y-nhd"/>
-                <outlet property="statusMenu" destination="XPD-Mx-1cp" id="vaE-Wu-6z9"/>
                 <outlet property="userAvatar" destination="73S-Ro-Dz1" id="Jh3-Lm-1kl"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="Bhg-fQ-MaR"/>
             </connections>
@@ -700,7 +697,7 @@
                             <action selector="switchView:" target="Voe-Tx-rLC" id="4qF-p7-5N3"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="A2D88D57-9BE8-485F-892C-38C5437A2C51" label="Hotkeys" paletteLabel="Hotkeys" tag="2" image="NSPreferencesGeneral" selectable="YES" id="Mzg-4i-Orf">
+                    <toolbarItem implicitItemIdentifier="A2D88D57-9BE8-485F-892C-38C5437A2C51" label="General" paletteLabel="General" tag="2" image="NSPreferencesGeneral" selectable="YES" id="Mzg-4i-Orf">
                         <connections>
                             <action selector="switchView:" target="Voe-Tx-rLC" id="3CU-Ve-4fw"/>
                         </connections>
@@ -747,11 +744,11 @@
             <point key="canvasLocation" x="-598" y="-39.5"/>
         </menu>
         <customView id="85m-tG-GgP" userLabel="Account">
-            <rect key="frame" x="0.0" y="5" width="253" height="180"/>
+            <rect key="frame" x="0.0" y="0.0" width="253" height="169"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SFe-SM-N5c">
-                    <rect key="frame" x="20" y="138" width="213" height="22"/>
+                    <rect key="frame" x="20" y="127" width="213" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Last.fm username" bezelStyle="round" id="3k9-bs-bSK">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -766,7 +763,7 @@
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bnA-Nm-ZtK">
-                    <rect key="frame" x="14" y="51" width="225" height="32"/>
+                    <rect key="frame" x="14" y="40" width="225" height="32"/>
                     <buttonCell key="cell" type="push" title="Log in" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AuT-5i-jvX">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -779,7 +776,7 @@ DQ
                     </connections>
                 </button>
                 <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kA7-XP-E0s">
-                    <rect key="frame" x="20" y="105" width="213" height="22"/>
+                    <rect key="frame" x="20" y="94" width="213" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Last.fm password" usesSingleLineMode="YES" bezelStyle="round" id="s84-I8-Vac">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -796,11 +793,11 @@ DQ
                         </binding>
                     </connections>
                 </secureTextField>
-                <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="QNA-6p-13Z">
-                    <rect key="frame" x="118" y="108" width="16" height="16"/>
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="QNA-6p-13Z">
+                    <rect key="frame" x="118" y="97" width="16" height="16"/>
                 </progressIndicator>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y0d-KG-pj8">
-                    <rect key="frame" x="20" y="16" width="213" height="32"/>
+                    <rect key="frame" x="20" y="5" width="213" height="32"/>
                     <buttonCell key="cell" type="bevel" title="Don't have an account? Join!" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Pz5-Ta-dSB">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" size="12" name="HelveticaNeue"/>
@@ -815,20 +812,20 @@ DQ
                     </connections>
                 </button>
             </subviews>
-            <point key="canvasLocation" x="13.5" y="84"/>
+            <point key="canvasLocation" x="13.5" y="78.5"/>
         </customView>
         <customView id="EKy-34-uDn" userLabel="Hotkey">
-            <rect key="frame" x="0.0" y="0.0" width="336" height="140"/>
+            <rect key="frame" x="0.0" y="0.0" width="336" height="178"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cXZ-R7-HX8" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="102" width="126" height="19"/>
+                    <rect key="frame" x="190" y="140" width="126" height="19"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aqd-9D-IPf" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="20" width="126" height="19"/>
+                    <rect key="frame" x="190" y="58" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4m5-VP-Pgu">
-                    <rect key="frame" x="18" y="62" width="166" height="17"/>
+                    <rect key="frame" x="18" y="100" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Go to your Last.fm profile:" id="ywp-Bb-xwA">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -836,7 +833,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-2x-JwT">
-                    <rect key="frame" x="18" y="20" width="132" height="17"/>
+                    <rect key="frame" x="18" y="59" width="132" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similiar artists:" id="ES0-8e-W0q">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -844,18 +841,28 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4E-vj-MXg" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="61" width="126" height="19"/>
+                    <rect key="frame" x="190" y="99" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlv-Ke-0SR">
-                    <rect key="frame" x="18" y="103" width="72" height="17"/>
+                    <rect key="frame" x="18" y="141" width="72" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love song:" id="0UW-9q-clF">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v2-Vg-kK2">
+                    <rect key="frame" x="18" y="18" width="198" height="18"/>
+                    <buttonCell key="cell" type="check" title="Launch NepTunes at login" bezelStyle="regularSquare" imagePosition="left" inset="2" id="KSU-AF-bTE">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleLaunchAtLogin:" target="Voe-Tx-rLC" id="sjF-Uy-Xbb"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="165" y="350"/>
+            <point key="canvasLocation" x="165" y="369"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="gZh-Qn-zyx"/>
         <customObject id="Frc-Jt-Ein" customClass="HotkeyController">

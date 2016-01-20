@@ -11,8 +11,11 @@
 #import "HotkeyController.h"
 #import <EGOCache.h>
 #import "Song.h"
+#import <ServiceManagement/ServiceManagement.h>
 
 static NSString *const kUserAvatar = @"userAvatar";
+static NSString *const kLaunchAtLogin = @"launchAtLogin";
+static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 @interface AppDelegate () <NSTextFieldDelegate>
 
@@ -36,6 +39,7 @@ static NSString *const kUserAvatar = @"userAvatar";
 
 @property (weak, nonatomic) IBOutlet NSButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
+@property (weak) IBOutlet NSButton *launchAtLoginCheckbox;
 
 @property NSTimeInterval scrobbleTime;
 @property int currentViewTag;
@@ -61,12 +65,40 @@ static NSString *const kUserAvatar = @"userAvatar";
     
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
-    
+    [self updateLaunchAtLoginCheckbox];
+    [self terminateHelperApp];
     [self updateTrackInfo:nil];
     
 }
 
+-(void)updateLaunchAtLoginCheckbox
+{
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:kLaunchAtLogin] boolValue]) {
+        self.launchAtLoginCheckbox.state =  NSOnState;
+    } else {
+        self.launchAtLoginCheckbox.state =  NSOffState;
+    }
+}
 
+-(void)terminateHelperApp
+{
+    BOOL startedAtLogin = NO;
+    
+    NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
+    for (NSRunningApplication *app in apps) {
+        if ([app.bundleIdentifier isEqualToString:kHelperAppBundle]) startedAtLogin = YES;
+    }
+    
+    if (startedAtLogin) {
+        [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kHelperAppBundle
+                                                                       object:[[NSBundle mainBundle] bundleIdentifier]];
+        if (![[[NSUserDefaults standardUserDefaults] objectForKey:kLaunchAtLogin] boolValue]) {
+            
+            [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:kLaunchAtLogin];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+}
 
 -(void)awakeFromNib {
     self.musicScrobbler = [MusicScrobbler sharedScrobbler];
@@ -94,73 +126,85 @@ static NSString *const kUserAvatar = @"userAvatar";
     [self.createAccountButton setAttributedTitle:colorTitle];
 }
 
+#pragma mark - Responding to notifications
 
 - (void)updateTrackInfo:(NSNotification *)note {
-    self.musicScrobbler.infoAboutCurrentTrack = note.userInfo;
-    [self.menuController changeState];
-    //NSLog(@"%@ by %@ with length = %f", self.musicScrobbler.trackName, self.musicScrobbler.artist, self.musicScrobbler.duration);
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.musicScrobbler.iTunes.isRunning) {
-            if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist) {
-                if (self.musicScrobbler.currentTrack.duration == 0) {
-                    self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
-                }
+    [self invalidateTimers];
+    [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
+    [self updateMenu];
+    
+    if ([self.musicScrobbler.iTunes isRunning]) {
+        if (self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying) {
+            //NSLog(@"%@ by %@ with length = %f after 2 sec.", self.musicScrobbler.trackName, self.musicScrobbler.artist, self.musicScrobbler.duration);
+            NSTimeInterval trackLength;
+            
+            
+            if (self.musicScrobbler.iTunes.currentTrack.artist) {
+                trackLength = (NSTimeInterval)self.musicScrobbler.iTunes.currentTrack.duration;
             }
-            else if (self.musicScrobbler.iTunes.currentTrack.name && self.musicScrobbler.iTunes.currentTrack.album) {
-                self.musicScrobbler.currentTrack.trackName = self.musicScrobbler.iTunes.currentTrack.name;
-                self.musicScrobbler.currentTrack.album = self.musicScrobbler.iTunes.currentTrack.album;
-                self.musicScrobbler.currentTrack.artist = self.musicScrobbler.iTunes.currentTrack.artist;
-                self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
-                [self.menuController changeState];
+            else {
+                trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
             }
-        }
-        if ([self.musicScrobbler.iTunes isRunning]) {
-            if (self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying) {
-                //NSLog(@"%@ by %@ with length = %f after 2 sec.", self.musicScrobbler.trackName, self.musicScrobbler.artist, self.musicScrobbler.duration);
-                NSTimeInterval trackLength;
-                if (self.scrobbleTimer) {
-                    [self.scrobbleTimer invalidate];
-                    self.scrobbleTimer = nil;
-                }
-                if (self.nowPlayingTimer) {
-                    [self.nowPlayingTimer invalidate];
-                    self.nowPlayingTimer = nil;
-                    
-                }
-                
-                if (self.musicScrobbler.iTunes.currentTrack.artist) {
-                    trackLength = (NSTimeInterval)self.musicScrobbler.iTunes.currentTrack.duration;
-                }
-                else {
-                    trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
-                }
-                NSTimeInterval scrobbleTime = trackLength / 2.0f - 2.0f;
-                
-                if (trackLength > 31.0f) {
-                    self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
-                                                                            target:self
-                                                                          selector:@selector(nowPlaying)
-                                                                          userInfo:nil
-                                                                           repeats:NO];
-                }
-                
-                
-                
-                if (trackLength > 31.0f) {
-                    NSDictionary *userInfo = [note.userInfo copy];
-                    self.scrobbleTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
-                                                                          target:self
-                                                                        selector:@selector(scrobble:)
-                                                                        userInfo:userInfo
-                                                                         repeats:NO];
-                }
+            NSTimeInterval scrobbleTime = trackLength / 2.0f - 2.0f;
+            
+            if (trackLength > 31.0f) {
+                self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
+                                                                        target:self
+                                                                      selector:@selector(nowPlaying)
+                                                                      userInfo:nil
+                                                                       repeats:NO];
+            }
+            if (trackLength > 31.0f) {
+                NSDictionary *userInfo = [note.userInfo copy];
+                self.scrobbleTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
+                                                                      target:self
+                                                                    selector:@selector(scrobble:)
+                                                                    userInfo:userInfo
+                                                                     repeats:NO];
             }
         }
-        
-        
-    });
+    }
+    //    });
 }
 
+-(void)invalidateTimers
+{
+    if (self.scrobbleTimer) {
+        [self.scrobbleTimer invalidate];
+        self.scrobbleTimer = nil;
+    }
+    if (self.nowPlayingTimer) {
+        [self.nowPlayingTimer invalidate];
+        self.nowPlayingTimer = nil;
+    }
+}
+
+-(void)getInfoAboutTrackFromNotificationOrFromiTunes:(NSDictionary *)userInfo
+{
+    self.musicScrobbler.infoAboutCurrentTrack = userInfo;
+    
+    //2s są po to by Itunes sie ponownie nie wlaczal
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    if (self.musicScrobbler.iTunes.isRunning) {
+        if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0) {
+            self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
+        }
+        else if (self.musicScrobbler.iTunes.currentTrack.name && self.musicScrobbler.iTunes.currentTrack.album) {
+            self.musicScrobbler.currentTrack.trackName = self.musicScrobbler.iTunes.currentTrack.name;
+            self.musicScrobbler.currentTrack.album = self.musicScrobbler.iTunes.currentTrack.album;
+            self.musicScrobbler.currentTrack.artist = self.musicScrobbler.iTunes.currentTrack.artist;
+            self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
+            [self.menuController changeState];
+        }
+    }
+}
+
+-(void)updateMenu
+{
+    if (self.musicScrobbler.iTunes.isRunning) {
+        [self.menuController changeState];
+    }
+}
 
 -(void)scrobble:(NSTimer *)timer
 {
@@ -175,7 +219,7 @@ static NSString *const kUserAvatar = @"userAvatar";
 
 
 /*----------------------------------------------------------------------------------------------------------*/
-
+#pragma mark - Managing account
 
 - (IBAction)loginClicked:(id)sender {
     if (!([self.passwordField.stringValue isEqualTo: @""] || [self.loginField.stringValue isEqualTo: @""]))
@@ -327,6 +371,41 @@ static NSString *const kUserAvatar = @"userAvatar";
     [NSAnimationContext endGrouping];
     [self.window recalculateKeyViewLoop];
 }
+
+-(IBAction)toggleLaunchAtLogin:(NSButton *)sender
+{
+    if (sender.state) { // ON
+        // Turn on launch at login
+        if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, YES)) {
+            sender.state = NSOffState;
+            NSAlert *alert = [NSAlert alertWithMessageText:@"An error ocurred"
+                                             defaultButton:@"OK"
+                                           alternateButton:nil
+                                               otherButton:nil
+                                 informativeTextWithFormat:@"Couldn't add Helper App to launch at login item list."];
+            [alert runModal];
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:kLaunchAtLogin];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    if (!sender.state) { // OFF
+        // Turn off launch at login
+        if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, NO)) {
+            sender.state = NSOnState;
+            NSAlert *alert = [NSAlert alertWithMessageText:@"An error ocurred"
+                                             defaultButton:@"OK"
+                                           alternateButton:nil
+                                               otherButton:nil
+                                 informativeTextWithFormat:@"Couldn't remove Helper App from launch at login item list."];
+            [alert runModal];
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:kLaunchAtLogin];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+}
+
 
 #pragma mark - NSTextField Delegate
 
