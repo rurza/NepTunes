@@ -27,17 +27,29 @@
 {
     self.musicScrobbler = [MusicScrobbler sharedScrobbler];
     //System status bar icon
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kShowStatusBarIcon]) {
+        [self installStatusBarItem];
+    }
+
+    //first launch
+    if (!self.musicScrobbler.scrobbler.session) {
+        [self openPreferences:self];
+    }
+}
+
+-(void)installStatusBarItem
+{
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     NSImage *icon = [NSImage imageNamed:@"statusIcon"];
     [icon setTemplate:YES];
     self.statusItem.image = icon;
     self.statusItem.menu = self.statusMenu;
-    
-    
-    //first launch
-    if (!self.musicScrobbler.scrobbler.session) {
-        [self openPreferences:self];
-    }
+}
+
+-(void)removeStatusBarItem
+{
+    [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
+    self.statusItem = nil;
 }
 
 #pragma mark - Last.fm related

@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "MenuController.h"
 
+static NSString *const kShowStatusBarIcon = @"showStatusBarIcon";
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
