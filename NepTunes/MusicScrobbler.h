@@ -11,9 +11,17 @@
 #import "LastFmCache.h"
 
 @class Song;
+@class SavedSong;
 
 static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
 static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
+
+@protocol MusicScrobblerDelegate <NSObject>
+
+-(void)songWasSuccessfullyScrobbled:(Song *)song;
+-(void)songWasNotScrobbled:(Song *)song;
+
+@end
 
 @interface MusicScrobbler : NSObject
 
@@ -24,12 +32,15 @@ static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 @property (nonatomic) NSDictionary *infoAboutCurrentTrack;
 @property (nonatomic) NSString *username;
 @property (nonatomic) Song *currentTrack;
-
+@property (nonatomic, weak) id<MusicScrobblerDelegate>delegate;
 +(MusicScrobbler *)sharedScrobbler;
 
 
 /// sends current track to Last.fm as a scrobbled
 -(void)scrobbleCurrentTrack;
+-(void)scrobbleTrack:(Song *)song atTimestamp:(NSTimeInterval)timestamp;
+-(void)scrobbleOfflineTrack:(SavedSong *)song;
+
 /// sends current track to Last.fm as a "now playing"
 -(void)nowPlayingCurrentTrack;
 /// loves current track on Last.fm
@@ -37,5 +48,7 @@ static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 
 -(void)logInWithCredentials:(NSDictionary *)info;
 -(void)logOut;
+
+//offline scrobbler
 
 @end

@@ -12,12 +12,14 @@
 #import <EGOCache.h>
 #import "Song.h"
 #import <ServiceManagement/ServiceManagement.h>
+#import "FXReachability.h"
+#import "OfflineScrobbler.h"
 
 static NSString *const kUserAvatar = @"userAvatar";
 static NSString *const kLaunchAtLogin = @"launchAtLogin";
 static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
-@interface AppDelegate () <NSTextFieldDelegate>
+@interface AppDelegate () <NSTextFieldDelegate, NSUserNotificationCenterDelegate>
 
 
 @property (weak, nonatomic) NSTimer* scrobbleTimer;
@@ -46,6 +48,10 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 @property (weak) IBOutlet NSToolbarItem *accountToolbarItem;
 @property (weak) IBOutlet NSToolbarItem *hotkeysToolbarItem;
 
+//reachability
+@property (nonatomic) BOOL reachability;
+@property (nonatomic) OfflineScrobbler *offlineScrobbler;
+
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)logOut:(id)sender;
 - (IBAction)createNewLastFmAccountInWebBrowser:(id)sender;
@@ -57,17 +63,35 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(updateTrackInfo:)
-                                                            name:@"com.apple.iTunes.playerInfo"
-                                                          object:nil];
     
-    
+    [self setupNotifications];
+    [self setupReachability];
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
     [self updateLaunchAtLoginCheckbox];
     [self terminateHelperApp];
     [self updateTrackInfo:nil];
+    
+}
+
+-(void)setupNotifications
+{
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                        selector:@selector(updateTrackInfo:)
+                                                            name:@"com.apple.iTunes.playerInfo"
+                                                          object:nil];
+    
+        //NSUserNotificationCenter
+    [NSUserNotificationCenter defaultUserNotificationCenter].delegate = self;
+
+}
+
+-(void)setupReachability
+{
+    //1. this must be first
+    self.reachability = YES;
+    //2. this must be second
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:FXReachabilityStatusDidChangeNotification object:nil];
     
 }
 
@@ -101,7 +125,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 }
 
 -(void)awakeFromNib {
-    self.musicScrobbler = [MusicScrobbler sharedScrobbler];
     if (self.musicScrobbler.scrobbler.session) {
         self.accountToolbarItem.tag = 0;
         [[self window] setContentSize:[self.loggedInUserView frame].size];
@@ -462,6 +485,50 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     }
 }
 
+#pragma mark Reachability
 
+-(void)reachabilityDidChange:(NSNotification *)note
+{
+    BOOL reachable = [FXReachability isReachable];
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    if (!reachable) {
+        notification.title = NSLocalizedString(@"Yikes!", nil);
+        notification.subtitle = NSLocalizedString(@"Looks like there is no Internet connection.", nil);
+        notification.informativeText = NSLocalizedString(@"Don't worry, I'm going to scrobble anyway.", nil);
+        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+        self.reachability = NO;
+    } else if (reachable && !self.reachability) {
+        notification.title = NSLocalizedString(@"Great!", nil);
+        notification.subtitle = NSLocalizedString(@"Looks like we have a connection.", nil);
+        notification.informativeText = NSLocalizedString(@"Now I'm going to scrobble tracks played offline.", nil);
+        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+        self.reachability = YES;
+    }
+}
 
+#pragma mark - User Notifications
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
+{
+    return YES;
+}
+
+#pragma mark - Getters
+-(OfflineScrobbler *)offlineScrobbler
+{
+    if (!_offlineScrobbler) {
+        _offlineScrobbler = [OfflineScrobbler sharedInstance];
+    }
+    return _offlineScrobbler;
+}
+
+-(MusicScrobbler *)musicScrobbler
+{
+    if (!_musicScrobbler) {
+        _musicScrobbler = [MusicScrobbler sharedScrobbler];
+        _musicScrobbler.delegate = self.offlineScrobbler;
+    }
+    return _musicScrobbler;
+}
 @end

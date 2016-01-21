@@ -22,8 +22,32 @@
     return self;
 }
 
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    //Encode the properties of the object
+    [encoder encodeObject:self.trackName forKey:@"trackName"];
+    [encoder encodeObject:self.artist forKey:@"artist"];
+    [encoder encodeObject:self.album forKey:@"album"];
+    [encoder encodeObject:@(self.duration) forKey:@"duration"];
+}
+
+-(id)initWithCoder:(NSCoder *)decoder
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        //decode the properties
+        self.trackName = [decoder decodeObjectForKey:@"trackName"];
+        self.artist = [decoder decodeObjectForKey:@"artist"];
+        self.album = [decoder decodeObjectForKey:@"album"];
+        self.duration = [[decoder decodeObjectForKey:@"duration"] doubleValue];
+    }
+    return self;
+}
+
 -(NSString *)description
 {
     return [NSString stringWithFormat:@"%@ by %@", self.trackName, self.artist];
 }
+
 @end

@@ -8,8 +8,8 @@
 
 
 #import "MusicScrobbler.h"
-#import "Song.h"
-
+#import "SavedSong.h"
+#import "OfflineScrobbler.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -20,6 +20,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 @property (nonatomic) NSUInteger nowPlayingTryCounter;
 @property (nonatomic) NSUInteger loveSongTryCounter;
 
+@property (nonatomic) BOOL offlineScrobbler;
 
 @end
 
@@ -38,7 +39,20 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
+-(void)scrobbleTrack:(Song *)song atTimestamp:(NSTimeInterval)timestamp
+{
+    __weak typeof(self) weakSelf = self;
+    [self.scrobbler sendScrobbledTrack:song.trackName byArtist:song.artist onAlbum:song.album withDuration:song.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
+        [weakSelf.delegate songWasSuccessfullyScrobbled:song];
+    } failureHandler:^(NSError *error) {
+        
+    }];
+}
 
+-(void)scrobbleOfflineTrack:(SavedSong *)song
+{
+    [self scrobbleTrack:song atTimestamp:[song.date timeIntervalSince1970]];
+}
 
 #pragma mark - Last.fm related methods
 
@@ -53,18 +67,12 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                                       withDuration:self.currentTrack.duration
                                        atTimestamp:(int)[[NSDate date] timeIntervalSince1970]
                                     successHandler:^(NSDictionary *result) {
-                                        //succesHandler - nothing to do
-                                        NSLog(@"%@ by %@ scrobbled!", weakSelf.currentTrack.trackName, weakSelf.currentTrack.artist);
                                         weakSelf.scrobbleTryCounter = 0;
                                     } failureHandler:^(NSError *error) {
                                         if (error) {
-                                            NSLog(@"Error! %@ %lu. try",error.localizedDescription, (signed long)self.scrobbleTryCounter + 1);
-                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                if (++weakSelf.scrobbleTryCounter < 3) {
-                                                    [weakSelf scrobbleCurrentTrack];
-                                                } else weakSelf.scrobbleTryCounter = 0;
-                                                
-                                            });
+                                            if ([OfflineScrobbler sharedInstance].areWeOffline) {
+                                                [[OfflineScrobbler sharedInstance] saveSong:weakSelf.currentTrack];
+                                            }
                                         }
                                     }];
         }
@@ -86,7 +94,6 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                                      successHandler:^(NSDictionary *result) {
                                          self.nowPlayingTryCounter = 0;
                                      } failureHandler:^(NSError *error) {
-                                         NSLog(@"Error! %@", error.localizedDescription);
                                          if (error.code == -1001) {
                                              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                                                  if (++weakSelf.nowPlayingTryCounter < 3) {
@@ -185,6 +192,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     self.currentTrack = [[Song alloc] initWithTrackName:trackName artist:artist album:album andDuration:duration];
 }
 
+#pragma mark - Offline scrobbler
 
 
 @end

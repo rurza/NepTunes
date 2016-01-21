@@ -48,7 +48,7 @@
     [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^{
         [notification setTitle:[NSString stringWithFormat:@"%@", self.musicScrobbler.currentTrack.artist]];
         [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", self.musicScrobbler.currentTrack.trackName]];
-        [notification setDeliveryDate:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
+        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
     }];
