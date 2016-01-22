@@ -18,4 +18,6 @@
 
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d;
 +(Song *)songWithiTunesTrack:(iTunesTrack *)track;
+-(BOOL)isEqualToSong:(Song *)song;
+
 @end

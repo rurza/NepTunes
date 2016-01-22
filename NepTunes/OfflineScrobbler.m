@@ -102,10 +102,7 @@
 -(void)save
 {
     NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.songs];
-    if ([savedData writeToFile:[self pathToPlist] atomically:YES]) {
-    } else {
-        NSLog(@"Lipa");
-    }
+    [savedData writeToFile:[self pathToPlist] atomically:YES];
 }
 
 

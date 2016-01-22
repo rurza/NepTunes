@@ -19,7 +19,6 @@
 -(IBAction)showUserProfile:(id)sender;
 -(IBAction)showSimilarArtists:(id)sender;
 -(void)changeState;
-
-
+-(void)prepareRecentItemsMenu;
 
 @end

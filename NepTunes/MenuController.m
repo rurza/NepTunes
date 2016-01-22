@@ -10,12 +10,17 @@
 #import "MusicScrobbler.h"
 #import "AppDelegate.h"
 #import "Song.h"
+#import "RecentTracksController.h"
+#import "SettingsController.h"
 
 @interface MenuController ()
 
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
 @property (strong, nonatomic) MusicScrobbler *musicScrobbler;
+@property (strong, nonatomic) IBOutlet NSMenu *recentTracksMenu;
+@property (weak) IBOutlet NSMenuItem *recentTracksMenuItem;
+@property (nonatomic) RecentTracksController *recentTracksController;
 
 
 @end
@@ -32,13 +37,14 @@
     [icon setTemplate:YES];
     self.statusItem.image = icon;
     self.statusItem.menu = self.statusMenu;
-    
-    
+    [self prepareRecentItemsMenu];
     //first launch
     if (!self.musicScrobbler.scrobbler.session) {
         [self openPreferences:self];
     }
 }
+
+
 
 #pragma mark - Last.fm related
 
@@ -88,6 +94,7 @@
 #pragma mark Update menu
 
 -(void)changeState {
+    [self updateRecentMenu];
     if (self.musicScrobbler.scrobbler.session) {
         [self.profileMenuTitle setEnabled:YES];
         self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", self.musicScrobbler.username];
@@ -141,6 +148,98 @@
     }
 }
 
+#pragma mark - Recent Items
+
+-(void)prepareRecentItemsMenu
+{
+    if (self.recentTracksController.songs.count == 0) {
+        self.recentTracksMenuItem.enabled = NO;
+        return;
+    } else {
+        self.recentTracksMenuItem.enabled = YES;
+        if (self.recentTracksMenu.numberOfItems) {
+            [self.recentTracksMenu removeAllItems];
+        }
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    NSUInteger numberOfItemsFromSettings = [SettingsController sharedSettings].numberOfTracksInRecent.integerValue;
+    [self.recentTracksController.songs enumerateObjectsUsingBlock:^(Song *  _Nonnull song, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == numberOfItemsFromSettings-1) {
+            *stop =  YES;
+        }
+        NSLog(@"%@", song);
+        NSMenuItem *menuItem = [weakSelf.recentTracksMenu addItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ by %@", nil), song.trackName, song.artist] action:@selector(openWebsite:) keyEquivalent:@""];
+        menuItem.target = weakSelf;
+    }];
+}
+
+
+-(void)updateRecentMenu
+{
+    Song *song = self.musicScrobbler.currentTrack;
+    if ([self.recentTracksController addSongToRecentMenu:song]) {
+        if (self.recentTracksMenu.numberOfItems < [SettingsController sharedSettings].numberOfTracksInRecent.intValue) {
+            NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ by %@", nil), song.trackName, song.artist] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
+            menuItem.target = self;
+        } else {
+            [self.recentTracksMenu removeItemAtIndex:self.recentTracksMenu.numberOfItems-1];
+            NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ by %@", nil), song.trackName, song.artist] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
+            menuItem.target = self;
+        }
+    }
+}
+
+-(void)openWebsite:(NSMenuItem *)menuItem
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self validateLinkFromMenuItem:menuItem]]];
+}
+
+-(NSString *)validateLinkFromMenuItem:(NSMenuItem *)menuItem
+{
+    __block Song *songFromMenu;
+    NSMenu *menu = [menuItem menu];
+    NSInteger itemIndex = [menu indexOfItem:menuItem];
+    [self.recentTracksController.songs enumerateObjectsUsingBlock:^(Song *  _Nonnull song, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == itemIndex) {
+            songFromMenu = song;
+            *stop = YES;
+        }
+    }];
+    NSString *artist = songFromMenu.artist;
+    NSString *urlArtist = [artist stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    NSData *decodeArtist = [urlArtist dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *ansiArtist = [[NSString alloc] initWithData:decodeArtist encoding:NSASCIIStringEncoding];
+    
+    NSString *track = songFromMenu.trackName;
+    NSString *urlTrack = [track stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    NSData *decodeTrack = [urlTrack dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *ansiTrack = [[NSString alloc] initWithData:decodeTrack encoding:NSASCIIStringEncoding];
+    
+    NSString *link = [NSString stringWithFormat:@"http://www.last.fm/music/%@/_/%@", ansiArtist, ansiTrack];
+    if (link.length > 0) {
+        return link;
+    }
+    return nil;
+}
+
+#pragma mark - NSMenuValidation
+
+-(BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    if ([self validateLinkFromMenuItem:menuItem]) {
+        return YES;
+    }
+    return NO;
+}
+
+-(RecentTracksController *)recentTracksController
+{
+    if (!_recentTracksController) {
+        _recentTracksController = [RecentTracksController sharedInstance];
+    }
+    return _recentTracksController;
+}
 
 
 @end

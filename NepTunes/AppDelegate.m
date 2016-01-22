@@ -8,15 +8,11 @@
 
 #import "AppDelegate.h"
 #import "MusicScrobbler.h"
-#import "HotkeyController.h"
-#import <EGOCache.h>
 #import "Song.h"
-#import <ServiceManagement/ServiceManagement.h>
 #import "FXReachability.h"
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
 
-static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 @interface AppDelegate () <NSTextFieldDelegate, NSUserNotificationCenterDelegate>
 
@@ -41,7 +37,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 @property (weak, nonatomic) IBOutlet NSButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
-@property (weak) IBOutlet NSButton *launchAtLoginCheckbox;
 
 @property NSTimeInterval scrobbleTime;
 @property int currentViewTag;
@@ -70,8 +65,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     [self setupReachability];
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
-    [self updateLaunchAtLoginCheckbox];
-    [self terminateHelperApp];
     [self updateTrackInfo:nil];
 }
 
@@ -96,32 +89,8 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     
 }
 
--(void)updateLaunchAtLoginCheckbox
-{
-    if (self.settingsController.launchAtLogin) {
-        self.launchAtLoginCheckbox.state =  NSOnState;
-    } else {
-        self.launchAtLoginCheckbox.state =  NSOffState;
-    }
-}
 
--(void)terminateHelperApp
-{
-    BOOL startedAtLogin = NO;
-    
-    NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
-    for (NSRunningApplication *app in apps) {
-        if ([app.bundleIdentifier isEqualToString:kHelperAppBundle]) startedAtLogin = YES;
-    }
-    
-    if (startedAtLogin) {
-        [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kHelperAppBundle
-                                                                       object:[[NSBundle mainBundle] bundleIdentifier]];
-        if (!self.settingsController.launchAtLogin) {
-            self.settingsController.launchAtLogin = YES;
-        }
-    }
-}
+
 
 -(void)awakeFromNib {
     if (self.musicScrobbler.scrobbler.session) {
@@ -391,24 +360,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     [self.window recalculateKeyViewLoop];
 }
 
--(IBAction)toggleLaunchAtLogin:(NSButton *)sender
-{
-    if (sender.state) { // ON
-        if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, YES)) {
-            sender.state = NSOffState;
-        } else {
-            self.settingsController.launchAtLogin = YES;
-        }
-    }
-    if (!sender.state) { // OFF
-        // Turn off launch at login
-        if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, NO)) {
-            sender.state = NSOnState;
-        } else {
-            self.settingsController.launchAtLogin = NO;
-        }
-    }
-}
 
 
 #pragma mark - NSTextField Delegate

@@ -22,7 +22,6 @@
                 <outlet property="hotkeyView" destination="EKy-34-uDn" id="n5d-GQ-NCM"/>
                 <outlet property="hotkeysToolbarItem" destination="eM7-c8-y3C" id="CD4-Nt-drr"/>
                 <outlet property="indicator" destination="QNA-6p-13Z" id="Lho-KM-kia"/>
-                <outlet property="launchAtLoginCheckbox" destination="3v2-Vg-kK2" id="bFO-cW-QZi"/>
                 <outlet property="loggedInUserView" destination="fhc-ci-TLM" id="NIm-Yn-hlc"/>
                 <outlet property="loginButton" destination="bnA-Nm-ZtK" id="CeP-Ae-PVu"/>
                 <outlet property="loginField" destination="SFe-SM-N5c" id="y0L-Vu-irY"/>
@@ -732,6 +731,10 @@
                         <action selector="showSimilarArtists:" target="aMi-64-iJ4" id="WZp-If-zE5"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Recent songs" id="ezK-Lj-iX4">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Recent songs" id="VA4-FS-C7L"/>
+                </menuItem>
                 <menuItem title="Profile..." id="f29-yU-Mdy">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -913,27 +916,67 @@ DQ
             <connections>
                 <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="H6f-JO-J2t"/>
                 <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="wW7-Da-pNi"/>
+                <outlet property="recentTracksMenu" destination="VA4-FS-C7L" id="IGV-4e-hNZ"/>
+                <outlet property="recentTracksMenuItem" destination="ezK-Lj-iX4" id="eN0-Wg-BvW"/>
                 <outlet property="similarArtistMenuTtitle" destination="wza-2X-Avd" id="v9z-FG-bzu"/>
                 <outlet property="statusMenu" destination="XPD-Mx-1cp" id="gTn-At-Fw2"/>
             </connections>
         </customObject>
         <customView id="71q-6P-ehr" userLabel="General">
-            <rect key="frame" x="0.0" y="0.0" width="242" height="54"/>
+            <rect key="frame" x="0.0" y="0.0" width="242" height="113"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v2-Vg-kK2">
-                    <rect key="frame" x="18" y="18" width="198" height="18"/>
+                    <rect key="frame" x="18" y="77" width="198" height="18"/>
                     <buttonCell key="cell" type="check" title="Launch NepTunes at login" bezelStyle="regularSquare" imagePosition="left" inset="2" id="KSU-AF-bTE">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="toggleLaunchAtLogin:" target="Voe-Tx-rLC" id="sjF-Uy-Xbb"/>
+                        <action selector="toggleLaunchAtLogin:" target="tLX-PG-6oy" id="DGb-UJ-SZp"/>
                     </connections>
                 </button>
+                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="K3H-64-XOo">
+                    <rect key="frame" x="20" y="68" width="194" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lQ-Qn-qEE">
+                    <rect key="frame" x="18" y="48" width="198" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of tracks in recent:" id="slK-vF-pd3">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tIa-bU-eiY">
+                    <rect key="frame" x="18" y="17" width="199" height="26"/>
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="9Sm-oZ-6zA">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" title="Number of tracks in recent" id="1e1-F4-EGE">
+                            <items>
+                                <menuItem title="5 Tracks" tag="5" id="zzU-z9-3VM"/>
+                                <menuItem title="10 Tracks" tag="10" id="UG7-RD-uk0"/>
+                                <menuItem title="15 Tracks" tag="15" id="go9-UB-go1"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeNumberOfRecentItems:" target="tLX-PG-6oy" id="Wzu-u5-NYT"/>
+                    </connections>
+                </popUpButton>
             </subviews>
-            <point key="canvasLocation" x="33" y="616"/>
+            <point key="canvasLocation" x="33" y="645.5"/>
         </customView>
+        <customObject id="tLX-PG-6oy" customClass="SettingsController">
+            <connections>
+                <outlet property="launchAtLoginCheckbox" destination="3v2-Vg-kK2" id="ZbC-No-zgY"/>
+                <outlet property="menuController" destination="aMi-64-iJ4" id="b8J-G8-8J8"/>
+                <outlet property="numberOfRecentItems" destination="tIa-bU-eiY" id="xIC-M3-RmE"/>
+            </connections>
+        </customObject>
     </objects>
     <resources>
         <image name="NSPreferencesGeneral" width="32" height="32"/>

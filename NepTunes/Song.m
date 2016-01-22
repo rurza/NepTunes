@@ -20,6 +20,9 @@
         self.album = alb;
         self.duration = d;
     }
+    if (!tn || !art) {
+        return nil;
+    }
     return self;
 }
 
@@ -48,6 +51,9 @@
 
 +(Song *)songWithiTunesTrack:(iTunesTrack *)track
 {
+    if (!track.name || !track.artist) {
+        return nil;
+    }
     Song *song = [[Song alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
     return song;
 }
@@ -57,4 +63,32 @@
     return [NSString stringWithFormat:@"%@ by %@", self.trackName, self.artist];
 }
 
+#pragma mark Equality
+
+-(BOOL)isEqual:(id)object
+{
+    if (self == object) {
+        return YES;
+    }
+    
+    if (![object isKindOfClass:[Song class]]) {
+        return NO;
+    }
+    
+    return [self isEqualToSong:(Song *)object];
+}
+
+-(BOOL)isEqualToSong:(Song *)song
+{
+    if (self == song) {
+        return YES;
+    }
+    BOOL itIsEqual = ([self.trackName isEqualToString:song.trackName] && [self.album isEqualToString:song.album] && [self.artist isEqualToString:song.artist]);
+    return itIsEqual;
+}
+
+-(NSUInteger)hash
+{
+    return [self.trackName hash] ^ [self.album hash];
+}
 @end
