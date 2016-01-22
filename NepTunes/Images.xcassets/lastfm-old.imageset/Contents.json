@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "lastfm.pdf",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "lastfm.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "lastfm@2x.png"
     },
     {
       "idiom" : "universal",

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
@@ -17,8 +17,10 @@
                 <outlet property="accountToolbarItem" destination="0Ad-di-EXd" id="aps-81-AvN"/>
                 <outlet property="accountView" destination="85m-tG-GgP" id="oAN-Jn-WaN"/>
                 <outlet property="createAccountButton" destination="Y0d-KG-pj8" id="A75-Yk-wta"/>
+                <outlet property="generalToolbarItem" destination="Mzg-4i-Orf" id="AUM-Mb-UA4"/>
+                <outlet property="generalView" destination="71q-6P-ehr" id="eEE-Xm-fES"/>
                 <outlet property="hotkeyView" destination="EKy-34-uDn" id="n5d-GQ-NCM"/>
-                <outlet property="hotkeysToolbarItem" destination="Mzg-4i-Orf" id="ahQ-ft-6gr"/>
+                <outlet property="hotkeysToolbarItem" destination="eM7-c8-y3C" id="CD4-Nt-drr"/>
                 <outlet property="indicator" destination="QNA-6p-13Z" id="Lho-KM-kia"/>
                 <outlet property="launchAtLoginCheckbox" destination="3v2-Vg-kK2" id="bFO-cW-QZi"/>
                 <outlet property="loggedInUserView" destination="fhc-ci-TLM" id="NIm-Yn-hlc"/>
@@ -685,7 +687,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="215"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="-2" width="272" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -702,10 +704,16 @@
                             <action selector="switchView:" target="Voe-Tx-rLC" id="3CU-Ve-4fw"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="776AC237-4E79-4D4D-8814-DF5CDA0FABE2" label="Hotkeys" paletteLabel="Hotkeys" tag="3" image="hotkey" id="eM7-c8-y3C">
+                        <connections>
+                            <action selector="switchView:" target="Voe-Tx-rLC" id="tk9-cF-kfU"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="0Ad-di-EXd"/>
                     <toolbarItem reference="Mzg-4i-Orf"/>
+                    <toolbarItem reference="eM7-c8-y3C"/>
                 </defaultToolbarItems>
             </toolbar>
             <point key="canvasLocation" x="-338" y="342.5"/>
@@ -815,17 +823,17 @@ DQ
             <point key="canvasLocation" x="13.5" y="78.5"/>
         </customView>
         <customView id="EKy-34-uDn" userLabel="Hotkey">
-            <rect key="frame" x="0.0" y="0.0" width="336" height="178"/>
+            <rect key="frame" x="0.0" y="0.0" width="336" height="140"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cXZ-R7-HX8" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="140" width="126" height="19"/>
+                    <rect key="frame" x="190" y="102" width="126" height="19"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aqd-9D-IPf" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="58" width="126" height="19"/>
+                    <rect key="frame" x="190" y="20" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4m5-VP-Pgu">
-                    <rect key="frame" x="18" y="100" width="166" height="17"/>
+                    <rect key="frame" x="18" y="62" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Go to your Last.fm profile:" id="ywp-Bb-xwA">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -833,7 +841,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-2x-JwT">
-                    <rect key="frame" x="18" y="59" width="132" height="17"/>
+                    <rect key="frame" x="18" y="21" width="132" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similiar artists:" id="ES0-8e-W0q">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -841,28 +849,18 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4E-vj-MXg" customClass="MASShortcutView">
-                    <rect key="frame" x="190" y="99" width="126" height="19"/>
+                    <rect key="frame" x="190" y="61" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlv-Ke-0SR">
-                    <rect key="frame" x="18" y="141" width="72" height="17"/>
+                    <rect key="frame" x="18" y="103" width="72" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love song:" id="0UW-9q-clF">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v2-Vg-kK2">
-                    <rect key="frame" x="18" y="18" width="198" height="18"/>
-                    <buttonCell key="cell" type="check" title="Launch NepTunes at login" bezelStyle="regularSquare" imagePosition="left" inset="2" id="KSU-AF-bTE">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="toggleLaunchAtLogin:" target="Voe-Tx-rLC" id="sjF-Uy-Xbb"/>
-                    </connections>
-                </button>
             </subviews>
-            <point key="canvasLocation" x="165" y="369"/>
+            <point key="canvasLocation" x="80" y="405"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="gZh-Qn-zyx"/>
         <customObject id="Frc-Jt-Ein" customClass="HotkeyController">
@@ -919,9 +917,27 @@ DQ
                 <outlet property="statusMenu" destination="XPD-Mx-1cp" id="gTn-At-Fw2"/>
             </connections>
         </customObject>
+        <customView id="71q-6P-ehr" userLabel="General">
+            <rect key="frame" x="0.0" y="0.0" width="242" height="54"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v2-Vg-kK2">
+                    <rect key="frame" x="18" y="18" width="198" height="18"/>
+                    <buttonCell key="cell" type="check" title="Launch NepTunes at login" bezelStyle="regularSquare" imagePosition="left" inset="2" id="KSU-AF-bTE">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleLaunchAtLogin:" target="Voe-Tx-rLC" id="sjF-Uy-Xbb"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="33" y="616"/>
+        </customView>
     </objects>
     <resources>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
-        <image name="lastfm" width="32" height="32"/>
+        <image name="hotkey" width="28" height="28"/>
+        <image name="lastfm" width="28" height="28"/>
     </resources>
 </document>

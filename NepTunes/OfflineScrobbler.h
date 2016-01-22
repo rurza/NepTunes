@@ -14,14 +14,9 @@
 @interface OfflineScrobbler : NSObject <MusicScrobblerDelegate>
 
 @property (nonatomic) BOOL areWeOffline;
-//Co potrzebuje?
-//1.singleton
+
 +(OfflineScrobbler *)sharedInstance;
 -(void)saveSong:(Song *)song;
 -(void)deleteSong:(SavedSong *)song;
 
-//2.zapisanie utworu
-//3.usuniecie utwory
-//4.timer
-//
 @end

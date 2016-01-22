@@ -13,9 +13,6 @@
 @class Song;
 @class SavedSong;
 
-static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
-static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
-
 @protocol MusicScrobblerDelegate <NSObject>
 
 -(void)songWasSuccessfullyScrobbled:(Song *)song;

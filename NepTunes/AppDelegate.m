@@ -14,9 +14,8 @@
 #import <ServiceManagement/ServiceManagement.h>
 #import "FXReachability.h"
 #import "OfflineScrobbler.h"
+#import "SettingsController.h"
 
-static NSString *const kUserAvatar = @"userAvatar";
-static NSString *const kLaunchAtLogin = @"launchAtLogin";
 static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 @interface AppDelegate () <NSTextFieldDelegate, NSUserNotificationCenterDelegate>
@@ -36,6 +35,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 @property (weak, nonatomic) IBOutlet NSView *accountView;
 @property (weak) IBOutlet NSView *loggedInUserView;
 @property (weak) IBOutlet NSView *hotkeyView;
+@property (weak) IBOutlet NSView *generalView;
 
 @property (weak, nonatomic) IBOutlet NSImageView *userAvatar;
 
@@ -47,10 +47,14 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 @property int currentViewTag;
 @property (weak) IBOutlet NSToolbarItem *accountToolbarItem;
 @property (weak) IBOutlet NSToolbarItem *hotkeysToolbarItem;
+@property (weak) IBOutlet NSToolbarItem *generalToolbarItem;
 
 //reachability
 @property (nonatomic) BOOL reachability;
+//Offline
 @property (nonatomic) OfflineScrobbler *offlineScrobbler;
+//Settings
+@property (nonatomic) SettingsController *settingsController;
 
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)logOut:(id)sender;
@@ -62,8 +66,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    
-    
     [self setupNotifications];
     [self setupReachability];
     self.passwordField.delegate = self;
@@ -71,7 +73,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     [self updateLaunchAtLoginCheckbox];
     [self terminateHelperApp];
     [self updateTrackInfo:nil];
-    
 }
 
 -(void)setupNotifications
@@ -97,7 +98,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 -(void)updateLaunchAtLoginCheckbox
 {
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:kLaunchAtLogin] boolValue]) {
+    if (self.settingsController.launchAtLogin) {
         self.launchAtLoginCheckbox.state =  NSOnState;
     } else {
         self.launchAtLoginCheckbox.state =  NSOffState;
@@ -116,10 +117,8 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     if (startedAtLogin) {
         [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kHelperAppBundle
                                                                        object:[[NSBundle mainBundle] bundleIdentifier]];
-        if (![[[NSUserDefaults standardUserDefaults] objectForKey:kLaunchAtLogin] boolValue]) {
-            
-            [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:kLaunchAtLogin];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+        if (!self.settingsController.launchAtLogin) {
+            self.settingsController.launchAtLogin = YES;
         }
     }
 }
@@ -187,7 +186,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             }
         }
     }
-    //    });
 }
 
 -(void)invalidateTimers
@@ -213,10 +211,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
         }
         else if (self.musicScrobbler.iTunes.currentTrack.name && self.musicScrobbler.iTunes.currentTrack.album) {
-            self.musicScrobbler.currentTrack.trackName = self.musicScrobbler.iTunes.currentTrack.name;
-            self.musicScrobbler.currentTrack.album = self.musicScrobbler.iTunes.currentTrack.album;
-            self.musicScrobbler.currentTrack.artist = self.musicScrobbler.iTunes.currentTrack.artist;
-            self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
+            self.musicScrobbler.currentTrack = [Song songWithiTunesTrack:self.musicScrobbler.iTunes.currentTrack];
             [self.menuController changeState];
         }
     }
@@ -224,9 +219,9 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 -(void)updateMenu
 {
-    if (self.musicScrobbler.iTunes.isRunning) {
+//    if (self.musicScrobbler.iTunes.isRunning) {
         [self.menuController changeState];
-    }
+//    }
 }
 
 -(void)scrobble:(NSTimer *)timer
@@ -264,13 +259,11 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
          {
              //login success handler
              [weakSelf.musicScrobbler logInWithCredentials:result];
-             [[NSUserDefaults standardUserDefaults] setObject:weakSelf.musicScrobbler.username forKey:kUsernameKey];
-             [[NSUserDefaults standardUserDefaults] synchronize];
+             weakSelf.settingsController.username = weakSelf.musicScrobbler.username;
              
              [weakSelf.musicScrobbler.scrobbler getInfoForUserOrNil:self.loginField.stringValue successHandler:^(NSDictionary *result) {
                  [weakSelf setAvatarForUserWithInfo:result];
              } failureHandler:^(NSError *error) {
-                 //NSLog(@"Error info about user. %@", [error localizedDescription]);
              }];
              weakSelf.accountToolbarItem.tag = 0;
              [weakSelf switchView:weakSelf.accountToolbarItem];
@@ -314,7 +307,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     [self.loginButton setEnabled:NO];
     [self.musicScrobbler logOut];
     self.userAvatar.image = nil;
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserAvatar];
+    self.settingsController.userAvatar = nil;
     [self.menuController changeState];
     
     self.accountToolbarItem.tag = 1;
@@ -355,6 +348,9 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             view = self.accountView;
             break;
         case 2:
+            view = self.generalView;
+            break;
+        case 3:
             view = self.hotkeyView;
             break;
         case 0:
@@ -387,7 +383,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     [NSAnimationContext beginGrouping];
     
     if ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) {
-        [[NSAnimationContext currentContext] setDuration:1.0];
+        [[NSAnimationContext currentContext] setDuration:0.4];
     }
     [[[self window] animator] setFrame:newFrame display:YES];
     [[[[self window] contentView] animator] replaceSubview:previousView with:view];
@@ -398,33 +394,18 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(IBAction)toggleLaunchAtLogin:(NSButton *)sender
 {
     if (sender.state) { // ON
-        // Turn on launch at login
         if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, YES)) {
             sender.state = NSOffState;
-            NSAlert *alert = [NSAlert alertWithMessageText:@"An error ocurred"
-                                             defaultButton:@"OK"
-                                           alternateButton:nil
-                                               otherButton:nil
-                                 informativeTextWithFormat:@"Couldn't add Helper App to launch at login item list."];
-            [alert runModal];
         } else {
-            [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:kLaunchAtLogin];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            self.settingsController.launchAtLogin = YES;
         }
     }
     if (!sender.state) { // OFF
         // Turn off launch at login
         if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, NO)) {
             sender.state = NSOnState;
-            NSAlert *alert = [NSAlert alertWithMessageText:@"An error ocurred"
-                                             defaultButton:@"OK"
-                                           alternateButton:nil
-                                               otherButton:nil
-                                 informativeTextWithFormat:@"Couldn't remove Helper App from launch at login item list."];
-            [alert runModal];
         } else {
-            [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:kLaunchAtLogin];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            self.settingsController.launchAtLogin = NO;
         }
     }
 }
@@ -449,15 +430,18 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(void)setAvatarForUserWithInfo:(NSDictionary *)userInfo
 {
     __block NSImage *image;
+    __weak typeof(self) weakSelf = self;
     if ([userInfo objectForKey:@"image"]) {
         NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
         NSImage *avatar = [[NSImage alloc] initWithData:imageData];
         image = avatar;
-        [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kUserAvatar];
-        self.userAvatar.image = avatar;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.settingsController.userAvatar = avatar;
+            weakSelf.userAvatar.image = avatar;
+        });
     }
-    else if ([[NSUserDefaults standardUserDefaults] dataForKey:kUserAvatar]) {
-        image = [[NSImage alloc] initWithData:[[NSUserDefaults standardUserDefaults] dataForKey:kUserAvatar]];
+    else if (self.settingsController.userAvatar) {
+        image = self.settingsController.userAvatar;
         self.userAvatar.image = image;
     }
     else {
@@ -465,13 +449,14 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             if ([result objectForKey:@"image"]) {
                 NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
                 image = [[NSImage alloc] initWithData:imageData];
-                [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kUserAvatar];
-                self.userAvatar.image = image;
+                weakSelf.settingsController.userAvatar = image;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.userAvatar.image = image;
+                });
             } else {
-                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://cdn.last.fm/flatness/responsive/2/noimage/default_user_140_g2.png"]];
-                image = [[NSImage alloc] initWithData:imageData];
-                self.userAvatar.image = image;
-                [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kUserAvatar];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.userAvatar.image = self.settingsController.userAvatar;
+                });
             }
         } failureHandler:^(NSError *error) {
             
@@ -491,14 +476,14 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 {
     BOOL reachable = [FXReachability isReachable];
     NSUserNotification *notification = [[NSUserNotification alloc] init];
-    if (!reachable) {
+    if (!reachable && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying) {
         notification.title = NSLocalizedString(@"Yikes!", nil);
         notification.subtitle = NSLocalizedString(@"Looks like there is no Internet connection.", nil);
         notification.informativeText = NSLocalizedString(@"Don't worry, I'm going to scrobble anyway.", nil);
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
         self.reachability = NO;
-    } else if (reachable && !self.reachability) {
+    } else if (reachable && !self.reachability && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying) {
         notification.title = NSLocalizedString(@"Great!", nil);
         notification.subtitle = NSLocalizedString(@"Looks like we have a connection.", nil);
         notification.informativeText = NSLocalizedString(@"Now I'm going to scrobble tracks played offline.", nil);
@@ -530,5 +515,13 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
         _musicScrobbler.delegate = self.offlineScrobbler;
     }
     return _musicScrobbler;
+}
+
+-(SettingsController *)settingsController
+{
+    if (!_settingsController) {
+        _settingsController = [SettingsController sharedSettings];
+    }
+    return _settingsController;
 }
 @end

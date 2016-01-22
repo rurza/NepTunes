@@ -7,6 +7,7 @@
 //
 
 #import "Song.h"
+#import "iTunes.h"
 
 @implementation Song
 
@@ -43,6 +44,12 @@
         self.duration = [[decoder decodeObjectForKey:@"duration"] doubleValue];
     }
     return self;
+}
+
++(Song *)songWithiTunesTrack:(iTunesTrack *)track
+{
+    Song *song = [[Song alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    return song;
 }
 
 -(NSString *)description

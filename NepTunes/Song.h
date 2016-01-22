@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class iTunesTrack;
 
 @interface Song : NSObject <NSCoding>
 
@@ -16,4 +17,5 @@
 @property (nonatomic) double duration;//in seconds
 
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d;
++(Song *)songWithiTunesTrack:(iTunesTrack *)track;
 @end

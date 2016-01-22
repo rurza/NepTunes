@@ -10,6 +10,7 @@
 #import "MusicScrobbler.h"
 #import "SavedSong.h"
 #import "OfflineScrobbler.h"
+#import "SettingsController.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -33,7 +34,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     dispatch_once(&onceToken, ^{
         sharedScrobbler = [[MusicScrobbler alloc] init];
         sharedScrobbler.lastfmCache = [[LastFmCache alloc] init];
-        sharedScrobbler.username = [[NSUserDefaults standardUserDefaults] objectForKey:kUsernameKey];
+        sharedScrobbler.username = [SettingsController sharedSettings].username;
     });
     return sharedScrobbler;
 }
@@ -133,8 +134,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)logInWithCredentials:(NSDictionary *)info
 {
-    [[NSUserDefaults standardUserDefaults] setObject:info[@"key"] forKey:kSessionKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [SettingsController sharedSettings].session = info[@"key"];
     
     // Also set the session of the LastFm object
     self.scrobbler.session = info[@"key"];
@@ -144,8 +144,8 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)logOut
 {
     [self.scrobbler logout];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSessionKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUsernameKey];
+    [SettingsController sharedSettings].session = nil;
+    [SettingsController sharedSettings].username = nil;
 }
 
 #pragma mark - Overrided Methods
@@ -163,8 +163,8 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         _scrobbler = [LastFm sharedInstance];
         _scrobbler.apiKey = kAPIKey;
         _scrobbler.apiSecret = kAPISecret;
-        _scrobbler.session = [[NSUserDefaults standardUserDefaults] stringForKey:kSessionKey];
-        _scrobbler.username = [[NSUserDefaults standardUserDefaults] stringForKey:kUsernameKey];
+        _scrobbler.session = [SettingsController sharedSettings].session;
+        _scrobbler.username = [SettingsController sharedSettings].username;
         _scrobbler.cacheDelegate = self.lastfmCache;
         _scrobbler.timeoutInterval = 20;
     }
