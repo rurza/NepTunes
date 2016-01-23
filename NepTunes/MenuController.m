@@ -15,12 +15,13 @@
 
 @interface MenuController ()
 
-@property (strong, nonatomic) NSStatusItem *statusItem;
-@property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
-@property (strong, nonatomic) MusicScrobbler *musicScrobbler;
-@property (strong, nonatomic) IBOutlet NSMenu *recentTracksMenu;
-@property (weak) IBOutlet NSMenuItem *recentTracksMenuItem;
+@property (nonatomic) NSStatusItem *statusItem;
+@property (nonatomic) IBOutlet NSMenu *statusMenu;
+@property (nonatomic) MusicScrobbler *musicScrobbler;
+@property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
+@property (weak, nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
 @property (nonatomic) RecentTracksController *recentTracksController;
+@property (weak, nonatomic) IBOutlet AppDelegate *appDelegate;
 
 
 @end
@@ -88,7 +89,8 @@
 
 -(IBAction)openPreferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
-    [[(AppDelegate *)[[NSApplication sharedApplication] delegate] window] makeKeyAndOrderFront:nil];
+    [self.appDelegate.window makeKeyAndOrderFront:nil];
+    [self.appDelegate.settingsToolbar setSelectedItemIdentifier:@"Account"];
 }
 
 #pragma mark Update menu
@@ -168,7 +170,6 @@
         if (idx == numberOfItemsFromSettings-1) {
             *stop =  YES;
         }
-        NSLog(@"%@", song);
         NSMenuItem *menuItem = [weakSelf.recentTracksMenu addItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ by %@", nil), song.trackName, song.artist] action:@selector(openWebsite:) keyEquivalent:@""];
         menuItem.target = weakSelf;
     }];

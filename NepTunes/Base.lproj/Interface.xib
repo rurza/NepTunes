@@ -16,6 +16,7 @@
             <connections>
                 <outlet property="accountToolbarItem" destination="0Ad-di-EXd" id="aps-81-AvN"/>
                 <outlet property="accountView" destination="85m-tG-GgP" id="oAN-Jn-WaN"/>
+                <outlet property="avatarIndicator" destination="yos-2H-Ri7" id="QUV-Xc-F5N"/>
                 <outlet property="createAccountButton" destination="Y0d-KG-pj8" id="A75-Yk-wta"/>
                 <outlet property="generalToolbarItem" destination="Mzg-4i-Orf" id="AUM-Mb-UA4"/>
                 <outlet property="generalView" destination="71q-6P-ehr" id="eEE-Xm-fES"/>
@@ -28,6 +29,7 @@
                 <outlet property="logoutButton" destination="Lvr-5g-SEe" id="3GB-Cw-tJL"/>
                 <outlet property="menuController" destination="aMi-64-iJ4" id="CS4-Wx-7Bd"/>
                 <outlet property="passwordField" destination="kA7-XP-E0s" id="Bt6-Cr-bnX"/>
+                <outlet property="settingsToolbar" destination="frT-m2-VER" id="QOV-UF-e0r"/>
                 <outlet property="userAvatar" destination="73S-Ro-Dz1" id="Jh3-Lm-1kl"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="Bhg-fQ-MaR"/>
             </connections>
@@ -693,17 +695,17 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="frT-m2-VER">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" label="Account" paletteLabel="Account" tag="1" image="lastfm" selectable="YES" id="0Ad-di-EXd">
+                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" explicitItemIdentifier="Account" label="Account" paletteLabel="Account" tag="1" image="lastfm" autovalidates="NO" selectable="YES" id="0Ad-di-EXd">
                         <connections>
                             <action selector="switchView:" target="Voe-Tx-rLC" id="4qF-p7-5N3"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="A2D88D57-9BE8-485F-892C-38C5437A2C51" label="General" paletteLabel="General" tag="2" image="NSPreferencesGeneral" selectable="YES" id="Mzg-4i-Orf">
+                    <toolbarItem implicitItemIdentifier="A2D88D57-9BE8-485F-892C-38C5437A2C51" explicitItemIdentifier="General" label="General" paletteLabel="General" tag="2" image="general" autovalidates="NO" selectable="YES" id="Mzg-4i-Orf">
                         <connections>
                             <action selector="switchView:" target="Voe-Tx-rLC" id="3CU-Ve-4fw"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="776AC237-4E79-4D4D-8814-DF5CDA0FABE2" label="Hotkeys" paletteLabel="Hotkeys" tag="3" image="hotkey" id="eM7-c8-y3C">
+                    <toolbarItem implicitItemIdentifier="776AC237-4E79-4D4D-8814-DF5CDA0FABE2" explicitItemIdentifier="Hotkeys" label="Hotkeys" paletteLabel="Hotkeys" tag="3" image="hotkey" autovalidates="NO" selectable="YES" id="eM7-c8-y3C">
                         <connections>
                             <action selector="switchView:" target="Voe-Tx-rLC" id="tk9-cF-kfU"/>
                         </connections>
@@ -902,6 +904,9 @@ DQ
                     </constraints>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="9kg-M5-PKm"/>
                 </imageView>
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="yos-2H-Ri7">
+                    <rect key="frame" x="118" y="95" width="16" height="16"/>
+                </progressIndicator>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Lvr-5g-SEe" secondAttribute="bottom" constant="25" id="32M-G9-Gz5"/>
@@ -914,6 +919,7 @@ DQ
         </customView>
         <customObject id="aMi-64-iJ4" customClass="MenuController">
             <connections>
+                <outlet property="appDelegate" destination="Voe-Tx-rLC" id="H1t-J9-l4i"/>
                 <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="H6f-JO-J2t"/>
                 <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="wW7-Da-pNi"/>
                 <outlet property="recentTracksMenu" destination="VA4-FS-C7L" id="IGV-4e-hNZ"/>
@@ -979,7 +985,7 @@ DQ
         </customObject>
     </objects>
     <resources>
-        <image name="NSPreferencesGeneral" width="32" height="32"/>
+        <image name="general" width="28" height="28"/>
         <image name="hotkey" width="28" height="28"/>
         <image name="lastfm" width="28" height="28"/>
     </resources>

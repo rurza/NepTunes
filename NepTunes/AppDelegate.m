@@ -17,11 +17,10 @@
 @interface AppDelegate () <NSTextFieldDelegate, NSUserNotificationCenterDelegate>
 
 
-@property (weak, nonatomic) NSTimer* scrobbleTimer;
-@property (weak, nonatomic) NSTimer* nowPlayingTimer;
+@property (nonatomic) NSTimer* scrobbleTimer;
+@property (nonatomic) NSTimer* nowPlayingTimer;
 
-
-@property (strong, nonatomic) MusicScrobbler *musicScrobbler;
+@property (nonatomic) MusicScrobbler *musicScrobbler;
 
 @property (weak, nonatomic) IBOutlet NSTextField *loginField;
 @property (weak, nonatomic) IBOutlet NSSecureTextField *passwordField;
@@ -29,20 +28,21 @@
 @property (weak, nonatomic) IBOutlet NSButton *logoutButton;
 
 @property (weak, nonatomic) IBOutlet NSView *accountView;
-@property (weak) IBOutlet NSView *loggedInUserView;
-@property (weak) IBOutlet NSView *hotkeyView;
-@property (weak) IBOutlet NSView *generalView;
+@property (weak, nonatomic) IBOutlet NSView *loggedInUserView;
+@property (weak, nonatomic) IBOutlet NSView *hotkeyView;
+@property (weak, nonatomic) IBOutlet NSView *generalView;
 
 @property (weak, nonatomic) IBOutlet NSImageView *userAvatar;
 
 @property (weak, nonatomic) IBOutlet NSButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
+@property (weak, nonatomic) IBOutlet NSProgressIndicator *avatarIndicator;
 
 @property NSTimeInterval scrobbleTime;
-@property int currentViewTag;
-@property (weak) IBOutlet NSToolbarItem *accountToolbarItem;
-@property (weak) IBOutlet NSToolbarItem *hotkeysToolbarItem;
-@property (weak) IBOutlet NSToolbarItem *generalToolbarItem;
+@property (nonatomic) int currentViewTag;
+@property (weak, nonatomic) IBOutlet NSToolbarItem *accountToolbarItem;
+@property (weak, nonatomic) IBOutlet NSToolbarItem *hotkeysToolbarItem;
+@property (weak, nonatomic) IBOutlet NSToolbarItem *generalToolbarItem;
 
 //reachability
 @property (nonatomic) BOOL reachability;
@@ -229,10 +229,15 @@
              //login success handler
              [weakSelf.musicScrobbler logInWithCredentials:result];
              weakSelf.settingsController.username = weakSelf.musicScrobbler.username;
-             
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [weakSelf.avatarIndicator startAnimation:weakSelf];
+             });
              [weakSelf.musicScrobbler.scrobbler getInfoForUserOrNil:self.loginField.stringValue successHandler:^(NSDictionary *result) {
                  [weakSelf setAvatarForUserWithInfo:result];
              } failureHandler:^(NSError *error) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [weakSelf.avatarIndicator stopAnimation:weakSelf];
+                 });
              }];
              weakSelf.accountToolbarItem.tag = 0;
              [weakSelf switchView:weakSelf.accountToolbarItem];
@@ -376,7 +381,7 @@
     }
 }
 
-#pragma User Avatar Method
+#pragma mark - User Avatar Method
 
 -(void)setAvatarForUserWithInfo:(NSDictionary *)userInfo
 {
@@ -388,6 +393,7 @@
         image = avatar;
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.settingsController.userAvatar = avatar;
+            [weakSelf.avatarIndicator stopAnimation:weakSelf];
             weakSelf.userAvatar.image = avatar;
         });
     }
@@ -396,6 +402,7 @@
         self.userAvatar.image = image;
     }
     else {
+        [weakSelf.avatarIndicator startAnimation:weakSelf];
         [self.musicScrobbler.scrobbler getInfoForUserOrNil:self.musicScrobbler.scrobbler.username successHandler:^(NSDictionary *result) {
             if ([result objectForKey:@"image"]) {
                 NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
@@ -406,11 +413,12 @@
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.avatarIndicator stopAnimation:weakSelf];
                     weakSelf.userAvatar.image = self.settingsController.userAvatar;
                 });
             }
         } failureHandler:^(NSError *error) {
-            
+            [weakSelf.avatarIndicator stopAnimation:weakSelf];
         }];
     }
     if (image) {

@@ -13,7 +13,8 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (weak, nonatomic) IBOutlet NSWindow *window;
-@property (weak) IBOutlet MenuController *menuController;
+@property (weak, nonatomic) IBOutlet MenuController *menuController;
+@property (weak, nonatomic) IBOutlet NSToolbar *settingsToolbar;
 
 
 @end
