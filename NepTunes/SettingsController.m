@@ -18,6 +18,9 @@ static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
 static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
+@interface SettingsController ()
+@property (nonatomic, weak) NSUserDefaults *userDefaults;
+@end
 
 @implementation SettingsController
 @synthesize userAvatar = _userAvatar;
@@ -111,9 +114,9 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     if (userAvatar) {
         _userAvatar = userAvatar;
         NSData *imageData = [userAvatar TIFFRepresentation];
-        [[NSUserDefaults standardUserDefaults] setObject:imageData forKey:kUserAvatar];
+        [self.userDefaults setObject:imageData forKey:kUserAvatar];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserAvatar];
+        [self.userDefaults removeObjectForKey:kUserAvatar];
     }
     [self saveSettings];
 }
@@ -121,11 +124,11 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(NSImage *)userAvatar
 {
     if (!_userAvatar) {
-        NSData *imageData = [[NSUserDefaults standardUserDefaults] objectForKey:kUserAvatar];
+        NSData *imageData = [self.userDefaults objectForKey:kUserAvatar];
         _userAvatar = [[NSImage alloc] initWithData:imageData];
         if (!_userAvatar) {
             _userAvatar = [NSImage imageNamed:@"no avatar"];
-            [[NSUserDefaults standardUserDefaults] setObject:[_userAvatar TIFFRepresentation] forKey:kUserAvatar];
+            [self.userDefaults setObject:[_userAvatar TIFFRepresentation] forKey:kUserAvatar];
             [self saveSettings];
         }
     }
@@ -137,9 +140,9 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 {
     if (username) {
         _username = username;
-        [[NSUserDefaults standardUserDefaults] setObject:username forKey:kUsernameKey];
+        [self.userDefaults setObject:username forKey:kUsernameKey];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUsernameKey];
+        [self.userDefaults removeObjectForKey:kUsernameKey];
     }
     [self saveSettings];
 }
@@ -147,7 +150,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(NSString *)username
 {
     if (!_username) {
-        _username = [[NSUserDefaults standardUserDefaults] stringForKey:kUsernameKey];
+        _username = [self.userDefaults stringForKey:kUsernameKey];
     }
     return _username;
 }
@@ -156,14 +159,14 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(void)setLaunchAtLogin:(BOOL)launchAtLogin
 {
     _launchAtLogin = launchAtLogin;
-    [[NSUserDefaults standardUserDefaults] setObject:@(launchAtLogin) forKey:kLaunchAtLogin];
+    [self.userDefaults setObject:@(launchAtLogin) forKey:kLaunchAtLogin];
     [self saveSettings];
 }
 
 -(BOOL)launchAtLogin
 {
     if (!_launchAtLogin) {
-        _launchAtLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:kLaunchAtLogin] boolValue];
+        _launchAtLogin = [[self.userDefaults objectForKey:kLaunchAtLogin] boolValue];
     }
     return _launchAtLogin;
 }
@@ -172,10 +175,10 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(void)setSession:(NSString *)session
 {
     if (session) {
-        _session = session;
-        [[NSUserDefaults standardUserDefaults] setObject:session forKey:kSessionKey];
+        _session = [session copy];
+        [self.userDefaults setObject:session forKey:kSessionKey];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSessionKey];
+        [self.userDefaults removeObjectForKey:kSessionKey];
     }
     [self saveSettings];
 
@@ -184,7 +187,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(NSString *)session
 {
     if (!_session) {
-        _session = [[NSUserDefaults standardUserDefaults] stringForKey:kSessionKey];
+        _session = [[self.userDefaults stringForKey:kSessionKey] copy];
     }
     return _session;
 }
@@ -194,9 +197,9 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 {
     if (numberOfTracksInRecent) {
         _numberOfTracksInRecent = numberOfTracksInRecent;
-        [[NSUserDefaults standardUserDefaults] setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
+        [self.userDefaults setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kNumberOfTracksInRecent];
+        [self.userDefaults removeObjectForKey:kNumberOfTracksInRecent];
     }
     [self saveSettings];
 }
@@ -204,7 +207,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(NSNumber *)numberOfTracksInRecent
 {
     if (!_numberOfTracksInRecent) {
-        _numberOfTracksInRecent = [[NSUserDefaults standardUserDefaults] objectForKey:kNumberOfTracksInRecent];
+        _numberOfTracksInRecent = [self.userDefaults objectForKey:kNumberOfTracksInRecent];
     }
     return _numberOfTracksInRecent;
 }
@@ -212,7 +215,15 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 #pragma mark - Save
 -(void)saveSettings
 {
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.userDefaults synchronize];
+}
+
+-(NSUserDefaults *)userDefaults
+{
+    if (!_userDefaults) {
+        _userDefaults = [NSUserDefaults standardUserDefaults];
+    }
+    return _userDefaults;
 }
 
 

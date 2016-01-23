@@ -180,6 +180,8 @@
 {
     Song *song = self.musicScrobbler.currentTrack;
     if ([self.recentTracksController addSongToRecentMenu:song]) {
+        self.recentTracksMenuItem.enabled = YES;
+
         if (self.recentTracksMenu.numberOfItems < [SettingsController sharedSettings].numberOfTracksInRecent.intValue) {
             NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ by %@", nil), song.trackName, song.artist] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
             menuItem.target = self;
