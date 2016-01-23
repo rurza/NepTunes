@@ -18,7 +18,10 @@
 -(IBAction)loveSong:(id)sender;
 -(IBAction)showUserProfile:(id)sender;
 -(IBAction)showSimilarArtists:(id)sender;
+-(IBAction)openPreferences:(id)sender;
 -(void)changeState;
 -(void)prepareRecentItemsMenu;
+-(void)installStatusBar;
+-(void)removeStatusBarItem;
 
 @end

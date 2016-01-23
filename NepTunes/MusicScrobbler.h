@@ -14,10 +14,8 @@
 @class SavedSong;
 
 @protocol MusicScrobblerDelegate <NSObject>
-
 -(void)songWasSuccessfullyScrobbled:(Song *)song;
 -(void)songWasNotScrobbled:(Song *)song;
-
 @end
 
 @interface MusicScrobbler : NSObject
@@ -30,8 +28,8 @@
 @property (nonatomic) NSString *username;
 @property (nonatomic) Song *currentTrack;
 @property (nonatomic, weak) id<MusicScrobblerDelegate>delegate;
-+(MusicScrobbler *)sharedScrobbler;
 
++(MusicScrobbler *)sharedScrobbler;
 
 /// sends current track to Last.fm as a scrobbled
 -(void)scrobbleCurrentTrack;
@@ -45,7 +43,5 @@
 
 -(void)logInWithCredentials:(NSDictionary *)info;
 -(void)logOut;
-
-//offline scrobbler
 
 @end

@@ -218,16 +218,16 @@
 			isa = PBXGroup;
 			children = (
 				5BAE70F31C4EC91500779081 /* Hotkeys */,
+				5B427BDD1C52B4B700EA1D4A /* Menu */,
+				5BAE71041C5019A200779081 /* Song */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
-				5B427BDD1C52B4B700EA1D4A /* Menu */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
 				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
 				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
 				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
 				5BAE71061C528D1000779081 /* SettingsController.h */,
 				5BAE71071C528D1000779081 /* SettingsController.m */,
-				5BAE71041C5019A200779081 /* Song */,
 				5BAE70FD1C50058200779081 /* Reachability */,
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,

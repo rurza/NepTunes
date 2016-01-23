@@ -33,11 +33,9 @@
 {
     self.musicScrobbler = [MusicScrobbler sharedScrobbler];
     //System status bar icon
-    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    NSImage *icon = [NSImage imageNamed:@"statusIcon"];
-    [icon setTemplate:YES];
-    self.statusItem.image = icon;
-    self.statusItem.menu = self.statusMenu;
+    if (![SettingsController sharedSettings].hideStatusBarIcon) {
+        [self installStatusBar];
+    }
     [self prepareRecentItemsMenu];
     //first launch
     if (!self.musicScrobbler.scrobbler.session) {
@@ -45,7 +43,20 @@
     }
 }
 
+-(void)installStatusBar
+{
+    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    NSImage *icon = [NSImage imageNamed:@"statusIcon"];
+    [icon setTemplate:YES];
+    self.statusItem.image = icon;
+    self.statusItem.menu = self.statusMenu;
+}
 
+-(void)removeStatusBarItem
+{
+    [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
+    self.statusItem = nil;
+}
 
 #pragma mark - Last.fm related
 

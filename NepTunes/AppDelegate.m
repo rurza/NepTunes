@@ -60,12 +60,18 @@
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+-(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
     [self setupNotifications];
     [self setupReachability];
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
     [self updateTrackInfo:nil];
+}
+
+-(void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    [self.menuController openPreferences:nil];
 }
 
 -(void)setupNotifications
@@ -75,7 +81,6 @@
                                                             name:@"com.apple.iTunes.playerInfo"
                                                           object:nil];
     
-        //NSUserNotificationCenter
     [NSUserNotificationCenter defaultUserNotificationCenter].delegate = self;
 
 }
@@ -269,8 +274,10 @@
                  NSAlert *alert = [[NSAlert alloc] init];
                  alert.alertStyle = NSCriticalAlertStyle;
                  alert.informativeText = [error localizedDescription];
-                 alert.messageText = @"Try again...";
-                 [alert runModal];
+                 alert.messageText = NSLocalizedString(@"Try again...", nil);
+                 [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                     [alert.window close];
+                 }];
              }
          }];
     }

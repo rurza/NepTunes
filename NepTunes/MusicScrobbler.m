@@ -21,8 +21,6 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 @property (nonatomic) NSUInteger nowPlayingTryCounter;
 @property (nonatomic) NSUInteger loveSongTryCounter;
 
-@property (nonatomic) BOOL offlineScrobbler;
-
 @end
 
 @implementation MusicScrobbler
@@ -35,6 +33,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         sharedScrobbler = [[MusicScrobbler alloc] init];
         sharedScrobbler.lastfmCache = [[LastFmCache alloc] init];
         sharedScrobbler.username = [SettingsController sharedSettings].username;
+        [OfflineScrobbler sharedInstance];
     });
     return sharedScrobbler;
 }
@@ -167,6 +166,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         _scrobbler.username = [SettingsController sharedSettings].username;
         _scrobbler.cacheDelegate = self.lastfmCache;
         _scrobbler.timeoutInterval = 20;
+//        [OfflineScrobbler sharedInstance].areWeOffline;
     }
     return _scrobbler;
 }

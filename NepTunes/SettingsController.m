@@ -9,17 +9,20 @@
 #import "SettingsController.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "MenuController.h"
+#import "AppDelegate.h"
 
 
 static NSString *const kUserAvatar = @"userAvatar";
 static NSString *const kLaunchAtLogin = @"launchAtLogin";
 static NSString *const kNumberOfTracksInRecent = @"numberOfTracksInRecent";
+static NSString *const kHideStatusBarIcon = @"hideStatusBarIcon";
 static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
 static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 
 @interface SettingsController ()
 @property (nonatomic, weak) NSUserDefaults *userDefaults;
+@property (nonatomic, weak) NSWindow *alertWindow;
 @end
 
 @implementation SettingsController
@@ -28,31 +31,54 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 @synthesize launchAtLogin = _launchAtLogin;
 @synthesize session = _session;
 @synthesize numberOfTracksInRecent = _numberOfTracksInRecent;
+@synthesize hideStatusBarIcon = _hideStatusBarIcon;
 
 #pragma mark - Initialization
-+ (instancetype)sharedSettings		{  __strong static id _sharedInstance = nil;     static dispatch_once_t onlyOnce;
-    dispatch_once(&onlyOnce, ^{   _sharedInstance = [[self _alloc] _init]; }); return _sharedInstance;
++ (instancetype)sharedSettings
+{
+    __strong static id _sharedInstance = nil;
+    static dispatch_once_t onlyOnce;
+    dispatch_once(&onlyOnce, ^{
+        _sharedInstance = [[self _alloc] _init];
+        
+    });
+    return _sharedInstance;
 }
+
 + (id) allocWithZone:(NSZone*)z { return [self sharedSettings];              }
 + (id) alloc                    { return [self sharedSettings];              }
-- (id) init                     { return  self;}
+- (id) init                     { [self registerDefaultsSettings]; return self;}
 + (id)_alloc                    { return [super allocWithZone:NULL]; }
 - (id)_init                     { return [super init];               }
 
 
 -(void)awakeFromNib
 {
-    [self updateLaunchAtLoginCheckbox];
+    [self saveSettings];
+    [self updateSettingsPane];
     [self terminateHelperApp];
     [self updateNumberOfRecentItemsPopUp];
 }
 
--(void)updateLaunchAtLoginCheckbox
+-(void)registerDefaultsSettings
+{
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideStatusBarIcon: @NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kNumberOfTracksInRecent: @5}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kLaunchAtLogin: @NO}];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void)updateSettingsPane
 {
     if (self.launchAtLogin) {
         self.launchAtLoginCheckbox.state =  NSOnState;
     } else {
         self.launchAtLoginCheckbox.state =  NSOffState;
+    }
+    if (self.hideStatusBarIcon) {
+        self.hideStatusBarCheckbox.state = NSOnState;
+    } else {
+        self.hideStatusBarCheckbox.state = NSOffState;
     }
 }
 
@@ -60,7 +86,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 {
     [self.numberOfRecentItems selectItemWithTag:self.numberOfTracksInRecent.integerValue];
 }
-
 
 -(IBAction)toggleLaunchAtLogin:(NSButton *)sender
 {
@@ -79,6 +104,42 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             self.launchAtLogin = NO;
         }
     }
+}
+
+-(IBAction)toggleHideStatusBarIcon:(NSButton *)sender
+{
+    self.hideStatusBarIcon = sender.state;
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (sender.state) {
+            [weakSelf.menuController removeStatusBarItem];
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
+            alert.informativeText = NSLocalizedString(@"To restore NepTunes to the menu bar, click its icon in Launchpad or the Dock, or double-click it in Finder.", nil);
+            alert.alertStyle = NSInformationalAlertStyle;
+            [alert addButtonWithTitle:@"OK"];
+            NSButton *restoreNowButton = [alert addButtonWithTitle:NSLocalizedString(@"Restore now", nil)];
+            restoreNowButton.target = weakSelf;
+            restoreNowButton.action = @selector(restoreStatusBarIcon);
+            weakSelf.alertWindow = alert.window;
+            [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
+                [weakSelf.alertWindow close];
+            }];
+        } else {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf.menuController installStatusBar];
+            });
+        }
+    });
+}
+
+-(void)restoreStatusBarIcon
+{
+    self.hideStatusBarIcon = NO;
+    [self.menuController installStatusBar];
+    self.alertWindow.releasedWhenClosed = YES;
+    [self.alertWindow close];
+    [self.hideStatusBarCheckbox setState:NSOffState];
 }
 
 -(void)terminateHelperApp
@@ -105,8 +166,6 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     [self.menuController prepareRecentItemsMenu];
 }
 
-
-
 #pragma mark - Setters & Getters
 #pragma mark   Avatar
 -(void)setUserAvatar:(NSImage *)userAvatar
@@ -116,6 +175,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
         NSData *imageData = [userAvatar TIFFRepresentation];
         [self.userDefaults setObject:imageData forKey:kUserAvatar];
     } else {
+        _userAvatar = nil;
         [self.userDefaults removeObjectForKey:kUserAvatar];
     }
     [self saveSettings];
@@ -142,6 +202,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
         _username = username;
         [self.userDefaults setObject:username forKey:kUsernameKey];
     } else {
+        _username = nil;
         [self.userDefaults removeObjectForKey:kUsernameKey];
     }
     [self saveSettings];
@@ -178,6 +239,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
         _session = [session copy];
         [self.userDefaults setObject:session forKey:kSessionKey];
     } else {
+        _session = nil;
         [self.userDefaults removeObjectForKey:kSessionKey];
     }
     [self saveSettings];
@@ -199,6 +261,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
         _numberOfTracksInRecent = numberOfTracksInRecent;
         [self.userDefaults setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
     } else {
+        _numberOfRecentItems = nil;
         [self.userDefaults removeObjectForKey:kNumberOfTracksInRecent];
     }
     [self saveSettings];
@@ -210,6 +273,22 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
         _numberOfTracksInRecent = [self.userDefaults objectForKey:kNumberOfTracksInRecent];
     }
     return _numberOfTracksInRecent;
+}
+
+#pragma mark   Hide status bar icon
+-(BOOL)hideStatusBarIcon
+{
+    if (!_hideStatusBarIcon) {
+        _hideStatusBarIcon = [[self.userDefaults objectForKey:kHideStatusBarIcon] boolValue];
+    }
+    return _hideStatusBarIcon;
+}
+
+-(void)setHideStatusBarIcon:(BOOL)hideStatusBarIcon
+{
+    _hideStatusBarIcon = hideStatusBarIcon;
+    [self.userDefaults setObject:@(hideStatusBarIcon) forKey:kHideStatusBarIcon];
+    [self saveSettings];
 }
 
 #pragma mark - Save

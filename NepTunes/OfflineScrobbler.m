@@ -61,7 +61,8 @@
 {
     self = [super init];
     if (self) {
-         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:FXReachabilityStatusDidChangeNotification object:nil];
+        [self preparePropertyList];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:FXReachabilityStatusDidChangeNotification object:nil];
     }
     return self;
 }
@@ -115,7 +116,6 @@
         }
     } else {
         self.areWeOffline = YES;
-        [self preparePropertyList];
     }
 }
 
@@ -159,9 +159,5 @@
 }
 
 
-
--(void)dealloc
-{
-}
 
 @end
