@@ -683,7 +683,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="preferencesWindowSize" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="215"/>
@@ -775,7 +775,7 @@
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bnA-Nm-ZtK">
-                    <rect key="frame" x="14" y="40" width="225" height="32"/>
+                    <rect key="frame" x="14" y="45" width="225" height="32"/>
                     <buttonCell key="cell" type="push" title="Log in" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AuT-5i-jvX">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -788,7 +788,7 @@ DQ
                     </connections>
                 </button>
                 <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kA7-XP-E0s">
-                    <rect key="frame" x="20" y="94" width="213" height="22"/>
+                    <rect key="frame" x="20" y="93" width="213" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Last.fm password" usesSingleLineMode="YES" bezelStyle="round" id="s84-I8-Vac">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -809,7 +809,7 @@ DQ
                     <rect key="frame" x="118" y="97" width="16" height="16"/>
                 </progressIndicator>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y0d-KG-pj8">
-                    <rect key="frame" x="20" y="5" width="213" height="32"/>
+                    <rect key="frame" x="20" y="10" width="213" height="32"/>
                     <buttonCell key="cell" type="bevel" title="Don't have an account? Join!" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Pz5-Ta-dSB">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" size="12" name="HelveticaNeue"/>
@@ -846,7 +846,7 @@ DQ
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I7U-2x-JwT">
                     <rect key="frame" x="18" y="21" width="132" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similiar artists:" id="ES0-8e-W0q">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similar artists:" id="ES0-8e-W0q">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -857,7 +857,7 @@ DQ
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mlv-Ke-0SR">
                     <rect key="frame" x="18" y="103" width="72" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love song:" id="0UW-9q-clF">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love track:" id="0UW-9q-clF">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -982,7 +982,7 @@ DQ
                         <action selector="toggleHideStatusBarIcon:" target="tLX-PG-6oy" id="0gx-El-AFC"/>
                     </connections>
                 </button>
-                <button toolTip="When there is no user when NepTunes launched it open preferences window." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FGN-yW-XXw">
+                <button toolTip="Automatically open preferences when there is no Last.fm user and app was launched." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FGN-yW-XXw">
                     <rect key="frame" x="18" y="92" width="343" height="18"/>
                     <buttonCell key="cell" type="check" title="Open preferences when no Last.fm user is logged in" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="LIa-tR-7Al">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>

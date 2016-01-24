@@ -8,6 +8,7 @@
 
 #import "RecentTracksController.h"
 #import "Song.h"
+#import "SettingsController.h"
 
 @interface RecentTracksController ()
 @property (nonatomic, readwrite) NSMutableArray *songs;
@@ -39,18 +40,33 @@
 -(BOOL)addSongToRecentMenu:(Song *)song
 {
     if (song) {
-        if (![self.songs containsObject:song]) {
-                [self.songs insertObject:song atIndex:0];
-                if (self.songs.count>15) {
-                    [self.songs removeLastObject];
-                }
-                [self save];
-                return YES;
+        if (![self.songs containsObject:song] || ![self isTrackIsInRecentMenu:song]) {
+            [self.songs insertObject:song atIndex:0];
+            if (self.songs.count>15) {
+                [self.songs removeLastObject];
+            }
+            [self save];
+            return YES;
         } else return NO;
     }
     else return NO;
 }
 
+-(BOOL)isTrackIsInRecentMenu:(Song *)song
+{
+    NSInteger numberOfItemsInRecentMenu = [SettingsController sharedSettings].numberOfTracksInRecent.integerValue;
+    NSRange range;
+    if (self.songs.count >= numberOfItemsInRecentMenu) {
+        range = NSMakeRange(0, numberOfItemsInRecentMenu);
+    } else {
+        range = NSMakeRange(0, self.songs.count);
+    }
+    NSArray *subArray = [self.songs subarrayWithRange:range];
+    if ([subArray containsObject:song]) {
+        return YES;
+    }
+    return NO;
+}
 
 #pragma mark - Private
 -(void)preparePropertyList

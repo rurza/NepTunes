@@ -474,14 +474,14 @@
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     if (!reachable && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.settingsController.session) {
         notification.title = NSLocalizedString(@"Yikes!", nil);
-        notification.subtitle = NSLocalizedString(@"Looks like there is no Internet connection.", nil);
+        notification.subtitle = NSLocalizedString(@"Looks like there is no connection to the Internet.", nil);
         notification.informativeText = NSLocalizedString(@"Don't worry, I'm going to scrobble anyway.", nil);
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
         self.reachability = NO;
     } else if (reachable && !self.reachability && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.offlineScrobbler.songs.count && self.settingsController.session) {
-        notification.title = NSLocalizedString(@"Great!", nil);
-        notification.subtitle = NSLocalizedString(@"Looks like we have a connection.", nil);
+        notification.title = NSLocalizedString(@"Yay! 😁", nil);
+        notification.subtitle = NSLocalizedString(@"Your Mac is online now.", nil);
         notification.informativeText = NSLocalizedString(@"Now I'm going to scrobble tracks played offline.", nil);
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
