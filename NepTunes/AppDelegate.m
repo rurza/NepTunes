@@ -71,7 +71,9 @@
 
 -(void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    [self.menuController openPreferences:nil];
+    if (self.settingsController.hideStatusBarIcon) {
+        [self.menuController openPreferences:nil];
+    }
 }
 
 -(void)setupNotifications

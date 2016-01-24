@@ -105,7 +105,6 @@
 -(IBAction)openPreferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
     [self.appDelegate.window makeKeyAndOrderFront:nil];
-//    [self.appDelegate.settingsToolbar setSelectedItemIdentifier:self.appDelegate.lastChosenToolbarIdentifier];
 }
 
 #pragma mark Update menu
