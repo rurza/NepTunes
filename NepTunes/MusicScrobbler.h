@@ -33,7 +33,7 @@
 
 /// sends current track to Last.fm as a scrobbled
 -(void)scrobbleCurrentTrack;
--(void)scrobbleTrack:(Song *)song atTimestamp:(NSTimeInterval)timestamp;
+-(void)scrobbleOfflineTrack:(Song *)song atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter;
 -(void)scrobbleOfflineTrack:(SavedSong *)song;
 
 /// sends current track to Last.fm as a "now playing"

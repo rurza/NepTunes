@@ -12,6 +12,7 @@
 #import "Song.h"
 #import "RecentTracksController.h"
 #import "SettingsController.h"
+#import "FXReachability.h"
 
 @interface MenuController ()
 
@@ -41,6 +42,8 @@
     if (!self.musicScrobbler.scrobbler.session) {
         [self openPreferences:self];
     }
+    //Are we offline?
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu:) name:FXReachabilityStatusDidChangeNotification object:nil];
 }
 
 -(void)installStatusBar
@@ -56,6 +59,18 @@
 {
     [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
     self.statusItem = nil;
+}
+
+
+#pragma mark - Offline
+-(void)updateMenu:(NSNotification *)note
+{
+    BOOL reachable = [FXReachability isReachable];
+    if (reachable) {
+        self.loveSongMenuTitle.enabled = YES;
+    } else {
+        self.loveSongMenuTitle.enabled = NO;
+    }
 }
 
 #pragma mark - Last.fm related
