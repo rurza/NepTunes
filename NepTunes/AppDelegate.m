@@ -13,6 +13,7 @@
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
 
+static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 @interface AppDelegate () <NSTextFieldDelegate, NSUserNotificationCenterDelegate>
 
@@ -104,12 +105,14 @@
         self.accountToolbarItem.tag = 0;
         [[self window] setContentSize:[self.loggedInUserView frame].size];
         [[[self window] contentView ] addSubview:self.loggedInUserView];
+        [self.settingsToolbar setSelectedItemIdentifier:kAccountItemToolbarIdentifier];
         [self.logoutButton setTitle:[NSString stringWithFormat:@"Log out %@", self.musicScrobbler.scrobbler.username]];
         [self setAvatarForUserWithInfo:nil];
     }
     else {
         [[self window] setContentSize:[self.accountView frame].size];
         [[[self window] contentView ] addSubview:self.accountView];
+        [self.settingsToolbar setSelectedItemIdentifier:kAccountItemToolbarIdentifier];
         [self.loginButton setEnabled:NO];
         self.accountToolbarItem.tag = 1;
         [self switchView:self.accountToolbarItem];

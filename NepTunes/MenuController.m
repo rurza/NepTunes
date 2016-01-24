@@ -86,7 +86,8 @@
 
 
 
--(IBAction)showSimilarArtists:(id)sender {
+-(IBAction)showSimilarArtists:(id)sender
+{
     NSString *str = self.musicScrobbler.currentTrack.artist;
     NSString *url = [str stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     NSData *decode = [url dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -98,11 +99,13 @@
 }
 
 
--(IBAction)quit:(id)sender {
+-(IBAction)quit:(id)sender
+{
     [[NSApplication sharedApplication] terminate:self];
 }
 
--(IBAction)openPreferences:(id)sender {
+-(IBAction)openPreferences:(id)sender
+{
     [NSApp activateIgnoringOtherApps:YES];
     [self.appDelegate.window makeKeyAndOrderFront:nil];
 }

@@ -79,9 +79,11 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             if ([OfflineScrobbler sharedInstance].areWeOffline) {
                 [[OfflineScrobbler sharedInstance] saveSong:weakSelf.currentTrack];
             } else if (error.code == -1001) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * tryCounter * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
                         [weakSelf scrobbleTrack:track atTimestamp:timestamp withTryCounter:(tryCounter + 1)];
+                    } else {
+                        NSLog(@"Error, track not scrobbled: %@", [error localizedDescription]);
                     }
                 });
             }
@@ -107,7 +109,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             } failureHandler:^(NSError *error) {
                 if ([OfflineScrobbler sharedInstance].areWeOffline) {
                 } else if (error.code == -1001) {
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * tryCounter * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         if (tryCounter <= 3) {
                             [weakSelf nowPLayingTrack:track withTryCounter:(tryCounter + 1)];
                         }
@@ -133,7 +135,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             completion();
         } failureHandler:^(NSError *error) {
             if (error.code == -1001 || error.code == 16) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * tryCounter * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
                         [weakSelf loveTrack:track withTryCounter:(tryCounter + 1) withCompletionHandler:completion];
                     } else {
@@ -149,7 +151,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = NSLocalizedString(@"Houston, we got a problem!", nil);
-    notification.subtitle = error.localizedDescription;
+    notification.informativeText = [NSString stringWithFormat:@"%@ %@", error.localizedDescription, @"Maybe Last.fm servers are down?"];
     [notification setDeliveryDate:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
     [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
 }
