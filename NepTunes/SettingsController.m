@@ -118,27 +118,27 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 {
     self.hideStatusBarIcon = sender.state;
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
         if (sender.state) {
-            [weakSelf.menuController removeStatusBarItem];
-            NSAlert *alert = [[NSAlert alloc] init];
+            [self.menuController removeStatusBarItem];
+            __block NSAlert *alert = [[NSAlert alloc] init];
+            alert.window.releasedWhenClosed = YES;
             alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
             alert.informativeText = NSLocalizedString(@"To restore NepTunes to the menu bar, click its icon in Launchpad or double-click it in Finder.", nil);
             alert.alertStyle = NSInformationalAlertStyle;
             [alert addButtonWithTitle:@"OK"];
             NSButton *restoreNowButton = [alert addButtonWithTitle:NSLocalizedString(@"Restore now", nil)];
-            restoreNowButton.target = weakSelf;
+            restoreNowButton.target = self;
             restoreNowButton.action = @selector(restoreStatusBarIcon);
-            weakSelf.alertWindow = alert.window;
+            self.alertWindow = alert.window;
+            [self.menuController installStatusBar];
             [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
-                [weakSelf.alertWindow close];
+                [alert.window close];
             }];
         } else {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [weakSelf.menuController installStatusBar];
             });
         }
-    });
 }
 
 -(IBAction)toggleOpenPreferencesWhenThereIsNoUser:(NSButton *)sender
@@ -150,8 +150,7 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 {
     self.hideStatusBarIcon = NO;
     [self.menuController installStatusBar];
-    self.alertWindow.releasedWhenClosed = YES;
-    [self.alertWindow close];
+    [((AppDelegate *)[NSApplication sharedApplication].delegate).window endSheet:self.alertWindow];
     [self.hideStatusBarCheckbox setState:NSOffState];
 }
 
