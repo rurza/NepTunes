@@ -130,7 +130,6 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
             restoreNowButton.target = self;
             restoreNowButton.action = @selector(restoreStatusBarIcon);
             self.alertWindow = alert.window;
-            [self.menuController installStatusBar];
             [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
                 [alert.window close];
             }];
