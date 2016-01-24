@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet NSWindow *window;
 @property (weak, nonatomic) IBOutlet MenuController *menuController;
 @property (weak, nonatomic) IBOutlet NSToolbar *settingsToolbar;
-
+@property (nonatomic) NSString *lastChosenToolbarIdentifier;
 
 @end
 

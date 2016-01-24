@@ -213,7 +213,13 @@
 /*----------------------------------------------------------------------------------------------------------*/
 #pragma mark - Managing account
 
-- (IBAction)loginClicked:(id)sender {
+-(IBAction)loginClicked:(id)sender
+{
+    [self loginWithTryCounter:1];
+}
+
+-(void)loginWithTryCounter:(NSUInteger)tryCounter
+{
     if (!([self.passwordField.stringValue isEqualTo: @""] || [self.loginField.stringValue isEqualTo: @""]))
     {
         [self.indicator startAnimation:self];
@@ -260,14 +266,16 @@
              
          } failureHandler:^(NSError *error) {
              if (error.code == -1001) {
-                 [weakSelf loginClicked:weakSelf];
+                 if (tryCounter <= 3) {
+                     [weakSelf loginWithTryCounter:(tryCounter + 1)];
+                 }
              }
              else {
                  [weakSelf.indicator stopAnimation:weakSelf];
                  
                  weakSelf.passwordField.stringValue = @"";
                  [weakSelf.loginButton setTitle:@"Log in"];
-                 [weakSelf.loginButton setEnabled:YES];
+                 [weakSelf.loginButton setEnabled:NO];
                  weakSelf.loginField.hidden = NO;
                  weakSelf.passwordField.hidden = NO;
                  [weakSelf.createAccountButton setHidden:NO];
@@ -293,13 +301,12 @@
     
     self.accountToolbarItem.tag = 1;
     [self switchView:self.accountToolbarItem];
-    
 }
 
 
-- (IBAction)createNewLastFmAccountInWebBrowser:(id)sender {
+- (IBAction)createNewLastFmAccountInWebBrowser:(id)sender
+{
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://secure.last.fm/join"]];
-    
 }
 
 /*----------------------------------------------------------------------------------------------------------*/
@@ -351,15 +358,15 @@
 }
 
 
-
 -(IBAction)switchView:(id)sender {
     
     int senderTag = (int)[sender tag];
     
     NSView *view = [self viewForTag:senderTag];
     NSView *previousView = [self viewForTag:self.currentViewTag];
+
     self.currentViewTag = senderTag;
-    
+
     NSRect newFrame = [self newFrameForNewContentView:view];
     [NSAnimationContext beginGrouping];
     
@@ -372,7 +379,28 @@
     [self.window recalculateKeyViewLoop];
 }
 
-
+-(NSString *)lastChosenToolbarIdentifier
+{
+    NSString *identifier;
+    switch (self.currentViewTag) {
+        case 0:
+            identifier = @"Account";
+            break;
+        case 1:
+            identifier = @"Account";
+            break;
+        case 2:
+            identifier = @"General";
+            break;
+        case 3:
+            identifier = @"Hotkeys";
+            break;
+        default:
+            identifier = @"Account";
+            break;
+    }
+    return identifier;
+}
 
 #pragma mark - NSTextField Delegate
 
@@ -407,6 +435,8 @@
     else if (self.settingsController.userAvatar) {
         image = self.settingsController.userAvatar;
         self.userAvatar.image = image;
+        [self.avatarIndicator stopAnimation:self];
+
     }
     else {
         [weakSelf.avatarIndicator startAnimation:weakSelf];
@@ -442,14 +472,14 @@
 {
     BOOL reachable = [FXReachability isReachable];
     NSUserNotification *notification = [[NSUserNotification alloc] init];
-    if (!reachable && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying) {
+    if (!reachable && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.settingsController.session) {
         notification.title = NSLocalizedString(@"Yikes!", nil);
         notification.subtitle = NSLocalizedString(@"Looks like there is no Internet connection.", nil);
         notification.informativeText = NSLocalizedString(@"Don't worry, I'm going to scrobble anyway.", nil);
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
         self.reachability = NO;
-    } else if (reachable && !self.reachability && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying) {
+    } else if (reachable && !self.reachability && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.offlineScrobbler.songs.count && self.settingsController.session) {
         notification.title = NSLocalizedString(@"Great!", nil);
         notification.subtitle = NSLocalizedString(@"Looks like we have a connection.", nil);
         notification.informativeText = NSLocalizedString(@"Now I'm going to scrobble tracks played offline.", nil);

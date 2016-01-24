@@ -19,6 +19,7 @@ static NSString *const kHideStatusBarIcon = @"hideStatusBarIcon";
 static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
 static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
+static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 
 @interface SettingsController ()
 @property (nonatomic, weak) NSUserDefaults *userDefaults;
@@ -32,6 +33,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 @synthesize session = _session;
 @synthesize numberOfTracksInRecent = _numberOfTracksInRecent;
 @synthesize hideStatusBarIcon = _hideStatusBarIcon;
+@synthesize openPreferencesWhenThereIsNoUser = _openPreferencesWhenThereIsNoUser;
 
 #pragma mark - Initialization
 + (instancetype)sharedSettings
@@ -65,6 +67,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideStatusBarIcon: @NO}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kNumberOfTracksInRecent: @5}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kLaunchAtLogin: @NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kOpenPreferencesAtLogin: @YES}];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -80,6 +83,11 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     } else {
         self.hideStatusBarCheckbox.state = NSOffState;
     }
+    if (self.openPreferencesWhenThereIsNoUser) {
+        self.openPreferencesWhenThereIsNoUserCheckbox.state = NSOnState;
+    } else {
+        self.openPreferencesWhenThereIsNoUserCheckbox.state = NSOffState;
+    }
 }
 
 -(void)updateNumberOfRecentItemsPopUp
@@ -90,7 +98,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 -(IBAction)toggleLaunchAtLogin:(NSButton *)sender
 {
     if (sender.state) { // ON
-        if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, YES)) {
+        if (!SMLoginItemSetEnabled((__bridge CFStringRef)kHelperAppBundle, YES)) {
             sender.state = NSOffState;
         } else {
             self.launchAtLogin = YES;
@@ -98,7 +106,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
     }
     if (!sender.state) { // OFF
         // Turn off launch at login
-        if (!SMLoginItemSetEnabled ((__bridge CFStringRef)kHelperAppBundle, NO)) {
+        if (!SMLoginItemSetEnabled((__bridge CFStringRef)kHelperAppBundle, NO)) {
             sender.state = NSOnState;
         } else {
             self.launchAtLogin = NO;
@@ -115,7 +123,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             [weakSelf.menuController removeStatusBarItem];
             NSAlert *alert = [[NSAlert alloc] init];
             alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
-            alert.informativeText = NSLocalizedString(@"To restore NepTunes to the menu bar, click its icon in Launchpad or the Dock, or double-click it in Finder.", nil);
+            alert.informativeText = NSLocalizedString(@"To restore NepTunes to the menu bar, click its icon in Launchpad or double-click it in Finder.", nil);
             alert.alertStyle = NSInformationalAlertStyle;
             [alert addButtonWithTitle:@"OK"];
             NSButton *restoreNowButton = [alert addButtonWithTitle:NSLocalizedString(@"Restore now", nil)];
@@ -131,6 +139,11 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
             });
         }
     });
+}
+
+-(IBAction)toggleOpenPreferencesWhenThereIsNoUser:(NSButton *)sender
+{
+    self.openPreferencesWhenThereIsNoUser = sender.state;
 }
 
 -(void)restoreStatusBarIcon
@@ -288,6 +301,22 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 {
     _hideStatusBarIcon = hideStatusBarIcon;
     [self.userDefaults setObject:@(hideStatusBarIcon) forKey:kHideStatusBarIcon];
+    [self saveSettings];
+}
+
+#pragma mark   Open preferences
+-(BOOL)openPreferencesWhenThereIsNoUser
+{
+    if (!_openPreferencesWhenThereIsNoUser) {
+        _openPreferencesWhenThereIsNoUser = [[self.userDefaults objectForKey:kOpenPreferencesAtLogin] boolValue];
+    }
+    return _openPreferencesWhenThereIsNoUser;
+}
+
+-(void)setOpenPreferencesWhenThereIsNoUser:(BOOL)openPreferencesWhenThereIsNoUser
+{
+    _openPreferencesWhenThereIsNoUser = openPreferencesWhenThereIsNoUser;
+    [self.userDefaults setObject:@(openPreferencesWhenThereIsNoUser) forKey:kOpenPreferencesAtLogin];
     [self saveSettings];
 }
 

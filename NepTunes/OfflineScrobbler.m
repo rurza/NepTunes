@@ -10,9 +10,10 @@
 #import "FXReachability.h"
 #import "MusicScrobbler.h"
 #import "SavedSong.h"
+#import "SettingsController.h"
 
 @interface OfflineScrobbler ()
-@property (nonatomic) NSMutableArray *songs;
+@property (nonatomic, readwrite) NSMutableArray *songs;
 @property (nonatomic) NSOperationQueue *offlineScrobblerOperationQueue;
 @end
 
@@ -121,27 +122,29 @@
 
 -(void)tryToScrobbleTracks
 {
-    __weak typeof(self) weakSelf = self;
-    NSMutableArray *tempArray = [self.songs copy];
-    [tempArray enumerateObjectsUsingBlock:^(SavedSong * _Nonnull savedSong, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSBlockOperation *scrobbleTrack = [NSBlockOperation blockOperationWithBlock:^{
-            [[MusicScrobbler sharedScrobbler] scrobbleOfflineTrack:savedSong];
-        }];
-        [weakSelf.offlineScrobblerOperationQueue addOperation:scrobbleTrack];
-        if (idx == tempArray.count - 1) {
-            NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
-                [weakSelf sendNotificationToUserThatAllSongsAreScrobbled];
+    if ([SettingsController sharedSettings].session) {
+        __weak typeof(self) weakSelf = self;
+        NSMutableArray *tempArray = [self.songs copy];
+        [tempArray enumerateObjectsUsingBlock:^(SavedSong * _Nonnull savedSong, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSBlockOperation *scrobbleTrack = [NSBlockOperation blockOperationWithBlock:^{
+                [[MusicScrobbler sharedScrobbler] scrobbleOfflineTrack:savedSong];
             }];
-            [weakSelf.offlineScrobblerOperationQueue addOperation:sendNotification];
-        }
-    }];
+            [weakSelf.offlineScrobblerOperationQueue addOperation:scrobbleTrack];
+            if (idx == tempArray.count - 1) {
+                NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
+                    [weakSelf sendNotificationToUserThatAllSongsAreScrobbled];
+                }];
+                [weakSelf.offlineScrobblerOperationQueue addOperation:sendNotification];
+            }
+        }];
+    }
 }
 
 -(void)sendNotificationToUserThatAllSongsAreScrobbled
 {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = NSLocalizedString(@"Woohoo!", nil);
-    notification.subtitle = NSLocalizedString(@"All tracks seems scrobbled", nil);
+    notification.subtitle = NSLocalizedString(@"All tracks listened offline are scrobbled!", nil);
     [notification setDeliveryDate:[NSDate dateWithTimeInterval:5 sinceDate:[NSDate date]]];
     [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
 }

@@ -39,7 +39,7 @@
     }
     [self prepareRecentItemsMenu];
     //first launch
-    if (!self.musicScrobbler.scrobbler.session) {
+    if (!self.musicScrobbler.scrobbler.session && [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser) {
         [self openPreferences:self];
     }
     //Are we offline?
@@ -61,17 +61,6 @@
     self.statusItem = nil;
 }
 
-
-#pragma mark - Offline
--(void)updateMenu:(NSNotification *)note
-{
-    BOOL reachable = [FXReachability isReachable];
-    if (reachable) {
-        self.loveSongMenuTitle.enabled = YES;
-    } else {
-        self.loveSongMenuTitle.enabled = NO;
-    }
-}
 
 #pragma mark - Last.fm related
 
@@ -116,7 +105,7 @@
 -(IBAction)openPreferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
     [self.appDelegate.window makeKeyAndOrderFront:nil];
-    [self.appDelegate.settingsToolbar setSelectedItemIdentifier:@"Account"];
+    [self.appDelegate.settingsToolbar setSelectedItemIdentifier:self.appDelegate.lastChosenToolbarIdentifier];
 }
 
 #pragma mark Update menu
@@ -137,13 +126,13 @@
                 [self.loveSongMenuTitle setEnabled:NO];
                 [self.similarArtistMenuTtitle setEnabled:NO];
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists..."];
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love song on Last.fm"];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love track on Last.fm"];
             }
         }
         else {
             [self.loveSongMenuTitle setEnabled:NO];
             [self.similarArtistMenuTtitle setEnabled:NO];
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love song on Last.fm"];
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love track on Last.fm"];
             self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists..."];
         }
     }
@@ -157,11 +146,6 @@
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.currentTrack.artist];
                 [self.similarArtistMenuTtitle setEnabled:YES];
             }
-            else if (self.musicScrobbler.iTunes.currentTrack.name) {
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love on Last.fm (Log in)"];
-                self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.iTunes.currentTrack.name];
-                [self.similarArtistMenuTtitle setEnabled:YES];
-            }
             else {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love on Last.fm (Log in)"];
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists..."];
@@ -170,11 +154,23 @@
         }
         else {
             [self.similarArtistMenuTtitle setEnabled:NO];
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love song on Last.fm (Log in)"];
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love track on Last.fm (Log in)"];
             self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists..."];
         }
     }
 }
+
+#pragma mark - Offline
+-(void)updateMenu:(NSNotification *)note
+{
+    BOOL reachable = [FXReachability isReachable];
+    if (reachable) {
+        self.loveSongMenuTitle.enabled = YES;
+    } else {
+        self.loveSongMenuTitle.enabled = NO;
+    }
+}
+
 
 #pragma mark - Recent Items
 
