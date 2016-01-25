@@ -89,12 +89,9 @@
 -(IBAction)showSimilarArtists:(id)sender
 {
     NSString *str = self.musicScrobbler.currentTrack.artist;
-    NSString *url = [str stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    NSData *decode = [url dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *ansi = [[NSString alloc] initWithData:decode encoding:NSASCIIStringEncoding];
-    
-    if (ansi.length > 0) {
-        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.last.fm/music/%@/+similar", ansi]]];
+    NSString *url = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    if (url.length > 0) {
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.last.fm/music/%@/+similar", url]]];
     }
 }
 
@@ -234,18 +231,18 @@
         }
     }];
     NSString *artist = songFromMenu.artist;
-    NSString *urlArtist = [artist stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    NSData *decodeArtist = [urlArtist dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *ansiArtist = [[NSString alloc] initWithData:decodeArtist encoding:NSASCIIStringEncoding];
+    NSString *artistUTF8 = [artist stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     NSString *track = songFromMenu.trackName;
-    NSString *urlTrack = [track stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    NSData *decodeTrack = [urlTrack dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *ansiTrack = [[NSString alloc] initWithData:decodeTrack encoding:NSASCIIStringEncoding];
+    NSString *trackUTF8 = [track stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
-    NSString *link = [NSString stringWithFormat:@"http://www.last.fm/music/%@/_/%@", ansiArtist, ansiTrack];
-    if (link.length > 0) {
-        return link;
+    if (!trackUTF8 || !artistUTF8) {
+        return nil;
+    }
+    NSString *link = [NSString stringWithFormat:@"http://www.last.fm/music/%@/_/%@", artistUTF8, trackUTF8];
+    NSURL *url = [NSURL URLWithString:link];
+    if (url) {
+        return url.absoluteString;
     }
     return nil;
 }
