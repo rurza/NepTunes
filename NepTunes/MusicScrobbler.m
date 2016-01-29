@@ -207,16 +207,19 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     return _iTunes;
 }
 
-#pragma mark - Setters
+#pragma mark - Update Track Info
 
--(void)setInfoAboutCurrentTrack:(NSDictionary *)infoAboutCurrentTrack
+
+-(void)updateCurrentTrackWithUserInfo:(NSDictionary *)userInfo
 {
-    _infoAboutCurrentTrack = infoAboutCurrentTrack;
-    NSString *artist = [infoAboutCurrentTrack objectForKey:@"Artist"];
-    NSString *album = [infoAboutCurrentTrack objectForKey:@"Album"];
-    NSString *trackName = [infoAboutCurrentTrack objectForKey:@"Name"];
-    double duration = [[infoAboutCurrentTrack objectForKey:@"Total Time"] doubleValue] / 1000;
-    self.currentTrack = [[Song alloc] initWithTrackName:trackName artist:artist album:album andDuration:duration];
+    NSString *artist = [userInfo objectForKey:@"Artist"];
+    NSString *album = [userInfo objectForKey:@"Album"];
+    NSString *trackName = [userInfo objectForKey:@"Name"];
+    if (artist.length && album.length && trackName.length) {
+        self.currentTrack = [[Song alloc] initWithTrackName:trackName artist:artist album:album andDuration:duration];
+    } else {
+        self.currentTrack = nil;
+    }
 }
 
 #pragma mark - Offline scrobbler
