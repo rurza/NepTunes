@@ -181,7 +181,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 -(void)getInfoAboutTrackFromNotificationOrFromiTunes:(NSDictionary *)userInfo
 {
-    self.musicScrobbler.infoAboutCurrentTrack = userInfo;
+    [self.musicScrobbler updateCurrentTrackWithUserInfo:userInfo];
     
     //2s są po to by Itunes sie ponownie nie wlaczal
     //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
