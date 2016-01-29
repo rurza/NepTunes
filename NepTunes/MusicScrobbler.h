@@ -30,7 +30,7 @@
 @property (nonatomic, weak) id<MusicScrobblerDelegate>delegate;
 
 +(MusicScrobbler *)sharedScrobbler;
-
+-(void)updateCurrentTrackWithUserInfo:(NSDictionary *)userInfo;
 /// sends current track to Last.fm as a scrobbled
 -(void)scrobbleCurrentTrack;
 -(void)scrobbleOfflineTrack:(Song *)song atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter;
