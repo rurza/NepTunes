@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.01</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>953</string>
+	<string>954</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
@@ -34,7 +34,7 @@
 		<true/>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2014 micropixels. All rights reserved.</string>
+	<string>Copyright © 2014-2016 micropixels. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>Interface</string>
 	<key>NSPrincipalClass</key>
