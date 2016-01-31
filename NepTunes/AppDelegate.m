@@ -98,8 +98,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 }
 
 
-
-
 -(void)awakeFromNib {
     if (self.musicScrobbler.scrobbler.session) {
         self.accountToolbarItem.tag = 0;
@@ -146,7 +144,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             else {
                 trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
             }
-            NSTimeInterval scrobbleTime = trackLength / 2.0f - 2.0f;
+            NSTimeInterval scrobbleTime = ((trackLength / 2.0f) < 240) ? (trackLength / 2.0f) : 240;
             
             if (trackLength > 31.0f) {
                 self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
