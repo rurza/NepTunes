@@ -51,7 +51,7 @@
 
 +(Song *)songWithiTunesTrack:(iTunesTrack *)track
 {
-    if (!track.name || !track.artist) {
+    if (!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) {
         return nil;
     }
     Song *song = [[Song alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
