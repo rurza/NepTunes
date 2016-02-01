@@ -79,9 +79,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
                 [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
             }
-            if (DEBUG) {
+#if DEBUG
                 NSLog(@"%@ scrobbled!", track);
-            }
+#endif
         } failureHandler:^(NSError *error) {
             if ([OfflineScrobbler sharedInstance].areWeOffline) {
                 [[OfflineScrobbler sharedInstance] saveSong:track];
@@ -144,9 +144,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     if (self.scrobbler.session && self.iTunes.isRunning) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler loveTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
-            if (DEBUG) {
+#if DEBUG
                 NSLog(@"%@ loved!", track);
-            }
+#endif
             if (completion) {
                 completion(track);
             }
