@@ -292,6 +292,11 @@ static NSString *const kPercentForScrobbleTime = @"percentForScrobbleTime";
     _numberOfTracksInRecent = numberOfTracksInRecent;
     if (numberOfTracksInRecent) {
         [self.userDefaults setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
+        if (numberOfTracksInRecent.integerValue != 0) {
+            [self.menuController showRecentMenu];
+        } else {
+            [self.menuController hideRecentMenu];
+        }
     } else {
         [self.userDefaults removeObjectForKey:kNumberOfTracksInRecent];
     }

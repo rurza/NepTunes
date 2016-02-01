@@ -23,5 +23,7 @@
 -(void)prepareRecentItemsMenu;
 -(void)installStatusBar;
 -(void)removeStatusBarItem;
+-(void)hideRecentMenu;
+-(void)showRecentMenu;
 
 @end

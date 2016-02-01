@@ -156,14 +156,14 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             NSLog(@"Scrobble time for %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime);
 #endif
             
-            if (trackLength > 31.0f) {
+            if (trackLength >= 31.0f) {
                 self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
                                                                         target:self
                                                                       selector:@selector(nowPlaying)
                                                                       userInfo:nil
                                                                        repeats:NO];
             }
-            if (trackLength > 31.0f) {
+            if (trackLength >= 31.0f) {
                 NSDictionary *userInfo = [note.userInfo copy];
                 self.scrobbleTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
                                                                       target:self

@@ -989,12 +989,15 @@ DQ
                     </textFieldCell>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tIa-bU-eiY">
-                    <rect key="frame" x="18" y="17" width="170" height="26"/>
+                    <rect key="frame" x="18" y="17" width="199" height="26"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="9Sm-oZ-6zA">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" title="Number of tracks in recent" id="1e1-F4-EGE">
                             <items>
+                                <menuItem title="No recent tracks menu" id="NCN-Ug-D4X">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
                                 <menuItem title="5 Tracks" tag="5" id="zzU-z9-3VM"/>
                                 <menuItem title="10 Tracks" tag="10" id="UG7-RD-uk0"/>
                                 <menuItem title="15 Tracks" tag="15" id="go9-UB-go1"/>

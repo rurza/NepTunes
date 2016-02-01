@@ -21,7 +21,7 @@
 @property (nonatomic) IBOutlet NSMenu *statusMenu;
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
-@property (weak, nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
+@property (nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
 @property (nonatomic) RecentTracksController *recentTracksController;
 @property (weak, nonatomic) IBOutlet AppDelegate *appDelegate;
 
@@ -38,6 +38,7 @@
     if (![SettingsController sharedSettings].hideStatusBarIcon) {
         [self installStatusBar];
     }
+    
     [self prepareRecentItemsMenu];
     //first launch
     if (!self.musicScrobbler.scrobbler.session && [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser) {
@@ -45,6 +46,12 @@
     }
     //Are we offline?
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu:) name:FXReachabilityStatusDidChangeNotification object:nil];
+    
+    if ([SettingsController sharedSettings].numberOfTracksInRecent.integerValue != 0) {
+        [self showRecentMenu];
+    } else {
+        [self hideRecentMenu];
+    }
 }
 
 -(void)installStatusBar
@@ -254,6 +261,19 @@
         return YES;
     }
     return NO;
+}
+
+-(void)hideRecentMenu
+{
+    [self.statusMenu removeItem:self.recentTracksMenuItem];
+}
+
+-(void)showRecentMenu
+{
+    if (![self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
+        [self.statusMenu insertItem:self.recentTracksMenuItem atIndex:2];
+        [self prepareRecentItemsMenu];
+    }
 }
 
 -(RecentTracksController *)recentTracksController

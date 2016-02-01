@@ -55,6 +55,9 @@
 -(BOOL)isTrackIsInRecentMenu:(Song *)song
 {
     NSInteger numberOfItemsInRecentMenu = [SettingsController sharedSettings].numberOfTracksInRecent.integerValue;
+    if (numberOfItemsInRecentMenu == 0) {
+        return YES;
+    }
     NSRange range;
     if (self.songs.count >= numberOfItemsInRecentMenu) {
         range = NSMakeRange(0, numberOfItemsInRecentMenu);
