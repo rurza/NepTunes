@@ -19,11 +19,15 @@ static NSString *const kHideStatusBarIcon = @"hideStatusBarIcon";
 static NSString *const kUsernameKey = @"pl.micropixels.neptunes.usernameKey";
 static NSString *const kSessionKey = @"pl.micropixels.neptunes.sessionKey";
 static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
-static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
+static NSString *const kOpenPreferencesAtLogin = @"openPreferencesAtLogin";
+static NSString *const kHideNotifications = @"hideNotifications";
+static NSString *const kPercentForScrobbleTime = @"percentForScrobbleTime";
+
 
 @interface SettingsController ()
 @property (nonatomic, weak) NSUserDefaults *userDefaults;
 @property (nonatomic, weak) NSWindow *alertWindow;
+@property (weak) IBOutlet NSTextField *percentForScrobbleTimeLabel;
 @end
 
 @implementation SettingsController
@@ -34,6 +38,8 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 @synthesize numberOfTracksInRecent = _numberOfTracksInRecent;
 @synthesize hideStatusBarIcon = _hideStatusBarIcon;
 @synthesize openPreferencesWhenThereIsNoUser = _openPreferencesWhenThereIsNoUser;
+@synthesize hideNotifications = _hideNotifications;
+@synthesize percentForScrobbleTime = _percentForScrobbleTime;
 
 #pragma mark - Initialization
 + (instancetype)sharedSettings
@@ -65,9 +71,12 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 -(void)registerDefaultsSettings
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideStatusBarIcon: @NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kPercentForScrobbleTime: @50}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kNumberOfTracksInRecent: @5}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kLaunchAtLogin: @NO}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kOpenPreferencesAtLogin: @YES}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideNotifications: @NO}];
+
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -87,6 +96,16 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
         self.openPreferencesWhenThereIsNoUserCheckbox.state = NSOnState;
     } else {
         self.openPreferencesWhenThereIsNoUserCheckbox.state = NSOffState;
+    }
+    if (self.hideNotifications) {
+        self.hideNotificationsCheckbox.state = NSOnState;
+    } else {
+        self.hideNotificationsCheckbox.state = NSOffState;
+    }
+    if (self.percentForScrobbleTime) {
+        self.percentForScrobbleTimeSlider.integerValue = self.percentForScrobbleTime.integerValue;
+    } else {
+        self.percentForScrobbleTimeSlider.integerValue = 50;
     }
 }
 
@@ -123,7 +142,7 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
             __block NSAlert *alert = [[NSAlert alloc] init];
             alert.window.releasedWhenClosed = YES;
             alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
-            alert.informativeText = NSLocalizedString(@"To restore NepTunes to the menu bar, click its icon in Launchpad or double-click it in Finder.", nil);
+            alert.informativeText = NSLocalizedString(@"To open NepTunes settings again, click its icon in Launchpad or double-click it in Finder.", nil);
             alert.alertStyle = NSInformationalAlertStyle;
             [alert addButtonWithTitle:@"OK"];
             NSButton *restoreNowButton = [alert addButtonWithTitle:NSLocalizedString(@"Restore now", nil)];
@@ -143,6 +162,11 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 -(IBAction)toggleOpenPreferencesWhenThereIsNoUser:(NSButton *)sender
 {
     self.openPreferencesWhenThereIsNoUser = sender.state;
+}
+
+-(void)toggleHideNotifications:(NSButton *)sender
+{
+    self.hideNotifications = sender.state;
 }
 
 -(void)restoreStatusBarIcon
@@ -181,12 +205,11 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 #pragma mark   Avatar
 -(void)setUserAvatar:(NSImage *)userAvatar
 {
+    _userAvatar = userAvatar;
     if (userAvatar) {
-        _userAvatar = userAvatar;
         NSData *imageData = [userAvatar TIFFRepresentation];
         [self.userDefaults setObject:imageData forKey:kUserAvatar];
     } else {
-        _userAvatar = nil;
         [self.userDefaults removeObjectForKey:kUserAvatar];
     }
     [self saveSettings];
@@ -209,11 +232,10 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 #pragma mark   Username
 -(void)setUsername:(NSString *)username
 {
+    _username = username;
     if (username) {
-        _username = username;
         [self.userDefaults setObject:username forKey:kUsernameKey];
     } else {
-        _username = nil;
         [self.userDefaults removeObjectForKey:kUsernameKey];
     }
     [self saveSettings];
@@ -246,11 +268,10 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 #pragma mark   Session
 -(void)setSession:(NSString *)session
 {
+    _session = [session copy];
     if (session) {
-        _session = [session copy];
         [self.userDefaults setObject:session forKey:kSessionKey];
     } else {
-        _session = nil;
         [self.userDefaults removeObjectForKey:kSessionKey];
     }
     [self saveSettings];
@@ -268,11 +289,10 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 #pragma mark   Number of tracks in recent
 -(void)setNumberOfTracksInRecent:(NSNumber *)numberOfTracksInRecent
 {
+    _numberOfTracksInRecent = numberOfTracksInRecent;
     if (numberOfTracksInRecent) {
-        _numberOfTracksInRecent = numberOfTracksInRecent;
         [self.userDefaults setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
     } else {
-        _numberOfRecentItems = nil;
         [self.userDefaults removeObjectForKey:kNumberOfTracksInRecent];
     }
     [self saveSettings];
@@ -315,6 +335,44 @@ static NSString *const kOpenPreferencesAtLogin = @"ppenPreferencesAtLogin";
 {
     _openPreferencesWhenThereIsNoUser = openPreferencesWhenThereIsNoUser;
     [self.userDefaults setObject:@(openPreferencesWhenThereIsNoUser) forKey:kOpenPreferencesAtLogin];
+    [self saveSettings];
+}
+
+#pragma mark   Hide notifications
+-(BOOL)hideNotifications
+{
+    if (!_hideNotifications) {
+        _hideNotifications = [[self.userDefaults objectForKey:kHideNotifications] boolValue];
+    }
+    return _hideNotifications;
+}
+
+-(void)setHideNotifications:(BOOL)hideNotifications
+{
+    _hideNotifications = hideNotifications;
+    [self.userDefaults setObject:@(hideNotifications) forKey:kHideNotifications];
+    [self saveSettings];
+}
+
+#pragma mark   Percent for scrobble time
+-(NSNumber *)percentForScrobbleTime
+{
+    if (!_percentForScrobbleTime) {
+        _percentForScrobbleTime = [self.userDefaults objectForKey:kPercentForScrobbleTime];
+    }
+    self.percentForScrobbleTimeLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Scrobble track at %@%% of it length.", nil), _percentForScrobbleTime];
+    return _percentForScrobbleTime;
+}
+
+-(void)setPercentForScrobbleTime:(NSNumber *)percentForScrobbleTime
+{
+    _percentForScrobbleTime = percentForScrobbleTime;
+    if (percentForScrobbleTime) {
+        [self.userDefaults setObject:percentForScrobbleTime forKey:kPercentForScrobbleTime];
+        self.percentForScrobbleTimeLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Scrobble track at %@%% of it length.", nil), percentForScrobbleTime];
+    } else {
+        [self.userDefaults removeObjectForKey:kPercentForScrobbleTime];
+    }
     [self saveSettings];
 }
 

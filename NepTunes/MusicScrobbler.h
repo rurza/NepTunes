@@ -39,7 +39,7 @@
 /// sends current track to Last.fm as a "now playing"
 -(void)nowPlayingCurrentTrack;
 /// loves current track on Last.fm
--(void)loveCurrentTrackWithCompletionHandler:(void(^)(void))completion;
+-(void)loveCurrentTrackWithCompletionHandler:(void(^)(Song *track))completion;
 
 -(void)logInWithCredentials:(NSDictionary *)info;
 -(void)logOut;

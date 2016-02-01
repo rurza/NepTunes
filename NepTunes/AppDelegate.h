@@ -17,5 +17,7 @@
 @property (weak, nonatomic) IBOutlet NSToolbar *settingsToolbar;
 @property (nonatomic) NSString *lastChosenToolbarIdentifier;
 
+- (IBAction)logOut:(id)sender;
+
 @end
 

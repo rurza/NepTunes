@@ -13,6 +13,7 @@
 #import "RecentTracksController.h"
 #import "SettingsController.h"
 #import "FXReachability.h"
+#import "UserNotificationsController.h"
 
 @interface MenuController ()
 
@@ -66,13 +67,8 @@
 
 
 -(IBAction)loveSong:(id)sender {
-    NSUserNotification *notification = [[NSUserNotification alloc] init];
-    [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^{
-        [notification setTitle:[NSString stringWithFormat:@"%@", self.musicScrobbler.currentTrack.artist]];
-        [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", self.musicScrobbler.currentTrack.trackName]];
-        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-        
-        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+    [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^(Song *track) {
+        [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackWasLoved:track];
     }];
 }
 
@@ -89,6 +85,7 @@
 -(IBAction)showSimilarArtists:(id)sender
 {
     NSString *str = self.musicScrobbler.currentTrack.artist;
+    str = [str stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
     NSString *url = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     if (url.length > 0) {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.last.fm/music/%@/+similar", url]]];
@@ -231,9 +228,11 @@
         }
     }];
     NSString *artist = songFromMenu.artist;
+    artist = [artist stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
     NSString *artistUTF8 = [artist stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     NSString *track = songFromMenu.trackName;
+    track = [track stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
     NSString *trackUTF8 = [track stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     if (!trackUTF8 || !artistUTF8) {

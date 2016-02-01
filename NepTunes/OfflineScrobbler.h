@@ -14,6 +14,7 @@
 @interface OfflineScrobbler : NSObject <MusicScrobblerDelegate>
 @property (nonatomic, readonly) NSMutableArray *songs;
 @property (nonatomic) BOOL areWeOffline;
+@property (nonatomic) BOOL lastFmIsDown;
 
 +(OfflineScrobbler *)sharedInstance;
 -(void)saveSong:(Song *)song;

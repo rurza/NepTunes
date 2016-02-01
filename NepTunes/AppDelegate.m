@@ -12,10 +12,12 @@
 #import "FXReachability.h"
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
+#import "LastFm.h"
+#import "UserNotificationsController.h"
 
 static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
-@interface AppDelegate () <NSTextFieldDelegate, NSUserNotificationCenterDelegate>
+@interface AppDelegate () <NSTextFieldDelegate>
 
 
 @property (nonatomic) NSTimer* scrobbleTimer;
@@ -84,7 +86,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                                                             name:@"com.apple.iTunes.playerInfo"
                                                           object:nil];
     
-    [NSUserNotificationCenter defaultUserNotificationCenter].delegate = self;
 
 }
 
@@ -138,13 +139,22 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             NSTimeInterval trackLength;
             
             
-            if (self.musicScrobbler.iTunes.currentTrack.artist) {
+            if (self.musicScrobbler.iTunes.currentTrack.artist && self.musicScrobbler.iTunes.currentTrack.artist.length) {
                 trackLength = (NSTimeInterval)self.musicScrobbler.iTunes.currentTrack.duration;
             }
             else {
                 trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
             }
-            NSTimeInterval scrobbleTime = ((trackLength / 2.0f) < 240) ? (trackLength / 2.0f) : 240;
+            
+            NSTimeInterval scrobbleTime = ((trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) < 240) ? (trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) : 240;
+            
+            if ((self.settingsController.percentForScrobbleTime.floatValue / 100) > 0.95) {
+                scrobbleTime -= 2;
+            }
+            
+            if (DEBUG) {
+                NSLog(@"Scrobble time for %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime);
+            }
             
             if (trackLength > 31.0f) {
                 self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
@@ -184,7 +194,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     //2s są po to by Itunes sie ponownie nie wlaczal
     //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     if (self.musicScrobbler.iTunes.isRunning) {
-        if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0) {
+        if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0 && self.musicScrobbler.iTunes.currentTrack.artist.length) {
             self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
         }
         else if (self.musicScrobbler.iTunes.currentTrack.name && self.musicScrobbler.iTunes.currentTrack.album) {
@@ -284,9 +294,13 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                  [weakSelf.createAccountButton setHidden:NO];
                  NSAlert *alert = [[NSAlert alloc] init];
                  alert.alertStyle = NSCriticalAlertStyle;
-                 alert.informativeText = [error localizedDescription];
+                 if (error.code == kLastFmErrorCodeAuthenticationFailed) {
+                     alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"%@.\n%@", nil), [error localizedDescription], @"Check your username and password.", nil];
+                 } else {
+                     alert.informativeText = [error localizedDescription];
+                 }
                  alert.messageText = NSLocalizedString(@"Try again...", nil);
-                 [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                 [alert beginSheetModalForWindow:weakSelf.window completionHandler:^(NSModalResponse returnCode) {
                      [alert.window close];
                  }];
              }
@@ -454,7 +468,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.avatarIndicator stopAnimation:weakSelf];
-                    weakSelf.userAvatar.image = self.settingsController.userAvatar;
+                    //tu ma być self
+                    weakSelf.userAvatar.image = weakSelf.settingsController.userAvatar;
                 });
             }
         } failureHandler:^(NSError *error) {
@@ -474,29 +489,15 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)reachabilityDidChange:(NSNotification *)note
 {
     BOOL reachable = [FXReachability isReachable];
-    NSUserNotification *notification = [[NSUserNotification alloc] init];
     if (!reachable && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.settingsController.session) {
-        notification.title = NSLocalizedString(@"Yikes!", nil);
-        notification.subtitle = NSLocalizedString(@"Looks like there is no connection to the Internet.", nil);
-        notification.informativeText = NSLocalizedString(@"Don't worry, I'm going to scrobble anyway.", nil);
-        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+        [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsDown];
         self.reachability = NO;
     } else if (reachable && !self.reachability && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.offlineScrobbler.songs.count && self.settingsController.session) {
-        notification.title = NSLocalizedString(@"Yay! 😁", nil);
-        notification.subtitle = NSLocalizedString(@"Your Mac is online now.", nil);
-        notification.informativeText = NSLocalizedString(@"Now I'm going to scrobble tracks played offline.", nil);
-        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+        [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsBack];
         self.reachability = YES;
     }
 }
 
-#pragma mark - User Notifications
-- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
-{
-    return YES;
-}
 
 #pragma mark - Getters
 -(OfflineScrobbler *)offlineScrobbler

@@ -695,7 +695,7 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="frT-m2-VER">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" explicitItemIdentifier="Account" label="Account" paletteLabel="Account" tag="1" image="lastfm" autovalidates="NO" selectable="YES" id="0Ad-di-EXd">
+                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" explicitItemIdentifier="Account" label="Scrobbler" paletteLabel="Scrobbler" tag="1" image="lastfm" autovalidates="NO" selectable="YES" id="0Ad-di-EXd">
                         <connections>
                             <action selector="switchView:" target="Voe-Tx-rLC" id="4qF-p7-5N3"/>
                         </connections>
@@ -876,11 +876,11 @@ DQ
             </connections>
         </customObject>
         <customView identifier="AccountLogged" id="fhc-ci-TLM">
-            <rect key="frame" x="0.0" y="0.0" width="253" height="169"/>
+            <rect key="frame" x="0.0" y="0.0" width="253" height="255"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="Lvr-5g-SEe">
-                    <rect key="frame" x="14" y="18" width="225" height="32"/>
+                    <rect key="frame" x="14" y="104" width="225" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="213" id="bJM-a4-4Rq"/>
                         <constraint firstAttribute="height" constant="21" id="zd3-da-x8M"/>
@@ -897,7 +897,7 @@ DQ
                     </connections>
                 </button>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="73S-Ro-Dz1">
-                    <rect key="frame" x="94" y="71" width="64" height="64"/>
+                    <rect key="frame" x="94" y="157" width="64" height="64"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="64" id="hYJ-C1-t0f"/>
                         <constraint firstAttribute="height" constant="64" id="qXU-nT-qYM"/>
@@ -905,17 +905,49 @@ DQ
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="9kg-M5-PKm"/>
                 </imageView>
                 <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="yos-2H-Ri7">
-                    <rect key="frame" x="118" y="95" width="16" height="16"/>
+                    <rect key="frame" x="118" y="181" width="16" height="16"/>
                 </progressIndicator>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Ki-fh-bGA">
+                    <rect key="frame" x="18" y="53" width="217" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="When to scrobble?" id="f6U-kw-Adu">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="14Z-Kr-mrc">
+                    <rect key="frame" x="20" y="88" width="213" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <slider toolTip="Track will be scrobbled to Last.fm at minimum 50% of it length or after 4 minutes, depends what is shorter." verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="czq-xR-28L">
+                    <rect key="frame" x="18" y="18" width="217" height="25"/>
+                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="50" maxValue="100" doubleValue="50" tickMarkPosition="above" numberOfTickMarks="6" allowsTickMarkValuesOnly="YES" sliderType="linear" id="I1W-Bd-2Jm"/>
+                    <connections>
+                        <binding destination="tLX-PG-6oy" name="value" keyPath="self.percentForScrobbleTime" id="fSo-z3-BmJ"/>
+                    </connections>
+                </slider>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Lvr-5g-SEe" secondAttribute="bottom" constant="25" id="32M-G9-Gz5"/>
+                <constraint firstAttribute="bottom" secondItem="Lvr-5g-SEe" secondAttribute="bottom" constant="111" id="32M-G9-Gz5"/>
+                <constraint firstItem="9Ki-fh-bGA" firstAttribute="top" secondItem="14Z-Kr-mrc" secondAttribute="bottom" constant="20" id="5ZG-I2-rf1"/>
+                <constraint firstAttribute="trailing" secondItem="9Ki-fh-bGA" secondAttribute="trailing" constant="20" id="7Am-De-1iB"/>
+                <constraint firstAttribute="trailing" secondItem="czq-xR-28L" secondAttribute="trailing" constant="20" id="Ce6-ju-6LF"/>
                 <constraint firstAttribute="centerX" secondItem="73S-Ro-Dz1" secondAttribute="centerX" id="TlU-vr-dkQ"/>
+                <constraint firstItem="14Z-Kr-mrc" firstAttribute="leading" secondItem="fhc-ci-TLM" secondAttribute="leading" constant="20" id="UPX-c9-dEh"/>
+                <constraint firstItem="czq-xR-28L" firstAttribute="leading" secondItem="fhc-ci-TLM" secondAttribute="leading" constant="20" id="VbO-Dg-MdQ"/>
+                <constraint firstItem="14Z-Kr-mrc" firstAttribute="centerX" secondItem="fhc-ci-TLM" secondAttribute="centerX" id="YjA-cm-wyW"/>
+                <constraint firstAttribute="trailing" secondItem="14Z-Kr-mrc" secondAttribute="trailing" constant="20" id="gnb-CI-tXE"/>
+                <constraint firstItem="14Z-Kr-mrc" firstAttribute="top" secondItem="Lvr-5g-SEe" secondAttribute="bottom" constant="20" id="gxL-4r-ver"/>
+                <constraint firstItem="czq-xR-28L" firstAttribute="top" secondItem="9Ki-fh-bGA" secondAttribute="bottom" constant="10" id="kOo-bn-1OM"/>
+                <constraint firstItem="9Ki-fh-bGA" firstAttribute="leading" secondItem="fhc-ci-TLM" secondAttribute="leading" constant="20" id="lS8-rG-Pdf"/>
                 <constraint firstAttribute="centerX" secondItem="Lvr-5g-SEe" secondAttribute="centerX" id="mq2-zP-3B2"/>
+                <constraint firstAttribute="bottom" secondItem="czq-xR-28L" secondAttribute="bottom" constant="20" id="uhF-wQ-XHX"/>
                 <constraint firstItem="73S-Ro-Dz1" firstAttribute="top" secondItem="fhc-ci-TLM" secondAttribute="top" constant="34" id="z0C-9f-4Jy"/>
                 <constraint firstItem="Lvr-5g-SEe" firstAttribute="top" secondItem="73S-Ro-Dz1" secondAttribute="bottom" constant="25" id="z1g-yj-jpO"/>
             </constraints>
-            <point key="canvasLocation" x="396.5" y="31.5"/>
+            <point key="canvasLocation" x="396.5" y="72.5"/>
         </customView>
         <customObject id="aMi-64-iJ4" customClass="MenuController">
             <connections>
@@ -929,11 +961,11 @@ DQ
             </connections>
         </customObject>
         <customView identifier="General" id="71q-6P-ehr" userLabel="General">
-            <rect key="frame" x="0.0" y="0.0" width="379" height="186"/>
+            <rect key="frame" x="0.0" y="0.0" width="379" height="215"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button toolTip="Launch NepTunes automatically when you turn on your Mac." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v2-Vg-kK2">
-                    <rect key="frame" x="18" y="150" width="198" height="18"/>
+                    <rect key="frame" x="18" y="179" width="198" height="18"/>
                     <buttonCell key="cell" type="check" title="Launch NepTunes at login" bezelStyle="regularSquare" imagePosition="left" inset="2" id="KSU-AF-bTE">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -974,7 +1006,7 @@ DQ
                     </connections>
                 </popUpButton>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h7t-VB-C4T">
-                    <rect key="frame" x="18" y="121" width="300" height="18"/>
+                    <rect key="frame" x="18" y="150" width="300" height="18"/>
                     <buttonCell key="cell" type="check" title="Hide status bar icon" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ShG-Gw-YwO">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -984,7 +1016,7 @@ DQ
                     </connections>
                 </button>
                 <button toolTip="Automatically open preferences when there is no Last.fm user and app was launched." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FGN-yW-XXw">
-                    <rect key="frame" x="18" y="92" width="343" height="18"/>
+                    <rect key="frame" x="18" y="121" width="343" height="18"/>
                     <buttonCell key="cell" type="check" title="Open preferences when no Last.fm user is logged in" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="LIa-tR-7Al">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -993,16 +1025,29 @@ DQ
                         <action selector="toggleOpenPreferencesWhenThereIsNoUser:" target="tLX-PG-6oy" id="ZJE-Og-fSe"/>
                     </connections>
                 </button>
+                <button toolTip="Hides notifications, like info about offline mode or loved tracks." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qHO-jB-Kgm">
+                    <rect key="frame" x="18" y="92" width="343" height="18"/>
+                    <buttonCell key="cell" type="check" title="Hide notifications" bezelStyle="regularSquare" imagePosition="left" inset="2" id="4ew-BQ-cDS">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleHideNotifications:" target="tLX-PG-6oy" id="Xi6-F4-M1E"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="101.5" y="658"/>
+            <point key="canvasLocation" x="101.5" y="672.5"/>
         </customView>
         <customObject id="tLX-PG-6oy" customClass="SettingsController">
             <connections>
+                <outlet property="hideNotificationsCheckbox" destination="qHO-jB-Kgm" id="doT-Yb-jJq"/>
                 <outlet property="hideStatusBarCheckbox" destination="h7t-VB-C4T" id="Wfd-ar-cYG"/>
                 <outlet property="launchAtLoginCheckbox" destination="3v2-Vg-kK2" id="ZbC-No-zgY"/>
                 <outlet property="menuController" destination="aMi-64-iJ4" id="b8J-G8-8J8"/>
                 <outlet property="numberOfRecentItems" destination="tIa-bU-eiY" id="xIC-M3-RmE"/>
                 <outlet property="openPreferencesWhenThereIsNoUserCheckbox" destination="FGN-yW-XXw" id="EiZ-4k-raJ"/>
+                <outlet property="percentForScrobbleTimeLabel" destination="9Ki-fh-bGA" id="wjO-gr-WuU"/>
+                <outlet property="percentForScrobbleTimeSlider" destination="czq-xR-28L" id="ZdR-gh-oyJ"/>
             </connections>
         </customObject>
     </objects>

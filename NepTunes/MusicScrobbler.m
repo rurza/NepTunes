@@ -11,6 +11,7 @@
 #import "SavedSong.h"
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
+#import "UserNotificationsController.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -75,17 +76,28 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     if (self.iTunes.isRunning && self.iTunes.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler sendScrobbledTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
+            if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
+                [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
+            }
+            if (DEBUG) {
+                NSLog(@"%@ scrobbled!", track);
+            }
         } failureHandler:^(NSError *error) {
             if ([OfflineScrobbler sharedInstance].areWeOffline) {
-                [[OfflineScrobbler sharedInstance] saveSong:weakSelf.currentTrack];
-            } else if (error.code == -1001) {
+                [[OfflineScrobbler sharedInstance] saveSong:track];
+            } else if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
                         [weakSelf scrobbleTrack:track atTimestamp:timestamp withTryCounter:(tryCounter + 1)];
-                    } else {
-                        NSLog(@"Error, track not scrobbled: %@", [error localizedDescription]);
                     }
                 });
+            }
+            else {
+                [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackCanNotBeScrobbledWithError:error];
+                if (error.code == kLastFmErrorCodeServiceOffline) {
+                    [OfflineScrobbler sharedInstance].lastFmIsDown = YES;
+                    [[OfflineScrobbler sharedInstance] saveSong:track];
+                }
             }
         }];
     }
@@ -122,19 +134,24 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 /*----------------------------------------------------------------------------------------------------------*/
 
--(void)loveCurrentTrackWithCompletionHandler:(void(^)(void))completion
+-(void)loveCurrentTrackWithCompletionHandler:(void(^)(Song *track))completion
 {
     [self loveTrack:self.currentTrack withTryCounter:1 withCompletionHandler:completion];
 }
 
--(void)loveTrack:(Song *)track withTryCounter:(NSUInteger)tryCounter withCompletionHandler:(void(^)(void))completion
+-(void)loveTrack:(Song *)track withTryCounter:(NSUInteger)tryCounter withCompletionHandler:(void(^)(Song *track))completion
 {
     if (self.scrobbler.session && self.iTunes.isRunning) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler loveTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
-            completion();
+            if (DEBUG) {
+                NSLog(@"%@ loved!", track);
+            }
+            if (completion) {
+                completion(track);
+            }
         } failureHandler:^(NSError *error) {
-            if (error.code == -1001 || error.code == 16) {
+            if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
                         [weakSelf loveTrack:track withTryCounter:(tryCounter + 1) withCompletionHandler:completion];
@@ -142,6 +159,8 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                         [weakSelf sendNotificationToUserThatLoveSongFailedWithError:error];
                     }
                 });
+            } else {
+                [weakSelf sendNotificationToUserThatLoveSongFailedWithError:error];
             }
         }];
     }
@@ -149,11 +168,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)sendNotificationToUserThatLoveSongFailedWithError:(NSError *)error
 {
-    NSUserNotification *notification = [[NSUserNotification alloc] init];
-    notification.title = NSLocalizedString(@"Houston, we got a problem!", nil);
-    notification.informativeText = [NSString stringWithFormat:@"%@ %@", error.localizedDescription, @"Maybe Last.fm servers are down?"];
-    [notification setDeliveryDate:[NSDate dateWithTimeInterval:1 sinceDate:[NSDate date]]];
-    [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+    [[UserNotificationsController sharedNotificationsController] displayNotificationThatLoveSongFailedWithError:error];
 }
 
 

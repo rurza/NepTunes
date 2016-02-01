@@ -11,6 +11,7 @@
 #import "MusicScrobbler.h"
 #import "SavedSong.h"
 #import "SettingsController.h"
+#import "UserNotificationsController.h"
 
 @interface OfflineScrobbler ()
 @property (nonatomic, readwrite) NSMutableArray *songs;
@@ -112,9 +113,7 @@
 {
     if ([FXReachability isReachable]) {
         self.areWeOffline = NO;
-        if (self.songs.count) {
-            [self tryToScrobbleTracks];
-        }
+        [self tryToScrobbleTracks];
     } else {
         self.areWeOffline = YES;
     }
@@ -122,7 +121,7 @@
 
 -(void)tryToScrobbleTracks
 {
-    if ([SettingsController sharedSettings].session) {
+    if ([SettingsController sharedSettings].session && self.songs.count) {
         __weak typeof(self) weakSelf = self;
         NSMutableArray *tempArray = [self.songs copy];
         [tempArray enumerateObjectsUsingBlock:^(SavedSong * _Nonnull savedSong, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -142,12 +141,9 @@
 
 -(void)sendNotificationToUserThatAllSongsAreScrobbled
 {
-    NSUserNotification *notification = [[NSUserNotification alloc] init];
-    notification.title = NSLocalizedString(@"Woohoo!", nil);
-    notification.subtitle = NSLocalizedString(@"All tracks listened offline are scrobbled!", nil);
-    [notification setDeliveryDate:[NSDate dateWithTimeInterval:5 sinceDate:[NSDate date]]];
-    [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+    [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
 }
+
 
 #pragma mark - Getters
 
@@ -161,6 +157,13 @@
     return _offlineScrobblerOperationQueue;
 }
 
-
+#pragma mark - Setters
+-(void)setLastFmIsDown:(BOOL)lastFmIsDown
+{
+    _lastFmIsDown = lastFmIsDown;
+    if (!lastFmIsDown) {
+        [self tryToScrobbleTracks];
+    }
+}
 
 @end

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */; };
+		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
 		5BAE70F71C50023500779081 /* FXReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70F61C50023500779081 /* FXReachability.m */; };
@@ -78,6 +79,8 @@
 		5B2F4CE61B763C16009F0C53 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 		5B427BD91C52B4A300EA1D4A /* RecentTracksController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTracksController.h; sourceTree = "<group>"; };
 		5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTracksController.m; sourceTree = "<group>"; };
+		5B48B28F1C5FB9B10041175B /* UserNotificationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNotificationsController.h; sourceTree = "<group>"; };
+		5B48B2901C5FB9B10041175B /* UserNotificationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNotificationsController.m; sourceTree = "<group>"; };
 		5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicScrobbler.h; sourceTree = "<group>"; };
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
@@ -228,6 +231,8 @@
 				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
 				5BAE71061C528D1000779081 /* SettingsController.h */,
 				5BAE71071C528D1000779081 /* SettingsController.m */,
+				5B48B28F1C5FB9B10041175B /* UserNotificationsController.h */,
+				5B48B2901C5FB9B10041175B /* UserNotificationsController.m */,
 				5BAE70FD1C50058200779081 /* Reachability */,
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
@@ -453,6 +458,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */,
 				5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */,
 				5BBD4C501C34562000AFA182 /* Song.m in Sources */,
 				5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */,
