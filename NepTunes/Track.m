@@ -6,10 +6,10 @@
 //  Copyright © 2015 micropixels. All rights reserved.
 //
 
-#import "Song.h"
+#import "Track.h"
 #import "iTunes.h"
 
-@implementation Song
+@implementation Track
 
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d
 {
@@ -49,12 +49,12 @@
     return self;
 }
 
-+(Song *)songWithiTunesTrack:(iTunesTrack *)track
++(Track *)trackWithiTunesTrack:(iTunesTrack *)track
 {
     if (!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) {
         return nil;
     }
-    Song *song = [[Song alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
     return song;
 }
 
@@ -71,19 +71,19 @@
         return YES;
     }
     
-    if (![object isKindOfClass:[Song class]]) {
+    if (![object isKindOfClass:[Track class]]) {
         return NO;
     }
     
-    return [self isEqualToSong:(Song *)object];
+    return [self isEqualToTrack:(Track *)object];
 }
 
--(BOOL)isEqualToSong:(Song *)song
+-(BOOL)isEqualToTrack:(Track *)track
 {
-    if (self == song) {
+    if (self == track) {
         return YES;
     }
-    BOOL itIsEqual = ([self.trackName isEqualToString:song.trackName] && [self.album isEqualToString:song.album] && [self.artist isEqualToString:song.artist]);
+    BOOL itIsEqual = ([self.trackName isEqualToString:track.trackName] && [self.album isEqualToString:track.album] && [self.artist isEqualToString:track.artist]);
     return itIsEqual;
 }
 

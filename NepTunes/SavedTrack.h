@@ -6,12 +6,12 @@
 //  Copyright © 2016 micropixels. All rights reserved.
 //
 
-#import "Song.h"
+#import "Track.h"
 
-@interface SavedSong : Song <NSCoding>
+@interface SavedTrack : Track <NSCoding>
 
 @property (nonatomic) NSDate *date;
 
--(instancetype)initWithSong:(Song *)song andDate:(NSDate *)date;
+-(instancetype)initWithTrack:(Track *)song andDate:(NSDate *)date;
 
 @end

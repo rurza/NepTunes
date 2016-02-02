@@ -22,6 +22,7 @@ static NSString *const kHelperAppBundle = @"pl.micropixels.NepTunesHelperApp";
 static NSString *const kOpenPreferencesAtLogin = @"openPreferencesAtLogin";
 static NSString *const kHideNotifications = @"hideNotifications";
 static NSString *const kPercentForScrobbleTime = @"percentForScrobbleTime";
+static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
 
 
 @interface SettingsController ()
@@ -40,6 +41,7 @@ static NSString *const kPercentForScrobbleTime = @"percentForScrobbleTime";
 @synthesize openPreferencesWhenThereIsNoUser = _openPreferencesWhenThereIsNoUser;
 @synthesize hideNotifications = _hideNotifications;
 @synthesize percentForScrobbleTime = _percentForScrobbleTime;
+@synthesize userWasLoggedOut = _userWasLoggedOut;
 
 #pragma mark - Initialization
 + (instancetype)sharedSettings
@@ -341,6 +343,9 @@ static NSString *const kPercentForScrobbleTime = @"percentForScrobbleTime";
     _openPreferencesWhenThereIsNoUser = openPreferencesWhenThereIsNoUser;
     [self.userDefaults setObject:@(openPreferencesWhenThereIsNoUser) forKey:kOpenPreferencesAtLogin];
     [self saveSettings];
+    if (self.openPreferencesWhenThereIsNoUserCheckbox.state != openPreferencesWhenThereIsNoUser) {
+        self.openPreferencesWhenThereIsNoUserCheckbox.state = openPreferencesWhenThereIsNoUser;
+    }
 }
 
 #pragma mark   Hide notifications
@@ -378,6 +383,22 @@ static NSString *const kPercentForScrobbleTime = @"percentForScrobbleTime";
     } else {
         [self.userDefaults removeObjectForKey:kPercentForScrobbleTime];
     }
+    [self saveSettings];
+}
+
+#pragma mark   User was logged out
+-(BOOL)userWasLoggedOut
+{
+    if (!_userWasLoggedOut) {
+        _userWasLoggedOut = [[self.userDefaults objectForKey:kuserWasLoggedOut] boolValue];
+    }
+    return _userWasLoggedOut;
+}
+
+-(void)setUserWasLoggedOut:(BOOL)userWasLoggedOut
+{
+    _userWasLoggedOut = userWasLoggedOut;
+    [self.userDefaults setObject:@(userWasLoggedOut) forKey:kuserWasLoggedOut];
     [self saveSettings];
 }
 

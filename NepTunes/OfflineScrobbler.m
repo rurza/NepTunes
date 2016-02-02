@@ -9,16 +9,17 @@
 #import "OfflineScrobbler.h"
 #import "FXReachability.h"
 #import "MusicScrobbler.h"
-#import "SavedSong.h"
+#import "SavedTrack.h"
 #import "SettingsController.h"
 #import "UserNotificationsController.h"
 
 @interface OfflineScrobbler ()
-@property (nonatomic, readwrite) NSMutableArray *songs;
+@property (nonatomic, readwrite) NSMutableArray *tracks;
 @property (nonatomic) NSOperationQueue *offlineScrobblerOperationQueue;
 @end
 
 @implementation OfflineScrobbler
+@synthesize userWasLoggedOut = _userWasLoggedOut;
 
 #pragma mark - Public
 
@@ -32,29 +33,29 @@
     return scrobbler;
 }
 
--(void)saveSong:(Song *)song
+-(void)saveTrack:(Track *)track
 {
-    [self saveSong:song toScrobbleItLaterWithDate:[NSDate date]];
+    [self saveTrack:track toScrobbleItLaterWithDate:[NSDate date]];
 }
 
--(void)deleteSong:(SavedSong *)song
+-(void)deleteTrack:(SavedTrack *)track
 {
-    [self.songs removeObject:song];
+    [self.tracks removeObject:track];
     [self save];
 }
 
 #pragma mark - Music Scrobbler Delegate
 
--(void)songWasSuccessfullyScrobbled:(Song *)song
+-(void)trackWasSuccessfullyScrobbled:(Track *)track
 {
-    if ([song isKindOfClass:[SavedSong class]]) {
-        [self deleteSong:(SavedSong *)song];
+    if ([track isKindOfClass:[SavedTrack class]]) {
+        [self deleteTrack:(SavedTrack *)track];
     }
 }
 
--(void)songWasNotScrobbled:(Song *)song
+-(void)trackWasNotScrobbled:(Track *)track
 {
-    [self saveSong:song toScrobbleItLaterWithDate:[NSDate date]];
+    [self saveTrack:track toScrobbleItLaterWithDate:[NSDate date]];
 }
 
 #pragma mark - Private
@@ -73,12 +74,12 @@
 {
     NSString *plistPath = [self pathToPlist];
     if (![[NSFileManager defaultManager] fileExistsAtPath:plistPath]) {
-        self.songs = [@[] mutableCopy];
-        NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.songs];
+        self.tracks = [@[] mutableCopy];
+        NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.tracks];
         [savedData writeToFile:plistPath atomically:YES];
     } else {
-        self.songs = [[NSKeyedUnarchiver unarchiveObjectWithFile:plistPath] mutableCopy];
-        if (!self.songs) {
+        self.tracks = [[NSKeyedUnarchiver unarchiveObjectWithFile:plistPath] mutableCopy];
+        if (!self.tracks) {
             NSError *error;
             [[NSFileManager defaultManager] removeItemAtPath:plistPath error:&error];
             [self preparePropertyList];
@@ -90,21 +91,21 @@
 {
     NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                               NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesOfflineSongsToScrobble.plist"];
+    NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesOfflineTracksToScrobble.plist"];
     return plistPath;
 }
 
--(void)saveSong:(Song *)song toScrobbleItLaterWithDate:(NSDate *)date
+-(void)saveTrack:(Track *)track toScrobbleItLaterWithDate:(NSDate *)date
 {
-    SavedSong *savedSong = [[SavedSong alloc] initWithSong:song andDate:date];
-    [self.songs addObject:savedSong];
+    SavedTrack *savedTrack = [[SavedTrack alloc] initWithTrack:track andDate:date];
+    [self.tracks addObject:savedTrack];
     [self save];
 }
 
 
 -(void)save
 {
-    NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.songs];
+    NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.tracks];
     [savedData writeToFile:[self pathToPlist] atomically:YES];
 }
 
@@ -121,27 +122,22 @@
 
 -(void)tryToScrobbleTracks
 {
-    if ([SettingsController sharedSettings].session && self.songs.count) {
+    if ([SettingsController sharedSettings].session && self.tracks.count && ![SettingsController sharedSettings].userWasLoggedOut) {
         __weak typeof(self) weakSelf = self;
-        NSMutableArray *tempArray = [self.songs copy];
-        [tempArray enumerateObjectsUsingBlock:^(SavedSong * _Nonnull savedSong, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSMutableArray *tempArray = [self.tracks copy];
+        [tempArray enumerateObjectsUsingBlock:^(SavedTrack * _Nonnull savedSong, NSUInteger idx, BOOL * _Nonnull stop) {
             NSBlockOperation *scrobbleTrack = [NSBlockOperation blockOperationWithBlock:^{
                 [[MusicScrobbler sharedScrobbler] scrobbleOfflineTrack:savedSong];
             }];
             [weakSelf.offlineScrobblerOperationQueue addOperation:scrobbleTrack];
             if (idx == tempArray.count - 1) {
                 NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
-                    [weakSelf sendNotificationToUserThatAllSongsAreScrobbled];
+                    [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
                 }];
                 [weakSelf.offlineScrobblerOperationQueue addOperation:sendNotification];
             }
         }];
     }
-}
-
--(void)sendNotificationToUserThatAllSongsAreScrobbled
-{
-    [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
 }
 
 
@@ -169,9 +165,15 @@
 -(void)setUserWasLoggedOut:(BOOL)userWasLoggedOut
 {
     _userWasLoggedOut = userWasLoggedOut;
+    [SettingsController sharedSettings].userWasLoggedOut = userWasLoggedOut;
     if (!userWasLoggedOut) {
         [self tryToScrobbleTracks];
     }
+}
+
+-(BOOL)userWasLoggedOut
+{
+    return [SettingsController sharedSettings].userWasLoggedOut;
 }
 
 @end

@@ -721,7 +721,7 @@
         </window>
         <menu autoenablesItems="NO" id="XPD-Mx-1cp">
             <items>
-                <menuItem title="Love track on Last.fm" id="84S-sz-3Q2">
+                <menuItem title="Love track on Last.fm..." id="84S-sz-3Q2">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="loveSong:" target="aMi-64-iJ4" id="JQg-mk-tzq"/>
@@ -754,7 +754,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-598" y="-39.5"/>
+            <point key="canvasLocation" x="-777" y="22.5"/>
         </menu>
         <customView identifier="Account" id="85m-tG-GgP" userLabel="Account">
             <rect key="frame" x="0.0" y="0.0" width="253" height="169"/>

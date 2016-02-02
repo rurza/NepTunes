@@ -15,9 +15,9 @@
 		5BAE70F71C50023500779081 /* FXReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70F61C50023500779081 /* FXReachability.m */; };
 		5BAE70F91C50030C00779081 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAE70F81C50030C00779081 /* SystemConfiguration.framework */; };
 		5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */; };
-		5BAE71031C50199700779081 /* SavedSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71021C50199700779081 /* SavedSong.m */; };
+		5BAE71031C50199700779081 /* SavedTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71021C50199700779081 /* SavedTrack.m */; };
 		5BAE71081C528D1000779081 /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71071C528D1000779081 /* SettingsController.m */; };
-		5BBD4C501C34562000AFA182 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Song.m */; };
+		5BBD4C501C34562000AFA182 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Track.m */; };
 		5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A8E01C610C83009C3E9F /* MusicController.m */; };
 		5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6E5D41B6BF87300631537 /* HotkeyController.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
@@ -91,13 +91,13 @@
 		5BAE70F81C50030C00779081 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineScrobbler.h; sourceTree = "<group>"; };
 		5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineScrobbler.m; sourceTree = "<group>"; };
-		5BAE71011C50199700779081 /* SavedSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavedSong.h; sourceTree = "<group>"; };
-		5BAE71021C50199700779081 /* SavedSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedSong.m; sourceTree = "<group>"; };
+		5BAE71011C50199700779081 /* SavedTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavedTrack.h; sourceTree = "<group>"; };
+		5BAE71021C50199700779081 /* SavedTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedTrack.m; sourceTree = "<group>"; };
 		5BAE71061C528D1000779081 /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
 		5BAE71071C528D1000779081 /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
 		5BB6D1CB1B43A91800211F28 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
-		5BBD4C4E1C34562000AFA182 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
-		5BBD4C4F1C34562000AFA182 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
+		5BBD4C4F1C34562000AFA182 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		5BC6A8DF1C610C83009C3E9F /* MusicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicController.h; sourceTree = "<group>"; };
 		5BC6A8E01C610C83009C3E9F /* MusicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicController.m; sourceTree = "<group>"; };
 		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
@@ -187,15 +187,29 @@
 			name = Reachability;
 			sourceTree = "<group>";
 		};
-		5BAE71041C5019A200779081 /* Song */ = {
+		5BAE71041C5019A200779081 /* Track */ = {
 			isa = PBXGroup;
 			children = (
-				5BBD4C4E1C34562000AFA182 /* Song.h */,
-				5BBD4C4F1C34562000AFA182 /* Song.m */,
-				5BAE71011C50199700779081 /* SavedSong.h */,
-				5BAE71021C50199700779081 /* SavedSong.m */,
+				5BB6D1CB1B43A91800211F28 /* iTunes.h */,
+				5BBD4C4E1C34562000AFA182 /* Track.h */,
+				5BBD4C4F1C34562000AFA182 /* Track.m */,
+				5BAE71011C50199700779081 /* SavedTrack.h */,
+				5BAE71021C50199700779081 /* SavedTrack.m */,
 			);
-			name = Song;
+			name = Track;
+			sourceTree = "<group>";
+		};
+		5BC6A8E31C611C3A009C3E9F /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
+				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
+				5BC6A8DF1C610C83009C3E9F /* MusicController.h */,
+				5BC6A8E01C610C83009C3E9F /* MusicController.m */,
+				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
+				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
+			);
+			name = Music;
 			sourceTree = "<group>";
 		};
 		5BDD6B041A1D0C95001D87D6 = {
@@ -225,15 +239,10 @@
 			children = (
 				5BAE70F31C4EC91500779081 /* Hotkeys */,
 				5B427BDD1C52B4B700EA1D4A /* Menu */,
-				5BAE71041C5019A200779081 /* Song */,
+				5BAE71041C5019A200779081 /* Track */,
+				5BC6A8E31C611C3A009C3E9F /* Music */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
-				5BC6A8DF1C610C83009C3E9F /* MusicController.h */,
-				5BC6A8E01C610C83009C3E9F /* MusicController.m */,
-				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
-				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
-				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
-				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
 				5BAE71061C528D1000779081 /* SettingsController.h */,
 				5BAE71071C528D1000779081 /* SettingsController.m */,
 				5B48B28F1C5FB9B10041175B /* UserNotificationsController.h */,
@@ -250,7 +259,6 @@
 			isa = PBXGroup;
 			children = (
 				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,
-				5BB6D1CB1B43A91800211F28 /* iTunes.h */,
 				5BFB29E81A1D800900EA87AA /* dsa_pub.pem */,
 				5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */,
 				5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */,
@@ -465,7 +473,7 @@
 			files = (
 				5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */,
 				5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */,
-				5BBD4C501C34562000AFA182 /* Song.m in Sources */,
+				5BBD4C501C34562000AFA182 /* Track.m in Sources */,
 				5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */,
 				5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */,
 				5BAE70F71C50023500779081 /* FXReachability.m in Sources */,
@@ -474,7 +482,7 @@
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
-				5BAE71031C50199700779081 /* SavedSong.m in Sources */,
+				5BAE71031C50199700779081 /* SavedTrack.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
 				5BAE71081C528D1000779081 /* SettingsController.m in Sources */,
 			);

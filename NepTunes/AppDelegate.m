@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MusicScrobbler.h"
-#import "Song.h"
+#import "Track.h"
 #import "FXReachability.h"
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
@@ -86,7 +86,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 
 -(void)awakeFromNib {
-    if (self.musicScrobbler.scrobbler.session) {
+    if (self.settingsController.session) {
         self.accountToolbarItem.tag = 0;
         [[self window] setContentSize:[self.loggedInUserView frame].size];
         [[[self window] contentView ] addSubview:self.loggedInUserView];
@@ -141,11 +141,10 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                                           successHandler:^(NSDictionary *result)
          {
              //login success handler
-             if ([weakSelf.loginField.stringValue isEqualToString:weakSelf.settingsController.username]) {
-                 weakSelf.offlineScrobbler.userWasLoggedOut = NO;
-             }
              [weakSelf.musicScrobbler logInWithCredentials:result];
              weakSelf.settingsController.username = weakSelf.musicScrobbler.username;
+             weakSelf.offlineScrobbler.userWasLoggedOut = NO;
+
              dispatch_async(dispatch_get_main_queue(), ^{
                  [weakSelf.avatarIndicator startAnimation:weakSelf];
              });
@@ -205,7 +204,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 {
     [self.loginButton setEnabled:NO];
     [self.musicScrobbler logOut];
-    self.offlineScrobbler.userWasLoggedOut = NO;
+    self.offlineScrobbler.userWasLoggedOut = YES;
     self.userAvatar.image = nil;
     self.settingsController.userAvatar = nil;
     [self.menuController changeState];

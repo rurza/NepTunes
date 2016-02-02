@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "MusicScrobbler.h"
-@class Song;
-@class SavedSong;
+@class Track;
+@class SavedTrack;
 
 @interface OfflineScrobbler : NSObject <MusicScrobblerDelegate>
 @property (nonatomic, readonly) NSMutableArray *songs;
@@ -18,7 +18,7 @@
 @property (nonatomic) BOOL userWasLoggedOut;
 
 +(OfflineScrobbler *)sharedInstance;
--(void)saveSong:(Song *)song;
--(void)deleteSong:(SavedSong *)song;
+-(void)saveTrack:(Track *)track;
+-(void)deleteTrack:(SavedTrack *)track;
 
 @end

@@ -12,10 +12,11 @@
 #import "AppDelegate.h"
 #import "MenuController.h"
 #import "MusicScrobbler.h"
-#import "Song.h"
+#import "Track.h"
 
 @interface UserNotificationsController () <NSUserNotificationCenterDelegate>
 @property (nonatomic) BOOL doISentANotificationThatLastFmIsDown;
+@property (nonatomic) BOOL doISentANotificationThatUserWasLoggedOut;
 @end
 @implementation UserNotificationsController
 
@@ -60,19 +61,22 @@
     if (self.displayNotifications) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         notification.title = NSLocalizedString(@"Woohoo!", nil);
-        notification.subtitle = NSLocalizedString(@"All tracks listened offline are scrobbled!", nil);
+        notification.subtitle = NSLocalizedString(@"All tracks listened earlier are scrobbled!", nil);
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:5 sinceDate:[NSDate date]]];
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
     }
 }
 
--(void)displayNotificationThatTrackWasLoved:(Song *)track;
+-(void)displayNotificationThatTrackWasLoved:(Track *)track withArtwork:(NSImage *)artwork;
 {
     if (self.displayNotifications) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         [notification setTitle:[NSString stringWithFormat:@"%@", track.artist]];
         [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", track.trackName]];
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+        if (artwork) {
+            notification.contentImage = artwork;
+        }
         
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
     }
@@ -83,7 +87,8 @@
 {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = NSLocalizedString(@"Houston, we got a problem!", nil);
-    if (error.code == kLastFmErrorCodeInvalidSession) {
+    if (error.code == kLastFmErrorCodeInvalidSession || error.code == kLastFmErrorCodeInvalidParameters) {
+        self.doISentANotificationThatUserWasLoggedOut = YES;
         notification.informativeText = NSLocalizedString(@"There are some issues with your Last.fm session. Open preferences and log in again.", nil);
         notification.soundName = NSUserNotificationDefaultSoundName;
         notification.hasActionButton = YES;
@@ -100,26 +105,10 @@
 
 -(void)displayNotificationThatTrackCanNotBeScrobbledWithError:(NSError *)error
 {
-    /*
-     enum LastFmServiceErrorCodes {
-     kLastFmErrorCodeInvalidService = 2,
-     kLastFmErrorCodeInvalidMethod = 3,
-     kLastFmErrorCodeAuthenticationFailed = 4,
-     kLastFmErrorCodeInvalidFormat = 5,
-     kLastFmErrorCodeInvalidParameters = 6,
-     kLastFmErrorCodeInvalidResource = 7,
-     kLastFmErrorCodeOperationFailed = 8,
-     kLastFmErrorCodeInvalidSession = 9,
-     kLastFmErrorCodeInvalidAPIKey = 10,
-     kLastFmErrorCodeServiceOffline = 11,
-     kLastFmErrorCodeSubscribersOnly = 12,
-     kLastFmErrorCodeInvalidAPISignature = 13,
-     kLastFmerrorCodeServiceError = 16
-     };
-     */
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = NSLocalizedString(@"Houston, we got a problem!", nil);
-    if (error.code == kLastFmErrorCodeInvalidSession) {
+    if ((error.code == kLastFmErrorCodeInvalidSession || error.code == kLastFmErrorCodeInvalidParameters) && !self.doISentANotificationThatUserWasLoggedOut) {
+        self.doISentANotificationThatUserWasLoggedOut = YES;
         notification.informativeText = NSLocalizedString(@"There are some issues with your Last.fm session. Open preferences and log in again.", nil);
         notification.soundName = NSUserNotificationDefaultSoundName;
         notification.hasActionButton = YES;
@@ -133,11 +122,12 @@
         self.doISentANotificationThatLastFmIsDown = YES;
         notification.informativeText = NSLocalizedString(@"It looks like Last.fm is offline. Don't worry, I'm going to scrobble all tracks later.", nil);
     } else {
-        if (!self.displayNotifications) {
+        if (!self.displayNotifications || self.doISentANotificationThatUserWasLoggedOut || self.doISentANotificationThatLastFmIsDown) {
             return;
         }
         notification.informativeText = error.localizedDescription;
     }
+    
     [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
     [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
 }

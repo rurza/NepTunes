@@ -7,11 +7,11 @@
 //
 
 #import "RecentTracksController.h"
-#import "Song.h"
+#import "Track.h"
 #import "SettingsController.h"
 
 @interface RecentTracksController ()
-@property (nonatomic, readwrite) NSMutableArray *songs;
+@property (nonatomic, readwrite) NSMutableArray *tracks;
 @end
 
 @implementation RecentTracksController
@@ -37,13 +37,13 @@
     return self;
 }
 
--(BOOL)addSongToRecentMenu:(Song *)song
+-(BOOL)addTrackToRecentMenu:(Track *)track
 {
-    if (song) {
-        if (![self.songs containsObject:song] || ![self isTrackIsInRecentMenu:song]) {
-            [self.songs insertObject:song atIndex:0];
-            if (self.songs.count>15) {
-                [self.songs removeLastObject];
+    if (track) {
+        if (![self.tracks containsObject:track] || ![self isTrackIsInRecentMenu:track]) {
+            [self.tracks insertObject:track atIndex:0];
+            if (self.tracks.count>15) {
+                [self.tracks removeLastObject];
             }
             [self save];
             return YES;
@@ -52,20 +52,20 @@
     else return NO;
 }
 
--(BOOL)isTrackIsInRecentMenu:(Song *)song
+-(BOOL)isTrackIsInRecentMenu:(Track *)track
 {
     NSInteger numberOfItemsInRecentMenu = [SettingsController sharedSettings].numberOfTracksInRecent.integerValue;
     if (numberOfItemsInRecentMenu == 0) {
         return YES;
     }
     NSRange range;
-    if (self.songs.count >= numberOfItemsInRecentMenu) {
+    if (self.tracks.count >= numberOfItemsInRecentMenu) {
         range = NSMakeRange(0, numberOfItemsInRecentMenu);
     } else {
-        range = NSMakeRange(0, self.songs.count);
+        range = NSMakeRange(0, self.tracks.count);
     }
-    NSArray *subArray = [self.songs subarrayWithRange:range];
-    if ([subArray containsObject:song]) {
+    NSArray *subArray = [self.tracks subarrayWithRange:range];
+    if ([subArray containsObject:track]) {
         return YES;
     }
     return NO;
@@ -76,12 +76,12 @@
 {
     NSString *plistPath = [self pathToPlist];
     if (![[NSFileManager defaultManager] fileExistsAtPath:plistPath]) {
-        self.songs = [@[] mutableCopy];
-        NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.songs];
+        self.tracks = [@[] mutableCopy];
+        NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.tracks];
         [savedData writeToFile:plistPath atomically:YES];
     } else {
-        self.songs = [[NSKeyedUnarchiver unarchiveObjectWithFile:plistPath] mutableCopy];
-        if (!self.songs) {
+        self.tracks = [[NSKeyedUnarchiver unarchiveObjectWithFile:plistPath] mutableCopy];
+        if (!self.tracks) {
             NSError *error;
             [[NSFileManager defaultManager] removeItemAtPath:plistPath error:&error];
             [self preparePropertyList];
@@ -91,16 +91,17 @@
 
 -(NSString *)pathToPlist
 {
-    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                              NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesRecentTracksMenu.plist"];
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesRecentTracksList.plist"];
+    
     return plistPath;
 }
 
 
 -(void)save
 {
-    NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.songs];
+    NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.tracks];
     [savedData writeToFile:[self pathToPlist] atomically:YES];
 }
 

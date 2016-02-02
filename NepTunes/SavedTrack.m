@@ -6,11 +6,11 @@
 //  Copyright © 2016 micropixels. All rights reserved.
 //
 
-#import "SavedSong.h"
+#import "SavedTrack.h"
 
-@implementation SavedSong
+@implementation SavedTrack
 
--(instancetype)initWithSong:(Song *)song andDate:(NSDate *)date
+-(instancetype)initWithTrack:(Track *)song andDate:(NSDate *)date
 {
     self = [super initWithTrackName:song.trackName artist:song.artist album:song.album andDuration:song.duration];
     if (self) {

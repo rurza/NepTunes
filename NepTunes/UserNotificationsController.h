@@ -7,7 +7,7 @@
 //
 
 @import AppKit;
-@class Song;
+@class Track;
 
 @interface UserNotificationsController : NSObject 
 
@@ -18,7 +18,7 @@
 -(void)displayNotificationThatInternetConnectionIsDown;
 -(void)displayNotificationThatInternetConnectionIsBack;
 -(void)displayNotificationThatAllTracksAreScrobbled;
--(void)displayNotificationThatTrackWasLoved:(Song *)track;
+-(void)displayNotificationThatTrackWasLoved:(Track *)track withArtwork:(NSImage *)artwork;
 -(void)displayNotificationThatLoveSongFailedWithError:(NSError *)error;
 -(void)displayNotificationThatTrackCanNotBeScrobbledWithError:(NSError *)error;
 

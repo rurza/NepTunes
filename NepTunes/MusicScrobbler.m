@@ -8,7 +8,7 @@
 
 
 #import "MusicScrobbler.h"
-#import "SavedSong.h"
+#import "SavedTrack.h"
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
 #import "UserNotificationsController.h"
@@ -31,33 +31,28 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedScrobbler = [[MusicScrobbler alloc] init];
-        sharedScrobbler.lastfmCache = [[LastFmCache alloc] init];
-        sharedScrobbler.username = [SettingsController sharedSettings].username;
-        [OfflineScrobbler sharedInstance];
     });
     return sharedScrobbler;
 }
 
-/*----------------------------------------------------------------------------------------------------------*/
--(void)scrobbleOfflineTrack:(Song *)song atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter
+-(instancetype)init
 {
-    __weak typeof(self) weakSelf = self;
-    [self.scrobbler sendScrobbledTrack:song.trackName byArtist:song.artist onAlbum:song.album withDuration:song.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
-        [weakSelf.delegate songWasSuccessfullyScrobbled:song];
-    } failureHandler:^(NSError *error) {
-        if (error.code == -1001) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((1 * tryCounter) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                if (tryCounter <= 3) {
-                    [weakSelf scrobbleOfflineTrack:song atTimestamp:timestamp withTryCounter:tryCounter + 1];
-                }
-            });
-        }
-    }];
+    if (self = [super init]) {
+        self.lastfmCache = [[LastFmCache alloc] init];
+        self.username = [SettingsController sharedSettings].username;
+        [OfflineScrobbler sharedInstance];
+    }
+    return self;
 }
 
--(void)scrobbleOfflineTrack:(SavedSong *)song
+/*----------------------------------------------------------------------------------------------------------*/
+
+-(void)scrobbleOfflineTrack:(SavedTrack *)track
 {
-    [self scrobbleOfflineTrack:song atTimestamp:[song.date timeIntervalSince1970] withTryCounter:1];
+    __weak typeof(self) weakSelf = self;
+    [self scrobbleTrack:track atTimestamp:[track.date timeIntervalSince1970] withTryCounter:1 withSuccessHandler:^{
+        [weakSelf.delegate trackWasSuccessfullyScrobbled:track];
+    }];
 }
 
 #pragma mark - Last.fm related methods
@@ -66,15 +61,13 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)scrobbleCurrentTrack
 {
     if (self.musicController.isiTunesRunning) {
-        if (self.musicController.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
-            [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1];
-        }
+        [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1 withSuccessHandler:nil];
     }
 }
 
--(void)scrobbleTrack:(Song *)track atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter
+-(void)scrobbleTrack:(Track *)track atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter withSuccessHandler:(void(^)(void))successHandler
 {
-    if (self.musicController.isiTunesRunning && self.musicController.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
+    if (self.musicController.isiTunesRunning && self.musicController.playerState == iTunesEPlSPlaying && [SettingsController sharedSettings].username) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler sendScrobbledTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
@@ -83,13 +76,16 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 #if DEBUG
                 NSLog(@"%@ scrobbled!", track);
 #endif
+            if (successHandler) {
+                successHandler();
+            }
         } failureHandler:^(NSError *error) {
             if ([OfflineScrobbler sharedInstance].areWeOffline) {
-                [[OfflineScrobbler sharedInstance] saveSong:track];
+                [[OfflineScrobbler sharedInstance] saveTrack:track];
             } else if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
-                        [weakSelf scrobbleTrack:track atTimestamp:timestamp withTryCounter:(tryCounter + 1)];
+                        [weakSelf scrobbleTrack:track atTimestamp:timestamp withTryCounter:(tryCounter + 1) withSuccessHandler:successHandler];
                     }
                 });
             }
@@ -97,10 +93,10 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                 [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackCanNotBeScrobbledWithError:error];
                 if (error.code == kLastFmErrorCodeServiceOffline) {
                     [OfflineScrobbler sharedInstance].lastFmIsDown = YES;
-                    [[OfflineScrobbler sharedInstance] saveSong:track];
-                } else if (error.code == kLastFmErrorCodeInvalidSession) {
+                    [[OfflineScrobbler sharedInstance] saveTrack:track];
+                } else if (error.code == kLastFmErrorCodeInvalidSession || error.code == kLastFmErrorCodeInvalidParameters) {
                     //if session is broken and user was logged out
-                    [[OfflineScrobbler sharedInstance] saveSong:track];
+                    [[OfflineScrobbler sharedInstance] saveTrack:track];
                 }
             }
         }];
@@ -115,7 +111,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     [self nowPLayingTrack:self.currentTrack withTryCounter:1];
 }
 
--(void)nowPLayingTrack:(Song *)track withTryCounter:(NSUInteger)tryCounter
+-(void)nowPLayingTrack:(Track *)track withTryCounter:(NSUInteger)tryCounter
 {
     if (self.musicController.isiTunesRunning) {
         if (self.scrobbler.session && self.musicController.playerState == iTunesEPlSPlaying) {
@@ -138,12 +134,12 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 /*----------------------------------------------------------------------------------------------------------*/
 
--(void)loveCurrentTrackWithCompletionHandler:(void(^)(Song *track))completion
+-(void)loveCurrentTrackWithCompletionHandler:(void(^)(Track *track, NSImage *artwork))completion
 {
     [self loveTrack:self.currentTrack withTryCounter:1 withCompletionHandler:completion];
 }
 
--(void)loveTrack:(Song *)track withTryCounter:(NSUInteger)tryCounter withCompletionHandler:(void(^)(Song *track))completion
+-(void)loveTrack:(Track *)track withTryCounter:(NSUInteger)tryCounter withCompletionHandler:(void(^)(Track *track, NSImage *artwork))completion
 {
     if (self.scrobbler.session && self.musicController.isiTunesRunning) {
         __weak typeof(self) weakSelf = self;
@@ -151,9 +147,30 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 #if DEBUG
                 NSLog(@"%@ loved!", track);
 #endif
-            if (completion) {
-                completion(track);
-            }
+            [self.scrobbler getInfoForAlbum:track.album artist:track.artist successHandler:^(NSDictionary *result) {
+                NSLog(@"result %@", result);
+                NSString *artworkURLString = [NSString stringWithFormat:@"%@", result[@"image"]];
+                NSURL *artworkURL = [NSURL URLWithString:artworkURLString];
+                NSURLRequest *albumArtworkRequest = [NSURLRequest requestWithURL:artworkURL];
+                NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+                NSURLSessionDownloadTask *artworkDownloadTask = [session downloadTaskWithRequest:albumArtworkRequest completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                    NSImage *artwork = [[NSImage alloc] initWithContentsOfURL:location];
+                    if (completion) {
+                        if (artwork) {
+                            completion(track, artwork);
+                        } else {
+                            completion(track, nil);
+                        }
+                    }
+                }];
+                [artworkDownloadTask resume];
+                
+            } failureHandler:^(NSError *error) {
+                if (completion) {
+                    completion(track, nil);
+                }
+            }];
+           
         } failureHandler:^(NSError *error) {
             if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -184,7 +201,6 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)logOut
 {
-    [self.scrobbler logout];
     [SettingsController sharedSettings].session = nil;
 }
 
@@ -220,7 +236,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     NSString *trackName = [userInfo objectForKey:@"Name"];
     double duration = [[userInfo objectForKey:@"Total Time"] doubleValue] / 1000;
     if (artist.length && album.length && trackName.length) {
-        self.currentTrack = [[Song alloc] initWithTrackName:trackName artist:artist album:album andDuration:duration];
+        self.currentTrack = [[Track alloc] initWithTrackName:trackName artist:artist album:album andDuration:duration];
     } else {
         self.currentTrack = nil;
     }

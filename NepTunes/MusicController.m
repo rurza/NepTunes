@@ -10,7 +10,7 @@
 #import "MusicScrobbler.h"
 #import "SettingsController.h"
 #import "MenuController.h"
-#import "Song.h"
+#import "Track.h"
 
 @interface MusicController ()
 @property (nonatomic) MusicScrobbler *musicScrobbler;
@@ -37,10 +37,14 @@
 
 + (id) allocWithZone:(NSZone*)z { return [self sharedController];              }
 + (id) alloc                    { return [self sharedController];              }
-- (id) init                     { [self setupNotifications]; return self;}
+- (id) init                     { return self;}
 + (id)_alloc                    { return [super allocWithZone:NULL]; }
 - (id)_init                     { return [super init];               }
 
+-(void)awakeFromNib
+{
+    [self setupNotifications];
+}
 
 -(void)setupNotifications
 {
@@ -125,17 +129,15 @@
             self.musicScrobbler.currentTrack.duration = self.iTunes.currentTrack.duration;
         }
         else if (self.iTunes.currentTrack.name && self.iTunes.currentTrack.album) {
-            self.musicScrobbler.currentTrack = [Song songWithiTunesTrack:self.iTunes.currentTrack];
-            [self.menuController changeState];
+            self.musicScrobbler.currentTrack = [Track trackWithiTunesTrack:self.iTunes.currentTrack];
+            [self updateMenu];
         }
     }
 }
 
 -(void)updateMenu
 {
-    //    if (self.musicScrobbler.iTunes.isRunning) {
     [self.menuController changeState];
-    //    }
 }
 
 -(void)scrobble:(NSTimer *)timer

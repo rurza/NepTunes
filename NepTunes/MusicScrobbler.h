@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "LastFmCache.h"
 
-@class Song;
-@class SavedSong;
+@class Track;
+@class SavedTrack;
 
 @protocol MusicScrobblerDelegate <NSObject>
--(void)songWasSuccessfullyScrobbled:(Song *)song;
--(void)songWasNotScrobbled:(Song *)song;
+-(void)trackWasSuccessfullyScrobbled:(Track *)track;
+-(void)trackWasNotScrobbled:(Track *)track;
 @end
 
 @interface MusicScrobbler : NSObject
@@ -24,20 +24,19 @@
 
 @property (nonatomic) NSDictionary *infoAboutCurrentTrack;
 @property (nonatomic) NSString *username;
-@property (nonatomic) Song *currentTrack;
+@property (nonatomic) Track *currentTrack;
 @property (nonatomic, weak) id<MusicScrobblerDelegate>delegate;
 
 +(MusicScrobbler *)sharedScrobbler;
 -(void)updateCurrentTrackWithUserInfo:(NSDictionary *)userInfo;
 /// sends current track to Last.fm as a scrobbled
 -(void)scrobbleCurrentTrack;
--(void)scrobbleOfflineTrack:(Song *)song atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter;
--(void)scrobbleOfflineTrack:(SavedSong *)song;
+-(void)scrobbleOfflineTrack:(SavedTrack *)track;
 
 /// sends current track to Last.fm as a "now playing"
 -(void)nowPlayingCurrentTrack;
 /// loves current track on Last.fm
--(void)loveCurrentTrackWithCompletionHandler:(void(^)(Song *track))completion;
+-(void)loveCurrentTrackWithCompletionHandler:(void(^)(Track *track, NSImage *artwork))completion;
 
 -(void)logInWithCredentials:(NSDictionary *)info;
 -(void)logOut;

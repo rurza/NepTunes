@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-@class Song;
+@class Track;
 
 @interface RecentTracksController : NSObject
-@property (nonatomic, readonly) NSMutableArray *songs;
+@property (nonatomic, readonly) NSMutableArray *tracks;
 
 +(RecentTracksController *)sharedInstance;
--(BOOL)addSongToRecentMenu:(Song *)song;
+-(BOOL)addTrackToRecentMenu:(Track *)song;
 @end

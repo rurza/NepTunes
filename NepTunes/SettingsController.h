@@ -16,6 +16,7 @@
 @property (nonatomic) BOOL hideStatusBarIcon;
 @property (nonatomic) BOOL openPreferencesWhenThereIsNoUser;
 @property (nonatomic) BOOL hideNotifications;
+@property (nonatomic) BOOL userWasLoggedOut;
 @property (nonatomic) NSString *session;
 @property (nonatomic) NSString *username;
 @property (nonatomic) NSNumber *numberOfTracksInRecent;
