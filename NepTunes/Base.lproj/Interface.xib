@@ -953,6 +953,7 @@ DQ
             <connections>
                 <outlet property="appDelegate" destination="Voe-Tx-rLC" id="H1t-J9-l4i"/>
                 <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="H6f-JO-J2t"/>
+                <outlet property="musicController" destination="6fc-J7-ZFv" id="0sO-SX-MMd"/>
                 <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="wW7-Da-pNi"/>
                 <outlet property="recentTracksMenu" destination="VA4-FS-C7L" id="IGV-4e-hNZ"/>
                 <outlet property="recentTracksMenuItem" destination="ezK-Lj-iX4" id="eN0-Wg-BvW"/>
@@ -1051,6 +1052,11 @@ DQ
                 <outlet property="openPreferencesWhenThereIsNoUserCheckbox" destination="FGN-yW-XXw" id="EiZ-4k-raJ"/>
                 <outlet property="percentForScrobbleTimeLabel" destination="9Ki-fh-bGA" id="wjO-gr-WuU"/>
                 <outlet property="percentForScrobbleTimeSlider" destination="czq-xR-28L" id="ZdR-gh-oyJ"/>
+            </connections>
+        </customObject>
+        <customObject id="6fc-J7-ZFv" customClass="MusicController">
+            <connections>
+                <outlet property="menuController" destination="aMi-64-iJ4" id="jbw-s9-MIb"/>
             </connections>
         </customObject>
     </objects>

@@ -15,6 +15,7 @@
 @property (nonatomic, readonly) NSMutableArray *songs;
 @property (nonatomic) BOOL areWeOffline;
 @property (nonatomic) BOOL lastFmIsDown;
+@property (nonatomic) BOOL userWasLoggedOut;
 
 +(OfflineScrobbler *)sharedInstance;
 -(void)saveSong:(Song *)song;

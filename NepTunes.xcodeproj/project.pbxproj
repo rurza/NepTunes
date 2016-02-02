@@ -18,6 +18,7 @@
 		5BAE71031C50199700779081 /* SavedSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71021C50199700779081 /* SavedSong.m */; };
 		5BAE71081C528D1000779081 /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71071C528D1000779081 /* SettingsController.m */; };
 		5BBD4C501C34562000AFA182 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Song.m */; };
+		5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A8E01C610C83009C3E9F /* MusicController.m */; };
 		5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6E5D41B6BF87300631537 /* HotkeyController.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
 		5BDD6B161A1D0C95001D87D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B151A1D0C95001D87D6 /* main.m */; };
@@ -97,6 +98,8 @@
 		5BB6D1CB1B43A91800211F28 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		5BBD4C4E1C34562000AFA182 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 		5BBD4C4F1C34562000AFA182 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+		5BC6A8DF1C610C83009C3E9F /* MusicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicController.h; sourceTree = "<group>"; };
+		5BC6A8E01C610C83009C3E9F /* MusicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicController.m; sourceTree = "<group>"; };
 		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
 		5BD6E5D41B6BF87300631537 /* HotkeyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotkeyController.m; sourceTree = "<group>"; };
 		5BDD6B0D1A1D0C95001D87D6 /* NepTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NepTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -225,6 +228,8 @@
 				5BAE71041C5019A200779081 /* Song */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
+				5BC6A8DF1C610C83009C3E9F /* MusicController.h */,
+				5BC6A8E01C610C83009C3E9F /* MusicController.m */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
 				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
 				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
@@ -467,6 +472,7 @@
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
+				5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
 				5BAE71031C50199700779081 /* SavedSong.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,

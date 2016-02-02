@@ -12,12 +12,13 @@
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
 #import "UserNotificationsController.h"
+#import "MusicController.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 @interface MusicScrobbler ()
-
+@property (nonatomic) MusicController *musicController;
 @property (nonatomic) NSUInteger loveSongTryCounter;
 
 @end
@@ -64,8 +65,8 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 #pragma mark - Scrobble online
 -(void)scrobbleCurrentTrack
 {
-    if (self.iTunes.isRunning) {
-        if (self.iTunes.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
+    if (self.musicController.isiTunesRunning) {
+        if (self.musicController.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
             [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1];
         }
     }
@@ -73,7 +74,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)scrobbleTrack:(Song *)track atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter
 {
-    if (self.iTunes.isRunning && self.iTunes.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
+    if (self.musicController.isiTunesRunning && self.musicController.playerState == iTunesEPlSPlaying && self.scrobbler.session) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler sendScrobbledTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
@@ -97,6 +98,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                 if (error.code == kLastFmErrorCodeServiceOffline) {
                     [OfflineScrobbler sharedInstance].lastFmIsDown = YES;
                     [[OfflineScrobbler sharedInstance] saveSong:track];
+                } else if (error.code == kLastFmErrorCodeInvalidSession) {
+                    //if session is broken and user was logged out
+                    [[OfflineScrobbler sharedInstance] saveSong:track];
                 }
             }
         }];
@@ -113,8 +117,8 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)nowPLayingTrack:(Song *)track withTryCounter:(NSUInteger)tryCounter
 {
-    if (self.iTunes.isRunning) {
-        if (self.scrobbler.session && self.iTunes.playerState == iTunesEPlSPlaying) {
+    if (self.musicController.isiTunesRunning) {
+        if (self.scrobbler.session && self.musicController.playerState == iTunesEPlSPlaying) {
             __weak typeof(self) weakSelf = self;
             [self.scrobbler sendNowPlayingTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
                 
@@ -141,7 +145,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)loveTrack:(Song *)track withTryCounter:(NSUInteger)tryCounter withCompletionHandler:(void(^)(Song *track))completion
 {
-    if (self.scrobbler.session && self.iTunes.isRunning) {
+    if (self.scrobbler.session && self.musicController.isiTunesRunning) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler loveTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
 #if DEBUG
@@ -156,19 +160,14 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                     if (tryCounter <= 3) {
                         [weakSelf loveTrack:track withTryCounter:(tryCounter + 1) withCompletionHandler:completion];
                     } else {
-                        [weakSelf sendNotificationToUserThatLoveSongFailedWithError:error];
+                        [[UserNotificationsController sharedNotificationsController] displayNotificationThatLoveSongFailedWithError:error];
                     }
                 });
             } else {
-                [weakSelf sendNotificationToUserThatLoveSongFailedWithError:error];
+                [[UserNotificationsController sharedNotificationsController] displayNotificationThatLoveSongFailedWithError:error];
             }
         }];
     }
-}
-
--(void)sendNotificationToUserThatLoveSongFailedWithError:(NSError *)error
-{
-    [[UserNotificationsController sharedNotificationsController] displayNotificationThatLoveSongFailedWithError:error];
 }
 
 
@@ -187,14 +186,13 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     [self.scrobbler logout];
     [SettingsController sharedSettings].session = nil;
-    [SettingsController sharedSettings].username = nil;
 }
 
 #pragma mark - Overrided Methods
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"scrobbler: username = %@, iTunes: currentTrack = %@, duration = %f", self.scrobbler.username, self.iTunes.currentTrack.name, self.iTunes.currentTrack.duration];
+    return [NSString stringWithFormat:@"scrobbler: username = %@, iTunes: currentTrack = %@, duration = %f", self.scrobbler.username, self.musicController.iTunes.currentTrack.name, self.musicController.iTunes.currentTrack.duration];
 }
 
 #pragma mark - Getters
@@ -214,17 +212,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 }
 
 
--(iTunesApplication *)iTunes
-{
-    if (!_iTunes) {
-        _iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-    }
-    return _iTunes;
-}
-
 #pragma mark - Update Track Info
-
-
 -(void)updateCurrentTrackWithUserInfo:(NSDictionary *)userInfo
 {
     NSString *artist = [userInfo objectForKey:@"Artist"];
@@ -238,7 +226,13 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     }
 }
 
-#pragma mark - Offline scrobbler
-
+#pragma mark - Music controller
+-(MusicController *)musicController
+{
+    if (!_musicController) {
+        _musicController = [MusicController sharedController];
+    }
+    return _musicController;
+}
 
 @end

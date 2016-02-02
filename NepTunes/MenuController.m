@@ -14,16 +14,18 @@
 #import "SettingsController.h"
 #import "FXReachability.h"
 #import "UserNotificationsController.h"
+#import "MusicController.h"
 
 @interface MenuController ()
 
 @property (nonatomic) NSStatusItem *statusItem;
 @property (nonatomic) IBOutlet NSMenu *statusMenu;
-@property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
 @property (nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
+@property (nonatomic) IBOutlet MusicController *musicController;
+@property (nonatomic, weak) IBOutlet AppDelegate *appDelegate;
 @property (nonatomic) RecentTracksController *recentTracksController;
-@property (weak, nonatomic) IBOutlet AppDelegate *appDelegate;
+@property (nonatomic) MusicScrobbler *musicScrobbler;
 
 
 @end
@@ -118,8 +120,8 @@
     if (self.musicScrobbler.scrobbler.session) {
         [self.profileMenuTitle setEnabled:YES];
         self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", self.musicScrobbler.username];
-        if ([self.musicScrobbler.iTunes isRunning]) {
-            if (self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack.trackName) {
+        if (self.musicController.isiTunesRunning) {
+            if (self.musicController.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack.trackName) {
                 [self.loveSongMenuTitle setEnabled:YES];
                 [self.similarArtistMenuTtitle setEnabled:YES];
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.currentTrack.artist];
@@ -143,7 +145,7 @@
         [self.loveSongMenuTitle setEnabled:NO];
         [self.profileMenuTitle setEnabled:NO];
         self.profileMenuTitle.title = [NSString stringWithFormat:@"Profile... (Log in)"];
-        if ([self.musicScrobbler.iTunes isRunning]) {
+        if (self.musicController.isiTunesRunning) {
             if (self.musicScrobbler.currentTrack.trackName) {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love on Last.fm (Log in)"];
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.currentTrack.artist];

@@ -14,17 +14,11 @@
 #import "SettingsController.h"
 #import "LastFm.h"
 #import "UserNotificationsController.h"
+#import "MusicController.h"
 
 static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 @interface AppDelegate () <NSTextFieldDelegate>
-
-
-@property (nonatomic) NSTimer* scrobbleTimer;
-@property (nonatomic) NSTimer* nowPlayingTimer;
-
-@property (nonatomic) MusicScrobbler *musicScrobbler;
-
 @property (weak, nonatomic) IBOutlet NSTextField *loginField;
 @property (weak, nonatomic) IBOutlet NSSecureTextField *passwordField;
 @property (weak, nonatomic) IBOutlet NSButton *loginButton;
@@ -41,7 +35,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
 @property (weak, nonatomic) IBOutlet NSProgressIndicator *avatarIndicator;
 
-@property NSTimeInterval scrobbleTime;
 @property (nonatomic) int currentViewTag;
 @property (weak, nonatomic) IBOutlet NSToolbarItem *accountToolbarItem;
 @property (weak, nonatomic) IBOutlet NSToolbarItem *hotkeysToolbarItem;
@@ -53,23 +46,26 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) OfflineScrobbler *offlineScrobbler;
 //Settings
 @property (nonatomic) SettingsController *settingsController;
+//Scrobbler
+@property (nonatomic) MusicScrobbler *musicScrobbler;
+//Music Controller
+@property (nonatomic) MusicController *musicController;
 
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)logOut:(id)sender;
 - (IBAction)createNewLastFmAccountInWebBrowser:(id)sender;
-
-
 @end
+
+
 
 @implementation AppDelegate
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self setupNotifications];
+//    [self setupNotifications];
     [self setupReachability];
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
-    [self updateTrackInfo:nil];
 }
 
 -(void)applicationDidBecomeActive:(NSNotification *)notification
@@ -77,16 +73,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     if (self.settingsController.hideStatusBarIcon) {
         [self.menuController openPreferences:nil];
     }
-}
-
--(void)setupNotifications
-{
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(updateTrackInfo:)
-                                                            name:@"com.apple.iTunes.playerInfo"
-                                                          object:nil];
-    
-
 }
 
 -(void)setupReachability
@@ -126,102 +112,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     [self.createAccountButton setAttributedTitle:colorTitle];
 }
 
-#pragma mark - Responding to notifications
-
-- (void)updateTrackInfo:(NSNotification *)note {
-    [self invalidateTimers];
-    [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
-    [self updateMenu];
-    
-    if ([self.musicScrobbler.iTunes isRunning]) {
-        if (self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying) {
-            //NSLog(@"%@ by %@ with length = %f after 2 sec.", self.musicScrobbler.trackName, self.musicScrobbler.artist, self.musicScrobbler.duration);
-            NSTimeInterval trackLength;
-            
-            
-            if (self.musicScrobbler.iTunes.currentTrack.artist && self.musicScrobbler.iTunes.currentTrack.artist.length) {
-                trackLength = (NSTimeInterval)self.musicScrobbler.iTunes.currentTrack.duration;
-            }
-            else {
-                trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
-            }
-            
-            NSTimeInterval scrobbleTime = ((trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) < 240) ? (trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) : 240;
-            
-            if ((self.settingsController.percentForScrobbleTime.floatValue / 100) > 0.95) {
-                scrobbleTime -= 2;
-            }
-            
-#if DEBUG
-            NSLog(@"Scrobble time for %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime);
-#endif
-            
-            if (trackLength >= 31.0f) {
-                self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
-                                                                        target:self
-                                                                      selector:@selector(nowPlaying)
-                                                                      userInfo:nil
-                                                                       repeats:NO];
-            }
-            if (trackLength >= 31.0f) {
-                NSDictionary *userInfo = [note.userInfo copy];
-                self.scrobbleTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
-                                                                      target:self
-                                                                    selector:@selector(scrobble:)
-                                                                    userInfo:userInfo
-                                                                     repeats:NO];
-            }
-        }
-    }
-}
-
--(void)invalidateTimers
-{
-    if (self.scrobbleTimer) {
-        [self.scrobbleTimer invalidate];
-        self.scrobbleTimer = nil;
-    }
-    if (self.nowPlayingTimer) {
-        [self.nowPlayingTimer invalidate];
-        self.nowPlayingTimer = nil;
-    }
-}
-
--(void)getInfoAboutTrackFromNotificationOrFromiTunes:(NSDictionary *)userInfo
-{
-    [self.musicScrobbler updateCurrentTrackWithUserInfo:userInfo];
-    
-    //2s są po to by Itunes sie ponownie nie wlaczal
-    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    if (self.musicScrobbler.iTunes.isRunning) {
-        if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0 && self.musicScrobbler.iTunes.currentTrack.artist.length) {
-            self.musicScrobbler.currentTrack.duration = self.musicScrobbler.iTunes.currentTrack.duration;
-        }
-        else if (self.musicScrobbler.iTunes.currentTrack.name && self.musicScrobbler.iTunes.currentTrack.album) {
-            self.musicScrobbler.currentTrack = [Song songWithiTunesTrack:self.musicScrobbler.iTunes.currentTrack];
-            [self.menuController changeState];
-        }
-    }
-}
-
--(void)updateMenu
-{
-//    if (self.musicScrobbler.iTunes.isRunning) {
-        [self.menuController changeState];
-//    }
-}
-
--(void)scrobble:(NSTimer *)timer
-{
-    [self.musicScrobbler scrobbleCurrentTrack];
-}
-
--(void)nowPlaying
-{
-    [self.musicScrobbler nowPlayingCurrentTrack];
-}
-
-
 
 /*----------------------------------------------------------------------------------------------------------*/
 #pragma mark - Managing account
@@ -251,6 +141,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                                           successHandler:^(NSDictionary *result)
          {
              //login success handler
+             if ([weakSelf.loginField.stringValue isEqualToString:weakSelf.settingsController.username]) {
+                 weakSelf.offlineScrobbler.userWasLoggedOut = NO;
+             }
              [weakSelf.musicScrobbler logInWithCredentials:result];
              weakSelf.settingsController.username = weakSelf.musicScrobbler.username;
              dispatch_async(dispatch_get_main_queue(), ^{
@@ -312,6 +205,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 {
     [self.loginButton setEnabled:NO];
     [self.musicScrobbler logOut];
+    self.offlineScrobbler.userWasLoggedOut = NO;
     self.userAvatar.image = nil;
     self.settingsController.userAvatar = nil;
     [self.menuController changeState];
@@ -489,10 +383,10 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)reachabilityDidChange:(NSNotification *)note
 {
     BOOL reachable = [FXReachability isReachable];
-    if (!reachable && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.settingsController.session) {
+    if (!reachable && self.musicController.playerState == iTunesEPlSPlaying && self.settingsController.session) {
         [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsDown];
         self.reachability = NO;
-    } else if (reachable && !self.reachability && self.musicScrobbler.iTunes.playerState == iTunesEPlSPlaying && self.offlineScrobbler.songs.count && self.settingsController.session) {
+    } else if (reachable && !self.reachability && self.musicController.playerState == iTunesEPlSPlaying && self.offlineScrobbler.songs.count && self.settingsController.session) {
         [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsBack];
         self.reachability = YES;
     }
@@ -517,11 +411,20 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     return _musicScrobbler;
 }
 
+
 -(SettingsController *)settingsController
 {
     if (!_settingsController) {
         _settingsController = [SettingsController sharedSettings];
     }
     return _settingsController;
+}
+
+-(MusicController *)musicController
+{
+    if (!_musicController) {
+        _musicController = [MusicController sharedController];
+    }
+    return _musicController;
 }
 @end

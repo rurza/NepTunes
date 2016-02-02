@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "iTunes.h"
 #import "LastFmCache.h"
 
 @class Song;
@@ -22,7 +21,6 @@
 
 @property (nonatomic) LastFm *scrobbler;
 @property (nonatomic) LastFmCache *lastfmCache;
-@property (nonatomic) iTunesApplication* iTunes;
 
 @property (nonatomic) NSDictionary *infoAboutCurrentTrack;
 @property (nonatomic) NSString *username;

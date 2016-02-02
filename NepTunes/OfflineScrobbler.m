@@ -166,4 +166,12 @@
     }
 }
 
+-(void)setUserWasLoggedOut:(BOOL)userWasLoggedOut
+{
+    _userWasLoggedOut = userWasLoggedOut;
+    if (!userWasLoggedOut) {
+        [self tryToScrobbleTracks];
+    }
+}
+
 @end

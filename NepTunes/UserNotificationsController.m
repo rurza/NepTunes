@@ -165,6 +165,7 @@
 {
     if ([[notification.userInfo objectForKey:@"logout"] boolValue]) {
         [(AppDelegate *)[NSApplication sharedApplication].delegate logOut:nil];
+        [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser = YES;
     }
 }
 
