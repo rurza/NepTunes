@@ -80,24 +80,38 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                 successHandler();
             }
         } failureHandler:^(NSError *error) {
-            if ([OfflineScrobbler sharedInstance].areWeOffline) {
-                [[OfflineScrobbler sharedInstance] saveTrack:track];
-            } else if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
+            
+            //if session is broken and user was logged out
+            if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
                         [weakSelf scrobbleTrack:track atTimestamp:timestamp withTryCounter:(tryCounter + 1) withSuccessHandler:successHandler];
+#if DEBUG
+                        NSLog(@"Cannot scrobble. %@. Trying again", error.localizedDescription);
+#endif
+
                     }
                 });
             }
             else {
                 [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackCanNotBeScrobbledWithError:error];
-                if (error.code == kLastFmErrorCodeServiceOffline) {
+                //if there are some problems with with Last.fm service and the user isn't logged in
+                if (error.code == kLastFmErrorCodeServiceOffline && ![OfflineScrobbler sharedInstance].userWasLoggedOut) {
                     [OfflineScrobbler sharedInstance].lastFmIsDown = YES;
                     [[OfflineScrobbler sharedInstance] saveTrack:track];
-                } else if (error.code == kLastFmErrorCodeInvalidSession || error.code == kLastFmErrorCodeInvalidParameters) {
-                    //if session is broken and user was logged out
-                    [[OfflineScrobbler sharedInstance] saveTrack:track];
+#if DEBUG
+                    NSLog(@"Some issues with Last.fm service.");
+#endif
+
                 }
+                if ([OfflineScrobbler sharedInstance].areWeOffline || [SettingsController sharedSettings].userWasLoggedOut) {
+                    [[OfflineScrobbler sharedInstance] saveTrack:track];
+#if DEBUG
+                    NSLog(@"Saving track for offline scrobbling.");
+#endif
+
+                }
+
             }
         }];
     }
@@ -201,7 +215,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)logOut
 {
-    [SettingsController sharedSettings].session = nil;
+    [self.scrobbler logout];
 }
 
 #pragma mark - Overrided Methods

@@ -20,5 +20,5 @@
 +(OfflineScrobbler *)sharedInstance;
 -(void)saveTrack:(Track *)track;
 -(void)deleteTrack:(SavedTrack *)track;
-
+-(void)deleteAllSavedTracks;
 @end

@@ -18,6 +18,6 @@
 @property (nonatomic) NSString *lastChosenToolbarIdentifier;
 
 - (IBAction)logOut:(id)sender;
-
+- (void)forceLogOut;
 @end
 

@@ -44,6 +44,13 @@
     [self save];
 }
 
+-(void)deleteAllSavedTracks
+{
+    [self.tracks removeAllObjects];
+    [self save];
+}
+
+
 #pragma mark - Music Scrobbler Delegate
 
 -(void)trackWasSuccessfullyScrobbled:(Track *)track
@@ -78,6 +85,7 @@
         NSData *savedData = [NSKeyedArchiver archivedDataWithRootObject:self.tracks];
         [savedData writeToFile:plistPath atomically:YES];
     } else {
+        [self removeIncompatibleFiles];
         self.tracks = [[NSKeyedUnarchiver unarchiveObjectWithFile:plistPath] mutableCopy];
         if (!self.tracks) {
             NSError *error;
@@ -89,10 +97,18 @@
 
 -(NSString *)pathToPlist
 {
-    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                              NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesOfflineTracksToScrobble.plist"];
     return plistPath;
+}
+
+-(void)removeIncompatibleFiles
+{
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *oldPlistPath = [rootPath stringByAppendingPathComponent:@"NepTunesOfflineSongsToScrobble.plist"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:oldPlistPath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:oldPlistPath error:nil];
+    }
 }
 
 -(void)saveTrack:(Track *)track toScrobbleItLaterWithDate:(NSDate *)date
@@ -162,6 +178,7 @@
     }
 }
 
+#pragma mark - User Was logged out
 -(void)setUserWasLoggedOut:(BOOL)userWasLoggedOut
 {
     _userWasLoggedOut = userWasLoggedOut;

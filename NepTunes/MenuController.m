@@ -46,7 +46,7 @@
         [self openPreferences:self];
     }
     //Are we offline?
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu:) name:FXReachabilityStatusDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeState) name:FXReachabilityStatusDidChangeNotification object:nil];
     
     if ([SettingsController sharedSettings].numberOfTracksInRecent.integerValue != 0) {
         [self showRecentMenu];
@@ -83,6 +83,8 @@
         [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^(Track *track, NSImage *artwork) {
             [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackWasLoved:track withArtwork:(NSImage *)artwork];
         }];
+    } else {
+        [self openPreferences:nil];
     }
 }
 
@@ -121,16 +123,26 @@
 
 #pragma mark Update menu
 -(void)changeState {
-
     [self updateRecentMenu];
+    BOOL reachable = [FXReachability isReachable];
 
     if ([SettingsController sharedSettings].session) {
-        [self.profileMenuTitle setEnabled:YES];
+        if (reachable) {
+            [self.profileMenuTitle setEnabled:YES];
+        } else {
+            [self.profileMenuTitle setEnabled:NO];
+        }
         self.profileMenuTitle.title = [NSString stringWithFormat:@"%@'s profile...", [SettingsController sharedSettings].username];
         if (self.musicController.isiTunesRunning) {
             if (self.musicController.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack.trackName) {
-                [self.loveSongMenuTitle setEnabled:YES];
-                [self.similarArtistMenuTtitle setEnabled:YES];
+                if (reachable) {
+                    [self.loveSongMenuTitle setEnabled:YES];
+                    [self.similarArtistMenuTtitle setEnabled:YES];
+                } else {
+                    [self.loveSongMenuTitle setEnabled:NO];
+                    [self.similarArtistMenuTtitle setEnabled:NO];
+                }
+
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.currentTrack.artist];
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love %@ on Last.fm", self.musicScrobbler.currentTrack.trackName];
             }
@@ -154,9 +166,14 @@
         self.profileMenuTitle.title = [NSString stringWithFormat:@"Profile... (Log in)"];
         if (self.musicController.isiTunesRunning) {
             if (self.musicScrobbler.currentTrack.trackName) {
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love track on Last.fm... (Log in)"];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love %@ on Last.fm... (Log in)", self.musicScrobbler.currentTrack.trackName];
                 self.similarArtistMenuTtitle.title = [NSString stringWithFormat:@"Similar artists to %@...", self.musicScrobbler.currentTrack.artist];
-                [self.similarArtistMenuTtitle setEnabled:YES];
+                if (reachable) {
+                    [self.similarArtistMenuTtitle setEnabled:YES];
+                } else {
+                    [self.similarArtistMenuTtitle setEnabled:NO];
+                }
+
             }
             else {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:@"Love track on Last.fm... (Log in)"];
@@ -172,17 +189,6 @@
     }
 }
 
-
-#pragma mark - Offline
--(void)updateMenu:(NSNotification *)note
-{
-    BOOL reachable = [FXReachability isReachable];
-    if (reachable) {
-        self.loveSongMenuTitle.enabled = YES;
-    } else {
-        self.loveSongMenuTitle.enabled = NO;
-    }
-}
 
 
 #pragma mark - Recent Items

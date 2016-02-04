@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "MenuController.h"
 #import "MusicScrobbler.h"
+#import "OfflineScrobbler.h"
 #import "Track.h"
 
 @interface UserNotificationsController () <NSUserNotificationCenterDelegate>
@@ -94,7 +95,7 @@
         notification.hasActionButton = YES;
         notification.actionButtonTitle = NSLocalizedString(@"Open", nil);
         [notification setValue:@YES forKey:@"_showsButtons"];
-        notification.userInfo = @{@"logout":@YES};
+        [self forceLogOutUser];
     } else {
         notification.informativeText = [NSString stringWithFormat:NSLocalizedString(@"%@", @"displayNotificationThatLoveSongFailedWithError"), error.localizedDescription];
     }
@@ -114,7 +115,8 @@
         notification.hasActionButton = YES;
         notification.actionButtonTitle = NSLocalizedString(@"Open", nil);
         [notification setValue:@YES forKey:@"_showsButtons"];
-        notification.userInfo = @{@"logout":@YES};
+        [self forceLogOutUser];
+        
     } else if (error.code == kLastFmErrorCodeServiceOffline && !self.doISentANotificationThatLastFmIsDown) {
         if (!self.displayNotifications) {
             return;
@@ -130,6 +132,17 @@
     
     [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
     [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+}
+
+-(void)forceLogOutUser
+{
+    [(AppDelegate *)[NSApplication sharedApplication].delegate forceLogOut];
+    [OfflineScrobbler sharedInstance].userWasLoggedOut = YES;
+    [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser = YES;
+#if DEBUG
+    NSLog(@"User %@ was logged out", [SettingsController sharedSettings].username);
+#endif
+
 }
 
 #pragma mark - Getters
@@ -153,10 +166,6 @@
 
 -(void)userNotificationCenter:(NSUserNotificationCenter *)center didDeliverNotification:(NSUserNotification *)notification
 {
-    if ([[notification.userInfo objectForKey:@"logout"] boolValue]) {
-        [(AppDelegate *)[NSApplication sharedApplication].delegate logOut:nil];
-        [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser = YES;
-    }
 }
 
 @end

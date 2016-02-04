@@ -87,7 +87,7 @@ static void *MASObservingContext = &MASObservingContext;
     }
     else {
         AppDelegate *delegate = [NSApplication sharedApplication].delegate;
-        
+
         if ([keyPath isEqualToString:kloveSongShortcut]) {
             if (self.loveSongView.shortcutValue.modifierFlags) {
                 delegate.menuController.loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];

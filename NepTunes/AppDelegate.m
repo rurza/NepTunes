@@ -130,7 +130,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         self.loginField.hidden = YES;
         self.passwordField.hidden = YES;
         [self.createAccountButton setHidden:YES];
-        
+        if (![self.loginField.stringValue isEqualToString:self.settingsController.username]) {
+            [self.offlineScrobbler deleteAllSavedTracks];
+        }
         
         [self.loginButton setTitle:@"Logging in..."];
         [self.loginButton setEnabled:NO];
@@ -202,17 +204,29 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 - (IBAction)logOut:(id)sender
 {
+    [self logOutUser];
+    self.settingsController.username = nil;
+}
+
+-(void)forceLogOut
+{
+    [self logOutUser];
+}
+
+-(void)logOutUser
+{
     [self.loginButton setEnabled:NO];
+    self.settingsController.session = nil;
     [self.musicScrobbler logOut];
-    self.offlineScrobbler.userWasLoggedOut = YES;
+
     self.userAvatar.image = nil;
     self.settingsController.userAvatar = nil;
     [self.menuController changeState];
     
     self.accountToolbarItem.tag = 1;
     [self switchView:self.accountToolbarItem];
-}
 
+}
 
 - (IBAction)createNewLastFmAccountInWebBrowser:(id)sender
 {
