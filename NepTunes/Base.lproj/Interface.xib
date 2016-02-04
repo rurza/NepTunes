@@ -690,7 +690,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="215"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" autoresizesSubviews="NO" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="-2" width="272" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -712,7 +712,7 @@
                             <action selector="switchView:" target="Voe-Tx-rLC" id="tk9-cF-kfU"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="9E4731B2-FC3E-4736-8090-A23CF169D81A" explicitItemIdentifier="Menu" label="Menu" paletteLabel="Menu" tag="4" image="general" autovalidates="NO" selectable="YES" id="tiS-FQ-yuN">
+                    <toolbarItem implicitItemIdentifier="9E4731B2-FC3E-4736-8090-A23CF169D81A" explicitItemIdentifier="Menu" label="Menu" paletteLabel="Menu" tag="4" image="menu" autovalidates="NO" selectable="YES" id="tiS-FQ-yuN">
                         <connections>
                             <action selector="switchView:" target="Voe-Tx-rLC" id="s7U-Ea-emV"/>
                         </connections>
@@ -743,7 +743,7 @@
                 </menuItem>
                 <menuItem title="Recent tracks" id="ezK-Lj-iX4">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Recent tracks" id="VA4-FS-C7L"/>
+                    <menu key="submenu" title="Recent tracks" autoenablesItems="NO" id="VA4-FS-C7L"/>
                 </menuItem>
                 <menuItem title="Profile..." id="f29-yU-Mdy">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -1057,12 +1057,12 @@ DQ
                 </textField>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0r-Ai-qzE">
                     <rect key="frame" x="18" y="17" width="199" height="26"/>
-                    <popUpButtonCell key="cell" type="push" title="No recent tracks menu" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="S15-KJ-CU5">
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="S15-KJ-CU5">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" title="Number of tracks in recent" id="vP8-da-pda">
                             <items>
-                                <menuItem title="No recent tracks menu" state="on" id="JGc-Td-F8v">
+                                <menuItem title="No recent tracks menu" id="JGc-Td-F8v">
                                     <modifierMask key="keyEquivalentModifierMask"/>
                                 </menuItem>
                                 <menuItem title="5 Tracks" tag="5" id="y3b-vd-pS0"/>
@@ -1077,6 +1077,7 @@ DQ
                 </popUpButton>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vC5-4a-xJV">
                     <rect key="frame" x="18" y="179" width="258" height="18"/>
+                    <string key="toolTip">Integration with iTunes &amp; Apple Music brings power of Last.fm with Apple Music library. e.g. similar artists takes similar artists from last.fm and open them on Apple Music</string>
                     <buttonCell key="cell" type="check" title="Integration with iTunes &amp; Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="J1t-t0-i3K">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1087,7 +1088,7 @@ DQ
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T6I-Lx-SGx">
                     <rect key="frame" x="37" y="150" width="239" height="18"/>
-                    <buttonCell key="cell" type="check" title="Love track on iTunes" bezelStyle="regularSquare" imagePosition="left" inset="2" id="2GM-yr-6jF">
+                    <buttonCell key="cell" type="check" title="Love track on iTunes &amp; Last.fm" bezelStyle="regularSquare" imagePosition="left" inset="2" id="2GM-yr-6jF">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1123,5 +1124,6 @@ DQ
         <image name="general" width="28" height="28"/>
         <image name="hotkey" width="28" height="28"/>
         <image name="lastfm" width="28" height="28"/>
+        <image name="menu" width="28" height="28"/>
     </resources>
 </document>

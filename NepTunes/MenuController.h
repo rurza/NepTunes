@@ -19,11 +19,12 @@
 -(IBAction)showUserProfile:(id)sender;
 -(IBAction)showSimilarArtists:(id)sender;
 -(IBAction)openPreferences:(id)sender;
--(void)changeState;
+-(void)updateMenu;
 -(void)prepareRecentItemsMenu;
 -(void)installStatusBar;
 -(void)removeStatusBarItem;
 -(void)hideRecentMenu;
 -(void)showRecentMenu;
+//-(void)blinkMenuIconWithColor:(NSColor *)color;
 
 @end

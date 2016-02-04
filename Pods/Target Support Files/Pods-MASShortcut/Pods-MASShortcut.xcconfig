@@ -1,1 +1,0 @@
-PODS_MASSHORTCUT_OTHER_LDFLAGS = -framework "AppKit" -framework "Carbon"

@@ -1,5 +1,6 @@
 PODS:
   - EGOCache (2.1)
+  - iTunesSearch (1.1.1)
   - KissXML (5.0)
   - LastFm (1.15.0):
     - KissXML (~> 5.0)
@@ -7,13 +8,15 @@ PODS:
 
 DEPENDENCIES:
   - EGOCache (~> 2.1)
+  - iTunesSearch
   - LastFm (~> 1.15)
   - MASShortcut
 
 SPEC CHECKSUMS:
   EGOCache: d20ba0673fd747c15a3b73a9218d844350b156ba
+  iTunesSearch: 9bb35df794d9df6ffcaab9f84f494853d874467e
   KissXML: ce643413d618ad69886d0d43c3792b7dedfe476e
   LastFm: 28c752f8e8646531524a123ce7f6722bbfc9d3c5
   MASShortcut: ef92b912469f9f6744dba5f0a906665c26de760c
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.39.0

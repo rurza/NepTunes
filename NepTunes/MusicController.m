@@ -144,7 +144,7 @@
 
 -(void)updateMenu
 {
-    [self.menuController changeState];
+    [self.menuController updateMenu];
 }
 
 -(void)scrobble:(NSTimer *)timer
@@ -186,7 +186,10 @@
 
 -(iTunesEPlS)playerState
 {
-    return self.iTunes.playerState;
+    if (self.isiTunesRunning) {
+        return self.iTunes.playerState;
+    }
+    return iTunesEPlSStopped;
 }
 
 -(BOOL)isiTunesRunning

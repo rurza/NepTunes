@@ -308,6 +308,7 @@
 				5B3751291A1D38DC007106D7 /* CopyFiles */,
 				5BE3C9B31B7BD5F70095DA69 /* ShellScript */,
 				5BF5AA0D1C4EB00B00C4FBA3 /* CopyFiles */,
+				924D442E5E3752D8B9FB2B01 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -447,6 +448,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		924D442E5E3752D8B9FB2B01 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F9463E67AFCE13783806692B /* Check Pods Manifest.lock */ = {
@@ -612,17 +628,6 @@
 				INFOPLIST_FILE = NepTunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-l\"Pods-EGOCache\"",
-					"-l\"Pods-KissXML\"",
-					"-l\"Pods-LastFm\"",
-					"-l\"xml2\"",
-					"-l\"Pods-MASShortcut\"",
-					"-Wl",
-					"-rpath",
-					"@loader_path/../Frameworks",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -648,17 +653,6 @@
 				INFOPLIST_FILE = NepTunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-l\"Pods-EGOCache\"",
-					"-l\"Pods-KissXML\"",
-					"-l\"Pods-LastFm\"",
-					"-l\"xml2\"",
-					"-l\"Pods-MASShortcut\"",
-					"-Wl",
-					"-rpath",
-					"@loader_path/../Frameworks",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

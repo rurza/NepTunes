@@ -162,7 +162,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
              }];
              weakSelf.accountToolbarItem.tag = 0;
              [weakSelf switchView:weakSelf.accountToolbarItem];
-             [weakSelf.menuController changeState];
+             [weakSelf.menuController updateMenu];
              
              
              [weakSelf.indicator stopAnimation:weakSelf];
@@ -224,7 +224,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
     self.userAvatar.image = nil;
     self.settingsController.userAvatar = nil;
-    [self.menuController changeState];
+    [self.menuController updateMenu];
     
     self.accountToolbarItem.tag = 1;
     [self switchView:self.accountToolbarItem];

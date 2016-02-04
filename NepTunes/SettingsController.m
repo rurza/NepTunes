@@ -246,6 +246,7 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 -(IBAction)toggleIntegrationWithiTunes:(NSButton *)sender
 {
     self.integrationWithiTunes = sender.state;
+    [self.menuController updateMenu];
 }
 -(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender
 {
@@ -267,10 +268,13 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 -(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender
 {
     self.showSimilarArtistsOnAppleMusic = sender.state;
+    [self.menuController updateMenu];
+    
 }
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender
 {
     self.showRecentTrackIniTunes = sender.state;
+    [self.menuController updateMenu];
 }
 
 

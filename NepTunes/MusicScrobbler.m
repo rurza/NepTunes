@@ -249,11 +249,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     NSString *artist = [userInfo objectForKey:@"Artist"];
     NSString *album = [userInfo objectForKey:@"Album"];
     NSString *trackName = [userInfo objectForKey:@"Name"];
-    NSString *storeURL = [userInfo objectForKey:@"Store URL"];
     double duration = [[userInfo objectForKey:@"Total Time"] doubleValue] / 1000;
     if (artist.length && album.length && trackName.length) {
         self.currentTrack = [[Track alloc] initWithTrackName:trackName artist:artist album:album andDuration:duration];
-        self.currentTrack.storeURL = storeURL;
     } else {
         self.currentTrack = nil;
     }
