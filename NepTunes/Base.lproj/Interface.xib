@@ -1077,7 +1077,7 @@ DQ
                 </popUpButton>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vC5-4a-xJV">
                     <rect key="frame" x="18" y="179" width="258" height="18"/>
-                    <string key="toolTip">Integration with iTunes &amp; Apple Music brings power of Last.fm with Apple Music library. e.g. similar artists takes similar artists from last.fm and open them on Apple Music</string>
+                    <string key="toolTip">Integration with iTunes &amp; Apple Music brings power of Last.fm with Apple Music library, e.g. similar artists takes similar artists from last.fm and open them on Apple Music</string>
                     <buttonCell key="cell" type="check" title="Integration with iTunes &amp; Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="J1t-t0-i3K">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1098,7 +1098,7 @@ DQ
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8iU-3d-KwB">
                     <rect key="frame" x="37" y="121" width="239" height="18"/>
-                    <buttonCell key="cell" type="check" title="Show similar artist on Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uM8-Y4-OkT">
+                    <buttonCell key="cell" type="check" title="Open similar artist in Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uM8-Y4-OkT">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

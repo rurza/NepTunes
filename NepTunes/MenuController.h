@@ -25,6 +25,6 @@
 -(void)removeStatusBarItem;
 -(void)hideRecentMenu;
 -(void)showRecentMenu;
-//-(void)blinkMenuIconWithColor:(NSColor *)color;
+-(void)blinkMenuIcon;
 
 @end

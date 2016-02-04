@@ -13,6 +13,7 @@
 #import "SettingsController.h"
 #import "UserNotificationsController.h"
 #import "MusicController.h"
+#import "AppDelegate.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -79,6 +80,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             if (successHandler) {
                 successHandler();
             }
+            [((AppDelegate *)[NSApplication sharedApplication].delegate).menuController blinkMenuIcon];
         } failureHandler:^(NSError *error) {
             
             //if session is broken and user was logged out

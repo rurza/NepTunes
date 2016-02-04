@@ -18,6 +18,8 @@
 #import "iTunesSearch.h"
 #import "LastFm.h"
 
+@import QuartzCore;
+
 @interface MenuController ()
 
 @property (nonatomic) NSStatusItem *statusItem;
@@ -30,6 +32,7 @@
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settings;
 @property (nonatomic) ItunesSearch *iTunesSearch;
+@property (nonatomic) NSTimer *timer;
 @end
 
 @implementation MenuController
@@ -79,6 +82,24 @@
     self.statusItem = nil;
 }
 
+-(void)blinkMenuIcon
+{
+    NSImage *icon = [NSImage imageNamed:@"scrobbled"];
+    [icon setTemplate:YES];
+    self.statusItem.image = icon;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(blinkBackMenuIcon) userInfo:nil repeats:NO];
+    
+    
+}
+
+-(void)blinkBackMenuIcon
+{
+    NSImage *icon = [NSImage imageNamed:@"statusIcon"];
+    [icon setTemplate:YES];
+    self.statusItem.image = icon;
+    [self.timer invalidate];
+    self.timer = nil;
+}
 
 #pragma mark - Last.fm related
 -(IBAction)loveSong:(id)sender {
@@ -132,7 +153,7 @@
 -(void)updateMenu {
     [self updateRecentMenu];
     [self updateLoveSongMenuItem];
-    [self udapteShowUserProfileMenuItem];
+    [self updateShowUserProfileMenuItem];
     [self updateSimilarArtistMenuItem];
 }
 
@@ -217,7 +238,6 @@
         [self.similarArtistMenuTtitle.submenu removeAllItems];
     }
     
-    
     [artists enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *artist = [obj objectForKey:@"name"];
         [self.similarArtistMenuTtitle.submenu addItemWithTitle:artist action:NULL keyEquivalent:@""];
@@ -272,7 +292,7 @@
 
 }
 
--(void)udapteShowUserProfileMenuItem
+-(void)updateShowUserProfileMenuItem
 {
     BOOL internetIsReachable = [FXReachability isReachable];
     

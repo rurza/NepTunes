@@ -130,6 +130,9 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
         self.integrationWithiTunesCheckbox.state = NSOnState;
     } else {
         self.integrationWithiTunesCheckbox.state = NSOffState;
+        self.loveTrackOniTunesCheckbox.enabled = NO;
+        self.showSimilarArtistsOnAppleMusicCheckbox.enabled = NO;
+        self.showRecentTrackIniTunesCheckbox.enabled = NO;
     }
     
     if (self.loveTrackOniTunes) {
@@ -260,7 +263,7 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
         [alert addButtonWithTitle:@"I'm aware"];
         self.alertWindow = alert.window;
         [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
-            [alert.window close];
+//            [alert.window close];
         }];
     }
 }
