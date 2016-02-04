@@ -14,4 +14,5 @@
 @property (nonatomic, readonly) BOOL isiTunesRunning;
 @property (nonatomic, readonly) iTunesEPlS playerState;
 +(instancetype)sharedController;
+-(void)loveTrackIniTunes;
 @end

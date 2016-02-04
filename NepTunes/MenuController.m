@@ -26,7 +26,7 @@
 @property (nonatomic, weak) IBOutlet AppDelegate *appDelegate;
 @property (nonatomic) RecentTracksController *recentTracksController;
 @property (nonatomic) MusicScrobbler *musicScrobbler;
-
+@property (nonatomic) SettingsController *settings;
 
 @end
 
@@ -79,12 +79,16 @@
 
 #pragma mark - Last.fm related
 -(IBAction)loveSong:(id)sender {
-    if ([SettingsController sharedSettings].session) {
+    SettingsController *settings = [SettingsController sharedSettings];
+    if (settings.session) {
         [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^(Track *track, NSImage *artwork) {
             [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackWasLoved:track withArtwork:(NSImage *)artwork];
         }];
     } else {
         [self openPreferences:nil];
+    }
+    if (settings.integrationWithiTunes && settings.loveTrackOniTunes) {
+        [self.musicController loveTrackIniTunes];
     }
 }
 
@@ -236,7 +240,12 @@
 
 -(void)openWebsite:(NSMenuItem *)menuItem
 {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self validateLinkFromMenuItem:menuItem]]];
+    if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
+        [self.musicController.iTunes openLocation:[self validateLinkFromMenuItem:menuItem]];
+        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+    } else {
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self validateLinkFromMenuItem:menuItem]]];
+    }
 }
 
 -(NSString *)validateLinkFromMenuItem:(NSMenuItem *)menuItem
@@ -250,23 +259,29 @@
             *stop = YES;
         }
     }];
-    NSString *artist = songFromMenu.artist;
-    artist = [artist stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
-    NSString *artistUTF8 = [artist stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
-    NSString *track = songFromMenu.trackName;
-    track = [track stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
-    NSString *trackUTF8 = [track stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
-    if (!trackUTF8 || !artistUTF8) {
+    if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
+        if (songFromMenu.storeURL) {
+            return songFromMenu.storeURL;
+        } else return nil;
+    } else {
+        NSString *artist = songFromMenu.artist;
+        artist = [artist stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
+        NSString *artistUTF8 = [artist stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        
+        NSString *track = songFromMenu.trackName;
+        track = [track stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
+        NSString *trackUTF8 = [track stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        
+        if (!trackUTF8 || !artistUTF8) {
+            return nil;
+        }
+        NSString *link = [NSString stringWithFormat:@"http://www.last.fm/music/%@/_/%@", artistUTF8, trackUTF8];
+        NSURL *url = [NSURL URLWithString:link];
+        if (url) {
+            return url.absoluteString;
+        }
         return nil;
     }
-    NSString *link = [NSString stringWithFormat:@"http://www.last.fm/music/%@/_/%@", artistUTF8, trackUTF8];
-    NSURL *url = [NSURL URLWithString:link];
-    if (url) {
-        return url.absoluteString;
-    }
-    return nil;
 }
 
 #pragma mark - NSMenuValidation
@@ -321,6 +336,14 @@
         _musicScrobbler = [MusicScrobbler sharedScrobbler];
     }
     return _musicScrobbler;
+}
+
+-(SettingsController *)settings
+{
+    if (!_settings) {
+        _settings = [SettingsController sharedSettings];
+    }
+    return _settings;
 }
 
 @end

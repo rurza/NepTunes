@@ -59,51 +59,53 @@
 }
 
 
-- (void)updateTrackInfo:(NSNotification *)note {
-    [self invalidateTimers];
-    [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
-    [self updateMenu];
-    
-    if (self.isiTunesRunning) {
-        if (self.playerState == iTunesEPlSPlaying) {
-            //NSLog(@"%@ by %@ with length = %f after 2 sec.", self.musicScrobbler.trackName, self.musicScrobbler.artist, self.musicScrobbler.duration);
-            NSTimeInterval trackLength;
-            
-            
-            if (self.iTunes.currentTrack.artist && self.iTunes.currentTrack.artist.length) {
-                trackLength = (NSTimeInterval)self.iTunes.currentTrack.duration;
-            }
-            else {
-                trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
-            }
-            
-            NSTimeInterval scrobbleTime = ((trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) < 240) ? (trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) : 240;
-            
-            if ((self.settingsController.percentForScrobbleTime.floatValue / 100) > 0.95) {
-                scrobbleTime -= 2;
-            }
-            
+-(void)updateTrackInfo:(NSNotification *)note
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self invalidateTimers];
+        [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
+        [self updateMenu];
+        
+        if (self.isiTunesRunning) {
+            if (self.playerState == iTunesEPlSPlaying) {
+                NSTimeInterval trackLength;
+                
+                
+                if (self.iTunes.currentTrack.artist && self.iTunes.currentTrack.artist.length) {
+                    trackLength = (NSTimeInterval)self.iTunes.currentTrack.duration;
+                }
+                else {
+                    trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
+                }
+                
+                NSTimeInterval scrobbleTime = ((trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) < 240) ? (trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) : 240;
+                
+                if ((self.settingsController.percentForScrobbleTime.floatValue / 100) > 0.95) {
+                    scrobbleTime -= 2;
+                }
 #if DEBUG
-            NSLog(@"Scrobble time for %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime);
+                NSLog(@"Scrobble time for track %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime);
 #endif
-            
-            if (trackLength >= 31.0f) {
-                self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
-                                                                        target:self
-                                                                      selector:@selector(nowPlaying)
-                                                                      userInfo:nil
-                                                                       repeats:NO];
-            }
-            if (trackLength >= 31.0f) {
-                NSDictionary *userInfo = [note.userInfo copy];
-                self.scrobbleTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
-                                                                      target:self
-                                                                    selector:@selector(scrobble:)
-                                                                    userInfo:userInfo
-                                                                     repeats:NO];
+
+                scrobbleTime -=2;
+                if (trackLength >= 31.0f) {
+                    self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
+                                                                            target:self
+                                                                          selector:@selector(nowPlaying)
+                                                                          userInfo:nil
+                                                                           repeats:NO];
+                }
+                if (trackLength >= 31.0f) {
+                    NSDictionary *userInfo = [note.userInfo copy];
+                    self.scrobbleTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
+                                                                          target:self
+                                                                        selector:@selector(scrobble:)
+                                                                        userInfo:userInfo
+                                                                         repeats:NO];
+                }
             }
         }
-    }
+    });
 }
 
 -(void)invalidateTimers
@@ -121,7 +123,6 @@
 -(void)getInfoAboutTrackFromNotificationOrFromiTunes:(NSDictionary *)userInfo
 {
     [self.musicScrobbler updateCurrentTrackWithUserInfo:userInfo];
-    
     //2s są po to by Itunes sie ponownie nie wlaczal
     //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     if (self.isiTunesRunning) {
@@ -133,6 +134,12 @@
             [self updateMenu];
         }
     }
+}
+
+-(void)loveTrackIniTunes
+{
+//    self.iTunes
+    self.iTunes.currentTrack.loved = YES;
 }
 
 -(void)updateMenu

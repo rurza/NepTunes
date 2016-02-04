@@ -17,6 +17,14 @@
 @property (nonatomic) BOOL openPreferencesWhenThereIsNoUser;
 @property (nonatomic) BOOL hideNotifications;
 @property (nonatomic) BOOL userWasLoggedOut;
+
+//Menu
+@property (nonatomic) BOOL integrationWithiTunes;
+@property (nonatomic) BOOL loveTrackOniTunes;
+@property (nonatomic) BOOL showSimilarArtistsOnAppleMusic;
+@property (nonatomic) BOOL showRecentTrackIniTunes;
+
+//Scrobbler And General
 @property (nonatomic) NSString *session;
 @property (nonatomic) NSString *username;
 @property (nonatomic) NSNumber *numberOfTracksInRecent;
@@ -28,6 +36,13 @@
 @property (nonatomic,weak) IBOutlet NSButton *hideNotificationsCheckbox;
 @property (nonatomic,weak) IBOutlet NSSlider *percentForScrobbleTimeSlider;
 
+//Menu
+@property (nonatomic,weak) IBOutlet NSButton *integrationWithiTunesCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *loveTrackOniTunesCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *showSimilarArtistsOnAppleMusicCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *showRecentTrackIniTunesCheckbox;
+
+
 
 @property (nonatomic,weak) IBOutlet MenuController *menuController;
 
@@ -38,5 +53,10 @@
 -(IBAction)toggleHideStatusBarIcon:(NSButton *)sender;
 -(IBAction)toggleOpenPreferencesWhenThereIsNoUser:(NSButton *)sender;
 -(IBAction)toggleHideNotifications:(NSButton *)sender;
+//Menu
+-(IBAction)toggleIntegrationWithiTunes:(NSButton *)sender;
+-(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender;
+-(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender;
+-(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender;
 
 @end

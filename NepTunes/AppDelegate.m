@@ -28,6 +28,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (weak, nonatomic) IBOutlet NSView *loggedInUserView;
 @property (weak, nonatomic) IBOutlet NSView *hotkeyView;
 @property (weak, nonatomic) IBOutlet NSView *generalView;
+@property (weak, nonatomic) IBOutlet NSView *menuView;
 
 @property (weak, nonatomic) IBOutlet NSImageView *userAvatar;
 
@@ -39,6 +40,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (weak, nonatomic) IBOutlet NSToolbarItem *accountToolbarItem;
 @property (weak, nonatomic) IBOutlet NSToolbarItem *hotkeysToolbarItem;
 @property (weak, nonatomic) IBOutlet NSToolbarItem *generalToolbarItem;
+@property (weak, nonatomic) IBOutlet NSToolbarItem *menuToolbarItem;
+
 
 //reachability
 @property (nonatomic) BOOL reachability;
@@ -130,7 +133,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         self.loginField.hidden = YES;
         self.passwordField.hidden = YES;
         [self.createAccountButton setHidden:YES];
-        if (![self.loginField.stringValue isEqualToString:self.settingsController.username]) {
+        if (![self.loginField.stringValue.lowercaseString isEqualToString:self.settingsController.username.lowercaseString]) {
             [self.offlineScrobbler deleteAllSavedTracks];
         }
         
@@ -265,6 +268,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         case 3:
             view = self.hotkeyView;
             break;
+        case 4:
+            view = self.menuView;
+            break;
         case 0:
             view = self.loggedInUserView;
             break;
@@ -318,6 +324,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             break;
         case 3:
             identifier = @"Hotkeys";
+            break;
+        case 4:
+            identifier = @"Menu";
             break;
         default:
             identifier = @"Account";

@@ -95,6 +95,7 @@
         notification.hasActionButton = YES;
         notification.actionButtonTitle = NSLocalizedString(@"Open", nil);
         [notification setValue:@YES forKey:@"_showsButtons"];
+        notification.userInfo = @{@"logout":@YES};
         [self forceLogOutUser];
     } else {
         notification.informativeText = [NSString stringWithFormat:NSLocalizedString(@"%@", @"displayNotificationThatLoveSongFailedWithError"), error.localizedDescription];
@@ -115,6 +116,7 @@
         notification.hasActionButton = YES;
         notification.actionButtonTitle = NSLocalizedString(@"Open", nil);
         [notification setValue:@YES forKey:@"_showsButtons"];
+        notification.userInfo = @{@"logout":@YES};
         [self forceLogOutUser];
         
     } else if (error.code == kLastFmErrorCodeServiceOffline && !self.doISentANotificationThatLastFmIsDown) {

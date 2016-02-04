@@ -23,7 +23,10 @@ static NSString *const kOpenPreferencesAtLogin = @"openPreferencesAtLogin";
 static NSString *const kHideNotifications = @"hideNotifications";
 static NSString *const kPercentForScrobbleTime = @"percentForScrobbleTime";
 static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
-
+static NSString *const kIntegrationWithiTunes = @"integrationWithiTunes";
+static NSString *const kLoveTrackOniTunes = @"loveTrackOniTunes";
+static NSString *const kShowSimilarArtistsOnAppleMusic = @"showSimilarArtistsOnAppleMusic";
+static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 
 @interface SettingsController ()
 @property (nonatomic, weak) NSUserDefaults *userDefaults;
@@ -32,6 +35,7 @@ static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
 @end
 
 @implementation SettingsController
+
 @synthesize userAvatar = _userAvatar;
 @synthesize username = _username;
 @synthesize launchAtLogin = _launchAtLogin;
@@ -42,6 +46,14 @@ static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
 @synthesize hideNotifications = _hideNotifications;
 @synthesize percentForScrobbleTime = _percentForScrobbleTime;
 @synthesize userWasLoggedOut = _userWasLoggedOut;
+@synthesize integrationWithiTunes = _integrationWithiTunes;
+@synthesize loveTrackOniTunes = _loveTrackOniTunes;
+@synthesize showSimilarArtistsOnAppleMusic = _showSimilarArtistsOnAppleMusic;
+@synthesize showRecentTrackIniTunes = _showRecentTrackIniTunes;
+
+
+
+
 
 #pragma mark - Initialization
 + (instancetype)sharedSettings
@@ -78,6 +90,10 @@ static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kLaunchAtLogin: @NO}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kOpenPreferencesAtLogin: @YES}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideNotifications: @NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kIntegrationWithiTunes: @NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kLoveTrackOniTunes: @NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kShowSimilarArtistsOnAppleMusic: @NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kShowRecentTrackIniTunes: @NO}];
 
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -109,6 +125,29 @@ static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
     } else {
         self.percentForScrobbleTimeSlider.integerValue = 50;
     }
+    //Menu
+    if (self.integrationWithiTunes) {
+        self.integrationWithiTunesCheckbox.state = NSOnState;
+    } else {
+        self.integrationWithiTunesCheckbox.state = NSOffState;
+    }
+    
+    if (self.loveTrackOniTunes) {
+        self.loveTrackOniTunesCheckbox.state = NSOnState;
+    } else {
+        self.loveTrackOniTunesCheckbox.state = NSOffState;
+    }
+    if (self.showSimilarArtistsOnAppleMusic) {
+        self.showSimilarArtistsOnAppleMusicCheckbox.state = NSOnState;
+    } else {
+        self.showSimilarArtistsOnAppleMusicCheckbox.state = NSOffState;
+    }
+    if (self.showRecentTrackIniTunes) {
+        self.showRecentTrackIniTunesCheckbox.state = NSOnState;
+    } else {
+        self.showRecentTrackIniTunesCheckbox.state = NSOffState;
+    }
+
 }
 
 -(void)updateNumberOfRecentItemsPopUp
@@ -202,6 +241,38 @@ static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
     self.numberOfTracksInRecent = @(popUp.selectedTag);
     [self.menuController prepareRecentItemsMenu];
 }
+
+
+-(IBAction)toggleIntegrationWithiTunes:(NSButton *)sender
+{
+    self.integrationWithiTunes = sender.state;
+}
+-(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender
+{
+    self.loveTrackOniTunes = sender.state;
+    if (sender.state) {
+        __block NSAlert *alert = [[NSAlert alloc] init];
+        alert.window.releasedWhenClosed = YES;
+        alert.messageText = NSLocalizedString(@"Some limitations", nil);
+        alert.informativeText = NSLocalizedString(@"Unfortunately, this functionality works only with music in your iTunes Library and with Apple Music radio. Be aware of this.", nil);
+        alert.alertStyle = NSInformationalAlertStyle;
+        [alert addButtonWithTitle:@"I'm aware"];
+        self.alertWindow = alert.window;
+        [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
+            [alert.window close];
+        }];
+    }
+}
+
+-(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender
+{
+    self.showSimilarArtistsOnAppleMusic = sender.state;
+}
+-(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender
+{
+    self.showRecentTrackIniTunes = sender.state;
+}
+
 
 #pragma mark - Setters & Getters
 #pragma mark   Avatar
@@ -400,6 +471,84 @@ static NSString *const kuserWasLoggedOut = @"userWasLoggedOut";
     _userWasLoggedOut = userWasLoggedOut;
     [self.userDefaults setObject:@(userWasLoggedOut) forKey:kuserWasLoggedOut];
     [self saveSettings];
+}
+
+//@property (nonatomic) BOOL integrationWithiTunes;
+#pragma mark   integrationWithiTunes
+-(void)setIntegrationWithiTunes:(BOOL)integrationWithiTunes
+{
+    _integrationWithiTunes = integrationWithiTunes;
+    [self.userDefaults setObject:@(integrationWithiTunes) forKey:kIntegrationWithiTunes];
+    if (!integrationWithiTunes) {
+        //wylaczyc pozostale
+        self.loveTrackOniTunesCheckbox.enabled = NO;
+        self.showRecentTrackIniTunesCheckbox.enabled = NO;
+        self.showSimilarArtistsOnAppleMusicCheckbox.enabled = NO;
+    } else {
+        //wlaczyc pozostale
+        self.loveTrackOniTunesCheckbox.enabled = YES;
+        self.showRecentTrackIniTunesCheckbox.enabled = YES;
+        self.showSimilarArtistsOnAppleMusicCheckbox.enabled = YES;
+    }
+    [self saveSettings];
+}
+
+-(BOOL)integrationWithiTunes
+{
+    if (!_integrationWithiTunes) {
+        _integrationWithiTunes = [[self.userDefaults objectForKey:kIntegrationWithiTunes] boolValue];
+    }
+    return _integrationWithiTunes;
+}
+
+//@property (nonatomic) BOOL loveTrackOniTunes;
+#pragma mark   loveTrackOniTunes
+-(void)setLoveTrackOniTunes:(BOOL)loveTrackOniTunes
+{
+    _loveTrackOniTunes = loveTrackOniTunes;
+    [self.userDefaults setObject:@(loveTrackOniTunes) forKey:kLoveTrackOniTunes];
+    [self saveSettings];
+}
+
+-(BOOL)loveTrackOniTunes
+{
+    if (!_loveTrackOniTunes) {
+        _loveTrackOniTunes = [[self.userDefaults objectForKey:kLoveTrackOniTunes] boolValue];
+    }
+    return _loveTrackOniTunes;
+}
+
+//@property (nonatomic) BOOL showSimilarArtistsOnAppleMusic;
+#pragma mark   showSimilarArtistsOnAppleMusic
+-(void)setShowSimilarArtistsOnAppleMusic:(BOOL)showSimilarArtistsOnAppleMusic
+{
+    _showSimilarArtistsOnAppleMusic = showSimilarArtistsOnAppleMusic;
+    [self.userDefaults setObject:@(showSimilarArtistsOnAppleMusic) forKey:kShowSimilarArtistsOnAppleMusic];
+    [self saveSettings];
+}
+
+-(BOOL)showSimilarArtistsOnAppleMusic
+{
+    if (!_showSimilarArtistsOnAppleMusic) {
+        _showSimilarArtistsOnAppleMusic = [[self.userDefaults objectForKey:kShowSimilarArtistsOnAppleMusic] boolValue];
+    }
+    return _showSimilarArtistsOnAppleMusic;
+}
+
+//@property (nonatomic) BOOL showRecentTrackIniTunes;
+-(void)setShowRecentTrackIniTunes:(BOOL)showRecentTrackIniTunes
+{
+    _showRecentTrackIniTunes = showRecentTrackIniTunes;
+    [self.userDefaults setObject:@(showRecentTrackIniTunes) forKey:kShowRecentTrackIniTunes];
+    [self saveSettings];
+}
+
+-(BOOL)showRecentTrackIniTunes
+{
+    if (!_showRecentTrackIniTunes) {
+        _showRecentTrackIniTunes = [[self.userDefaults objectForKey:kShowRecentTrackIniTunes] boolValue];
+    }
+    return _showRecentTrackIniTunes;
 }
 
 #pragma mark - Save

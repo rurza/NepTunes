@@ -33,6 +33,7 @@
     [encoder encodeObject:self.artist forKey:@"artist"];
     [encoder encodeObject:self.album forKey:@"album"];
     [encoder encodeObject:@(self.duration) forKey:@"duration"];
+    [encoder encodeObject:self.storeURL forKey:@"storeURL"];
 }
 
 -(id)initWithCoder:(NSCoder *)decoder
@@ -45,6 +46,7 @@
         self.artist = [decoder decodeObjectForKey:@"artist"];
         self.album = [decoder decodeObjectForKey:@"album"];
         self.duration = [[decoder decodeObjectForKey:@"duration"] doubleValue];
+        self.storeURL = [decoder decodeObjectForKey:@"storeURL"];
     }
     return self;
 }
@@ -60,7 +62,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ by %@", self.trackName, self.artist];
+    return [NSString stringWithFormat:@"%@ by %@ [%fs]", self.trackName, self.artist, self.duration];
 }
 
 #pragma mark Equality

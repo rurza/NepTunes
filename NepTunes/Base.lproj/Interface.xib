@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -28,6 +28,8 @@
                 <outlet property="loginField" destination="SFe-SM-N5c" id="y0L-Vu-irY"/>
                 <outlet property="logoutButton" destination="Lvr-5g-SEe" id="3GB-Cw-tJL"/>
                 <outlet property="menuController" destination="aMi-64-iJ4" id="CS4-Wx-7Bd"/>
+                <outlet property="menuToolbarItem" destination="tiS-FQ-yuN" id="5Ej-UP-pKo"/>
+                <outlet property="menuView" destination="itN-f0-qau" id="r4H-b2-TYg"/>
                 <outlet property="passwordField" destination="kA7-XP-E0s" id="Bt6-Cr-bnX"/>
                 <outlet property="settingsToolbar" destination="frT-m2-VER" id="QOV-UF-e0r"/>
                 <outlet property="userAvatar" destination="73S-Ro-Dz1" id="Jh3-Lm-1kl"/>
@@ -710,10 +712,16 @@
                             <action selector="switchView:" target="Voe-Tx-rLC" id="tk9-cF-kfU"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="9E4731B2-FC3E-4736-8090-A23CF169D81A" explicitItemIdentifier="Menu" label="Menu" paletteLabel="Menu" tag="4" image="general" autovalidates="NO" selectable="YES" id="tiS-FQ-yuN">
+                        <connections>
+                            <action selector="switchView:" target="Voe-Tx-rLC" id="s7U-Ea-emV"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="0Ad-di-EXd"/>
                     <toolbarItem reference="Mzg-4i-Orf"/>
+                    <toolbarItem reference="tiS-FQ-yuN"/>
                     <toolbarItem reference="eM7-c8-y3C"/>
                 </defaultToolbarItems>
             </toolbar>
@@ -962,11 +970,11 @@ DQ
             </connections>
         </customObject>
         <customView identifier="General" id="71q-6P-ehr" userLabel="General">
-            <rect key="frame" x="0.0" y="0.0" width="379" height="215"/>
+            <rect key="frame" x="0.0" y="0.0" width="379" height="141"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button toolTip="Launch NepTunes automatically when you turn on your Mac." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v2-Vg-kK2">
-                    <rect key="frame" x="18" y="179" width="198" height="18"/>
+                    <rect key="frame" x="18" y="105" width="198" height="18"/>
                     <buttonCell key="cell" type="check" title="Launch NepTunes at login" bezelStyle="regularSquare" imagePosition="left" inset="2" id="KSU-AF-bTE">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -975,42 +983,8 @@ DQ
                         <action selector="toggleLaunchAtLogin:" target="tLX-PG-6oy" id="DGb-UJ-SZp"/>
                     </connections>
                 </button>
-                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="K3H-64-XOo">
-                    <rect key="frame" x="20" y="76" width="339" height="5"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
-                </box>
-                <textField toolTip="Number of tracks in recent tracks menu" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lQ-Qn-qEE">
-                    <rect key="frame" x="18" y="46" width="198" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of tracks in recent:" id="slK-vF-pd3">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tIa-bU-eiY">
-                    <rect key="frame" x="18" y="17" width="199" height="26"/>
-                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="9Sm-oZ-6zA">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" title="Number of tracks in recent" id="1e1-F4-EGE">
-                            <items>
-                                <menuItem title="No recent tracks menu" id="NCN-Ug-D4X">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                                <menuItem title="5 Tracks" tag="5" id="zzU-z9-3VM"/>
-                                <menuItem title="10 Tracks" tag="10" id="UG7-RD-uk0"/>
-                                <menuItem title="15 Tracks" tag="15" id="go9-UB-go1"/>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                    <connections>
-                        <action selector="changeNumberOfRecentItems:" target="tLX-PG-6oy" id="Wzu-u5-NYT"/>
-                    </connections>
-                </popUpButton>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h7t-VB-C4T">
-                    <rect key="frame" x="18" y="150" width="300" height="18"/>
+                    <rect key="frame" x="18" y="76" width="300" height="18"/>
                     <buttonCell key="cell" type="check" title="Hide status bar icon" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ShG-Gw-YwO">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1020,7 +994,7 @@ DQ
                     </connections>
                 </button>
                 <button toolTip="Automatically open preferences when there is no Last.fm user and app was launched." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FGN-yW-XXw">
-                    <rect key="frame" x="18" y="121" width="343" height="18"/>
+                    <rect key="frame" x="18" y="47" width="343" height="18"/>
                     <buttonCell key="cell" type="check" title="Open preferences when no Last.fm user is logged in" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="LIa-tR-7Al">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1030,7 +1004,7 @@ DQ
                     </connections>
                 </button>
                 <button toolTip="Hides notifications, like info about offline mode or loved tracks." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qHO-jB-Kgm">
-                    <rect key="frame" x="18" y="92" width="343" height="18"/>
+                    <rect key="frame" x="18" y="18" width="343" height="18"/>
                     <buttonCell key="cell" type="check" title="Hide notifications" bezelStyle="regularSquare" imagePosition="left" inset="2" id="4ew-BQ-cDS">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1040,18 +1014,22 @@ DQ
                     </connections>
                 </button>
             </subviews>
-            <point key="canvasLocation" x="101.5" y="672.5"/>
+            <point key="canvasLocation" x="101.5" y="635.5"/>
         </customView>
         <customObject id="tLX-PG-6oy" customClass="SettingsController">
             <connections>
                 <outlet property="hideNotificationsCheckbox" destination="qHO-jB-Kgm" id="doT-Yb-jJq"/>
                 <outlet property="hideStatusBarCheckbox" destination="h7t-VB-C4T" id="Wfd-ar-cYG"/>
+                <outlet property="integrationWithiTunesCheckbox" destination="vC5-4a-xJV" id="Nta-CE-HOm"/>
                 <outlet property="launchAtLoginCheckbox" destination="3v2-Vg-kK2" id="ZbC-No-zgY"/>
+                <outlet property="loveTrackOniTunesCheckbox" destination="T6I-Lx-SGx" id="uZm-VQ-niy"/>
                 <outlet property="menuController" destination="aMi-64-iJ4" id="b8J-G8-8J8"/>
-                <outlet property="numberOfRecentItems" destination="tIa-bU-eiY" id="xIC-M3-RmE"/>
+                <outlet property="numberOfRecentItems" destination="W0r-Ai-qzE" id="QiW-E1-uBr"/>
                 <outlet property="openPreferencesWhenThereIsNoUserCheckbox" destination="FGN-yW-XXw" id="EiZ-4k-raJ"/>
                 <outlet property="percentForScrobbleTimeLabel" destination="9Ki-fh-bGA" id="wjO-gr-WuU"/>
                 <outlet property="percentForScrobbleTimeSlider" destination="czq-xR-28L" id="ZdR-gh-oyJ"/>
+                <outlet property="showRecentTrackIniTunesCheckbox" destination="Gqd-fI-2CY" id="EPn-cd-FWs"/>
+                <outlet property="showSimilarArtistsOnAppleMusicCheckbox" destination="8iU-3d-KwB" id="48P-np-Huz"/>
             </connections>
         </customObject>
         <customObject id="6fc-J7-ZFv" customClass="MusicController">
@@ -1059,6 +1037,87 @@ DQ
                 <outlet property="menuController" destination="aMi-64-iJ4" id="jbw-s9-MIb"/>
             </connections>
         </customObject>
+        <customView identifier="Menu" id="itN-f0-qau">
+            <rect key="frame" x="0.0" y="0.0" width="294" height="215"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="d97-QU-kbB">
+                    <rect key="frame" x="20" y="76" width="254" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <textField toolTip="Number of tracks in recent tracks menu" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Bh-lg-BPJ">
+                    <rect key="frame" x="18" y="46" width="198" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of tracks in recent:" id="OXM-2r-VWd">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0r-Ai-qzE">
+                    <rect key="frame" x="18" y="17" width="199" height="26"/>
+                    <popUpButtonCell key="cell" type="push" title="No recent tracks menu" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="S15-KJ-CU5">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" title="Number of tracks in recent" id="vP8-da-pda">
+                            <items>
+                                <menuItem title="No recent tracks menu" state="on" id="JGc-Td-F8v">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="5 Tracks" tag="5" id="y3b-vd-pS0"/>
+                                <menuItem title="10 Tracks" tag="10" id="Y6U-4b-lWi"/>
+                                <menuItem title="15 Tracks" tag="15" id="nPe-Ql-eUP"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeNumberOfRecentItems:" target="tLX-PG-6oy" id="i5o-Jy-LYd"/>
+                    </connections>
+                </popUpButton>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vC5-4a-xJV">
+                    <rect key="frame" x="18" y="179" width="258" height="18"/>
+                    <buttonCell key="cell" type="check" title="Integration with iTunes &amp; Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="J1t-t0-i3K">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleIntegrationWithiTunes:" target="tLX-PG-6oy" id="8IC-fs-1HN"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T6I-Lx-SGx">
+                    <rect key="frame" x="37" y="150" width="239" height="18"/>
+                    <buttonCell key="cell" type="check" title="Love track on iTunes" bezelStyle="regularSquare" imagePosition="left" inset="2" id="2GM-yr-6jF">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleLoveTrackOniTunes:" target="tLX-PG-6oy" id="InV-aF-16R"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8iU-3d-KwB">
+                    <rect key="frame" x="37" y="121" width="239" height="18"/>
+                    <buttonCell key="cell" type="check" title="Show similar artist on Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uM8-Y4-OkT">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleShowSimilarArtistsOnAppleMusic:" target="tLX-PG-6oy" id="Tg2-Mx-aRk"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gqd-fI-2CY">
+                    <rect key="frame" x="37" y="92" width="239" height="18"/>
+                    <buttonCell key="cell" type="check" title="Open recent tracks in iTunes" bezelStyle="regularSquare" imagePosition="left" inset="2" id="R1Y-Zc-z0Z">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleShowRecentTrackIniTunes:" target="tLX-PG-6oy" id="0l1-Ak-89g"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="507" y="456.5"/>
+        </customView>
     </objects>
     <resources>
         <image name="general" width="28" height="28"/>

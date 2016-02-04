@@ -86,6 +86,7 @@
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
+		5BA37AC51C63842000F69380 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		5BAE70F51C50023500779081 /* FXReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXReachability.h; sourceTree = "<group>"; };
 		5BAE70F61C50023500779081 /* FXReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXReachability.m; sourceTree = "<group>"; };
 		5BAE70F81C50030C00779081 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -95,7 +96,6 @@
 		5BAE71021C50199700779081 /* SavedTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedTrack.m; sourceTree = "<group>"; };
 		5BAE71061C528D1000779081 /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
 		5BAE71071C528D1000779081 /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
-		5BB6D1CB1B43A91800211F28 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		5BBD4C4F1C34562000AFA182 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		5BC6A8DF1C610C83009C3E9F /* MusicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicController.h; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 		5BAE71041C5019A200779081 /* Track */ = {
 			isa = PBXGroup;
 			children = (
-				5BB6D1CB1B43A91800211F28 /* iTunes.h */,
+				5BA37AC51C63842000F69380 /* iTunes.h */,
 				5BBD4C4E1C34562000AFA182 /* Track.h */,
 				5BBD4C4F1C34562000AFA182 /* Track.m */,
 				5BAE71011C50199700779081 /* SavedTrack.h */,

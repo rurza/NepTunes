@@ -15,6 +15,7 @@
 @property (nonatomic) NSString *artist;
 @property (nonatomic) NSString *album;
 @property (nonatomic) double duration;//in seconds
+@property (nonatomic) NSString *storeURL;
 
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d;
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track;

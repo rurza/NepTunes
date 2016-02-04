@@ -4,6 +4,10 @@
 <dict>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	<key>com.apple.security.temporary-exception.apple-events</key>
+	<array>
+		<string>com.apple.iTunes</string>
+	</array>
 	<key>com.apple.security.network.client</key>
 	<true/>
 	<key>com.apple.security.scripting-targets</key>
@@ -11,6 +15,7 @@
 		<key>com.apple.iTunes</key>
 		<array>
 			<string>com.apple.iTunes.playback</string>
+			<string>com.apple.iTunes.library.read-write</string>
 		</array>
 	</dict>
 </dict>
