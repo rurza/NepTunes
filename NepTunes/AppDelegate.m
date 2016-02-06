@@ -394,6 +394,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     }
     if (image) {
         [self.userAvatar setWantsLayer: YES];
+        self.userAvatar.layer.shadowOpacity = 1;
+        self.userAvatar.layer.shadowRadius = 5;
+        self.userAvatar.layer.shadowOffset = CGSizeMake(0, -6);
         self.userAvatar.layer.cornerRadius = 32.0f;
         self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
         self.userAvatar.layer.borderWidth = 2.0f;

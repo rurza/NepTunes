@@ -62,7 +62,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)scrobbleCurrentTrack
 {
     if (self.musicController.isiTunesRunning) {
-        [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1 withSuccessHandler:nil];
+        [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1 withSuccessHandler:^{
+            [((AppDelegate *)[NSApplication sharedApplication].delegate).menuController blinkMenuIcon];
+        }];
     }
 }
 
@@ -80,7 +82,6 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             if (successHandler) {
                 successHandler();
             }
-            [((AppDelegate *)[NSApplication sharedApplication].delegate).menuController blinkMenuIcon];
         } failureHandler:^(NSError *error) {
             
             //if session is broken and user was logged out

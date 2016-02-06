@@ -12,12 +12,15 @@
 #import "MenuController.h"
 #import "Track.h"
 
+#define FOUR_MINUTES 60 * 4
+
 @interface MusicController ()
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settingsController;
 @property (nonatomic) IBOutlet MenuController *menuController;
 @property (nonatomic) NSTimer* scrobbleTimer;
 @property (nonatomic) NSTimer* nowPlayingTimer;
+@property (nonatomic) NSTimer* mainTimer;
 @end
 
 @implementation MusicController
@@ -61,10 +64,18 @@
 
 -(void)updateTrackInfo:(NSNotification *)note
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self invalidateTimers];
-        [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
-        [self updateMenu];
+    [self invalidateTimers];
+    self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
+    [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
+    [self updateMenu];
+}
+
+-(void)prepareTrack:(NSTimer *)timer
+{
+    if ([timer isValid]) {
+//        [self invalidateTimers];
+        [self getInfoAboutTrackFromNotificationOrFromiTunes:timer.userInfo];
+        //        [self updateMenu];
         
         if (self.isiTunesRunning) {
             if (self.playerState == iTunesEPlSPlaying) {
@@ -78,7 +89,7 @@
                     trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
                 }
                 
-                NSTimeInterval scrobbleTime = ((trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) < 240) ? (trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) : 240;
+                NSTimeInterval scrobbleTime = ((trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) < FOUR_MINUTES) ? (trackLength * (self.settingsController.percentForScrobbleTime.floatValue / 100)) : FOUR_MINUTES;
                 
                 if ((self.settingsController.percentForScrobbleTime.floatValue / 100) > 0.95) {
                     scrobbleTime -= 2;
@@ -86,8 +97,13 @@
 #if DEBUG
                 NSLog(@"Scrobble time for track %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime);
 #endif
-
+                
                 scrobbleTime -=2;
+                
+                if (scrobbleTime == 0) {
+                    scrobbleTime = 16.0f;
+                }
+                
                 if (trackLength >= 31.0f) {
                     self.nowPlayingTimer = [NSTimer scheduledTimerWithTimeInterval:5
                                                                             target:self
@@ -96,7 +112,7 @@
                                                                            repeats:NO];
                 }
                 if (trackLength >= 31.0f) {
-                    NSDictionary *userInfo = [note.userInfo copy];
+                    NSDictionary *userInfo = [timer.userInfo copy];
                     self.scrobbleTimer = [NSTimer scheduledTimerWithTimeInterval:scrobbleTime
                                                                           target:self
                                                                         selector:@selector(scrobble:)
@@ -105,11 +121,15 @@
                 }
             }
         }
-    });
+    }
 }
 
 -(void)invalidateTimers
 {
+    if (self.mainTimer) {
+        [self.mainTimer invalidate];
+        self.mainTimer = nil;
+    }
     if (self.scrobbleTimer) {
         [self.scrobbleTimer invalidate];
         self.scrobbleTimer = nil;
@@ -131,7 +151,7 @@
         }
         else if (self.iTunes.currentTrack.name && self.iTunes.currentTrack.album) {
             self.musicScrobbler.currentTrack = [Track trackWithiTunesTrack:self.iTunes.currentTrack];
-            [self updateMenu];
+//            [self updateMenu];
         }
     }
 }

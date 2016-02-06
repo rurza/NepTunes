@@ -254,6 +254,7 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 -(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender
 {
     self.loveTrackOniTunes = sender.state;
+    [self.menuController updateMenu];
     if (sender.state) {
         __block NSAlert *alert = [[NSAlert alloc] init];
         alert.window.releasedWhenClosed = YES;
@@ -263,7 +264,6 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
         [alert addButtonWithTitle:@"I'm aware"];
         self.alertWindow = alert.window;
         [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
-//            [alert.window close];
         }];
     }
 }

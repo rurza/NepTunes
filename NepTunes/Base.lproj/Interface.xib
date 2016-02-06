@@ -690,7 +690,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="215"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="-2" width="272" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -729,23 +729,23 @@
         </window>
         <menu autoenablesItems="NO" id="XPD-Mx-1cp">
             <items>
-                <menuItem title="Love track on Last.fm..." id="84S-sz-3Q2">
+                <menuItem title="Love Track" id="84S-sz-3Q2">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="loveSong:" target="aMi-64-iJ4" id="JQg-mk-tzq"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Similar artists..." id="wza-2X-Avd">
+                <menuItem title="Similar Artists" id="wza-2X-Avd">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="showSimilarArtists:" target="aMi-64-iJ4" id="WZp-If-zE5"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Recent tracks" id="ezK-Lj-iX4">
+                <menuItem title="Recent Tracks" id="ezK-Lj-iX4">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Recent tracks" autoenablesItems="NO" id="VA4-FS-C7L"/>
+                    <menu key="submenu" title="Recent Tracks" autoenablesItems="NO" id="VA4-FS-C7L"/>
                 </menuItem>
-                <menuItem title="Profile..." id="f29-yU-Mdy">
+                <menuItem title="Profile" id="f29-yU-Mdy">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="showUserProfile:" target="aMi-64-iJ4" id="Ee0-Ec-iDi"/>
@@ -1038,11 +1038,11 @@ DQ
             </connections>
         </customObject>
         <customView identifier="Menu" id="itN-f0-qau">
-            <rect key="frame" x="0.0" y="0.0" width="294" height="215"/>
+            <rect key="frame" x="0.0" y="0.0" width="319" height="215"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="d97-QU-kbB">
-                    <rect key="frame" x="20" y="76" width="254" height="5"/>
+                    <rect key="frame" x="20" y="76" width="279" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
@@ -1097,8 +1097,8 @@ DQ
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8iU-3d-KwB">
-                    <rect key="frame" x="37" y="121" width="239" height="18"/>
-                    <buttonCell key="cell" type="check" title="Open similar artist in Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uM8-Y4-OkT">
+                    <rect key="frame" x="37" y="121" width="264" height="18"/>
+                    <buttonCell key="cell" type="check" title="Open similar artist page on Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uM8-Y4-OkT">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1117,7 +1117,7 @@ DQ
                     </connections>
                 </button>
             </subviews>
-            <point key="canvasLocation" x="507" y="456.5"/>
+            <point key="canvasLocation" x="519.5" y="456.5"/>
         </customView>
     </objects>
     <resources>

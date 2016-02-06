@@ -20,6 +20,9 @@
 
 @import QuartzCore;
 
+static NSUInteger const kFPS = 30;
+static NSUInteger const kNumberOfFrames = 10;
+
 @interface MenuController ()
 
 @property (nonatomic) NSStatusItem *statusItem;
@@ -32,7 +35,7 @@
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settings;
 @property (nonatomic) ItunesSearch *iTunesSearch;
-@property (nonatomic) NSTimer *timer;
+@property (nonatomic) NSUInteger animationCurrentStep;
 @end
 
 @implementation MenuController
@@ -60,7 +63,7 @@
     }
     self.statusMenu.autoenablesItems = NO;
     [self.loveSongMenuTitle setEnabled:NO];
-
+    
     [self updateMenu];
 }
 
@@ -84,21 +87,74 @@
 
 -(void)blinkMenuIcon
 {
-    NSImage *icon = [NSImage imageNamed:@"scrobbled"];
-    [icon setTemplate:YES];
-    self.statusItem.image = icon;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(blinkBackMenuIcon) userInfo:nil repeats:NO];
-    
-    
+    if (self.statusItem) {
+        [self animationStepForward:YES];
+    }
 }
 
--(void)blinkBackMenuIcon
+- (void)animationStepForward:(BOOL)forward
+{
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 1.0 / kFPS * NSEC_PER_SEC);
+    
+    dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        if (forward) {
+            self.animationCurrentStep++;
+        } else {
+            self.animationCurrentStep--;
+        }
+        
+        if (forward) {
+            if (self.animationCurrentStep <= kNumberOfFrames) {
+                [self animationStepForward:YES];
+            } else {
+                self.animationCurrentStep = 0;
+            }
+        } else {
+            if (self.animationCurrentStep > 0) {
+                [self animationStepForward:NO];
+            } else {
+                self.animationCurrentStep = 0;
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.animationCurrentStep != 0) {
+                self.statusItem.image = [self imageForStep:self.animationCurrentStep];
+            } else {
+                if (forward) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self backwardAnimation];
+                    });
+                } else {
+                    [self setOriginalIcon];
+                }
+            }
+        });
+    });
+}
+
+-(NSImage *)imageForStep:(NSUInteger)step
+{
+    NSImage *image;
+    if (step != 0) {
+        image = [NSImage imageNamed:[NSString stringWithFormat:@"statusIcon%lu", (unsigned long)step]];
+    } else image = [NSImage imageNamed:@"statusIcon"];
+    [image setTemplate:YES];
+    return image;
+}
+
+
+-(void)backwardAnimation
+{
+    self.animationCurrentStep = 10;
+    [self animationStepForward:NO];    
+}
+
+-(void)setOriginalIcon
 {
     NSImage *icon = [NSImage imageNamed:@"statusIcon"];
     [icon setTemplate:YES];
     self.statusItem.image = icon;
-    [self.timer invalidate];
-    self.timer = nil;
 }
 
 #pragma mark - Last.fm related
@@ -160,60 +216,82 @@
 -(void)updateLoveSongMenuItem
 {
     BOOL internetIsReachable = [FXReachability isReachable];
-    
-    if (self.settings.session && internetIsReachable && self.musicController.playerState == iTunesEPlSPlaying) {
-        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@", nil), self.musicScrobbler.currentTrack.trackName ? self.musicScrobbler.currentTrack.trackName : @""];
+    //if user is logged in, there is Internet conenction and we have a track
+    if (self.settings.session && self.musicScrobbler.currentTrack && internetIsReachable) {
+        //if user choose to love track also in iTunes  and track listened is available to love in iTunes
+        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes && self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
+            //love on Last.fm and in iTunes
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.trackName];
         } else {
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ on Last.fm", nil), self.musicScrobbler.currentTrack.trackName ? self.musicScrobbler.currentTrack.trackName : @""];
+            //love track only on Last.fm
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];
         }
-        self.loveSongMenuTitle.enabled = YES;
-    } else if (self.settings.session && !internetIsReachable && self.musicController.playerState == iTunesEPlSPlaying) {
-        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@", nil), self.musicScrobbler.currentTrack.trackName ? self.musicScrobbler.currentTrack.trackName : @""];
+        //if user ISN'T logged in, we have a track
+    } else if (!self.settings.session && self.musicScrobbler.currentTrack) {
+        //if user choose to love track also in iTunes and track listened is available to love in iTunes
+        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes && self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.trackName];
         } else {
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ on Last.fm", nil), self.musicScrobbler.currentTrack.trackName ? self.musicScrobbler.currentTrack.trackName : @""];
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.trackName];
         }
-        self.loveSongMenuTitle.enabled = NO;
-    } else if (!self.settings.session && self.musicController.playerState == iTunesEPlSPlaying) {
-        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log in)", nil), self.musicScrobbler.currentTrack.trackName ? self.musicScrobbler.currentTrack.trackName : @""];
-        self.loveSongMenuTitle.enabled = NO;
-    } else if (self.settings.session) {
-        self.loveSongMenuTitle.enabled = NO;
-        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love track", nil)];
-    } else  {
-        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love track (Log in)", nil)];
-        self.loveSongMenuTitle.enabled = NO;
+        //if Internet connection ISN'T reachable BUT user choose to love track also in iTunes and we have a track
+    } else if (!internetIsReachable && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && self.musicScrobbler.currentTrack) {
+        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.trackName];
+    }   //if user is logged in but we don't have a track
+    else if (self.settings.session) {
+        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love Track", nil)];
+    }  else  {
+        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love Track (Log In)", nil)];
     }
+    
+    
+    //when the button must be disabled
+    if ((!internetIsReachable && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes])|| (!self.settings.session && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || (!self.settings.session && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && !self.musicController.iTunes.currentTrack.name.length) || !self.musicScrobbler.currentTrack) {
+        self.loveSongMenuTitle.enabled = NO;
+    } else {
+        self.loveSongMenuTitle.enabled = YES;
+    }
+}
+
+-(BOOL)userHasTurnedOnIntegrationAndLovingMusicOniTunes
+{
+    if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
+        return YES;
+    }
+    return NO;
 }
 
 -(void)updateSimilarArtistMenuItem
 {
     BOOL internetIsReachable = [FXReachability isReachable];
-    if (self.musicController.playerState == iTunesEPlSPlaying) {
+    if (self.musicScrobbler.currentTrack) {
         self.similarArtistMenuTtitle.enabled = YES;
-        self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Similar artists to %@", nil), self.musicScrobbler.currentTrack.artist ? self.musicScrobbler.currentTrack.artist : @""];
+        self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Similar Artists To %@", nil), self.musicScrobbler.currentTrack.artist];
         if (!internetIsReachable) {
             self.similarArtistMenuTtitle.enabled = NO;
         }
         if (self.settings.showSimilarArtistsOnAppleMusic && self.settings.integrationWithiTunes) {
+            __weak typeof(self) weakSelf = self;
             if (![self.similarArtistMenuTtitle hasSubmenu]) {
                 [self.musicScrobbler.scrobbler getSimilarArtistsTo:self.musicScrobbler.currentTrack.artist successHandler:^(NSArray *result) {
                     if (result.count) {
-                        [self prepareMenuWithArtists:result];
+                        [weakSelf prepareSimilarArtistsMenuWithArtists:result];
+                    } else {
+                        [weakSelf.similarArtistMenuTtitle.submenu removeAllItems];
+                        weakSelf.similarArtistMenuTtitle.submenu = nil;
                     }
                 } failureHandler:^(NSError *error) {
-                    self.similarArtistMenuTtitle.submenu = nil;
+                    weakSelf.similarArtistMenuTtitle.submenu = nil;
                     
                 }];
             } else {
                 [self.similarArtistMenuTtitle.submenu removeAllItems];
                 [self.musicScrobbler.scrobbler getSimilarArtistsTo:self.musicScrobbler.currentTrack.artist successHandler:^(NSArray *result) {
-                    [self prepareMenuWithArtists:result];
+                    [weakSelf prepareSimilarArtistsMenuWithArtists:result];
                 } failureHandler:^(NSError *error) {
-                    self.similarArtistMenuTtitle.submenu = nil;
+                    weakSelf.similarArtistMenuTtitle.submenu = nil;
                 }];
-
+                
             }
         } else {
             if ([self.similarArtistMenuTtitle hasSubmenu]) {
@@ -223,12 +301,12 @@
         }
     } else {
         self.similarArtistMenuTtitle.enabled = NO;
-        self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Show similar artists", nil)];
+        self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Show Similar Artists", nil)];
     }
 }
 
 
--(void)prepareMenuWithArtists:(NSArray *)artists
+-(void)prepareSimilarArtistsMenuWithArtists:(NSArray *)artists
 {
     if (!self.similarArtistMenuTtitle.hasSubmenu) {
         NSMenu *submenu = [[NSMenu alloc] init];
@@ -238,35 +316,61 @@
         [self.similarArtistMenuTtitle.submenu removeAllItems];
     }
     
+    __weak typeof(self) weakSelf = self;
     [artists enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *artist = [obj objectForKey:@"name"];
+        
         [self.similarArtistMenuTtitle.submenu addItemWithTitle:artist action:NULL keyEquivalent:@""];
         [self.iTunesSearch getIdForArtist:artist successHandler:^(NSArray *result) {
             if (result.count) {
-                [self.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([menuItem.title.lowercaseString isEqualToString:((NSString *)result.firstObject[@"artistName"]).lowercaseString]) {
-                        menuItem.enabled = YES;
-                        menuItem.action = @selector(openiTunesLinkFromMenuItem:);
-                        menuItem.target = self;
-                    }
-                }];
+                [weakSelf enumerateMenuItemsToFindArtist:(NSString *)result.firstObject[@"artistName"] withAsciiCoding:NO];
             } else {
-                [self.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([menuItem.title.lowercaseString isEqualToString:artist.lowercaseString]) {
-                        menuItem.enabled = NO;
+                [weakSelf.iTunesSearch getIdForArtist:[weakSelf asciiString:artist] successHandler:^(NSArray *result) {
+                    if (result.count) {
+                        [weakSelf enumerateMenuItemsToFindArtist:(NSString *)result.firstObject[@"artistName"] withAsciiCoding:YES];
+                    } else {
+                        [weakSelf.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
+                            if ([menuItem.title.lowercaseString isEqualToString:artist.lowercaseString]) {
+                                menuItem.enabled = NO;
+                            }
+                        }];
                     }
+                    
+                } failureHandler:^(NSError *error) {
+                    
                 }];
             }
         } failureHandler:^(NSError *error) {
-            [self.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
+            [weakSelf.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
                 if ([menuItem.title.lowercaseString isEqualToString:artist.lowercaseString]) {
                     menuItem.enabled = NO;
                 }
             }];
-
+            
         }];
         if (idx == 9) {
             *stop = YES;
+        }
+    }];
+}
+
+-(void)enumerateMenuItemsToFindArtist:(NSString *)artist withAsciiCoding:(BOOL)coding
+{
+    if (coding) {
+        artist = [self asciiString:artist];
+    }
+    __weak typeof(self) weakSelf = self;
+    [self.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *menuTitle;
+        if (coding) {
+            menuTitle = [weakSelf asciiString:menuItem.title];
+        } else {
+            menuTitle = menuItem.title;
+        }
+        if ([menuTitle isEqualToString:artist]) {
+            menuItem.enabled = YES;
+            menuItem.action = @selector(openiTunesLinkFromMenuItem:);
+            menuItem.target = weakSelf;
         }
     }];
 }
@@ -278,18 +382,37 @@
 
 -(void)openiTunesLinkForArtist:(NSString *)artist
 {
+    __weak typeof(self) weakSelf = self;
     [self.iTunesSearch getIdForArtist:artist successHandler:^(NSArray *result) {
         if (result.count) {
-            NSString *link = [(NSString *)result.firstObject[@"artistLinkUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
-            NSLog(@"%@", link);
-            [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-            [self.musicController.iTunes openLocation:link];
-
+            [weakSelf openLocationWithURL:(NSString *)result.firstObject[@"artistLinkUrl"]];
+        } else {
+            [weakSelf.iTunesSearch getIdForArtist:[self asciiString:artist] successHandler:^(NSArray *result) {
+                if (result.count) {
+                    [weakSelf openLocationWithURL:(NSString *)result.firstObject[@"artistLinkUrl"]];
+                }
+            } failureHandler:nil];
         }
-    } failureHandler:^(NSError *error) {
-        
-    }];
+    } failureHandler:nil];
+}
 
+-(void)openLocationWithURL:(NSString *)url
+{
+    NSString *link = [url stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
+    NSLog(@"%@", link);
+    [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+    [self.musicController.iTunes openLocation:link];
+}
+
+-(NSString *)asciiString:(NSString *)string
+{
+    NSData *asciiEncoded = [string.lowercaseString dataUsingEncoding:NSASCIIStringEncoding
+                                                allowLossyConversion:YES];
+    
+    NSString *stringInAscii = [[NSString alloc] initWithData:asciiEncoded
+                                                    encoding:NSASCIIStringEncoding];
+    return stringInAscii;
+    
 }
 
 -(void)updateShowUserProfileMenuItem
@@ -297,13 +420,13 @@
     BOOL internetIsReachable = [FXReachability isReachable];
     
     if (self.settings.session && internetIsReachable) {
-        self.profileMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"%@'s profile...", nil), self.settings.username];
+        self.profileMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"%@'s Profile", nil), self.settings.username];
         self.profileMenuTitle.enabled = YES;
     } else if (self.settings.session && !internetIsReachable) {
-        self.profileMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"%@'s profile...", nil), self.settings.username];
+        self.profileMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"%@'s Profile", nil), self.settings.username];
         self.profileMenuTitle.enabled = NO;
     } else {
-        self.profileMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Profile... (Log in)", nil)];
+        self.profileMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Last.fm Profile (Log In)", nil)];
         self.profileMenuTitle.enabled = NO;
     }
 }
@@ -340,7 +463,7 @@
     Track *track = self.musicScrobbler.currentTrack;
     if ([self.recentTracksController addTrackToRecentMenu:track]) {
         self.recentTracksMenuItem.enabled = YES;
-
+        
         if (self.recentTracksMenu.numberOfItems < [SettingsController sharedSettings].numberOfTracksInRecent.intValue) {
             NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil), track.artist, track.trackName] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
             [self validateLinkFromMenuItem:menuItem];
@@ -359,12 +482,12 @@
 -(void)validateLinkFromMenuItem:(NSMenuItem *)menuItem
 {
     Track *trackFromMenu = [self returnTrackFromMenuItem:menuItem];
-     //got track
+    //got track
     if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
         [self validateAppleMusicLinkForTrack:trackFromMenu andMenuItem:menuItem];
-     } else {
-         [self generateLastFmLinkForTrack:trackFromMenu andMenuItem:menuItem];
-     }
+    } else {
+        [self generateLastFmLinkForTrack:trackFromMenu andMenuItem:menuItem];
+    }
 }
 
 -(Track *)returnTrackFromMenuItem:(NSMenuItem *)menuItem
@@ -437,7 +560,7 @@
             NSString *link = [(NSString *)result.firstObject[@"trackViewUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
             [self.musicController.iTunes openLocation:link];
             [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-
+            
         } else {
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
         }
@@ -445,7 +568,7 @@
     } failureHandler:^(NSError *error) {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
     }];
-
+    
 }
 #pragma mark - NSMenuValidation
 //
@@ -516,7 +639,7 @@
     if (!_iTunesSearch) {
         _iTunesSearch = [ItunesSearch sharedInstance];
         _iTunesSearch.affiliateToken = @"1010l3j7";
-//        _iTunesSearch.countryCode = @"US";
+        _iTunesSearch.maxCacheAge = 60 * 60;
     }
     return _iTunesSearch;
 }
