@@ -370,7 +370,7 @@ static NSUInteger const kNumberOfFrames = 10;
         if ([menuTitle isEqualToString:artist]) {
             menuItem.enabled = YES;
             menuItem.action = @selector(openiTunesLinkFromMenuItem:);
-            menuItem.target = weakSelf;
+            menuItem.target = self;
         }
     }];
 }
@@ -453,7 +453,7 @@ static NSUInteger const kNumberOfFrames = 10;
             *stop =  YES;
         }
         NSMenuItem *menuItem = [weakSelf.recentTracksMenu addItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil), track.artist, track.trackName] action:@selector(openWebsite:) keyEquivalent:@""];
-        menuItem.target = weakSelf;
+        menuItem.target = self;
     }];
 }
 
@@ -542,8 +542,8 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
         Track *track = [self returnTrackFromMenuItem:menuItem];
-        [self openAppleMusicPageForTrack:track andMenuItem:menuItem];
         [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+        [self openAppleMusicPageForTrack:track andMenuItem:menuItem];
     } else {
         Track *track = [self returnTrackFromMenuItem:menuItem];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
@@ -558,8 +558,9 @@ static NSUInteger const kNumberOfFrames = 10;
             NSLog(@"%@", result);
 #endif
             NSString *link = [(NSString *)result.firstObject[@"trackViewUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
-            [self.musicController.iTunes openLocation:link];
             [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+
+            [self.musicController.iTunes openLocation:link];
             
         } else {
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
@@ -589,7 +590,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)hideRecentMenu
 {
-    [self.statusMenu removeItem:self.recentTracksMenuItem];
+    if ([self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
+        [self.statusMenu removeItem:self.recentTracksMenuItem];
+    }
 }
 
 -(void)showRecentMenu

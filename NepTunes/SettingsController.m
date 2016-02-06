@@ -156,6 +156,7 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 -(void)updateNumberOfRecentItemsPopUp
 {
     [self.numberOfRecentItems selectItemWithTag:self.numberOfTracksInRecent.integerValue];
+    [self toggleShowRecentTracksCheckbox];
 }
 
 -(IBAction)toggleLaunchAtLogin:(NSButton *)sender
@@ -243,13 +244,25 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 {
     self.numberOfTracksInRecent = @(popUp.selectedTag);
     [self.menuController prepareRecentItemsMenu];
+    [self toggleShowRecentTracksCheckbox];
 }
 
+-(void)toggleShowRecentTracksCheckbox
+{
+    if (self.numberOfTracksInRecent.integerValue == 0 || !self.integrationWithiTunes) {
+        self.showRecentTrackIniTunesCheckbox.enabled = NO;
+    } else {
+        self.showRecentTrackIniTunesCheckbox.enabled = YES;
+    }
+}
 
 -(IBAction)toggleIntegrationWithiTunes:(NSButton *)sender
 {
     self.integrationWithiTunes = sender.state;
     [self.menuController updateMenu];
+    if (self.numberOfTracksInRecent.integerValue == 0) {
+        self.showRecentTrackIniTunesCheckbox.enabled = NO;
+    }
 }
 -(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender
 {
@@ -374,8 +387,10 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
         [self.userDefaults setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
         if (numberOfTracksInRecent.integerValue != 0) {
             [self.menuController showRecentMenu];
+            self.showRecentTrackIniTunesCheckbox.enabled = YES;
         } else {
             [self.menuController hideRecentMenu];
+            self.showRecentTrackIniTunesCheckbox.enabled = NO;
         }
     } else {
         [self.userDefaults removeObjectForKey:kNumberOfTracksInRecent];
@@ -542,6 +557,7 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
     return _showSimilarArtistsOnAppleMusic;
 }
 
+#pragma mark   showRecentTrackIniTunes
 //@property (nonatomic) BOOL showRecentTrackIniTunes;
 -(void)setShowRecentTrackIniTunes:(BOOL)showRecentTrackIniTunes
 {

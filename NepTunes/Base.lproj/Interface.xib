@@ -915,7 +915,7 @@ DQ
                 <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="yos-2H-Ri7">
                     <rect key="frame" x="118" y="181" width="16" height="16"/>
                 </progressIndicator>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Ki-fh-bGA">
+                <textField toolTip="Tracks will scrobble after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Ki-fh-bGA">
                     <rect key="frame" x="18" y="53" width="217" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="When to scrobble?" id="f6U-kw-Adu">
                         <font key="font" metaFont="system"/>
@@ -1055,7 +1055,7 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0r-Ai-qzE">
+                <popUpButton toolTip="Number of tracks in Recent tracks menu" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0r-Ai-qzE">
                     <rect key="frame" x="18" y="17" width="199" height="26"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="S15-KJ-CU5">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1077,7 +1077,7 @@ DQ
                 </popUpButton>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vC5-4a-xJV">
                     <rect key="frame" x="18" y="179" width="258" height="18"/>
-                    <string key="toolTip">Integration with iTunes &amp; Apple Music brings power of Last.fm with Apple Music library, e.g. similar artists takes similar artists from last.fm and open them on Apple Music</string>
+                    <string key="toolTip">Integration with iTunes &amp; Apple Music brings power of Last.fm with Apple Music library, e.g. similar artists menu takes similar artists from Last.fm and open them on Apple Music</string>
                     <buttonCell key="cell" type="check" title="Integration with iTunes &amp; Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="J1t-t0-i3K">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1086,7 +1086,7 @@ DQ
                         <action selector="toggleIntegrationWithiTunes:" target="tLX-PG-6oy" id="8IC-fs-1HN"/>
                     </connections>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T6I-Lx-SGx">
+                <button toolTip="Love track on both Last.fm and iTunes if it's possible." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T6I-Lx-SGx">
                     <rect key="frame" x="37" y="150" width="239" height="18"/>
                     <buttonCell key="cell" type="check" title="Love track on iTunes &amp; Last.fm" bezelStyle="regularSquare" imagePosition="left" inset="2" id="2GM-yr-6jF">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1098,6 +1098,7 @@ DQ
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8iU-3d-KwB">
                     <rect key="frame" x="37" y="121" width="264" height="18"/>
+                    <string key="toolTip">Similar artist menu item become both menu and button. If you just click it, it opens Last.fm webpage with similar artists. If you hover it, it opens menu with similar artists (from Last.fm) where you can click to open Apple Music page for each of them.</string>
                     <buttonCell key="cell" type="check" title="Open similar artist page on Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uM8-Y4-OkT">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1108,7 +1109,8 @@ DQ
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gqd-fI-2CY">
                     <rect key="frame" x="37" y="92" width="239" height="18"/>
-                    <buttonCell key="cell" type="check" title="Open recent tracks in iTunes" bezelStyle="regularSquare" imagePosition="left" inset="2" id="R1Y-Zc-z0Z">
+                    <string key="toolTip">Clicking each track from Recent tracks menu opens Apple Music page for album with that track. Disabled if you have Recent menu disabled.</string>
+                    <buttonCell key="cell" type="check" title="Open recent tracks on Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="R1Y-Zc-z0Z">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

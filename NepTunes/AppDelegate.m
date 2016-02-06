@@ -299,9 +299,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
     NSRect newFrame = [self newFrameForNewContentView:view];
     [NSAnimationContext beginGrouping];
-    
+    [[NSAnimationContext currentContext] setDuration:0.2];
     if ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) {
-        [[NSAnimationContext currentContext] setDuration:0.4];
+        [[NSAnimationContext currentContext] setDuration:2];
     }
     [[[self window] animator] setFrame:newFrame display:YES];
     [[[[self window] contentView] animator] replaceSubview:previousView with:view];
