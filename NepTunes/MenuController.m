@@ -23,7 +23,7 @@
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;
 
-@interface MenuController ()
+@interface MenuController () <ItunesSearchCache>
 
 @property (nonatomic) NSStatusItem *statusItem;
 @property (nonatomic) IBOutlet NSMenu *statusMenu;
@@ -36,6 +36,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) SettingsController *settings;
 @property (nonatomic) ItunesSearch *iTunesSearch;
 @property (nonatomic) NSUInteger animationCurrentStep;
+@property (nonatomic) NSCache *cachediTunesSearchResults;
 @end
 
 @implementation MenuController
@@ -95,7 +96,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
-- (void)animationStepForward:(BOOL)forward
+-(void)animationStepForward:(BOOL)forward
 {
     dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 1.0 / kFPS * NSEC_PER_SEC);
     
@@ -641,6 +642,21 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
+#pragma mark - iTunes Search Cache
+- (NSArray *)cachedArrayForKey:(NSString *)key
+{
+    NSLog(@"Reading cache for key: %@", key);
+    return [self.cachediTunesSearchResults objectForKey:key];
+}
+
+- (void)cacheArray:(NSArray *)array forKey:(NSString *)key requestParams:(NSDictionary *)params maxAge:(NSTimeInterval)maxAge
+{
+    [self.cachediTunesSearchResults setObject:array forKey:key];
+    if (self.settings.debugMode) {
+        NSLog(@"Saving cache for key: %@", key);
+    }
+}
+
 #pragma mark - Getters
 
 -(RecentTracksController *)recentTracksController
@@ -680,9 +696,17 @@ static NSUInteger const kNumberOfFrames = 10;
     if (!_iTunesSearch) {
         _iTunesSearch = [ItunesSearch sharedInstance];
         _iTunesSearch.affiliateToken = @"1010l3j7";
-        _iTunesSearch.maxCacheAge = 60 * 60;
+        _iTunesSearch.cacheDelegate = self;
     }
     return _iTunesSearch;
+}
+
+-(NSCache *)cachediTunesSearchResults
+{
+    if (!_cachediTunesSearchResults) {
+        _cachediTunesSearchResults = [NSCache new];
+    }
+    return _cachediTunesSearchResults;
 }
 
 @end
