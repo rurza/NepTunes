@@ -27,6 +27,7 @@ static NSString *const kIntegrationWithiTunes = @"integrationWithiTunes";
 static NSString *const kLoveTrackOniTunes = @"loveTrackOniTunes";
 static NSString *const kShowSimilarArtistsOnAppleMusic = @"showSimilarArtistsOnAppleMusic";
 static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
+static NSString *const kDebugMode = @"debugMode";
 
 @interface SettingsController ()
 @property (nonatomic, weak) NSUserDefaults *userDefaults;
@@ -50,7 +51,7 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 @synthesize loveTrackOniTunes = _loveTrackOniTunes;
 @synthesize showSimilarArtistsOnAppleMusic = _showSimilarArtistsOnAppleMusic;
 @synthesize showRecentTrackIniTunes = _showRecentTrackIniTunes;
-
+@synthesize debugMode = _debugMode;
 
 
 
@@ -290,6 +291,7 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender
 {
     self.showRecentTrackIniTunes = sender.state;
+    [self.menuController prepareRecentItemsMenu];
     [self.menuController updateMenu];
 }
 
@@ -572,6 +574,22 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
         _showRecentTrackIniTunes = [[self.userDefaults objectForKey:kShowRecentTrackIniTunes] boolValue];
     }
     return _showRecentTrackIniTunes;
+}
+
+#pragma mark   debugMode
+-(void)setDebugMode:(BOOL)debugMode
+{
+    _debugMode = debugMode;
+    [self.userDefaults setObject:@(debugMode) forKey:kDebugMode];
+    [self saveSettings];
+}
+
+-(BOOL)debugMode
+{
+    if (!_debugMode) {
+        _debugMode = [[self.userDefaults objectForKey:kDebugMode] boolValue];
+    }
+    return _debugMode;
 }
 
 #pragma mark - Save

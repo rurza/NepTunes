@@ -17,6 +17,7 @@
 @property (nonatomic) BOOL openPreferencesWhenThereIsNoUser;
 @property (nonatomic) BOOL hideNotifications;
 @property (nonatomic) BOOL userWasLoggedOut;
+@property (nonatomic) BOOL debugMode;
 
 //Menu
 @property (nonatomic) BOOL integrationWithiTunes;

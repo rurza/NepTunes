@@ -15,4 +15,6 @@
 @property (nonatomic, readonly) iTunesEPlS playerState;
 +(instancetype)sharedController;
 -(void)loveTrackIniTunes;
+-(void)invalidateTimers;
+-(void)updateTrackInfo:(NSNotification *)note;
 @end

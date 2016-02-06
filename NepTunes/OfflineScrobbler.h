@@ -12,7 +12,7 @@
 @class SavedTrack;
 
 @interface OfflineScrobbler : NSObject <MusicScrobblerDelegate>
-@property (nonatomic, readonly) NSMutableArray *songs;
+@property (nonatomic, readonly) NSMutableArray *tracks;
 @property (nonatomic) BOOL areWeOffline;
 @property (nonatomic) BOOL lastFmIsDown;
 @property (nonatomic) BOOL userWasLoggedOut;

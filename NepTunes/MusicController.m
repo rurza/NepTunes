@@ -94,9 +94,9 @@
                 if ((self.settingsController.percentForScrobbleTime.floatValue / 100) > 0.95) {
                     scrobbleTime -= 2;
                 }
-#if DEBUG
-                NSLog(@"Scrobble time for track %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime);
-#endif
+                if (self.settingsController.debugMode) {
+                    NSLog(@"Scrobble time for track %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime); 
+                }
                 
                 scrobbleTime -=2;
                 

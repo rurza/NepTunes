@@ -150,16 +150,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
              weakSelf.settingsController.username = weakSelf.musicScrobbler.username;
              weakSelf.offlineScrobbler.userWasLoggedOut = NO;
 
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [weakSelf.avatarIndicator startAnimation:weakSelf];
-             });
              [weakSelf.musicScrobbler.scrobbler getInfoForUserOrNil:self.loginField.stringValue successHandler:^(NSDictionary *result) {
                  [weakSelf setAvatarForUserWithInfo:result];
-             } failureHandler:^(NSError *error) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [weakSelf.avatarIndicator stopAnimation:weakSelf];
-                 });
-             }];
+             } failureHandler:nil];
              weakSelf.accountToolbarItem.tag = 0;
              [weakSelf switchView:weakSelf.accountToolbarItem];
              [weakSelf.menuController updateMenu];
@@ -173,7 +166,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
              [weakSelf.loginButton setTitle:@"Log in"];
              [weakSelf.logoutButton setTitle:[NSString stringWithFormat:@"Log out %@", weakSelf.musicScrobbler.username]];
              weakSelf.passwordField.stringValue = @"";
-             
+             [weakSelf.musicController updateTrackInfo:nil];
          } failureHandler:^(NSError *error) {
              if (error.code == -1001) {
                  if (tryCounter <= 3) {
@@ -209,6 +202,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 {
     [self logOutUser];
     self.settingsController.username = nil;
+    [self.musicController invalidateTimers];
 }
 
 -(void)forceLogOut
@@ -353,54 +347,70 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 -(void)setAvatarForUserWithInfo:(NSDictionary *)userInfo
 {
+    [self.avatarIndicator startAnimation:nil];
     __block NSImage *image;
     __weak typeof(self) weakSelf = self;
+    NSBlockOperation *getAvatarOperation;
     if ([userInfo objectForKey:@"image"]) {
-        NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
-        NSImage *avatar = [[NSImage alloc] initWithData:imageData];
-        image = avatar;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.settingsController.userAvatar = avatar;
-            [weakSelf.avatarIndicator stopAnimation:weakSelf];
-            weakSelf.userAvatar.image = avatar;
-        });
+       getAvatarOperation = [NSBlockOperation blockOperationWithBlock:^{
+           NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
+           NSImage *avatar = [[NSImage alloc] initWithData:imageData];
+           image = avatar;
+           weakSelf.settingsController.userAvatar = avatar;
+           dispatch_async(dispatch_get_main_queue(), ^{
+               weakSelf.userAvatar.image = avatar;
+           });
+       }];
     }
+    
     else if (self.settingsController.userAvatar) {
-        image = self.settingsController.userAvatar;
-        self.userAvatar.image = image;
-        [self.avatarIndicator stopAnimation:self];
-
+        getAvatarOperation = [NSBlockOperation blockOperationWithBlock:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                image = self.settingsController.userAvatar;
+                self.userAvatar.image = image;
+            });
+        }];
     }
     else {
-        [weakSelf.avatarIndicator startAnimation:weakSelf];
         [self.musicScrobbler.scrobbler getInfoForUserOrNil:self.musicScrobbler.scrobbler.username successHandler:^(NSDictionary *result) {
             if ([result objectForKey:@"image"]) {
-                NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
-                image = [[NSImage alloc] initWithData:imageData];
-                weakSelf.settingsController.userAvatar = image;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    weakSelf.userAvatar.image = image;
-                });
+                    NSData *imageData = [NSData dataWithContentsOfURL:[userInfo objectForKey:@"image"]];
+                    image = [[NSImage alloc] initWithData:imageData];
+                    weakSelf.settingsController.userAvatar = image;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        weakSelf.userAvatar.image = image;
+                        [weakSelf.avatarIndicator stopAnimation:nil];
+                        [self.userAvatar setWantsLayer: YES];
+                        self.userAvatar.layer.cornerRadius = 32.0f;
+                        self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
+                        self.userAvatar.layer.borderWidth = 2.0f;
+                    });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.avatarIndicator stopAnimation:weakSelf];
-                    //tu ma być self
+                    //default avatar
                     weakSelf.userAvatar.image = weakSelf.settingsController.userAvatar;
+                    [weakSelf.avatarIndicator stopAnimation:nil];
                 });
             }
         } failureHandler:^(NSError *error) {
             [weakSelf.avatarIndicator stopAnimation:weakSelf];
         }];
     }
-    if (image) {
-        [self.userAvatar setWantsLayer: YES];
-        self.userAvatar.layer.shadowOpacity = 1;
-        self.userAvatar.layer.shadowRadius = 5;
-        self.userAvatar.layer.shadowOffset = CGSizeMake(0, -6);
-        self.userAvatar.layer.cornerRadius = 32.0f;
-        self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
-        self.userAvatar.layer.borderWidth = 2.0f;
-    }
+    NSOperationQueue *operationQueue = [NSOperationQueue new];
+    NSBlockOperation *setBorderOperation = [NSBlockOperation blockOperationWithBlock:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.userAvatar setWantsLayer: YES];
+            self.userAvatar.layer.cornerRadius = 32.0f;
+            self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
+            self.userAvatar.layer.borderWidth = 2.0f;
+            [weakSelf.avatarIndicator stopAnimation:weakSelf];
+
+        });
+    }];
+    [setBorderOperation addDependency:getAvatarOperation];
+    [operationQueue addOperation:getAvatarOperation];
+    [operationQueue addOperation:setBorderOperation];
+    
 }
 
 #pragma mark Reachability
@@ -411,7 +421,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     if (!reachable && self.musicController.playerState == iTunesEPlSPlaying && self.settingsController.session) {
         [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsDown];
         self.reachability = NO;
-    } else if (reachable && !self.reachability && self.musicController.playerState == iTunesEPlSPlaying && self.offlineScrobbler.songs.count && self.settingsController.session) {
+    } else if (reachable && !self.reachability && self.musicScrobbler.currentTrack && self.offlineScrobbler.tracks.count && self.settingsController.session) {
         [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsBack];
         self.reachability = YES;
     }

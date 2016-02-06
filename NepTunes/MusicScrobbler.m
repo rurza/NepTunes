@@ -76,9 +76,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
                 [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
             }
-#if DEBUG
+            if ([SettingsController sharedSettings].debugMode) {
                 NSLog(@"%@ scrobbled!", track);
-#endif
+            }
             if (successHandler) {
                 successHandler();
             }
@@ -89,34 +89,30 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
                         [weakSelf scrobbleTrack:track atTimestamp:timestamp withTryCounter:(tryCounter + 1) withSuccessHandler:successHandler];
-#if DEBUG
-                        NSLog(@"Cannot scrobble. %@. Trying again", error.localizedDescription);
-#endif
+                        if ([SettingsController sharedSettings].debugMode) {
+                            NSLog(@"Cannot scrobble. %@. Trying again", error.localizedDescription);
+                        }
 
                     }
                 });
             }
             else {
-                if (![OfflineScrobbler sharedInstance].userWasLoggedOut) {
+                if (![OfflineScrobbler sharedInstance].userWasLoggedOut && ![OfflineScrobbler sharedInstance].areWeOffline) {
                     [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackCanNotBeScrobbledWithError:error];
                 }
                 //if there are some problems with with Last.fm service and the user isn't logged in
                 if (error.code == kLastFmErrorCodeServiceOffline && ![OfflineScrobbler sharedInstance].userWasLoggedOut) {
                     [OfflineScrobbler sharedInstance].lastFmIsDown = YES;
                     [[OfflineScrobbler sharedInstance] saveTrack:track];
-#if DEBUG
                     NSLog(@"Some issues with Last.fm service.");
-#endif
 
                 }
                 if ([OfflineScrobbler sharedInstance].areWeOffline || [SettingsController sharedSettings].userWasLoggedOut) {
                     [[OfflineScrobbler sharedInstance] saveTrack:track];
-#if DEBUG
-                    NSLog(@"Saving track for offline scrobbling.");
-#endif
-
+                    if ([SettingsController sharedSettings].debugMode) {
+                        NSLog(@"Saving track for offline scrobbling.");
+                    }
                 }
-
             }
         }];
     }

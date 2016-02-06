@@ -67,6 +67,7 @@ static NSUInteger const kNumberOfFrames = 10;
     [self updateMenu];
 }
 
+#pragma mark - Status Bar Icon
 
 -(void)installStatusBar
 {
@@ -84,6 +85,8 @@ static NSUInteger const kNumberOfFrames = 10;
     [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
     self.statusItem = nil;
 }
+
+#pragma mark Status Bar Icon Animation
 
 -(void)blinkMenuIcon
 {
@@ -270,7 +273,7 @@ static NSUInteger const kNumberOfFrames = 10;
         if (!internetIsReachable) {
             self.similarArtistMenuTtitle.enabled = NO;
         }
-        if (self.settings.showSimilarArtistsOnAppleMusic && self.settings.integrationWithiTunes) {
+        if (self.settings.showSimilarArtistsOnAppleMusic && self.settings.integrationWithiTunes && internetIsReachable) {
             __weak typeof(self) weakSelf = self;
             if (![self.similarArtistMenuTtitle hasSubmenu]) {
                 [self.musicScrobbler.scrobbler getSimilarArtistsTo:self.musicScrobbler.currentTrack.artist successHandler:^(NSArray *result) {
@@ -315,11 +318,17 @@ static NSUInteger const kNumberOfFrames = 10;
     } else {
         [self.similarArtistMenuTtitle.submenu removeAllItems];
     }
+    if (![FXReachability sharedInstance].isReachable) {
+        for (NSMenuItem *menuItem in self.similarArtistMenuTtitle.submenu.itemArray) {
+            menuItem.enabled = NO;
+        }
+        return;
+    }
     
     __weak typeof(self) weakSelf = self;
     [artists enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *artist = [obj objectForKey:@"name"];
-        
+
         [self.similarArtistMenuTtitle.submenu addItemWithTitle:artist action:NULL keyEquivalent:@""];
         [self.iTunesSearch getIdForArtist:artist successHandler:^(NSArray *result) {
             if (result.count) {
@@ -436,6 +445,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)prepareRecentItemsMenu
 {
+    if (self.settings.debugMode) {
+        NSLog(@"Preparing Recent Tracks menu");
+    }
     if (self.recentTracksController.tracks.count == 0) {
         self.recentTracksMenuItem.enabled = NO;
         return;
@@ -460,6 +472,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)updateRecentMenu
 {
+    if (self.settings.debugMode) {
+        NSLog(@"Updating Recent Tracks menu");
+    }
     Track *track = self.musicScrobbler.currentTrack;
     if ([self.recentTracksController addTrackToRecentMenu:track]) {
         self.recentTracksMenuItem.enabled = YES;
@@ -474,6 +489,10 @@ static NSUInteger const kNumberOfFrames = 10;
             [self validateLinkFromMenuItem:menuItem];
             menuItem.target = self;
         }
+    } else {
+        for (NSMenuItem *menuItem in self.recentTracksMenu.itemArray) {
+            [self validateLinkFromMenuItem:menuItem];
+        }
     }
 }
 
@@ -481,6 +500,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)validateLinkFromMenuItem:(NSMenuItem *)menuItem
 {
+    if (self.settings.debugMode) {
+        NSLog(@"Validating link from menu item %@", menuItem);
+    }
     Track *trackFromMenu = [self returnTrackFromMenuItem:menuItem];
     //got track
     if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
@@ -506,6 +528,10 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)validateAppleMusicLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
 {
+    if (![FXReachability sharedInstance].isReachable) {
+        menuItem.enabled = NO;
+        return;
+    }
     [self.iTunesSearch getIdForArtist:track.artist successHandler:^(NSArray *result) {
         if (result.count) {
             menuItem.enabled = YES;
@@ -544,9 +570,16 @@ static NSUInteger const kNumberOfFrames = 10;
         Track *track = [self returnTrackFromMenuItem:menuItem];
         [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
         [self openAppleMusicPageForTrack:track andMenuItem:menuItem];
+        if (self.settings.debugMode) {
+            NSLog(@"Opening Apple Music page for %@", track);
+        }
+
     } else {
         Track *track = [self returnTrackFromMenuItem:menuItem];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
+        if (self.settings.debugMode) {
+            NSLog(@"Opening Last.fm page for %@", track);
+        }
     }
 }
 
@@ -554,9 +587,6 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     [self.iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
         if (result.count) {
-#if DEBUG
-            NSLog(@"%@", result);
-#endif
             NSString *link = [(NSString *)result.firstObject[@"trackViewUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
             [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
 
@@ -571,28 +601,16 @@ static NSUInteger const kNumberOfFrames = 10;
     }];
     
 }
-#pragma mark - NSMenuValidation
-//
-//-(BOOL)validateMenuItem:(NSMenuItem *)menuItem
-//{
-//    if (menuItem.action == @selector(showUserProfile:)) {
-//        if ([SettingsController sharedSettings].session) {
-//            return YES;
-//        } else {
-//            return NO;
-//        }
-//    }
-//    if ([self validateLinkFromMenuItem:menuItem]) {
-//        return YES;
-//    }
-//    return NO;
-//}
 
 -(void)hideRecentMenu
 {
     if ([self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
         [self.statusMenu removeItem:self.recentTracksMenuItem];
+        if (self.settings.debugMode) {
+            NSLog(@"Hiding Recent Tracks menu");
+        }
     }
+    
 }
 
 -(void)showRecentMenu
@@ -600,6 +618,9 @@ static NSUInteger const kNumberOfFrames = 10;
     if (![self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
         [self.statusMenu insertItem:self.recentTracksMenuItem atIndex:2];
         [self prepareRecentItemsMenu];
+        if (self.settings.debugMode) {
+            NSLog(@"Adding Recent Tracks menu");
+        }
     }
 }
 
