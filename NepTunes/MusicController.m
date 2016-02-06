@@ -64,6 +64,9 @@
 
 -(void)updateTrackInfo:(NSNotification *)note
 {
+    if (self.settingsController.debugMode) {
+        NSLog(@"Notification sent from iTunes");
+    }
     [self invalidateTimers];
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
     [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
@@ -72,12 +75,20 @@
 
 -(void)prepareTrack:(NSTimer *)timer
 {
+    if (self.settingsController.debugMode) {
+        NSLog(@"prepareTrack called");
+    }
+   
     if ([timer isValid]) {
 //        [self invalidateTimers];
         [self getInfoAboutTrackFromNotificationOrFromiTunes:timer.userInfo];
         //        [self updateMenu];
         
         if (self.isiTunesRunning) {
+            if (self.settingsController.debugMode) {
+                NSLog(@"iTunes is running");
+            }
+
             if (self.playerState == iTunesEPlSPlaying) {
                 NSTimeInterval trackLength;
                 
@@ -137,6 +148,9 @@
     if (self.nowPlayingTimer) {
         [self.nowPlayingTimer invalidate];
         self.nowPlayingTimer = nil;
+    }
+    if (self.settingsController.debugMode) {
+        NSLog(@"Timers invalidated");
     }
 }
 

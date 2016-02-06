@@ -222,9 +222,17 @@ static NSUInteger const kNumberOfFrames = 10;
     //if user is logged in, there is Internet conenction and we have a track
     if (self.settings.session && self.musicScrobbler.currentTrack && internetIsReachable) {
         //if user choose to love track also in iTunes  and track listened is available to love in iTunes
-        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes && self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
+        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
+            if (self.musicController.isiTunesRunning) {
+                if (self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
+                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.trackName];
+                } else {
+                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];
+                }
+            } else {
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];
+            }
             //love on Last.fm and in iTunes
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.trackName];
         } else {
             //love track only on Last.fm
             self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];
@@ -232,8 +240,16 @@ static NSUInteger const kNumberOfFrames = 10;
         //if user ISN'T logged in, we have a track
     } else if (!self.settings.session && self.musicScrobbler.currentTrack) {
         //if user choose to love track also in iTunes and track listened is available to love in iTunes
-        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes && self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.trackName];
+        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
+            if (self.musicController.isiTunesRunning) {
+                if (self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
+                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.trackName];
+                } else {
+                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.trackName];
+                }
+            } else {
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.trackName];
+            }
         } else {
             self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.trackName];
         }
@@ -249,10 +265,14 @@ static NSUInteger const kNumberOfFrames = 10;
     
     
     //when the button must be disabled
-    if ((!internetIsReachable && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes])|| (!self.settings.session && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || (!self.settings.session && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && !self.musicController.iTunes.currentTrack.name.length) || !self.musicScrobbler.currentTrack) {
-        self.loveSongMenuTitle.enabled = NO;
+    if (self.musicController.isiTunesRunning) {
+        if ((!internetIsReachable && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || (!self.settings.session && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || !self.musicScrobbler.currentTrack || (!self.settings.session && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && !self.musicController.iTunes.currentTrack.name.length)) {
+            self.loveSongMenuTitle.enabled = NO;
+        } else {
+            self.loveSongMenuTitle.enabled = YES;
+        }
     } else {
-        self.loveSongMenuTitle.enabled = YES;
+        self.loveSongMenuTitle.enabled = NO;
     }
 }
 
@@ -500,9 +520,6 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)validateLinkFromMenuItem:(NSMenuItem *)menuItem
 {
-    if (self.settings.debugMode) {
-        NSLog(@"Validating link from menu item %@", menuItem);
-    }
     Track *trackFromMenu = [self returnTrackFromMenuItem:menuItem];
     //got track
     if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
