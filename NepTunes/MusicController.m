@@ -82,7 +82,7 @@
     if ([timer isValid]) {
 //        [self invalidateTimers];
         [self getInfoAboutTrackFromNotificationOrFromiTunes:timer.userInfo];
-        //        [self updateMenu];
+        [self updateMenu];
         
         if (self.isiTunesRunning) {
             if (self.settingsController.debugMode) {
