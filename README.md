@@ -6,6 +6,8 @@ You can buy it [here](https://itunes.apple.com/us/app/neptunes-minimalistic-last
 Standard price is $2.99 - think of it as buying me a good beer 🍻 😊
 [Website](http://micropixels.pl/neptunes/)
 
+## 1.1 Changelog [here](http://blog.micropixels.pl/blog/NepTunes-1.1-Changelog)
+
 License
 ========
 Copyright (c) 2014, Adam Różyński.
