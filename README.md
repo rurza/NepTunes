@@ -4,7 +4,8 @@ NepTunes
 Simple Last.fm client for iTunes.  
 You can buy it [here](https://itunes.apple.com/us/app/neptunes-minimalistic-last.fm/id1006739057?mt=12).
 Standard price is $2.99 - think of it as buying me a good beer 🍻 😊
-[Website](http://micropixels.pl/neptunes/)
+
+## Official [website](http://micropixels.pl/neptunes/).
 
 ## 1.1 Changelog [here](http://blog.micropixels.pl/blog/NepTunes-1.1-Changelog)
 
