@@ -1,7 +1,7 @@
 NepTunes
 ========
 
-Simple Last.fm client for iTunes.  
+Simple Last.fm scrobbler for iTunes, that work with Apple Music streaming and can integrate Last.fm results with Apple Music Library.  
 You can buy it [here](https://itunes.apple.com/us/app/neptunes-minimalistic-last.fm/id1006739057?mt=12).
 Standard price is $2.99 - think of it as buying me a good beer 🍻 😊
 
