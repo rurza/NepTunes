@@ -690,7 +690,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="215"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="-2" width="272" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>

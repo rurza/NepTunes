@@ -597,7 +597,7 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
         Track *track = [self returnTrackFromMenuItem:menuItem];
-        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+        
         [self openAppleMusicPageForTrack:track andMenuItem:menuItem];
         if (self.settings.debugMode) {
             NSLog(@"Opening Apple Music page for %@", track);

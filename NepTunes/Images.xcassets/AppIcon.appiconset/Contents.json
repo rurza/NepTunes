@@ -3,37 +3,37 @@
     {
       "size" : "16x16",
       "idiom" : "mac",
-      "filename" : "icon small@16.png",
+      "filename" : "icon small-3.png",
       "scale" : "1x"
     },
     {
       "size" : "16x16",
       "idiom" : "mac",
-      "filename" : "icon small@32-1.png",
+      "filename" : "icon small-2.png",
       "scale" : "2x"
     },
     {
       "size" : "32x32",
       "idiom" : "mac",
-      "filename" : "icon small@32.png",
+      "filename" : "icon small-1.png",
       "scale" : "1x"
     },
     {
       "size" : "32x32",
       "idiom" : "mac",
-      "filename" : "icon small@64.png",
+      "filename" : "icon small.png",
       "scale" : "2x"
     },
     {
       "size" : "128x128",
       "idiom" : "mac",
-      "filename" : "icon copy 3.png",
+      "filename" : "icon-5.png",
       "scale" : "1x"
     },
     {
       "size" : "128x128",
       "idiom" : "mac",
-      "filename" : "icon copy 2-1.png",
+      "filename" : "icon-4.png",
       "scale" : "2x"
     },
     {
