@@ -11,6 +11,7 @@
 
 @class Track;
 @class SavedTrack;
+@class CoverWindowController;
 
 @protocol MusicScrobblerDelegate <NSObject>
 -(void)trackWasSuccessfullyScrobbled:(Track *)track;

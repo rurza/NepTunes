@@ -8,13 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import "iTunes.h"
+@class CoverWindowController;
 
 @interface MusicController : NSObject
 @property (nonatomic) iTunesApplication *iTunes;
 @property (nonatomic, readonly) BOOL isiTunesRunning;
 @property (nonatomic, readonly) iTunesEPlS playerState;
+@property (nonatomic) iTunesTrack *currentTrack;
+@property (nonatomic) CoverWindowController *coverWindowController ;
+
 +(instancetype)sharedController;
 -(void)loveTrackIniTunes;
 -(void)invalidateTimers;
 -(void)updateTrackInfo:(NSNotification *)note;
+-(NSImage *)currentTrackCover;
 @end

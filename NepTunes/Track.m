@@ -91,4 +91,5 @@
 {
     return [self.trackName hash] ^ [self.album hash];
 }
+
 @end

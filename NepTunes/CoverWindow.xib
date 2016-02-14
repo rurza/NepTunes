@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="CoverWindowController">
+            <connections>
+                <outlet property="window" destination="r1X-Hd-BPu" id="fIm-yo-pvm"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="Cover" animationBehavior="default" id="r1X-Hd-BPu" customClass="CoverWindow">
+            <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES" stationary="YES" ignoresCycle="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="82" y="68" width="160" height="160"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="Qij-7K-lrm">
+                <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p1y-Mk-UJR" customClass="CoverView">
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pXq-0A-vpS" customClass="CoverImageView">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="AZs-4j-YZt"/>
+                            </imageView>
+                            <visualEffectView appearanceType="vibrantDark" fixedFrame="YES" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="g2K-ua-Fmq">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="26"/>
+                                <subviews>
+                                    <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uJx-QW-zlc">
+                                        <rect key="frame" x="0.0" y="3" width="160" height="20"/>
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" id="uFK-OL-Cq0">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                            </visualEffectView>
+                        </subviews>
+                        <connections>
+                            <outlet property="artistView" destination="g2K-ua-Fmq" id="47O-oi-d19"/>
+                            <outlet property="coverImageView" destination="pXq-0A-vpS" id="A1y-Il-D5A"/>
+                            <outlet property="titleLabel" destination="uJx-QW-zlc" id="ian-xy-Wlb"/>
+                        </connections>
+                    </customView>
+                    <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" fixedFrame="YES" alphaValue="0.0" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="eEN-fB-qSK">
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                    </visualEffectView>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="controlView" destination="eEN-fB-qSK" id="NDV-S1-8jU"/>
+                <outlet property="coverView" destination="p1y-Mk-UJR" id="Vsl-yM-z3m"/>
+            </connections>
+            <point key="canvasLocation" x="-349" y="292"/>
+        </window>
+    </objects>
+</document>

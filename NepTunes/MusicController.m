@@ -11,6 +11,7 @@
 #import "SettingsController.h"
 #import "MenuController.h"
 #import "Track.h"
+#import "CoverWindowController.h"
 
 #define FOUR_MINUTES 60 * 4
 
@@ -46,6 +47,9 @@
 
 -(void)awakeFromNib
 {
+    self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
+    [self.coverWindowController showWindow:self];
+    
     [self setupNotifications];
 }
 
@@ -70,6 +74,7 @@
     [self invalidateTimers];
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
     [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
+    [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:note.userInfo];
     [self updateMenu];
 }
 
@@ -93,8 +98,8 @@
                 NSTimeInterval trackLength;
                 
                 
-                if (self.iTunes.currentTrack.artist && self.iTunes.currentTrack.artist.length) {
-                    trackLength = (NSTimeInterval)self.iTunes.currentTrack.duration;
+                if (self.currentTrack.artist && self.currentTrack.artist.length) {
+                    trackLength = (NSTimeInterval)self.currentTrack.duration;
                 }
                 else {
                     trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
@@ -159,21 +164,19 @@
     [self.musicScrobbler updateCurrentTrackWithUserInfo:userInfo];
     //2s są po to by Itunes sie ponownie nie wlaczal
     //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    if (self.isiTunesRunning) {
-        if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0 && self.iTunes.currentTrack.artist.length) {
-            self.musicScrobbler.currentTrack.duration = self.iTunes.currentTrack.duration;
-        }
-        else if (self.iTunes.currentTrack.name && self.iTunes.currentTrack.album) {
-            self.musicScrobbler.currentTrack = [Track trackWithiTunesTrack:self.iTunes.currentTrack];
-//            [self updateMenu];
-        }
+    if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0 && self.currentTrack.artist.length) {
+        self.musicScrobbler.currentTrack.duration = self.iTunes.currentTrack.duration;
+    }
+    else if (self.currentTrack.name && self.currentTrack.album) {
+        self.musicScrobbler.currentTrack = [Track trackWithiTunesTrack:self.currentTrack];
+        //            [self updateMenu];
     }
 }
 
 -(void)loveTrackIniTunes
 {
 //    self.iTunes
-    self.iTunes.currentTrack.loved = YES;
+    self.currentTrack.loved = YES;
 }
 
 -(void)updateMenu
@@ -229,6 +232,27 @@
 -(BOOL)isiTunesRunning
 {
     return self.iTunes.isRunning;
+}
+
+-(iTunesTrack *)currentTrack
+{
+    if (self.isiTunesRunning) {
+        return self.iTunes.currentTrack;
+    }
+    return nil;
+}
+
+-(NSImage *)currentTrackCover
+{
+    iTunesTrack *track = self.currentTrack;
+    for (iTunesArtwork *artwork in track.artworks) {
+        if ([artwork.data isKindOfClass:[NSImage class]]) {
+            return artwork.data;
+        } else if ([artwork.rawData isKindOfClass:[NSData class]]) {
+            return [[NSImage alloc] initWithData:artwork.rawData];
+        }
+    }
+    return nil;
 }
 
 @end

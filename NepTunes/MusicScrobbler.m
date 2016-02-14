@@ -14,6 +14,7 @@
 #import "UserNotificationsController.h"
 #import "MusicController.h"
 #import "AppDelegate.h"
+#import "CoverWindowController.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -159,9 +160,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     if (self.scrobbler.session && self.musicController.isiTunesRunning) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler loveTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
-#if DEBUG
+            if ([SettingsController sharedSettings].debugMode) {
                 NSLog(@"%@ loved!", track);
-#endif
+            }
             [self.scrobbler getInfoForAlbum:track.album artist:track.artist successHandler:^(NSDictionary *result) {
                 NSString *artworkURLString = [NSString stringWithFormat:@"%@", result[@"image"]];
                 NSURL *artworkURL = [NSURL URLWithString:artworkURLString];
@@ -264,5 +265,6 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     }
     return _musicController;
 }
+
 
 @end

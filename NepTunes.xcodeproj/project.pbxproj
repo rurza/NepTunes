@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B07341E1C6CF74900167934 /* CoverWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B07341D1C6CF74900167934 /* CoverWindow.xib */; };
+		5B0734221C6E382D00167934 /* CoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0734211C6E382D00167934 /* CoverView.m */; };
+		5B0734251C6E495B00167934 /* GetCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0734241C6E495B00167934 /* GetCover.m */; };
+		5B1BC2421C6CDE26004EB785 /* CoverWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC2411C6CDE26004EB785 /* CoverWindowController.m */; };
+		5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC2481C6CE337004EB785 /* CoverImageView.m */; };
+		5B1BC24C1C6CE4BF004EB785 /* CoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */; };
 		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */; };
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
@@ -75,7 +81,18 @@
 		0526E64B1C1E28D1C451319F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		10263035E2E364638E5DACEA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		5B07341D1C6CF74900167934 /* CoverWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverWindow.xib; sourceTree = "<group>"; };
+		5B0734201C6E382D00167934 /* CoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverView.h; sourceTree = "<group>"; };
+		5B0734211C6E382D00167934 /* CoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverView.m; sourceTree = "<group>"; };
+		5B0734231C6E495B00167934 /* GetCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetCover.h; sourceTree = "<group>"; };
+		5B0734241C6E495B00167934 /* GetCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetCover.m; sourceTree = "<group>"; };
 		5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = NepTunes.entitlements; sourceTree = "<group>"; };
+		5B1BC2401C6CDE26004EB785 /* CoverWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverWindowController.h; sourceTree = "<group>"; };
+		5B1BC2411C6CDE26004EB785 /* CoverWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverWindowController.m; sourceTree = "<group>"; };
+		5B1BC2471C6CE337004EB785 /* CoverImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverImageView.h; sourceTree = "<group>"; };
+		5B1BC2481C6CE337004EB785 /* CoverImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverImageView.m; sourceTree = "<group>"; };
+		5B1BC24A1C6CE4BF004EB785 /* CoverWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverWindow.h; sourceTree = "<group>"; };
+		5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverWindow.m; sourceTree = "<group>"; };
 		5B2F4CE51B763C16009F0C53 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
 		5B2F4CE61B763C16009F0C53 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 		5B427BD91C52B4A300EA1D4A /* RecentTracksController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTracksController.h; sourceTree = "<group>"; };
@@ -156,6 +173,24 @@
 				0526E64B1C1E28D1C451319F /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5B1BC24D1C6CE4CA004EB785 /* Cover */ = {
+			isa = PBXGroup;
+			children = (
+				5B0734201C6E382D00167934 /* CoverView.h */,
+				5B0734211C6E382D00167934 /* CoverView.m */,
+				5B1BC24A1C6CE4BF004EB785 /* CoverWindow.h */,
+				5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */,
+				5B1BC2401C6CDE26004EB785 /* CoverWindowController.h */,
+				5B1BC2411C6CDE26004EB785 /* CoverWindowController.m */,
+				5B1BC2471C6CE337004EB785 /* CoverImageView.h */,
+				5B1BC2481C6CE337004EB785 /* CoverImageView.m */,
+				5B07341D1C6CF74900167934 /* CoverWindow.xib */,
+				5B0734231C6E495B00167934 /* GetCover.h */,
+				5B0734241C6E495B00167934 /* GetCover.m */,
+			);
+			name = Cover;
 			sourceTree = "<group>";
 		};
 		5B427BDD1C52B4B700EA1D4A /* Menu */ = {
@@ -241,6 +276,7 @@
 				5B427BDD1C52B4B700EA1D4A /* Menu */,
 				5BAE71041C5019A200779081 /* Track */,
 				5BC6A8E31C611C3A009C3E9F /* Music */,
+				5B1BC24D1C6CE4CA004EB785 /* Cover */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
 				5BAE71061C528D1000779081 /* SettingsController.h */,
@@ -409,6 +445,7 @@
 				5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */,
 				5BDD6B181A1D0C95001D87D6 /* Images.xcassets in Resources */,
 				5BDD6B1B1A1D0C95001D87D6 /* Interface.xib in Resources */,
+				5B07341E1C6CF74900167934 /* CoverWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,13 +530,18 @@
 				5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */,
 				5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */,
 				5BAE70F71C50023500779081 /* FXReachability.m in Sources */,
+				5B0734251C6E495B00167934 /* GetCover.m in Sources */,
+				5B1BC24C1C6CE4BF004EB785 /* CoverWindow.m in Sources */,
+				5B1BC2421C6CDE26004EB785 /* CoverWindowController.m in Sources */,
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
+				5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
 				5BAE71031C50199700779081 /* SavedTrack.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
+				5B0734221C6E382D00167934 /* CoverView.m in Sources */,
 				5BAE71081C528D1000779081 /* SettingsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -627,7 +669,7 @@
 				);
 				INFOPLIST_FILE = NepTunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -652,7 +694,7 @@
 				);
 				INFOPLIST_FILE = NepTunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

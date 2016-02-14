@@ -686,7 +686,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Preferences" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="272" height="215"/>
@@ -875,7 +875,6 @@ DQ
             </subviews>
             <point key="canvasLocation" x="80" y="405"/>
         </customView>
-        <userDefaultsController representsSharedInstance="YES" id="gZh-Qn-zyx"/>
         <customObject id="Frc-Jt-Ein" customClass="HotkeyController">
             <connections>
                 <outlet property="loveSongView" destination="cXZ-R7-HX8" id="VvM-bO-gHi"/>

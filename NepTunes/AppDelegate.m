@@ -15,6 +15,7 @@
 #import "LastFm.h"
 #import "UserNotificationsController.h"
 #import "MusicController.h"
+#import "CoverWindowController.h"
 
 static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
@@ -53,6 +54,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 //Music Controller
 @property (nonatomic) MusicController *musicController;
+
+@property (nonatomic) CoverWindowController *cwc;
 
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)logOut:(id)sender;

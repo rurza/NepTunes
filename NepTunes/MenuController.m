@@ -65,7 +65,7 @@ static NSUInteger const kNumberOfFrames = 10;
     self.statusMenu.autoenablesItems = NO;
     [self.loveSongMenuTitle setEnabled:NO];
     
-    [self updateMenu];  
+    [self updateMenu];    
 }
 
 #pragma mark - Status Bar Icon
@@ -224,12 +224,10 @@ static NSUInteger const kNumberOfFrames = 10;
     if (self.settings.session && self.musicScrobbler.currentTrack && internetIsReachable && self.musicController.isiTunesRunning) {
         //if user choose to love track also in iTunes  and track listened is available to love in iTunes
         if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
-            if (self.musicController.isiTunesRunning) {
-                if (self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
-                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.trackName];
-                } else {
-                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];
-                }
+            if (self.musicController.currentTrack.artist.length && self.musicController.currentTrack.name.length) {
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.trackName];
+            } else {
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];
             }
             //love on Last.fm and in iTunes
         } else {
@@ -237,15 +235,13 @@ static NSUInteger const kNumberOfFrames = 10;
             self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];
         }
         //if user ISN'T logged in, we have a track
-    } else if (!self.settings.session && self.musicScrobbler.currentTrack  && self.musicController.isiTunesRunning) {
+    } else if (!self.settings.session && self.musicScrobbler.currentTrack) {
         //if user choose to love track also in iTunes and track listened is available to love in iTunes
         if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
-            if (self.musicController.isiTunesRunning) {
-                if (self.musicController.iTunes.currentTrack.artist.length && self.musicController.iTunes.currentTrack.name.length) {
-                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.trackName];
-                } else {
-                    self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.trackName];
-                }
+            if (self.musicController.currentTrack.artist.length && self.musicController.currentTrack.name.length) {
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.trackName];
+            } else {
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.trackName];
             }
         } else {
             self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.trackName];
@@ -261,17 +257,11 @@ static NSUInteger const kNumberOfFrames = 10;
         self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love Track", nil)];
     }
     
-    
-    
     //when the button must be disabled
-    if (self.musicController.isiTunesRunning) {
-        if ((!internetIsReachable && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || (!self.settings.session && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || !self.musicScrobbler.currentTrack || (!self.settings.session && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && !self.musicController.iTunes.currentTrack.name.length)) {
-            self.loveSongMenuTitle.enabled = NO;
-        } else {
-            self.loveSongMenuTitle.enabled = YES;
-        }
-    } else {
+    if ((!internetIsReachable && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || (!self.settings.session && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || !self.musicScrobbler.currentTrack || (!self.settings.session && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && !self.musicController.currentTrack.name.length)) {
         self.loveSongMenuTitle.enabled = NO;
+    } else {
+        self.loveSongMenuTitle.enabled = YES;
     }
 }
 
@@ -657,7 +647,7 @@ static NSUInteger const kNumberOfFrames = 10;
 - (NSArray *)cachedArrayForKey:(NSString *)key
 {
     if (self.settings.debugMode) {
-        NSLog(@"Reading cache for key: %@", key);
+        NSLog(@"Reading cache from iTunes Search for key: %@", key);
     }
     return [self.cachediTunesSearchResults objectForKey:key];
 }
@@ -666,7 +656,7 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     [self.cachediTunesSearchResults setObject:array forKey:key];
     if (self.settings.debugMode) {
-        NSLog(@"Saving cache for key: %@", key);
+        NSLog(@"Saving cache from iTunes Search for key: %@", key);
     }
 }
 
