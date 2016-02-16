@@ -196,7 +196,6 @@ static NSString *const kDebugMode = @"debugMode";
             restoreNowButton.action = @selector(restoreStatusBarIcon);
             self.alertWindow = alert.window;
             [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
-                [alert.window close];
             }];
         } else {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

@@ -31,6 +31,8 @@ static NSUInteger const kNumberOfFrames = 10;
     self.forwardButton.image.template = YES;
     self.backwardButton.image.template = YES;
     self.volumeButton.image.template = YES;
+//    self.shuffleButton.image.template = YES;
+//    self.repeatButton.image.template = YES;
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                         selector:@selector(updateControlsState:)
                                                             name:@"com.apple.iTunes.playerInfo"
@@ -114,6 +116,25 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     [self.volumePopover showRelativeToRect:sender.bounds ofView:sender preferredEdge:NSMinYEdge];
 }
+
+//- (IBAction)shuffle:(NSButton *)sender
+//{
+//    iTunesPlaylist *currentPlaylist = [MusicController sharedController].iTunes.currentPlaylist;
+//    currentPlaylist.shuffle = !currentPlaylist.shuffle;
+//    if (!currentPlaylist.shuffle) {
+//        self.shuffleButton.image = [NSImage imageNamed:@"shuffle"];
+//    } else {
+//        self.shuffleButton.image = [NSImage imageNamed:@"shuffle outline"];
+//    }
+//    self.shuffleButton.image.template = YES;
+//}
+//
+//- (IBAction)repeat:(NSButton *)sender
+//{
+//    iTunesPlaylist *currentPlaylist = [MusicController sharedController].iTunes.currentPlaylist;
+//    NSLog(@"%u", currentPlaylist.songRepeat);
+//
+//}
 
 - (void)popoverWillShow:(NSNotification *)notification
 {

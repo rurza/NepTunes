@@ -35,6 +35,8 @@
 		5BDD6B1B1A1D0C95001D87D6 /* Interface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B191A1D0C95001D87D6 /* Interface.xib */; };
 		5BDD6B271A1D0C95001D87D6 /* NepTunesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */; };
 		5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B301A1D0CA2001D87D6 /* Podfile */; };
+		5BF402E71C73A156004FD0FA /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF402E51C73A156004FD0FA /* PreferencesController.m */; };
+		5BF402E81C73A156004FD0FA /* PreferencesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BF402E61C73A156004FD0FA /* PreferencesController.xib */; };
 		5BF5AA0E1C4EB02B00C4FBA3 /* NepTunesHelperApp.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5BF5AA0C1C4EAFC500C4FBA3 /* NepTunesHelperApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5BF5AA101C4EB06600C4FBA3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */; };
 		5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5BFB29E81A1D800900EA87AA /* dsa_pub.pem */; };
@@ -140,6 +142,9 @@
 		5BDD6B251A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NepTunesTests.m; sourceTree = "<group>"; };
 		5BDD6B301A1D0CA2001D87D6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5BF402E41C73A156004FD0FA /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
+		5BF402E51C73A156004FD0FA /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		5BF402E61C73A156004FD0FA /* PreferencesController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesController.xib; sourceTree = "<group>"; };
 		5BF5AA071C4EAFC400C4FBA3 /* NepTunesHelperApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NepTunesHelperApp.xcodeproj; path = NepTunesHelperApp/NepTunesHelperApp.xcodeproj; sourceTree = "<group>"; };
 		5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		5BFB29E81A1D800900EA87AA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -229,13 +234,16 @@
 			name = "User Notifications";
 			sourceTree = "<group>";
 		};
-		5B9662711C725A400095AF54 /* Settings */ = {
+		5B9662711C725A400095AF54 /*  Settings and preferences */ = {
 			isa = PBXGroup;
 			children = (
 				5BAE71061C528D1000779081 /* SettingsController.h */,
 				5BAE71071C528D1000779081 /* SettingsController.m */,
+				5BF402E41C73A156004FD0FA /* PreferencesController.h */,
+				5BF402E51C73A156004FD0FA /* PreferencesController.m */,
+				5BF402E61C73A156004FD0FA /* PreferencesController.xib */,
 			);
-			name = Settings;
+			name = " Settings and preferences";
 			sourceTree = "<group>";
 		};
 		5BAE70F31C4EC91500779081 /* Hotkeys */ = {
@@ -315,7 +323,7 @@
 				5B427BDD1C52B4B700EA1D4A /* Menu */,
 				5BC6A8E31C611C3A009C3E9F /* Music */,
 				5BAE70FD1C50058200779081 /* Reachability */,
-				5B9662711C725A400095AF54 /* Settings */,
+				5B9662711C725A400095AF54 /*  Settings and preferences */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
 				5BAE71041C5019A200779081 /* Track */,
 				5B9662701C725A340095AF54 /* User Notifications */,
@@ -474,6 +482,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BF402E81C73A156004FD0FA /* PreferencesController.xib in Resources */,
 				5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */,
 				5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */,
 				5BDD6B181A1D0C95001D87D6 /* Images.xcassets in Resources */,
@@ -567,6 +576,7 @@
 				5B1BC24C1C6CE4BF004EB785 /* CoverWindow.m in Sources */,
 				5B1BC2421C6CDE26004EB785 /* CoverWindowController.m in Sources */,
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
+				5BF402E71C73A156004FD0FA /* PreferencesController.m in Sources */,
 				5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
