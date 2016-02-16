@@ -17,6 +17,7 @@
 #import "MusicController.h"
 #import "iTunesSearch.h"
 #import "LastFm.h"
+#import "PreferencesController.h"
 
 @import QuartzCore;
 
@@ -30,16 +31,34 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
 @property (nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
 @property (nonatomic) IBOutlet MusicController *musicController;
-@property (nonatomic, weak) IBOutlet AppDelegate *appDelegate;
 @property (nonatomic) RecentTracksController *recentTracksController;
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settings;
 @property (nonatomic) ItunesSearch *iTunesSearch;
 @property (nonatomic) NSUInteger animationCurrentStep;
 @property (nonatomic) NSCache *cachediTunesSearchResults;
+@property (nonatomic) PreferencesController *preferencesController;
 @end
 
 @implementation MenuController
+
++ (instancetype)sharedController
+{
+    __strong static id _sharedInstance = nil;
+    static dispatch_once_t onlyOnce;
+    dispatch_once(&onlyOnce, ^{
+        _sharedInstance = [[self _alloc] _init];
+        
+    });
+    return _sharedInstance;
+}
+
++ (id) allocWithZone:(NSZone*)z { return [self sharedController];              }
++ (id) alloc                    { return [self sharedController];              }
+- (id) init                     { return self;}
++ (id)_alloc                    { return [super allocWithZone:NULL]; }
+- (id)_init                     { return [super init];               }
+
 
 
 -(void)awakeFromNib
@@ -195,7 +214,9 @@ static NSUInteger const kNumberOfFrames = 10;
 -(IBAction)openPreferences:(id)sender
 {
     [NSApp activateIgnoringOtherApps:YES];
-    [self.appDelegate.window makeKeyAndOrderFront:nil];
+//    [self.appDelegate.window makeKeyAndOrderFront:nil];
+    self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"PreferencesController"];
+    [self.preferencesController showWindow:self];
 }
 
 

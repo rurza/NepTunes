@@ -14,6 +14,7 @@
 #import "MusicScrobbler.h"
 #import "OfflineScrobbler.h"
 #import "Track.h"
+#import "PreferencesController.h"
 
 @interface UserNotificationsController () <NSUserNotificationCenterDelegate>
 @property (nonatomic) BOOL doISentANotificationThatLastFmIsDown;
@@ -138,7 +139,7 @@
 
 -(void)forceLogOutUser
 {
-    [(AppDelegate *)[NSApplication sharedApplication].delegate forceLogOut];
+    [[PreferencesController sharedPreferences] forceLogOut];
     [OfflineScrobbler sharedInstance].userWasLoggedOut = YES;
     [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser = YES;
 #if DEBUG
@@ -162,7 +163,7 @@
 -(void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification
 {
     if ([[notification.userInfo objectForKey:@"logout"] boolValue]) {
-        [((AppDelegate *)[NSApplication sharedApplication].delegate).menuController openPreferences:nil];
+        [[PreferencesController sharedPreferences].menuController openPreferences:nil];
     }
 }
 

@@ -152,9 +152,8 @@
         <customObject id="wPK-FC-1hR" customClass="ControlViewController">
             <connections>
                 <outlet property="backwardButton" destination="ECV-yR-0XE" id="lcl-Cs-xJu"/>
-                <outlet property="forwardButton" destination="wqb-zi-jZx" id="c9x-Jx-PFm"/>
+                <outlet property="forwardButton" destination="wqb-zi-jZx" id="3qK-Oa-kAG"/>
                 <outlet property="loveButton" destination="aHP-v2-BEZ" id="HNC-tc-9yU"/>
-                <outlet property="nextTrack" destination="wqb-zi-jZx" id="BNy-4c-Tz5"/>
                 <outlet property="playButton" destination="CbF-XY-3cq" id="GT2-Ym-xAg"/>
                 <outlet property="volumeButton" destination="gZi-jA-PJl" id="bjn-sH-MV8"/>
                 <outlet property="volumePopover" destination="KhR-FA-QIG" id="gac-dJ-3RZ"/>

@@ -7,7 +7,7 @@
 //
 
 #import "HotkeyController.h"
-#import "AppDelegate.h"
+#import "PreferencesController.h"
 #import <MASShortcut/Shortcut.h>
 
 static NSString *const kloveSongShortcut = @"loveSongShortcut";
@@ -38,23 +38,23 @@ static void *MASObservingContext = &MASObservingContext;
 
 -(void)bindShortcutsToAction
 {
-    AppDelegate *delegate = [NSApplication sharedApplication].delegate;
+    PreferencesController *prefController = [PreferencesController sharedPreferences];
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
-        [delegate.menuController loveSong:nil];
+        [prefController.menuController loveSong:nil];
      }];
     
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kshowYourProfileShortcut
      toAction:^{
-         [delegate.menuController showUserProfile:nil];
+         [prefController.menuController showUserProfile:nil];
      }];
     
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kshowSimilarArtistsShortcut
      toAction:^{
-         [delegate.menuController showSimilarArtists:nil];
+         [prefController.menuController showSimilarArtists:nil];
      }];
 }
 
@@ -86,35 +86,35 @@ static void *MASObservingContext = &MASObservingContext;
         return;
     }
     else {
-        AppDelegate *delegate = [NSApplication sharedApplication].delegate;
+        PreferencesController *prefController = [PreferencesController sharedPreferences];
 
         if ([keyPath isEqualToString:kloveSongShortcut]) {
             if (self.loveSongView.shortcutValue.modifierFlags) {
-                delegate.menuController.loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];
-                delegate.menuController.loveSongMenuTitle.keyEquivalentModifierMask = self.loveSongView.shortcutValue.modifierFlags;
+                prefController.menuController.loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];
+                prefController.menuController.loveSongMenuTitle.keyEquivalentModifierMask = self.loveSongView.shortcutValue.modifierFlags;
             }
             else {
-                delegate.menuController.loveSongMenuTitle.keyEquivalent = @"";
+                prefController.menuController.loveSongMenuTitle.keyEquivalent = @"";
             }
         }
         
         else if ([keyPath isEqualToString:kshowSimilarArtistsShortcut]) {
             if (self.showSimilarArtistsView.shortcutValue.modifierFlags) {
-                delegate.menuController.similarArtistMenuTtitle.keyEquivalent = [self.showSimilarArtistsView.shortcutValue.keyCodeString lowercaseString];
-                delegate.menuController.similarArtistMenuTtitle.keyEquivalentModifierMask = self.showSimilarArtistsView.shortcutValue.modifierFlags;
+                prefController.menuController.similarArtistMenuTtitle.keyEquivalent = [self.showSimilarArtistsView.shortcutValue.keyCodeString lowercaseString];
+                prefController.menuController.similarArtistMenuTtitle.keyEquivalentModifierMask = self.showSimilarArtistsView.shortcutValue.modifierFlags;
             }
             else {
-                delegate.menuController.similarArtistMenuTtitle.keyEquivalent = @"";
+                prefController.menuController.similarArtistMenuTtitle.keyEquivalent = @"";
             }
         }
         
         else if ([keyPath isEqualToString:kshowYourProfileShortcut]) {
             if (self.showYourProfileView.shortcutValue.modifierFlags) {
-                delegate.menuController.profileMenuTitle.keyEquivalent = [self.showYourProfileView.shortcutValue.keyCodeString lowercaseString];
-                delegate.menuController.profileMenuTitle.keyEquivalentModifierMask = self.showYourProfileView.shortcutValue.modifierFlags;
+                prefController.menuController.profileMenuTitle.keyEquivalent = [self.showYourProfileView.shortcutValue.keyCodeString lowercaseString];
+                prefController.menuController.profileMenuTitle.keyEquivalentModifierMask = self.showYourProfileView.shortcutValue.modifierFlags;
             }
             else {
-                delegate.menuController.profileMenuTitle.keyEquivalent = @"";
+                prefController.menuController.profileMenuTitle.keyEquivalent = @"";
             }
         }
     }

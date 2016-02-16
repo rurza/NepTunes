@@ -9,7 +9,8 @@
 #import "SettingsController.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "MenuController.h"
-#import "AppDelegate.h"
+//#import "AppDelegate.h"
+#import "PreferencesController.h"
 
 
 static NSString *const kUserAvatar = @"userAvatar";
@@ -195,7 +196,7 @@ static NSString *const kDebugMode = @"debugMode";
             restoreNowButton.target = self;
             restoreNowButton.action = @selector(restoreStatusBarIcon);
             self.alertWindow = alert.window;
-            [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
+            [alert beginSheetModalForWindow:[PreferencesController sharedPreferences].window completionHandler:^(NSModalResponse returnCode) {
             }];
         } else {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -218,7 +219,7 @@ static NSString *const kDebugMode = @"debugMode";
 {
     self.hideStatusBarIcon = NO;
     [self.menuController installStatusBar];
-    [((AppDelegate *)[NSApplication sharedApplication].delegate).window endSheet:self.alertWindow];
+    [[PreferencesController sharedPreferences].window endSheet:self.alertWindow];
     [self.hideStatusBarCheckbox setState:NSOffState];
 }
 
@@ -276,7 +277,7 @@ static NSString *const kDebugMode = @"debugMode";
         alert.alertStyle = NSInformationalAlertStyle;
         [alert addButtonWithTitle:@"I'm aware"];
         self.alertWindow = alert.window;
-        [alert beginSheetModalForWindow:((AppDelegate *)[NSApplication sharedApplication].delegate).window completionHandler:^(NSModalResponse returnCode) {
+        [alert beginSheetModalForWindow:[PreferencesController sharedPreferences].window completionHandler:^(NSModalResponse returnCode) {
         }];
     }
 }

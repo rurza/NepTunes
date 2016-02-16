@@ -65,8 +65,10 @@
 -(void)setupCover
 {
     self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
-    [self.coverWindowController showWindow:self];
-    [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
+    if (self.playerState == iTunesEPlSPlaying) {
+        [self.coverWindowController showWindow:self];
+        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
+    }
 }
 
 

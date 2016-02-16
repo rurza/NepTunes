@@ -19,6 +19,7 @@
 @property (nonatomic, weak) IBOutlet NSButton *playButton;
 @property (nonatomic, weak) IBOutlet NSButton *forwardButton;
 @property (nonatomic, weak) IBOutlet NSButton *backwardButton;
+
 @property (nonatomic, weak) IBOutlet NSButton *volumeButton;
 //@property (nonatomic, weak) IBOutlet NSButton *shuffleButton;
 //@property (nonatomic, weak) IBOutlet NSButton *repeatButton;

@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import "CoverWindowController.h"
 #import "GetCover.h"
+#import "PreferencesController.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -65,7 +66,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     if (self.musicController.isiTunesRunning) {
         [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1 withSuccessHandler:^{
-            [((AppDelegate *)[NSApplication sharedApplication].delegate).menuController blinkMenuIcon];
+            [[PreferencesController sharedPreferences].menuController blinkMenuIcon];
         }];
     }
 }
