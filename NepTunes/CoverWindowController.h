@@ -13,5 +13,7 @@
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo;
 -(void)fadeCover:(BOOL)direction;
+-(void)showControls;
+-(void)hideControls;
 
 @end

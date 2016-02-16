@@ -163,17 +163,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 #pragma mark - Last.fm related
 -(IBAction)loveSong:(id)sender {
-    SettingsController *settings = [SettingsController sharedSettings];
-    if (settings.session) {
-        [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^(Track *track, NSImage *artwork) {
-            [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackWasLoved:track withArtwork:(NSImage *)artwork];
-        }];
-    } else {
-        [self openPreferences:nil];
-    }
-    if (settings.integrationWithiTunes && settings.loveTrackOniTunes) {
-        [self.musicController loveTrackIniTunes];
-    }
+    [self.musicController loveTrackWithCompletionHandler:nil];
 }
 
 
@@ -646,18 +636,12 @@ static NSUInteger const kNumberOfFrames = 10;
 #pragma mark - iTunes Search Cache
 - (NSArray *)cachedArrayForKey:(NSString *)key
 {
-    if (self.settings.debugMode) {
-        NSLog(@"Reading cache from iTunes Search for key: %@", key);
-    }
     return [self.cachediTunesSearchResults objectForKey:key];
 }
 
 - (void)cacheArray:(NSArray *)array forKey:(NSString *)key requestParams:(NSDictionary *)params maxAge:(NSTimeInterval)maxAge
 {
     [self.cachediTunesSearchResults setObject:array forKey:key];
-    if (self.settings.debugMode) {
-        NSLog(@"Saving cache from iTunes Search for key: %@", key);
-    }
 }
 
 #pragma mark - Getters
@@ -708,6 +692,7 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if (!_cachediTunesSearchResults) {
         _cachediTunesSearchResults = [NSCache new];
+        _cachediTunesSearchResults.countLimit = 20;
     }
     return _cachediTunesSearchResults;
 }

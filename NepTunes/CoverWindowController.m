@@ -14,31 +14,45 @@
 #import "iTunesSearch.h"
 #import "CoverView.h"
 #import "GetCover.h"
+#import "CoverLabel.h"
+#import "ControlViewController.h"
 
 @import QuartzCore;
 
-@interface CoverWindowController () <CoverGetterDelegate>
+@interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
 @property (nonatomic) CoverWindow *window;
 @property (nonatomic) BOOL changeTrackAnimation;
-@property (nonatomic) NSTextField *artistLabel;
-@property (nonatomic) NSTextField *trackLabel;
+@property (nonatomic) CoverLabel *artistLabel;
+@property (nonatomic) CoverLabel *trackLabel;
+@property (nonatomic) NSTrackingArea *hoverArea;
+@property (weak) IBOutlet ControlViewController *controlViewController;
+@property (nonatomic) NSTimer *controlsTimer;
+
 @end
 
 @implementation CoverWindowController
 @dynamic window;
+@synthesize popoverIsShown = _popoverIsShown;
 
-- (void)windowDidLoad {
+- (void)windowDidLoad
+{
     [super windowDidLoad];
-
+    self.hoverArea = [[NSTrackingArea alloc] initWithRect:self.window.contentView.frame
+                                                  options:NSTrackingMouseEnteredAndExited |NSTrackingAssumeInside | NSTrackingActiveAlways
+                                                    owner:self userInfo:nil];
+    [self.window.contentView addTrackingArea:self.hoverArea];
+    self.controlViewController.delegate = self;
 }
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo
 {
     if (track) {
-        [self displayFullInfoForTrack:track];
         [self updateWithTrack:track];
         [GetCover sharedInstance].delegate = self;
         if (self.window && [MusicController sharedController].isiTunesRunning) {
+            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+                [self displayFullInfoForTrack:track];
+            }
             __weak typeof(self) weakSelf = self;
             [[GetCover sharedInstance] getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
                 [weakSelf updateWith:track andCover:cover];
@@ -47,7 +61,8 @@
             [self animateWindowOpacity:0];
         }
     } else {
-        self.window.alphaValue = 0;
+//        self.window.alphaValue = 0;
+        [self animateWindowOpacity:0];
     }
 }
 
@@ -129,13 +144,7 @@
     [NSAnimationContext endGrouping];
     
     CALayer *layer = self.window.coverView.titleLabel.layer;
-    CABasicAnimation *originalTitleOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    originalTitleOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    originalTitleOpacity.duration = .25;
-    originalTitleOpacity.fromValue = @(1);
-    originalTitleOpacity.toValue = @(0);
     layer.opacity = 0;
-    [layer addAnimation:originalTitleOpacity forKey:@"opacity"];
     
     
     self.artistLabel.stringValue = [NSString stringWithFormat:@"%@", track.artist];
@@ -195,41 +204,21 @@
     });
 }
 
--(NSTextField *)artistLabel
+-(CoverLabel *)artistLabel
 {
     if (!_artistLabel) {
-        _artistLabel  = [[NSTextField alloc] initWithFrame:NSMakeRect(10, 80, 140, 60)];
-        _artistLabel.textColor = [NSColor labelColor];
-        _artistLabel.wantsLayer = YES;
-        _artistLabel.layer.opacity = 0;
-        _artistLabel.bezeled = NO;
-        _artistLabel.bordered = NO;
-        _artistLabel.drawsBackground = NO;
+        _artistLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 80, 140, 60)];
         _artistLabel.font = [NSFont systemFontOfSize:15];
-        _artistLabel.alignment = NSTextAlignmentCenter;
-        _artistLabel.selectable = NO;
-        [[_artistLabel cell] setLineBreakMode:NSLineBreakByWordWrapping];
-        [[_artistLabel cell] setTruncatesLastVisibleLine:YES];
-        [self.window.coverView.artistView addSubview:_artistLabel];
+         [self.window.coverView.artistView addSubview:_artistLabel];
     }
     return _artistLabel;
 }
 
--(NSTextField *)trackLabel
+-(CoverLabel *)trackLabel
 {
     if (!_trackLabel) {
-        _trackLabel  = [[NSTextField alloc] initWithFrame:NSMakeRect(10, 20, 140, 60)];
-        _trackLabel.textColor = [NSColor labelColor];
-        _trackLabel.wantsLayer = YES;
-        _trackLabel.layer.opacity = 0;
-        _trackLabel.bezeled = NO;
-        _trackLabel.bordered = NO;
-        _trackLabel.drawsBackground = NO;
+        _trackLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 20, 140, 60)];
         _trackLabel.font = [NSFont systemFontOfSize:13];
-        _trackLabel.alignment = NSTextAlignmentCenter;
-        _trackLabel.selectable = NO;
-        [[_trackLabel cell] setLineBreakMode:NSLineBreakByWordWrapping];
-        [[_trackLabel cell] setTruncatesLastVisibleLine:YES];
         [self.window.coverView.artistView addSubview:_trackLabel];
     }
     return _trackLabel;
@@ -262,4 +251,50 @@
     self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2-5, 140, self.trackLabel.frame.size.height);
     self.artistLabel.frame = NSMakeRect(10, (160-labelsHeight)/2+5 + self.trackLabel.frame.size.height, 140, self.artistLabel.frame.size.height);
 }
+
+-(void)mouseEntered:(NSEvent *)event
+{
+    self.controlsTimer = [NSTimer scheduledTimerWithTimeInterval:.2f target:self selector:@selector(showControlsWithDelay:) userInfo:nil repeats:NO];
+}
+
+-(void)mouseExited:(NSEvent *)theEvent
+{
+    [self hideControls];
+}
+
+-(void)showControlsWithDelay:(NSTimer *)timer
+{
+    [self showControls];
+}
+
+-(void)showControls
+{
+    if (!self.popoverIsShown) {
+        CABasicAnimation *controlOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        controlOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        controlOpacity.duration = .35;
+        controlOpacity.fromValue = @(0);
+        controlOpacity.toValue = @(1);
+        self.window.controlView.layer.opacity = 1;
+        [self.window.controlView.layer addAnimation:controlOpacity forKey:@"opacity"];
+     }
+    [self.controlsTimer invalidate];
+    self.controlsTimer = nil;
+}
+
+-(void)hideControls
+{
+    if (!self.popoverIsShown && !self.controlsTimer) {
+        CABasicAnimation *controlOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        controlOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        controlOpacity.duration = .35;
+        controlOpacity.fromValue = @(1);
+        controlOpacity.toValue = @(0);
+        self.window.controlView.layer.opacity = 0;
+        [self.window.controlView.layer addAnimation:controlOpacity forKey:@"opacity"];
+     }
+    [self.controlsTimer invalidate];
+    self.controlsTimer = nil;
+}
+
 @end

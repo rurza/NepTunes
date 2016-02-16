@@ -18,6 +18,9 @@
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
+		5B9662741C725A640095AF54 /* VolumeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9662731C725A640095AF54 /* VolumeViewController.m */; };
+		5B9F07401C72300200F73566 /* CoverLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F073F1C72300200F73566 /* CoverLabel.m */; };
+		5B9F07431C723BFE00F73566 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F07421C723BFE00F73566 /* ControlViewController.m */; };
 		5BAE70F71C50023500779081 /* FXReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70F61C50023500779081 /* FXReachability.m */; };
 		5BAE70F91C50030C00779081 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAE70F81C50030C00779081 /* SystemConfiguration.framework */; };
 		5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */; };
@@ -103,6 +106,13 @@
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
+		5B9662721C725A640095AF54 /* VolumeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeViewController.h; sourceTree = "<group>"; };
+		5B9662731C725A640095AF54 /* VolumeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeViewController.m; sourceTree = "<group>"; };
+		5B9F073B1C722C5B00F73566 /* NepTunes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NepTunes-Bridging-Header.h"; sourceTree = "<group>"; };
+		5B9F073E1C72300200F73566 /* CoverLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverLabel.h; sourceTree = "<group>"; };
+		5B9F073F1C72300200F73566 /* CoverLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverLabel.m; sourceTree = "<group>"; };
+		5B9F07411C723BFE00F73566 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
+		5B9F07421C723BFE00F73566 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
 		5BA37AC51C63842000F69380 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		5BAE70F51C50023500779081 /* FXReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXReachability.h; sourceTree = "<group>"; };
 		5BAE70F61C50023500779081 /* FXReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXReachability.m; sourceTree = "<group>"; };
@@ -182,13 +192,19 @@
 				5B0734211C6E382D00167934 /* CoverView.m */,
 				5B1BC24A1C6CE4BF004EB785 /* CoverWindow.h */,
 				5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */,
+				5B9F073E1C72300200F73566 /* CoverLabel.h */,
+				5B9F073F1C72300200F73566 /* CoverLabel.m */,
 				5B1BC2401C6CDE26004EB785 /* CoverWindowController.h */,
 				5B1BC2411C6CDE26004EB785 /* CoverWindowController.m */,
 				5B1BC2471C6CE337004EB785 /* CoverImageView.h */,
 				5B1BC2481C6CE337004EB785 /* CoverImageView.m */,
 				5B07341D1C6CF74900167934 /* CoverWindow.xib */,
+				5B9F07411C723BFE00F73566 /* ControlViewController.h */,
+				5B9F07421C723BFE00F73566 /* ControlViewController.m */,
 				5B0734231C6E495B00167934 /* GetCover.h */,
 				5B0734241C6E495B00167934 /* GetCover.m */,
+				5B9662721C725A640095AF54 /* VolumeViewController.h */,
+				5B9662731C725A640095AF54 /* VolumeViewController.m */,
 			);
 			name = Cover;
 			sourceTree = "<group>";
@@ -202,6 +218,24 @@
 				5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */,
 			);
 			name = Menu;
+			sourceTree = "<group>";
+		};
+		5B9662701C725A340095AF54 /* User Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				5B48B28F1C5FB9B10041175B /* UserNotificationsController.h */,
+				5B48B2901C5FB9B10041175B /* UserNotificationsController.m */,
+			);
+			name = "User Notifications";
+			sourceTree = "<group>";
+		};
+		5B9662711C725A400095AF54 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				5BAE71061C528D1000779081 /* SettingsController.h */,
+				5BAE71071C528D1000779081 /* SettingsController.m */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		5BAE70F31C4EC91500779081 /* Hotkeys */ = {
@@ -272,21 +306,19 @@
 		5BDD6B0F1A1D0C95001D87D6 /* NepTunes */ = {
 			isa = PBXGroup;
 			children = (
-				5BAE70F31C4EC91500779081 /* Hotkeys */,
-				5B427BDD1C52B4B700EA1D4A /* Menu */,
-				5BAE71041C5019A200779081 /* Track */,
-				5BC6A8E31C611C3A009C3E9F /* Music */,
-				5B1BC24D1C6CE4CA004EB785 /* Cover */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
-				5BAE71061C528D1000779081 /* SettingsController.h */,
-				5BAE71071C528D1000779081 /* SettingsController.m */,
-				5B48B28F1C5FB9B10041175B /* UserNotificationsController.h */,
-				5B48B2901C5FB9B10041175B /* UserNotificationsController.m */,
-				5BAE70FD1C50058200779081 /* Reachability */,
+				5B1BC24D1C6CE4CA004EB785 /* Cover */,
+				5BAE70F31C4EC91500779081 /* Hotkeys */,
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
+				5B427BDD1C52B4B700EA1D4A /* Menu */,
+				5BC6A8E31C611C3A009C3E9F /* Music */,
+				5BAE70FD1C50058200779081 /* Reachability */,
+				5B9662711C725A400095AF54 /* Settings */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
+				5BAE71041C5019A200779081 /* Track */,
+				5B9662701C725A340095AF54 /* User Notifications */,
 			);
 			path = NepTunes;
 			sourceTree = "<group>";
@@ -294,6 +326,7 @@
 		5BDD6B101A1D0C95001D87D6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5B9F073B1C722C5B00F73566 /* NepTunes-Bridging-Header.h */,
 				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,
 				5BFB29E81A1D800900EA87AA /* dsa_pub.pem */,
 				5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */,
@@ -538,10 +571,13 @@
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */,
+				5B9662741C725A640095AF54 /* VolumeViewController.m in Sources */,
+				5B9F07431C723BFE00F73566 /* ControlViewController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
 				5BAE71031C50199700779081 /* SavedTrack.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
 				5B0734221C6E382D00167934 /* CoverView.m in Sources */,
+				5B9F07401C72300200F73566 /* CoverLabel.m in Sources */,
 				5BAE71081C528D1000779081 /* SettingsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -658,6 +694,7 @@
 			baseConfigurationReference = 10263035E2E364638E5DACEA /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_LINK_OBJC_RUNTIME = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -674,6 +711,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "NepTunes/NepTunes-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -682,6 +721,7 @@
 			baseConfigurationReference = 55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_LINK_OBJC_RUNTIME = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -699,6 +739,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "NepTunes/NepTunes-Bridging-Header.h";
 			};
 			name = Release;
 		};

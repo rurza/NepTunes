@@ -15,8 +15,10 @@
 #include <CommonCrypto/CommonDigest.h>
 #import "SettingsController.h"
 
-@interface GetCover ()
+@interface GetCover () <NSURLSessionDelegate>
 @property (nonatomic) NSCache *cache;
+@property (nonatomic) NSString *lastFMCoverURL;
+@property (nonatomic) NSString *itunesCoverURL;
 
 @end
 
@@ -34,6 +36,8 @@
 
 -(void)getCoverWithTrack:(Track *)track withCompletionHandler:(void(^)(NSImage *cover))handler
 {
+    self.itunesCoverURL = nil;
+    self.lastFMCoverURL = nil;
     if ([[MusicController sharedController] currentTrackCover]) {
         handler([[MusicController sharedController] currentTrackCover]);
         if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
@@ -51,58 +55,64 @@
             [self.delegate trackInfoShouldBeRemoved];
         }
         if ([FXReachability sharedInstance].isReachable) {
-            
-            __weak typeof(self) weakSelf = self;
-            [[ItunesSearch sharedInstance] getAlbumWithArtist:track.artist andName:track.album limitOrNil:@20 successHandler:^(NSArray *result) {
-                NSString *coverURL;
-                for (NSDictionary *singleResult in result) {
-                    if ([singleResult objectForKey:@"artworkUrl100"]) {
-                        coverURL = [singleResult objectForKey:@"artworkUrl100"];
-                        break;
-                    }
-                }
-                if (coverURL) {
-                    if ([SettingsController sharedSettings].debugMode) {
-                        NSLog(@"coverURL from iTunes %@", coverURL);
-                    }
-                    [[GetCover sharedInstance] getInfoWithLastFMForTrack:track withCompletionHandler:^(NSString *urlString) {
-                        if (urlString.length) {
-                            if ([SettingsController sharedSettings].debugMode) {
-                                NSLog(@"I choose cover from Last.fm");
-                            }
-                            [weakSelf getCoverForTrack:track fromString:urlString andCompletionHandler:^(NSImage *cover) {
-                                handler(cover);
-                            }];
-                        } else {
-                            if ([SettingsController sharedSettings].debugMode) {
-                                NSLog(@"I choose cover from iTunes Search");
-                            }
-                            [weakSelf getCoverForTrack:track fromString:coverURL andCompletionHandler:^(NSImage *cover) {
-                                handler(cover);
-                            }];
-                        }
-                    }];
-                } else {
-                    [weakSelf getInfoWithLastFMForTrack:track withCompletionHandler:^(NSString *urlString) {
-                        if (urlString.length) {
-                            [weakSelf getCoverForTrack:track fromString:urlString andCompletionHandler:^(NSImage *cover) {
-                                handler(cover);
-                            }];
-                        }
-                    }];
-                }
-            } failureHandler:^(NSError *error) {
-                [weakSelf getInfoWithLastFMForTrack:track withCompletionHandler:^(NSString *urlString) {
-                    [weakSelf getCoverForTrack:track fromString:urlString andCompletionHandler:^(NSImage *cover) {
-                        handler(cover);
-                    }];
-                }];
+            [self getCoverURLFromiTunesAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
+                handler(cover);
+            }];
+            [self getCoverURLFromLastFmAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
+                handler(cover);
             }];
         }
         else {
             handler([GetCover defaultCover]);
         }
     }
+}
+
+-(void)getCoverURLFromLastFmAndSetItAsCoverForTrack:(Track *)track inCompletionHandler:(void(^)(NSImage *cover))handler
+{
+    __weak typeof(self) weakSelf = self;
+    [self getInfoWithLastFMForTrack:track withCompletionHandler:^(NSString *urlString) {
+        if (urlString.length) {
+            weakSelf.lastFMCoverURL = urlString;
+            [weakSelf getCoverForTrack:track fromString:urlString andCompletionHandler:^(NSImage *cover) {
+                handler(cover);
+            }];
+        } else if (!weakSelf.itunesCoverURL) {
+            handler([GetCover defaultCover]);
+        }
+    }];
+}
+
+-(void)getCoverURLFromiTunesAndSetItAsCoverForTrack:(Track *)track inCompletionHandler:(void(^)(NSImage *cover))handler
+{
+    __weak typeof(self) weakSelf = self;
+    [[ItunesSearch sharedInstance] getAlbumWithArtist:track.artist andName:track.album limitOrNil:@20 successHandler:^(NSArray *result) {
+        NSString *coverURL;
+        for (NSDictionary *singleResult in result) {
+            if ([singleResult objectForKey:@"artworkUrl100"]) {
+                coverURL = [singleResult objectForKey:@"artworkUrl100"];
+                break;
+            }
+        }
+        if (coverURL) {
+            if ([SettingsController sharedSettings].debugMode) {
+                NSLog(@"coverURL from iTunes %@", coverURL);
+            }
+            if (weakSelf.lastFMCoverURL) {
+                return;
+            } else {
+                weakSelf.itunesCoverURL = coverURL;
+            }
+            [weakSelf getCoverForTrack:track fromString:coverURL andCompletionHandler:^(NSImage *cover) {
+                handler(cover);
+            }];
+        }
+
+    } failureHandler:^(NSError *error) {
+        if (!weakSelf.lastFMCoverURL) {
+            handler([GetCover defaultCover]);
+        }
+    }];
 }
 
 
@@ -129,7 +139,7 @@
 {
     NSURL *artworkURL = [NSURL URLWithString:urlString];
     NSURLRequest *albumArtworkRequest = [NSURLRequest requestWithURL:artworkURL];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
     __weak typeof(self) weakSelf = self;
     NSURLSessionDownloadTask *artworkDownloadTask = [session downloadTaskWithRequest:albumArtworkRequest completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSImage *artwork = [[NSImage alloc] initWithContentsOfURL:location];
@@ -144,6 +154,7 @@
         });
     }];
     [artworkDownloadTask resume];
+    [session finishTasksAndInvalidate];
 }
 
 +(NSImage *)defaultCover
@@ -185,11 +196,21 @@
     return [ms copy];
 }
 
+- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(nullable NSError *)error
+{
+    if (error && [SettingsController sharedSettings].debugMode) {
+        NSLog(@"%@", error.localizedDescription);
+    }
+    [session invalidateAndCancel];
+    session = nil;
+}
+
 
 -(NSCache *)cache
 {
     if (!_cache) {
         _cache = [[NSCache alloc] init];
+        _cache.countLimit = 20;
     }
     return _cache;
 }

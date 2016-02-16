@@ -15,6 +15,7 @@
 #import "MusicController.h"
 #import "AppDelegate.h"
 #import "CoverWindowController.h"
+#import "GetCover.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -163,29 +164,9 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             if ([SettingsController sharedSettings].debugMode) {
                 NSLog(@"%@ loved!", track);
             }
-            [self.scrobbler getInfoForAlbum:track.album artist:track.artist successHandler:^(NSDictionary *result) {
-                NSString *artworkURLString = [NSString stringWithFormat:@"%@", result[@"image"]];
-                NSURL *artworkURL = [NSURL URLWithString:artworkURLString];
-                NSURLRequest *albumArtworkRequest = [NSURLRequest requestWithURL:artworkURL];
-                NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-                NSURLSessionDownloadTask *artworkDownloadTask = [session downloadTaskWithRequest:albumArtworkRequest completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                    NSImage *artwork = [[NSImage alloc] initWithContentsOfURL:location];
-                    if (completion) {
-                        if (artwork) {
-                            completion(track, artwork);
-                        } else {
-                            completion(track, nil);
-                        }
-                    }
-                }];
-                [artworkDownloadTask resume];
-                
-            } failureHandler:^(NSError *error) {
-                if (completion) {
-                    completion(track, nil);
-                }
-            }];
-           
+            [[GetCover sharedInstance] getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
+                completion(track, cover);
+            }];           
         } failureHandler:^(NSError *error) {
             if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

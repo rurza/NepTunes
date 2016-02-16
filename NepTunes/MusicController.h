@@ -18,7 +18,7 @@
 @property (nonatomic) CoverWindowController *coverWindowController ;
 
 +(instancetype)sharedController;
--(void)loveTrackIniTunes;
+-(void)loveTrackWithCompletionHandler:(void(^)(void))handler;
 -(void)invalidateTimers;
 -(void)updateTrackInfo:(NSNotification *)note;
 -(NSImage *)currentTrackCover;

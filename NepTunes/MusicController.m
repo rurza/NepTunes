@@ -12,6 +12,7 @@
 #import "MenuController.h"
 #import "Track.h"
 #import "CoverWindowController.h"
+#import "UserNotificationsController.h"
 
 #define FOUR_MINUTES 60 * 4
 
@@ -47,10 +48,8 @@
 
 -(void)awakeFromNib
 {
-    self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
-    [self.coverWindowController showWindow:self];
-    
     [self setupNotifications];
+    [self setupCover];
 }
 
 -(void)setupNotifications
@@ -61,8 +60,13 @@
                                                         selector:@selector(updateTrackInfo:)
                                                             name:@"com.apple.iTunes.playerInfo"
                                                           object:nil];
-    
-    
+}
+
+-(void)setupCover
+{
+    self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
+    [self.coverWindowController showWindow:self];
+    [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
 }
 
 
@@ -173,9 +177,8 @@
     }
 }
 
--(void)loveTrackIniTunes
+-(void)loveTrackOniTunes
 {
-//    self.iTunes
     self.currentTrack.loved = YES;
 }
 
@@ -193,6 +196,24 @@
 {
     [self.musicScrobbler nowPlayingCurrentTrack];
 }
+
+-(void)loveTrackWithCompletionHandler:(void(^)(void))handler
+{
+    SettingsController *settings = [SettingsController sharedSettings];
+    if (settings.session) {
+        [self.musicScrobbler loveCurrentTrackWithCompletionHandler:^(Track *track, NSImage *artwork) {
+            [[UserNotificationsController sharedNotificationsController] displayNotificationThatTrackWasLoved:track withArtwork:(NSImage *)artwork];
+            if (handler) {
+                handler();
+            }
+        }];
+    }
+    if (settings.integrationWithiTunes && settings.loveTrackOniTunes) {
+        [self loveTrackOniTunes];
+    }
+}
+
+
 
 #pragma mark - Getters
 -(MusicScrobbler *)musicScrobbler

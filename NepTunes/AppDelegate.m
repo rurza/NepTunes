@@ -55,7 +55,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 //Music Controller
 @property (nonatomic) MusicController *musicController;
 
-@property (nonatomic) CoverWindowController *cwc;
 
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)logOut:(id)sender;
