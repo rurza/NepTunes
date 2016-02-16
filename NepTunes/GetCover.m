@@ -95,14 +95,11 @@
             }
         }
         if (coverURL) {
+            coverURL = [coverURL stringByReplacingOccurrencesOfString:@"100x100" withString:@"225x225"];
             if ([SettingsController sharedSettings].debugMode) {
                 NSLog(@"coverURL from iTunes %@", coverURL);
             }
-            if (weakSelf.lastFMCoverURL) {
-                return;
-            } else {
-                weakSelf.itunesCoverURL = coverURL;
-            }
+            weakSelf.itunesCoverURL = coverURL;
             [weakSelf getCoverForTrack:track fromString:coverURL andCompletionHandler:^(NSImage *cover) {
                 handler(cover);
             }];
@@ -118,10 +115,17 @@
 
 -(void)getInfoWithLastFMForTrack:(Track *)track withCompletionHandler:(void(^)(NSString *urlString))handler
 {
+    __weak typeof(self) weakSelf = self;
     [[MusicScrobbler sharedScrobbler].scrobbler getInfoForTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
         NSString *artworkURLString = [(NSURL *)result[@"image"] absoluteString];
         if ([SettingsController sharedSettings].debugMode) {
             NSLog(@"artworkURLString from Last.fm = %@", artworkURLString);
+        }
+        if (weakSelf.itunesCoverURL) {
+            if ([SettingsController sharedSettings].debugMode) {
+                NSLog(@"I have high res iTunes cover; returning");
+            }
+            return;
         }
         if (artworkURLString) {
             handler(artworkURLString);
@@ -129,8 +133,15 @@
             handler(nil);
         }
     } failureHandler:^(NSError *error) {
-        if (handler) {
-            handler(nil);
+        if (weakSelf.itunesCoverURL) {
+            if ([SettingsController sharedSettings].debugMode) {
+                NSLog(@"I have high res iTunes cover; returning");
+            }
+            return;
+        } else {
+            if (handler) {
+                handler(nil);
+            }
         }
     }];
 }
@@ -144,9 +155,7 @@
     NSURLSessionDownloadTask *artworkDownloadTask = [session downloadTaskWithRequest:albumArtworkRequest completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSImage *artwork = [[NSImage alloc] initWithContentsOfURL:location];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (![weakSelf cachedCoverImageForTrack:track]) {
-                [weakSelf saveCoverImage:artwork forTrack:track];
-            }
+            [weakSelf saveCoverImage:artwork forTrack:track];
             if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
                 [self.delegate trackInfoShouldBeDisplayed];
             }
@@ -167,7 +176,7 @@
     NSString *key = [self md5sumFromString: [NSString stringWithFormat:@"%@%@", track.artist, track.album]];
     [self.cache setObject:image forKey:key];
     if ([SettingsController sharedSettings].debugMode) {
-        NSLog(@"...so I save it for key %@", key);
+        NSLog(@"saving image to cache for key %@", key);
     }
 }
 

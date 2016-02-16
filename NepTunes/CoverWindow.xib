@@ -48,7 +48,7 @@
                             <outlet property="titleLabel" destination="uJx-QW-zlc" id="ian-xy-Wlb"/>
                         </connections>
                     </customView>
-                    <visualEffectView wantsLayer="YES" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="eEN-fB-qSK">
+                    <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" alphaValue="0.0" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="eEN-fB-qSK">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gZi-jA-PJl">
