@@ -280,13 +280,11 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)setupCoverView
 {
-//    self.coverView.layer.shadowOpacity = 1;
-//    self.coverView.layer.shadowColor = [NSColor blackColor].CGColor;
-//    self.coverView.layer.shadowOffset = CGSizeMake(-3, -3);
-//    [self.coverView.layer setNeedsLayout];
-
-//    self.coverView.shadow = [[NSShadow alloc] init];
-//    self.coverView.shadow.
+    self.coverView.wantsLayer = YES;
+    self.coverView.layer.shadowOpacity = 1;
+    self.coverView.layer.shadowColor = [NSColor blackColor].CGColor;
+    self.coverView.layer.shadowOffset = CGSizeMake(-3, -3);
+    [self.coverView.layer setNeedsLayout];
 }
 
 -(void)updateCover:(NSNotification *)note
@@ -299,18 +297,16 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     if (track) {
         [self updateWithTrack:track];
         if ([MusicController sharedController].isiTunesRunning) {
-            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
-                [self displayFullInfoForTrack:track];
-            }
             __weak typeof(self) weakSelf = self;
+            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf displayFullInfoForTrack:track];
+                });
+            }
             [self.getCover getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
                 [weakSelf updateWith:track andCover:cover];
             }];
-        } else {
-//            [self animateWindowOpacity:0];
         }
-    } else {
-//        [self animateWindowOpacity:0];
     }
 }
 

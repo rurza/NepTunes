@@ -19,13 +19,14 @@
 
 -(void)setupWindow
 {
-    [self setHasShadow:YES];
     [self setMovableByWindowBackground:YES];
     [self setMovable:YES];
     [self setLevel:kCGDesktopIconWindowLevel+1];
     [self setOpaque: NO];
     [self setBackgroundColor:[NSColor clearColor]];
     [self setIgnoresMouseEvents:NO];
+    [self setStyleMask:NSBorderlessWindowMask];
+    [self setHasShadow:YES];
 }
 
 -(void)setupControlView

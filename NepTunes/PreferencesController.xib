@@ -487,21 +487,21 @@ DQ
             </connections>
         </customObject>
         <customView identifier="Album Cover" wantsLayer="YES" id="TyO-c4-qci">
-            <rect key="frame" x="0.0" y="0.0" width="496" height="200"/>
+            <rect key="frame" x="0.0" y="0.0" width="512" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Ob-th-RMz" customClass="CoverView">
-                    <rect key="frame" x="366" y="20" width="160" height="160"/>
+                <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Ob-th-RMz" customClass="CoverView">
+                    <rect key="frame" x="371" y="20" width="160" height="160"/>
                     <subviews>
-                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kBP-uk-mZe" customClass="CoverImageView">
-                            <rect key="frame" x="138" y="-140" width="0.0" height="0.0"/>
+                        <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kBP-uk-mZe" customClass="CoverImageView">
+                            <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="A2e-Yp-0xa"/>
                         </imageView>
-                        <visualEffectView appearanceType="vibrantDark" fixedFrame="YES" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="uXm-dM-w2U">
-                            <rect key="frame" x="14" y="170" width="115" height="120"/>
+                        <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" fixedFrame="YES" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="uXm-dM-w2U">
+                            <rect key="frame" x="0.0" y="0.0" width="160" height="26"/>
                             <subviews>
                                 <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b7I-lJ-rCU">
-                                    <rect key="frame" x="-2" y="0.0" width="8" height="17"/>
+                                    <rect key="frame" x="0.0" y="3" width="160" height="20"/>
                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" id="MTO-iu-pYO">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -511,21 +511,14 @@ DQ
                             </subviews>
                         </visualEffectView>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="160" id="5Mi-XP-A4H"/>
-                        <constraint firstAttribute="width" constant="160" id="C8M-Hy-ztC"/>
-                    </constraints>
                     <connections>
                         <outlet property="artistView" destination="uXm-dM-w2U" id="3Pl-EN-xce"/>
                         <outlet property="coverImageView" destination="kBP-uk-mZe" id="4rC-yz-Jun"/>
                         <outlet property="titleLabel" destination="b7I-lJ-rCU" id="tLN-6w-bFQ"/>
                     </connections>
                 </customView>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="FC7-Gj-ts8">
-                    <rect key="frame" x="18" y="137" width="229" height="18"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="14" id="bkj-WE-5vi"/>
-                    </constraints>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FC7-Gj-ts8">
+                    <rect key="frame" x="18" y="135" width="335" height="18"/>
                     <buttonCell key="cell" type="check" title="Album cover on the desktop" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6ir-Yq-iG4">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -534,12 +527,8 @@ DQ
                         <action selector="showAlbumCover:" target="-2" id="8QN-bu-ZRO"/>
                     </connections>
                 </button>
-                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sSl-AB-SzG">
-                    <rect key="frame" x="38" y="73" width="198" height="26"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="bNw-RD-2Ab"/>
-                        <constraint firstAttribute="width" constant="193" id="fcG-c4-49V"/>
-                    </constraints>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSl-AB-SzG">
+                    <rect key="frame" x="38" y="76" width="198" height="26"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="saW-BB-FIA" id="7MB-rq-jRw">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -555,23 +544,16 @@ DQ
                         <action selector="changeAlbumCoverPosition:" target="-2" id="mXC-BN-ddD"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="S40-9x-jaE">
-                    <rect key="frame" x="38" y="107" width="310" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="17" id="59I-28-bhu"/>
-                        <constraint firstAttribute="width" constant="306" id="kF1-40-WWf"/>
-                    </constraints>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S40-9x-jaE">
+                    <rect key="frame" x="38" y="105" width="315" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Where should the album cover window appear?" id="Vge-oY-mSx">
-                        <font key="font" metaFont="systemBold"/>
+                        <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="zm6-1c-ADT">
-                    <rect key="frame" x="38" y="45" width="310" height="18"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="14" id="wsH-LH-2Ke"/>
-                    </constraints>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zm6-1c-ADT">
+                    <rect key="frame" x="38" y="48" width="315" height="18"/>
                     <buttonCell key="cell" type="check" title="Ignore Mission Control (stay put on screen)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="5PL-wH-fav">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -581,22 +563,7 @@ DQ
                     </connections>
                 </button>
             </subviews>
-            <constraints>
-                <constraint firstItem="S40-9x-jaE" firstAttribute="top" secondItem="FC7-Gj-ts8" secondAttribute="bottom" constant="15" id="1f4-lZ-hsI"/>
-                <constraint firstItem="8Ob-th-RMz" firstAttribute="leading" secondItem="zm6-1c-ADT" secondAttribute="trailing" constant="20" id="2ZV-7R-TDc"/>
-                <constraint firstItem="FC7-Gj-ts8" firstAttribute="leading" secondItem="TyO-c4-qci" secondAttribute="leading" constant="20" id="6Se-46-q3x"/>
-                <constraint firstItem="8Ob-th-RMz" firstAttribute="leading" secondItem="S40-9x-jaE" secondAttribute="trailing" constant="20" id="7dZ-Du-dHa"/>
-                <constraint firstItem="sSl-AB-SzG" firstAttribute="top" secondItem="S40-9x-jaE" secondAttribute="bottom" constant="10" id="9kW-Ds-oVs"/>
-                <constraint firstItem="zm6-1c-ADT" firstAttribute="leading" secondItem="TyO-c4-qci" secondAttribute="leading" constant="40" id="Bsb-Aj-yq2"/>
-                <constraint firstAttribute="trailing" secondItem="8Ob-th-RMz" secondAttribute="trailing" constant="-30" id="DGm-j9-v7e"/>
-                <constraint firstItem="8Ob-th-RMz" firstAttribute="centerY" secondItem="TyO-c4-qci" secondAttribute="centerY" id="Iwx-fg-l82"/>
-                <constraint firstItem="S40-9x-jaE" firstAttribute="leading" secondItem="TyO-c4-qci" secondAttribute="leading" constant="40" id="S9e-3m-C18"/>
-                <constraint firstItem="FC7-Gj-ts8" firstAttribute="top" secondItem="8Ob-th-RMz" secondAttribute="top" constant="27" id="ac2-Ut-VQP"/>
-                <constraint firstItem="zm6-1c-ADT" firstAttribute="top" secondItem="sSl-AB-SzG" secondAttribute="bottom" constant="15" id="hQg-jx-2H8"/>
-                <constraint firstItem="8Ob-th-RMz" firstAttribute="leading" secondItem="FC7-Gj-ts8" secondAttribute="trailing" constant="121" id="qqs-oQ-Gk9"/>
-                <constraint firstItem="sSl-AB-SzG" firstAttribute="leading" secondItem="TyO-c4-qci" secondAttribute="leading" constant="40" id="vGp-gv-rb1"/>
-            </constraints>
-            <point key="canvasLocation" x="305.5" y="546"/>
+            <point key="canvasLocation" x="299" y="546"/>
         </customView>
     </objects>
     <resources>
