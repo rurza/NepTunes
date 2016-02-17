@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MASShortcut-MASShortcut.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MASShortcut.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -34,10 +39,15 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>pop.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>01EF3162F4AA5017C0C6B1BDAFCAE55A</key>
+		<key>560ABDDE1168AE16EFF9F5E4DF011F5C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -47,7 +57,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9DECD792D6187659B6464BFA1FA854FB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A08AEFDC024D13A4C5F909784AEE8C56</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AC4C17CBF8773E5717F041BCBE49DB16</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -57,12 +77,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CF3FE5A90F6107A139E44616DA9D26A3</key>
+		<key>D7CE8B15DBC37B6857815D253088A25E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D7CE8B15DBC37B6857815D253088A25E</key>
+		<key>E1CD368B83CE2370B066D5F5A8DCD811</key>
 		<dict>
 			<key>primary</key>
 			<true/>

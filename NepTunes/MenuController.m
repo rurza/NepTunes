@@ -70,13 +70,13 @@ static NSUInteger const kNumberOfFrames = 10;
     
     [self prepareRecentItemsMenu];
     //first launch
-    if (!self.musicScrobbler.scrobbler.session && [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser) {
+    if (!self.musicScrobbler.scrobbler.session && self.settings.openPreferencesWhenThereIsNoUser) {
         [self openPreferences:self];
     }
     //Are we offline?
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu) name:FXReachabilityStatusDidChangeNotification object:nil];
     
-    if ([SettingsController sharedSettings].numberOfTracksInRecent.integerValue != 0) {
+    if (self.settings.numberOfTracksInRecent.integerValue != 0) {
         [self showRecentMenu];
     } else {
         [self hideRecentMenu];
@@ -214,6 +214,7 @@ static NSUInteger const kNumberOfFrames = 10;
 -(IBAction)openPreferences:(id)sender
 {
     [NSApp activateIgnoringOtherApps:YES];
+    self.preferencesController = nil;
 //    [self.appDelegate.window makeKeyAndOrderFront:nil];
     self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"PreferencesController"];
     [self.preferencesController showWindow:self];

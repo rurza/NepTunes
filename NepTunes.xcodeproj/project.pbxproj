@@ -234,7 +234,7 @@
 			name = "User Notifications";
 			sourceTree = "<group>";
 		};
-		5B9662711C725A400095AF54 /*  Settings and preferences */ = {
+		5B9662711C725A400095AF54 /* Settings and preferences */ = {
 			isa = PBXGroup;
 			children = (
 				5BAE71061C528D1000779081 /* SettingsController.h */,
@@ -243,7 +243,7 @@
 				5BF402E51C73A156004FD0FA /* PreferencesController.m */,
 				5BF402E61C73A156004FD0FA /* PreferencesController.xib */,
 			);
-			name = " Settings and preferences";
+			name = "Settings and preferences";
 			sourceTree = "<group>";
 		};
 		5BAE70F31C4EC91500779081 /* Hotkeys */ = {
@@ -323,7 +323,7 @@
 				5B427BDD1C52B4B700EA1D4A /* Menu */,
 				5BC6A8E31C611C3A009C3E9F /* Music */,
 				5BAE70FD1C50058200779081 /* Reachability */,
-				5B9662711C725A400095AF54 /*  Settings and preferences */,
+				5B9662711C725A400095AF54 /* Settings and preferences */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
 				5BAE71041C5019A200779081 /* Track */,
 				5B9662701C725A340095AF54 /* User Notifications */,

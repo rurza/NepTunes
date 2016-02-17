@@ -16,8 +16,8 @@
 #import "GetCover.h"
 #import "CoverLabel.h"
 #import "ControlViewController.h"
+#import <pop/POP.h>
 
-@import QuartzCore;
 
 @interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
 @property (nonatomic) CoverWindow *window;
@@ -61,7 +61,6 @@
             [self animateWindowOpacity:0];
         }
     } else {
-//        self.window.alphaValue = 0;
         [self animateWindowOpacity:0];
     }
 }
@@ -69,6 +68,7 @@
 -(void)updateWith:(Track *)track andCover:(NSImage *)cover
 {
     CoverWindow *coverWindow = (CoverWindow *)self.window;
+    
     coverWindow.coverView.coverImageView.image = cover;
     [self updateWithTrack:track];
 }
@@ -82,27 +82,14 @@
 
 -(void)fadeCover:(BOOL)direction
 {
-    CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    fadeAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    fadeAnimation.cumulative = YES;
-    fadeAnimation.duration = .3;
+    POPBasicAnimation *fadeInAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
     if (direction) {
-        if (self.window.coverView.coverImageView.layer.opacity == 0) {
-            fadeAnimation.fromValue = @(0);
-            fadeAnimation.toValue = @(1);
-            [self.window.coverView.coverImageView.layer addAnimation:fadeAnimation forKey:@"fade in"];
-            self.window.coverView.coverImageView.layer.opacity = 1.0;
-        }
+        fadeInAnimation.toValue = @(1);
+        [self.window.coverView.coverImageView.layer pop_addAnimation:fadeInAnimation forKey:@"coverImageView opacity"];
     } else {
-        if (self.window.coverView.coverImageView.layer.opacity == 1) {
-            CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-            fadeAnimation.fromValue = @(1);
-            fadeAnimation.toValue = @(0);
-            [self.window.coverView.coverImageView.layer addAnimation:fadeAnimation forKey:@"fade out"];
-            self.window.coverView.coverImageView.layer.opacity = 0;
-        }
+        fadeInAnimation.toValue = @(0);
+        [self.window.coverView.coverImageView.layer pop_addAnimation:fadeInAnimation forKey:@"coverImageView opacity"];
     }
-
 }
 
 -(void)trackInfoShouldBeRemoved
@@ -137,71 +124,59 @@
         return;
     }
     self.changeTrackAnimation = YES;
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:.45];
-    [NSAnimationContext currentContext].timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [[self.window.coverView.artistView animator] setFrame:self.window.coverView.frame];
-    [NSAnimationContext endGrouping];
-    
     CALayer *layer = self.window.coverView.titleLabel.layer;
     layer.opacity = 0;
-    
-    
-    self.artistLabel.stringValue = [NSString stringWithFormat:@"%@", track.artist];
-    self.trackLabel.stringValue = [NSString stringWithFormat:@"%@", track.trackName];
+
+    __weak typeof(self) weakSelf = self;
+    POPBasicAnimation *showFullInfoAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPViewFrame];
+    showFullInfoAnimation.toValue = [NSValue valueWithRect:self.window.coverView.frame];
+    showFullInfoAnimation.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf hideFullTrackInfo];
+        });
+    };
+    [self.window.coverView.artistView pop_addAnimation:showFullInfoAnimation forKey:@"frame"];
+    weakSelf.artistLabel.stringValue = [NSString stringWithFormat:@"%@", track.artist];
+    weakSelf.trackLabel.stringValue = [NSString stringWithFormat:@"%@", track.trackName];
     [self updateHeightForLabels];
     [self updateOriginsOfLabels];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CABasicAnimation *labelOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        labelOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        labelOpacity.duration = .45;
-        labelOpacity.fromValue = @(0);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        POPBasicAnimation *labelOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         labelOpacity.toValue = @(1);
-        self.artistLabel.layer.opacity = 1;
-        self.trackLabel.layer.opacity = 1;
-        [self.artistLabel.layer addAnimation:labelOpacity forKey:@"opacity"];
-        [self.trackLabel.layer addAnimation:labelOpacity forKey:@"opacity"];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-             [self hideFullTrackInfo];
-        });
+        [self.artistLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
+        [self.trackLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
     });
 }
 
 
 -(void)hideFullTrackInfo
 {
-    CABasicAnimation *labelOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    labelOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    labelOpacity.duration = .2;
-    labelOpacity.fromValue = @(1);
-    labelOpacity.toValue = @(0);
-    self.artistLabel.layer.opacity = 0;
-    self.trackLabel.layer.opacity = 0;
-    [self.artistLabel.layer addAnimation:labelOpacity forKey:@"opacity"];
-    [self.trackLabel.layer addAnimation:labelOpacity forKey:@"opacity"];
     CALayer *layer = self.window.coverView.titleLabel.layer;
-
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:.45];
-    [NSAnimationContext currentContext].timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [[self.window.coverView.artistView animator] setFrame:NSMakeRect(0, 0, 160, 26)];
-    [NSAnimationContext endGrouping];
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.55 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CABasicAnimation *originalTitleLabelOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        originalTitleLabelOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        originalTitleLabelOpacity.duration = .45;
-        originalTitleLabelOpacity.fromValue = @(0);
-        originalTitleLabelOpacity.toValue = @(1);
-        layer.opacity = 1;
-        [layer addAnimation:originalTitleLabelOpacity forKey:@"opacity"];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.45 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.changeTrackAnimation = NO;
-        });
+    __weak typeof(self) weakSelf = self;
+    POPSpringAnimation *labelOpacity = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    labelOpacity.toValue = @(0);
+    labelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+        POPSpringAnimation *hideFullInfoAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
+        hideFullInfoAnimation.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+         };
+        hideFullInfoAnimation.springBounciness = 14;
+        hideFullInfoAnimation.toValue = [NSValue valueWithRect:NSMakeRect(0, 0, 160, 26)];
+        [weakSelf.window.coverView.artistView pop_addAnimation:hideFullInfoAnimation forKey:@"frame"];
         
-    });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            POPSpringAnimation *titleLabelOpacity = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+            titleLabelOpacity.toValue = @(1);
+            titleLabelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+                weakSelf.changeTrackAnimation = NO;
+            };
+            [layer pop_addAnimation:titleLabelOpacity forKey:@"titlelabel opacity"];
+        });
+
+        
+    };
+    [self.artistLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
+    [self.trackLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
+    
 }
 
 -(CoverLabel *)artistLabel
@@ -254,7 +229,7 @@
 
 -(void)mouseEntered:(NSEvent *)event
 {
-    self.controlsTimer = [NSTimer scheduledTimerWithTimeInterval:.2f target:self selector:@selector(showControlsWithDelay:) userInfo:nil repeats:NO];
+    self.controlsTimer = [NSTimer scheduledTimerWithTimeInterval:.1f target:self selector:@selector(showControlsWithDelay:) userInfo:nil repeats:NO];
 }
 
 -(void)mouseExited:(NSEvent *)theEvent
@@ -270,13 +245,9 @@
 -(void)showControls
 {
     if (!self.popoverIsShown) {
-        CABasicAnimation *controlOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        controlOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        controlOpacity.duration = .35;
-        controlOpacity.fromValue = @(0);
+        POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(1);
-        self.window.controlView.layer.opacity = 1;
-        [self.window.controlView.layer addAnimation:controlOpacity forKey:@"opacity"];
+        [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
      }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
@@ -285,14 +256,10 @@
 -(void)hideControls
 {
     if (!self.popoverIsShown && !self.controlsTimer) {
-        CABasicAnimation *controlOpacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        controlOpacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        controlOpacity.duration = .35;
-        controlOpacity.fromValue = @(1);
+        POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(0);
-        self.window.controlView.layer.opacity = 0;
-        [self.window.controlView.layer addAnimation:controlOpacity forKey:@"opacity"];
-     }
+        [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
+    }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
 }

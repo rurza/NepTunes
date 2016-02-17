@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/shpakovski/MASShortcut.svg?branch=master)](https://travis-ci.org/shpakovski/MASShortcut)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 # Intro
 
@@ -6,7 +7,7 @@ Some time ago Cocoa developers used a brilliant framework [ShortcutRecorder](htt
 
 The MASShortcut project introduces a modern API and user interface for recording, storing and using system-wide keyboard shortcuts.
 
-![Screenshot of the demo project](/Demo/screenshot.png?raw=true "This is how the demo looks like")
+![Screenshot of the demo project](https://raw.githubusercontent.com/shpakovski/MASShortcut/master/Demo/screenshot.png "This is how the demo looks like")
 
 Features:
 
@@ -19,10 +20,10 @@ Features:
 * Works on OS X 10.6 and up
 * Hacking-friendly codebase covered with tests
 
-Important features currently missing:
+Partially done:
 
-* Localisation
-* Accessibility
+* Accessibility support. There’s some basic accessibility code, testers and feedback welcome.
+* Localisation. The English and Czech localization should be complete, there’s basic support for German, French, Spanish, Italian, and Japanese. If you’re a native speaker in one of the mentioned languages, please test the localization and report issues or add missing strings.
 
 Pull requests welcome :)
 
@@ -36,7 +37,7 @@ If you want to stick to the 1.x branch, you can use the version smart match oper
 
     pod 'MASShortcut', '~> 1'
 
-Or can use Git submodules and link against the MASShortcut framework.
+You can also install via [Carthage](https://github.com/Carthage/Carthage), or you can use Git submodules and link against the MASShortcut framework manually.
 
 # Usage
 

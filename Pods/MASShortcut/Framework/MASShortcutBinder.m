@@ -41,9 +41,15 @@
 
 - (void) bindShortcutWithDefaultsKey: (NSString*) defaultsKeyName toAction: (dispatch_block_t) action
 {
+    NSAssert([defaultsKeyName rangeOfString:@"."].location == NSNotFound,
+        @"Illegal character in binding name (“.”), please see http://git.io/x5YS.");
+    NSAssert([defaultsKeyName rangeOfString:@" "].location == NSNotFound,
+        @"Illegal character in binding name (“ ”), please see http://git.io/x5YS.");
     [_actions setObject:[action copy] forKey:defaultsKeyName];
-    [self bind:defaultsKeyName toObject:[NSUserDefaultsController sharedUserDefaultsController]
-        withKeyPath:[@"values." stringByAppendingString:defaultsKeyName] options:_bindingOptions];
+    [self bind:defaultsKeyName
+        toObject:[NSUserDefaultsController sharedUserDefaultsController]
+        withKeyPath:[@"values." stringByAppendingString:defaultsKeyName]
+        options:_bindingOptions];
 }
 
 - (void) breakBindingWithDefaultsKey: (NSString*) defaultsKeyName
@@ -103,6 +109,7 @@
 
     // Just deleting the old shortcut
     if (newShortcut == nil) {
+        [_shortcuts removeObjectForKey:key];
         return;
     }
 

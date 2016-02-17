@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '31652C93F880CECCEBD08CE3'
+               BlueprintIdentifier = 'CD54D23D31383E1B8C2EBD90'
                BlueprintName = 'LastFm'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libLastFm.a'>

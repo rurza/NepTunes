@@ -16,33 +16,42 @@
 #import "UserNotificationsController.h"
 #import "MusicController.h"
 #import "CoverWindowController.h"
+#import <POP.h>
+#import "CoverView.h"
+#import "GetCover.h"
+#import "CoverImageView.h"
+#import "CoverLabel.h"
 
 static NSString *const kAccountItemToolbarIdentifier = @"Account";
+static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 
-@interface PreferencesController () <NSTextFieldDelegate>
-@property (weak, nonatomic) IBOutlet NSTextField *loginField;
-@property (weak, nonatomic) IBOutlet NSSecureTextField *passwordField;
-@property (weak, nonatomic) IBOutlet NSButton *loginButton;
-@property (weak, nonatomic) IBOutlet NSButton *logoutButton;
+@interface PreferencesController () <NSTextFieldDelegate, CoverGetterDelegate>
+@property (nonatomic) IBOutlet NSTextField *loginField;
+@property (nonatomic) IBOutlet NSSecureTextField *passwordField;
+@property (nonatomic) IBOutlet NSButton *loginButton;
+@property (nonatomic) IBOutlet NSButton *logoutButton;
 
-@property (weak, nonatomic) IBOutlet NSView *accountView;
-@property (weak, nonatomic) IBOutlet NSView *loggedInUserView;
-@property (weak, nonatomic) IBOutlet NSView *hotkeyView;
-@property (weak, nonatomic) IBOutlet NSView *generalView;
-@property (weak, nonatomic) IBOutlet NSView *menuView;
+@property (nonatomic) IBOutlet NSView *accountView;
+@property (nonatomic) IBOutlet NSView *loggedInUserView;
+@property (nonatomic) IBOutlet NSView *hotkeyView;
+@property (nonatomic) IBOutlet NSView *generalView;
+@property (nonatomic) IBOutlet NSView *menuView;
+@property (nonatomic) IBOutlet NSView *albumCoverView;
 
-@property (weak, nonatomic) IBOutlet NSImageView *userAvatar;
 
-@property (weak, nonatomic) IBOutlet NSButton *createAccountButton;
-@property (weak, nonatomic) IBOutlet NSProgressIndicator *indicator;
-@property (weak, nonatomic) IBOutlet NSProgressIndicator *avatarIndicator;
+@property (nonatomic) IBOutlet NSImageView *userAvatar;
+
+@property (nonatomic) IBOutlet NSButton *createAccountButton;
+@property (nonatomic) IBOutlet NSProgressIndicator *indicator;
+@property (nonatomic) IBOutlet NSProgressIndicator *avatarIndicator;
 
 @property (nonatomic) int currentViewTag;
-@property (weak, nonatomic) IBOutlet NSToolbarItem *accountToolbarItem;
-@property (weak, nonatomic) IBOutlet NSToolbarItem *hotkeysToolbarItem;
-@property (weak, nonatomic) IBOutlet NSToolbarItem *generalToolbarItem;
-@property (weak, nonatomic) IBOutlet NSToolbarItem *menuToolbarItem;
+@property (nonatomic) IBOutlet NSToolbarItem *accountToolbarItem;
+@property (nonatomic) IBOutlet NSToolbarItem *hotkeysToolbarItem;
+@property (nonatomic) IBOutlet NSToolbarItem *generalToolbarItem;
+@property (nonatomic) IBOutlet NSToolbarItem *menuToolbarItem;
+@property (nonatomic) IBOutlet NSToolbarItem *albumCoverToolbarItem;
 
 
 //reachability
@@ -56,10 +65,24 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 //Music Controller
 @property (nonatomic) MusicController *musicController;
 
+@property (nonatomic) GetCover *getCover;
+
+@property (strong) IBOutlet NSButton *albumCoverCheckbox;
+@property (strong) IBOutlet NSPopUpButton *albumCoverPosition;
+@property (strong) IBOutlet NSButton *ignoreMissionControlCheckbox;
+@property (strong) IBOutlet CoverView *coverView;
+@property (nonatomic) BOOL changeTrackAnimation;
+@property (nonatomic) CoverLabel *artistLabel;
+@property (nonatomic) CoverLabel *trackLabel;
 
 - (IBAction)loginClicked:(id)sender;
 - (IBAction)logOut:(id)sender;
 - (IBAction)createNewLastFmAccountInWebBrowser:(id)sender;
+- (IBAction)ignoreMissionControl:(NSButton *)sender;
+- (IBAction)changeAlbumCoverPosition:(NSPopUpButton *)sender;
+- (IBAction)showAlbumCover:(id)sender;
+
+
 
 @end
 
@@ -85,13 +108,19 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 
 
-- (void)windowDidLoad {
+- (void)windowDidLoad
+{
     [super windowDidLoad];
     [self setupReachability];
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCover:) name:kTrackInfoUpdated object:nil];
+    [self updateCover:nil];
+    [self setupCoverView];
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-}
+ }
+
+
 
 -(void)setupReachability
 {
@@ -168,6 +197,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
              [weakSelf.musicScrobbler.scrobbler getInfoForUserOrNil:self.loginField.stringValue successHandler:^(NSDictionary *result) {
                  [weakSelf setAvatarForUserWithInfo:result];
              } failureHandler:nil];
+             [weakSelf setUserAvatarRoundedBorder];
              weakSelf.accountToolbarItem.tag = 0;
              [weakSelf switchView:weakSelf.accountToolbarItem];
              [weakSelf.menuController updateMenu];
@@ -200,11 +230,11 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                  NSAlert *alert = [[NSAlert alloc] init];
                  alert.alertStyle = NSCriticalAlertStyle;
                  if (error.code == kLastFmErrorCodeAuthenticationFailed) {
-                     alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"%@.\n%@", nil), [error localizedDescription], @"Check your username and password.", nil];
+                     alert.informativeText = @"It looks like you typed wrong username or/and password. 😤";
                  } else {
                      alert.informativeText = [error localizedDescription];
                  }
-                 alert.messageText = NSLocalizedString(@"Try again...", nil);
+                 alert.messageText = NSLocalizedString(@"Try again :)", nil);
                  [alert beginSheetModalForWindow:weakSelf.window completionHandler:^(NSModalResponse returnCode) {
                      [alert.window close];
                  }];
@@ -245,6 +275,211 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://secure.last.fm/join"]];
 }
 
+
+#pragma mark - Album Cover
+
+-(void)setupCoverView
+{
+//    self.coverView.layer.shadowOpacity = 1;
+//    self.coverView.layer.shadowColor = [NSColor blackColor].CGColor;
+//    self.coverView.layer.shadowOffset = CGSizeMake(-3, -3);
+//    [self.coverView.layer setNeedsLayout];
+
+//    self.coverView.shadow = [[NSShadow alloc] init];
+//    self.coverView.shadow.
+}
+
+-(void)updateCover:(NSNotification *)note
+{
+    [self updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:note.userInfo];
+}
+
+-(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo
+{
+    if (track) {
+        [self updateWithTrack:track];
+        if ([MusicController sharedController].isiTunesRunning) {
+            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+                [self displayFullInfoForTrack:track];
+            }
+            __weak typeof(self) weakSelf = self;
+            [self.getCover getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
+                [weakSelf updateWith:track andCover:cover];
+            }];
+        } else {
+//            [self animateWindowOpacity:0];
+        }
+    } else {
+//        [self animateWindowOpacity:0];
+    }
+}
+
+-(void)updateWith:(Track *)track andCover:(NSImage *)cover
+{
+    
+    self.coverView.coverImageView.image = cover;
+    [self updateWithTrack:track];
+}
+
+-(void)updateWithTrack:(Track *)track
+{
+    self.coverView.titleLabel.stringValue = [NSString stringWithFormat:@"%@",track.trackName];
+}
+
+
+-(void)fadeCover:(BOOL)direction
+{
+    POPBasicAnimation *fadeInAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    if (direction) {
+        fadeInAnimation.toValue = @(1);
+        [self.coverView.coverImageView.layer pop_addAnimation:fadeInAnimation forKey:@"coverImageView opacity"];
+    } else {
+        fadeInAnimation.toValue = @(0);
+        [self.coverView.coverImageView.layer pop_addAnimation:fadeInAnimation forKey:@"coverImageView opacity"];
+    }
+}
+
+-(void)trackInfoShouldBeRemoved
+{
+    [self fadeCover:NO];
+}
+
+-(void)trackInfoShouldBeDisplayed
+{
+    [self fadeCover:YES];
+}
+
+
+
+-(void)displayFullInfoForTrack:(Track *)track
+{
+    if (self.changeTrackAnimation) {
+        self.artistLabel.stringValue = [NSString stringWithFormat:@"%@", track.artist];
+        self.trackLabel.stringValue = [NSString stringWithFormat:@"%@", track.trackName];
+        [self updateHeightForLabels];
+        [self updateOriginsOfLabels];
+        return;
+    }
+    self.changeTrackAnimation = YES;
+    CALayer *layer = self.coverView.titleLabel.layer;
+    layer.opacity = 0;
+    
+    __weak typeof(self) weakSelf = self;
+    POPBasicAnimation *showFullInfoAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPViewFrame];
+    showFullInfoAnimation.toValue = [NSValue valueWithRect:self.coverView.bounds];
+    showFullInfoAnimation.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf hideFullTrackInfo];
+        });
+    };
+    [self.coverView.artistView pop_addAnimation:showFullInfoAnimation forKey:@"frame"];
+    weakSelf.artistLabel.stringValue = [NSString stringWithFormat:@"%@", track.artist];
+    weakSelf.trackLabel.stringValue = [NSString stringWithFormat:@"%@", track.trackName];
+    [self updateHeightForLabels];
+    [self updateOriginsOfLabels];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        POPBasicAnimation *labelOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+        labelOpacity.toValue = @(1);
+        [self.artistLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
+        [self.trackLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
+    });
+}
+
+
+-(void)hideFullTrackInfo
+{
+    CALayer *layer = self.coverView.titleLabel.layer;
+    __weak typeof(self) weakSelf = self;
+    POPSpringAnimation *labelOpacity = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    labelOpacity.toValue = @(0);
+    labelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+        POPSpringAnimation *hideFullInfoAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
+        hideFullInfoAnimation.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+        };
+        hideFullInfoAnimation.springBounciness = 14;
+        hideFullInfoAnimation.toValue = [NSValue valueWithRect:NSMakeRect(0, 0, 160, 26)];
+        [weakSelf.coverView.artistView pop_addAnimation:hideFullInfoAnimation forKey:@"frame"];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            POPSpringAnimation *titleLabelOpacity = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+            titleLabelOpacity.toValue = @(1);
+            titleLabelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+                weakSelf.changeTrackAnimation = NO;
+            };
+            [layer pop_addAnimation:titleLabelOpacity forKey:@"titlelabel opacity"];
+        });
+        
+        
+    };
+    [self.artistLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
+    [self.trackLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
+}
+
+-(void)updateHeightForLabels
+{
+    for (NSTextField *label in @[self.artistLabel, self.trackLabel]) {
+        NSRect r = NSMakeRect(0, 0, [label frame].size.width,
+                              MAXFLOAT);
+        NSSize s = [[label cell] cellSizeForBounds:r];
+        [label setFrameSize:s];
+    }
+}
+
+-(void)updateOriginsOfLabels
+{
+    NSUInteger labelsHeight = self.artistLabel.frame.size.height + self.trackLabel.frame.size.height;
+    if (labelsHeight >= 130) {
+        NSTextField *higherLabel = self.artistLabel;
+        for (NSTextField *label in @[self.artistLabel, self.trackLabel]) {
+            if (label.frame.size.height >= higherLabel.frame.size.height) {
+                higherLabel = label;
+            }
+        }
+        higherLabel.frame = NSMakeRect(0, 0, higherLabel.frame.size.width, higherLabel.frame.size.height - ((self.artistLabel.frame.size.height + self.trackLabel.frame.size.height) - 130));
+        labelsHeight = self.artistLabel.frame.size.height + self.trackLabel.frame.size.height;
+        
+    }
+    self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2-5, 140, self.trackLabel.frame.size.height);
+    self.artistLabel.frame = NSMakeRect(10, (160-labelsHeight)/2+5 + self.trackLabel.frame.size.height, 140, self.artistLabel.frame.size.height);
+}
+
+-(CoverLabel *)artistLabel
+{
+    if (!_artistLabel) {
+        _artistLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 80, 140, 60)];
+        _artistLabel.font = [NSFont systemFontOfSize:15];
+        [self.coverView.artistView addSubview:_artistLabel];
+    }
+    return _artistLabel;
+}
+
+-(CoverLabel *)trackLabel
+{
+    if (!_trackLabel) {
+        _trackLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 20, 140, 60)];
+        _trackLabel.font = [NSFont systemFontOfSize:13];
+        [self.coverView.artistView addSubview:_trackLabel];
+    }
+    return _trackLabel;
+}
+
+
+
+- (IBAction)ignoreMissionControl:(NSButton *)sender
+{
+    
+}
+
+- (IBAction)changeAlbumCoverPosition:(NSPopUpButton *)sender
+{
+    
+}
+
+- (IBAction)showAlbumCover:(id)sender
+{
+    
+}
+
 /*----------------------------------------------------------------------------------------------------------*/
 
 
@@ -279,6 +514,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             break;
         case 4:
             view = self.menuView;
+            break;
+        case 5:
+            view = self.albumCoverView;
             break;
         case 0:
             view = self.loggedInUserView;
@@ -316,6 +554,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     [[[[self window] contentView] animator] replaceSubview:previousView with:view];
     [NSAnimationContext endGrouping];
     [self.window recalculateKeyViewLoop];
+    [self.window invalidateShadow];
 }
 
 -(NSString *)lastChosenToolbarIdentifier
@@ -336,6 +575,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             break;
         case 4:
             identifier = @"Menu";
+            break;
+        case 5:
+            identifier = @"Album Cover";
             break;
         default:
             identifier = @"Account";
@@ -363,6 +605,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)setAvatarForUserWithInfo:(NSDictionary *)userInfo
 {
     [self.avatarIndicator startAnimation:nil];
+    [self setUserAvatarRoundedBorder];
+
     __block NSImage *image;
     __weak typeof(self) weakSelf = self;
     NSBlockOperation *getAvatarOperation;
@@ -372,9 +616,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             NSImage *avatar = [[NSImage alloc] initWithData:imageData];
             image = avatar;
             weakSelf.settingsController.userAvatar = avatar;
-            dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.userAvatar.image = avatar;
-            });
         }];
     }
     
@@ -395,41 +637,64 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                 dispatch_async(dispatch_get_main_queue(), ^{
                     weakSelf.userAvatar.image = image;
                     [weakSelf.avatarIndicator stopAnimation:nil];
-                    [self.userAvatar setWantsLayer: YES];
-                    self.userAvatar.layer.cornerRadius = 32.0f;
-                    self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
-                    self.userAvatar.layer.borderWidth = 2.0f;
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //default avatar
                     weakSelf.userAvatar.image = weakSelf.settingsController.userAvatar;
                     [weakSelf.avatarIndicator stopAnimation:nil];
+                    [weakSelf animateAvatar];
                 });
             }
         } failureHandler:^(NSError *error) {
             [weakSelf.avatarIndicator stopAnimation:weakSelf];
+            weakSelf.userAvatar.image = weakSelf.settingsController.userAvatar;
+            [weakSelf.avatarIndicator stopAnimation:nil];
+            [weakSelf animateAvatar];
         }];
     }
     NSOperationQueue *operationQueue = [NSOperationQueue new];
     NSBlockOperation *setBorderOperation = [NSBlockOperation blockOperationWithBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.userAvatar setWantsLayer: YES];
-            self.userAvatar.layer.cornerRadius = 32.0f;
-            self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
-            self.userAvatar.layer.borderWidth = 2.0f;
             [weakSelf.avatarIndicator stopAnimation:weakSelf];
-            
+            [weakSelf animateAvatar];
         });
     }];
     [setBorderOperation addDependency:getAvatarOperation];
     [operationQueue addOperation:getAvatarOperation];
     [operationQueue addOperation:setBorderOperation];
+}
+
+-(void)setUserAvatarRoundedBorder
+{
+    [self.userAvatar setWantsLayer: YES];
+    self.userAvatar.frame = NSMakeRect(self.userAvatar.frame.origin.x+32.0, self.userAvatar.frame.origin.y+32.0, 0, 0);
+    self.userAvatar.layer.cornerRadius = 0.0f;
+    self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
+    self.userAvatar.layer.borderWidth = 0.0f;
+}
+
+-(void)animateAvatar
+{
+    POPSpringAnimation *avatarSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
+    avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(94, 157, 64, 64)];
+    avatarSpringAnimation.springBounciness = 12;
     
+    POPSpringAnimation *avatarCornerRadiusSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerCornerRadius];
+    avatarCornerRadiusSpringAnimation.toValue = @(32);
+    avatarCornerRadiusSpringAnimation.springBounciness = 12;
+    
+    
+    POPSpringAnimation *avatarBorderSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerBorderWidth];
+    avatarBorderSpringAnimation.toValue = @(2);
+    avatarBorderSpringAnimation.springBounciness = 12;
+
+    [self.userAvatar pop_addAnimation:avatarSpringAnimation forKey:nil];
+    [self.userAvatar.layer pop_addAnimation:avatarCornerRadiusSpringAnimation forKey:nil];
+    [self.userAvatar.layer pop_addAnimation:avatarBorderSpringAnimation forKey:nil];
 }
 
 #pragma mark Reachability
-
 -(void)reachabilityDidChange:(NSNotification *)note
 {
     BOOL reachable = [FXReachability isReachable];
@@ -441,7 +706,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         self.reachability = YES;
     }
 }
-
 
 #pragma mark - Getters
 -(OfflineScrobbler *)offlineScrobbler
@@ -478,5 +742,13 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     return _musicController;
 }
 
+-(GetCover *)getCover
+{
+    if (!_getCover) {
+        _getCover = [[GetCover alloc] init];
+        _getCover.delegate = self;
+    }
+    return _getCover;
+}
 
 @end

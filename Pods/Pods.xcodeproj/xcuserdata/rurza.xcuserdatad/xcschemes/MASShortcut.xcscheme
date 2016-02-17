@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E075C5AB7523A6F4C27133E1'
+               BlueprintIdentifier = 'FC069320B57A54A60A1846D4'
                BlueprintName = 'MASShortcut'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libMASShortcut.a'>

@@ -64,16 +64,16 @@ static NSString *const kDebugMode = @"debugMode";
     static dispatch_once_t onlyOnce;
     dispatch_once(&onlyOnce, ^{
         _sharedInstance = [[self _alloc] _init];
-        
+        [_sharedInstance registerDefaultsSettings];
     });
     return _sharedInstance;
 }
 
 + (id) allocWithZone:(NSZone*)z { return [self sharedSettings];              }
 + (id) alloc                    { return [self sharedSettings];              }
-- (id) init                     { [self registerDefaultsSettings]; return self;}
+- (id) init                     {return self;}
 + (id)_alloc                    { return [super allocWithZone:NULL]; }
-- (id)_init                     { return [super init];               }
+- (id)_init                     {return [super init];}
 
 
 -(void)awakeFromNib

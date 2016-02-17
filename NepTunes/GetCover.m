@@ -17,8 +17,6 @@
 
 @interface GetCover () <NSURLSessionDelegate>
 @property (nonatomic) NSCache *cache;
-@property (nonatomic) NSString *lastFMCoverURL;
-@property (nonatomic) NSString *itunesCoverURL;
 
 @end
 
@@ -36,8 +34,6 @@
 
 -(void)getCoverWithTrack:(Track *)track withCompletionHandler:(void(^)(NSImage *cover))handler
 {
-    self.itunesCoverURL = nil;
-    self.lastFMCoverURL = nil;
     if ([[MusicController sharedController] currentTrackCover]) {
         handler([[MusicController sharedController] currentTrackCover]);
         if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
@@ -54,16 +50,19 @@
         if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
             [self.delegate trackInfoShouldBeRemoved];
         }
+        __weak typeof(self) weakSelf = self;
         if ([FXReachability sharedInstance].isReachable) {
             [self getCoverURLFromiTunesAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
                 handler(cover);
-            }];
-            [self getCoverURLFromLastFmAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
-                handler(cover);
+                NSLog(@"Zaktualizowałem okładkę i wysłałem do handlera");
+                if ([weakSelf.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
+                    [weakSelf.delegate trackInfoShouldBeDisplayed];
+                }
             }];
         }
         else {
-            handler([GetCover defaultCover]);
+            NSImage *defaultCover = [self defaultCover];
+            handler(defaultCover);
         }
     }
 }
@@ -73,12 +72,11 @@
     __weak typeof(self) weakSelf = self;
     [self getInfoWithLastFMForTrack:track withCompletionHandler:^(NSString *urlString) {
         if (urlString.length) {
-            weakSelf.lastFMCoverURL = urlString;
             [weakSelf getCoverForTrack:track fromString:urlString andCompletionHandler:^(NSImage *cover) {
                 handler(cover);
             }];
-        } else if (!weakSelf.itunesCoverURL) {
-            handler([GetCover defaultCover]);
+        } else {
+            handler([self defaultCover]);
         }
     }];
 }
@@ -96,36 +94,31 @@
         }
         if (coverURL) {
             coverURL = [coverURL stringByReplacingOccurrencesOfString:@"100x100" withString:@"225x225"];
-            if ([SettingsController sharedSettings].debugMode) {
-                NSLog(@"coverURL from iTunes %@", coverURL);
-            }
-            weakSelf.itunesCoverURL = coverURL;
             [weakSelf getCoverForTrack:track fromString:coverURL andCompletionHandler:^(NSImage *cover) {
                 handler(cover);
             }];
+        } else {
+            [weakSelf getCoverURLFromLastFmAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
+                handler(cover);
+            }];
         }
-
+        if ([SettingsController sharedSettings].debugMode) {
+            NSLog(@"coverURL from iTunes = %@", coverURL);
+        }
     } failureHandler:^(NSError *error) {
-        if (!weakSelf.lastFMCoverURL) {
-            handler([GetCover defaultCover]);
-        }
+        [weakSelf getCoverURLFromLastFmAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
+            handler(cover);
+        }];
     }];
 }
 
 
 -(void)getInfoWithLastFMForTrack:(Track *)track withCompletionHandler:(void(^)(NSString *urlString))handler
 {
-    __weak typeof(self) weakSelf = self;
     [[MusicScrobbler sharedScrobbler].scrobbler getInfoForTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
         NSString *artworkURLString = [(NSURL *)result[@"image"] absoluteString];
         if ([SettingsController sharedSettings].debugMode) {
             NSLog(@"artworkURLString from Last.fm = %@", artworkURLString);
-        }
-        if (weakSelf.itunesCoverURL) {
-            if ([SettingsController sharedSettings].debugMode) {
-                NSLog(@"I have high res iTunes cover; returning");
-            }
-            return;
         }
         if (artworkURLString) {
             handler(artworkURLString);
@@ -133,15 +126,8 @@
             handler(nil);
         }
     } failureHandler:^(NSError *error) {
-        if (weakSelf.itunesCoverURL) {
-            if ([SettingsController sharedSettings].debugMode) {
-                NSLog(@"I have high res iTunes cover; returning");
-            }
-            return;
-        } else {
-            if (handler) {
-                handler(nil);
-            }
+        if (handler) {
+            handler(nil);
         }
     }];
 }
@@ -156,9 +142,6 @@
         NSImage *artwork = [[NSImage alloc] initWithContentsOfURL:location];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf saveCoverImage:artwork forTrack:track];
-            if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
-                [self.delegate trackInfoShouldBeDisplayed];
-            }
             handler(artwork);
         });
     }];
@@ -166,9 +149,15 @@
     [session finishTasksAndInvalidate];
 }
 
-+(NSImage *)defaultCover
+-(NSImage *)defaultCover
 {
-    return [NSImage imageNamed:@""];
+    if ([SettingsController sharedSettings].debugMode) {
+        NSLog(@"Using default cover");
+    }
+    if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
+        [self.delegate trackInfoShouldBeDisplayed];
+    }
+    return [NSImage imageNamed:@"nocover"];
 }
 
 -(void)saveCoverImage:(NSImage *)image forTrack:(Track *)track
@@ -208,7 +197,7 @@
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(nullable NSError *)error
 {
     if (error && [SettingsController sharedSettings].debugMode) {
-        NSLog(@"%@", error.localizedDescription);
+        NSLog(@"Session invalid: %@", error.localizedDescription);
     }
     [session invalidateAndCancel];
     session = nil;

@@ -21,8 +21,6 @@
 @property (nonatomic, weak) IBOutlet NSButton *backwardButton;
 
 @property (nonatomic, weak) IBOutlet NSButton *volumeButton;
-//@property (nonatomic, weak) IBOutlet NSButton *shuffleButton;
-//@property (nonatomic, weak) IBOutlet NSButton *repeatButton;
 @property (nonatomic, weak) IBOutlet NSPopover *volumePopover;
 
 
@@ -34,7 +32,5 @@
 - (IBAction)nextTrack:(NSButton *)sender;
 - (IBAction)loveTrack:(NSButton *)sender;
 - (IBAction)changeVolume:(NSButton *)sender;
-//- (IBAction)shuffle:(NSButton *)sender;
-//- (IBAction)repeat:(NSButton *)sender;
 
 @end

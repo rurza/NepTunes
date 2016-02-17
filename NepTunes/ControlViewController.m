@@ -11,6 +11,7 @@
 #import "SettingsController.h"
 #import "MusicScrobbler.h"
 #import "Track.h"
+#import <POP.h>
 
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;
@@ -31,8 +32,6 @@ static NSUInteger const kNumberOfFrames = 10;
     self.forwardButton.image.template = YES;
     self.backwardButton.image.template = YES;
     self.volumeButton.image.template = YES;
-//    self.shuffleButton.image.template = YES;
-//    self.repeatButton.image.template = YES;
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                         selector:@selector(updateControlsState:)
                                                             name:@"com.apple.iTunes.playerInfo"
@@ -107,8 +106,17 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)loveTrack:(NSButton *)sender
 {
+//    __weak typeof(self) weakSelf = self;
     [[MusicController sharedController] loveTrackWithCompletionHandler:^{
         [self animationLoveButton];
+//        POPSpringAnimation *heartAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerBounds];
+//        heartAnimation.autoreverses = YES;
+//        heartAnimation.toValue = [NSValue valueWithRect:NSMakeRect(0, 0, 30, 30)];
+//        heartAnimation.completionBlock = ^(POPAnimation *animation, BOOL finished) {
+//            weakSelf.loveButton.image = [NSImage imageNamed:@"fullheart"];
+//            weakSelf.loveButton.image.template = YES;
+//        };
+//        [self.loveButton.layer pop_addAnimation:heartAnimation forKey:@"heart animation"];
     }];
 }
 
@@ -117,24 +125,6 @@ static NSUInteger const kNumberOfFrames = 10;
     [self.volumePopover showRelativeToRect:sender.bounds ofView:sender preferredEdge:NSMinYEdge];
 }
 
-//- (IBAction)shuffle:(NSButton *)sender
-//{
-//    iTunesPlaylist *currentPlaylist = [MusicController sharedController].iTunes.currentPlaylist;
-//    currentPlaylist.shuffle = !currentPlaylist.shuffle;
-//    if (!currentPlaylist.shuffle) {
-//        self.shuffleButton.image = [NSImage imageNamed:@"shuffle"];
-//    } else {
-//        self.shuffleButton.image = [NSImage imageNamed:@"shuffle outline"];
-//    }
-//    self.shuffleButton.image.template = YES;
-//}
-//
-//- (IBAction)repeat:(NSButton *)sender
-//{
-//    iTunesPlaylist *currentPlaylist = [MusicController sharedController].iTunes.currentPlaylist;
-//    NSLog(@"%u", currentPlaylist.songRepeat);
-//
-//}
 
 - (void)popoverWillShow:(NSNotification *)notification
 {

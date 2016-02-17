@@ -15,6 +15,7 @@
 #import "UserNotificationsController.h"
 
 #define FOUR_MINUTES 60 * 4
+static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @interface MusicController ()
 @property (nonatomic) MusicScrobbler *musicScrobbler;
@@ -65,7 +66,7 @@
 -(void)setupCover
 {
     self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
-    if (self.playerState == iTunesEPlSPlaying) {
+    if (self.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack) {
         [self.coverWindowController showWindow:self];
         [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
     }
@@ -82,6 +83,7 @@
     [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
     [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:note.userInfo];
     [self updateMenu];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:nil userInfo:note.userInfo];
 }
 
 -(void)prepareTrack:(NSTimer *)timer
