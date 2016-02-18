@@ -8,27 +8,24 @@
             <connections>
                 <outlet property="accountToolbarItem" destination="Cx9-Pj-89g" id="UaA-dW-IyZ"/>
                 <outlet property="accountView" destination="skh-Ke-u6J" id="dFC-uw-PNl"/>
-                <outlet property="albumCoverCheckbox" destination="FC7-Gj-ts8" id="EGA-rr-Cs7"/>
-                <outlet property="albumCoverPosition" destination="sSl-AB-SzG" id="qEa-fT-sY0"/>
                 <outlet property="albumCoverToolbarItem" destination="jrg-GE-RR3" id="tSN-MO-5bk"/>
                 <outlet property="albumCoverView" destination="TyO-c4-qci" id="6gF-ID-6Ke"/>
                 <outlet property="avatarIndicator" destination="i5g-xn-58g" id="MC8-bM-XLb"/>
-                <outlet property="coverView" destination="8Ob-th-RMz" id="K3f-vw-h62"/>
                 <outlet property="createAccountButton" destination="1t9-ot-edy" id="9JL-1L-fjB"/>
                 <outlet property="generalToolbarItem" destination="54o-Fj-vN1" id="PCf-FH-puH"/>
                 <outlet property="generalView" destination="80n-oM-tZ8" id="zxA-Yi-UqK"/>
+                <outlet property="hotkeyController" destination="48D-K4-yYd" id="dvM-dJ-DZc"/>
                 <outlet property="hotkeyView" destination="KNq-rN-Gzg" id="Ped-54-p5E"/>
                 <outlet property="hotkeysToolbarItem" destination="tdm-m5-M5x" id="lCs-Vh-q9K"/>
-                <outlet property="ignoreMissionControlCheckbox" destination="zm6-1c-ADT" id="J4o-Lb-Isf"/>
                 <outlet property="indicator" destination="Qoi-Wj-O8v" id="p10-gB-I2a"/>
                 <outlet property="loggedInUserView" destination="FtI-IT-OHd" id="t42-oS-J43"/>
                 <outlet property="loginButton" destination="fls-93-1YP" id="8LR-JU-UbF"/>
                 <outlet property="loginField" destination="6Kg-jb-IJn" id="zZU-w1-5UX"/>
                 <outlet property="logoutButton" destination="FVe-0m-KWf" id="ogw-hR-Rx2"/>
-                <outlet property="menuController" destination="vaR-DS-2Ew" id="ZEi-Lg-ucy"/>
                 <outlet property="menuToolbarItem" destination="RVX-0L-P1M" id="mLZ-Yf-liP"/>
                 <outlet property="menuView" destination="5tq-gv-q9a" id="32e-fk-0cK"/>
                 <outlet property="passwordField" destination="gzR-PE-rsD" id="TpV-qR-mOm"/>
+                <outlet property="preferencesCoverController" destination="Y3U-Am-JUO" id="XXz-Jv-vku"/>
                 <outlet property="settingsToolbar" destination="L8W-3N-nM6" id="PP4-h5-4VN"/>
                 <outlet property="userAvatar" destination="ohM-zy-ZuK" id="5M5-Qq-oeb"/>
                 <outlet property="window" destination="GMI-IS-lMx" id="O3A-Ye-EZz"/>
@@ -256,8 +253,37 @@
             <rect key="frame" x="0.0" y="0.0" width="507" height="258"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1t9-ot-edy">
+                    <rect key="frame" x="20" y="20" width="213" height="19"/>
+                    <buttonCell key="cell" type="roundRect" title="Don't have an account? Join!" bezelStyle="roundedRect" alignment="left" imageScaling="proportionallyDown" inset="2" id="0zt-Wg-wS4">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="cellTitle"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="createNewLastFmAccountInWebBrowser:" target="-2" id="Q88-xh-0cx"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="137" translatesAutoresizingMaskIntoConstraints="NO" id="t54-jx-P7b">
+                    <rect key="frame" x="18" y="53" width="238" height="153"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="4mQ-kP-UNJ">
+                        <font key="font" metaFont="system"/>
+                        <string key="title">Being a part of Last.fm allows you to track your listening history.
+This means they can provide you with personalised music recommendations based on the music you play.
+You’ll also get personal top charts, suggested events and be connected to like-minded listeners (your musical neighbours).</string>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Trv-It-75i">
+                    <rect key="frame" x="18" y="221" width="238" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="What is Last.fm?" id="I0y-Xz-Wud">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Kg-jb-IJn">
-                    <rect key="frame" x="20" y="216" width="213" height="22"/>
+                    <rect key="frame" x="274" y="184" width="213" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Last.fm username" bezelStyle="round" id="jQA-1b-RbM">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -265,8 +291,8 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fls-93-1YP">
-                    <rect key="frame" x="14" y="136" width="225" height="32"/>
-                    <buttonCell key="cell" type="push" title="Log in" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="npJ-gK-iMn">
+                    <rect key="frame" x="268" y="104" width="225" height="32"/>
+                    <buttonCell key="cell" type="push" title="Sign In" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="npJ-gK-iMn">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                         <string key="keyEquivalent" base64-UTF8="YES">
@@ -278,7 +304,7 @@ DQ
                     </connections>
                 </button>
                 <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gzR-PE-rsD">
-                    <rect key="frame" x="20" y="184" width="213" height="22"/>
+                    <rect key="frame" x="274" y="152" width="213" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Last.fm password" usesSingleLineMode="YES" bezelStyle="round" id="CBB-i1-v7i">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -288,38 +314,17 @@ DQ
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
                 </secureTextField>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1t9-ot-edy">
-                    <rect key="frame" x="253" y="20" width="213" height="18"/>
-                    <buttonCell key="cell" type="roundRect" title="Don't have an account? Join!" bezelStyle="roundedRect" alignment="left" imageScaling="proportionallyDown" inset="2" id="0zt-Wg-wS4">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="cellTitle"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="createNewLastFmAccountInWebBrowser:" target="-2" id="Q88-xh-0cx"/>
-                    </connections>
-                </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="137" translatesAutoresizingMaskIntoConstraints="NO" id="t54-jx-P7b">
-                    <rect key="frame" x="251" y="53" width="238" height="153"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="4mQ-kP-UNJ">
-                        <font key="font" metaFont="system"/>
-                        <string key="title">Being a part of Last.fm allows you to track your listening history.
-This means they can provide you with personalised music recommendations based on the music you play.
-You’ll also get personal top charts, suggested events and be connected to like-minded listeners (your musical neighbours).</string>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Trv-It-75i">
-                    <rect key="frame" x="251" y="219" width="238" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="What is Last.fm?" id="I0y-Xz-Wud">
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Qoi-Wj-O8v">
+                    <rect key="frame" x="372" y="171" width="16" height="16"/>
+                </progressIndicator>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g3N-hu-6nG">
+                    <rect key="frame" x="272" y="221" width="217" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sign In" id="tWc-vL-JLi">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Qoi-Wj-O8v">
-                    <rect key="frame" x="118" y="203" width="16" height="16"/>
-                </progressIndicator>
             </subviews>
             <point key="canvasLocation" x="571.5" y="-207"/>
         </customView>
@@ -327,16 +332,16 @@ You’ll also get personal top charts, suggested events and be connected to like
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <rect key="contentRect" x="335" y="390" width="285" height="215"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
                 <rect key="frame" x="0.0" y="0.0" width="285" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="L8W-3N-nM6">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" explicitItemIdentifier="Account" label="Scrobbler" paletteLabel="Scrobbler" tag="1" image="lastfm" autovalidates="NO" selectable="YES" id="Cx9-Pj-89g">
+                    <toolbarItem implicitItemIdentifier="4ECF03AA-0281-46E6-95D8-56D77F6175E3" explicitItemIdentifier="Account" label="Last.fm" paletteLabel="Last.fm" tag="1" image="lastfm" autovalidates="NO" selectable="YES" id="Cx9-Pj-89g">
                         <connections>
-                            <action selector="switchView:" target="-2" id="6uk-nz-PJb"/>
+                            <action selector="switchView:" target="-2" id="ki2-OT-oHM"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="A2D88D57-9BE8-485F-892C-38C5437A2C51" explicitItemIdentifier="General" label="General" paletteLabel="General" tag="2" image="general" autovalidates="NO" selectable="YES" id="54o-Fj-vN1">
@@ -361,8 +366,8 @@ You’ll also get personal top charts, suggested events and be connected to like
                     </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
-                    <toolbarItem reference="Cx9-Pj-89g"/>
                     <toolbarItem reference="54o-Fj-vN1"/>
+                    <toolbarItem reference="Cx9-Pj-89g"/>
                     <toolbarItem reference="RVX-0L-P1M"/>
                     <toolbarItem reference="jrg-GE-RR3"/>
                     <toolbarItem reference="tdm-m5-M5x"/>
@@ -371,11 +376,11 @@ You’ll also get personal top charts, suggested events and be connected to like
             <point key="canvasLocation" x="-13.5" y="110.5"/>
         </window>
         <customView identifier="AccountLogged" id="FtI-IT-OHd">
-            <rect key="frame" x="0.0" y="0.0" width="379" height="241"/>
+            <rect key="frame" x="0.0" y="0.0" width="284" height="241"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="FVe-0m-KWf">
-                    <rect key="frame" x="14" y="109" width="225" height="32"/>
+                    <rect key="frame" x="30" y="109" width="225" height="32"/>
                     <buttonCell key="cell" type="push" title="Log out :(" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d5V-8o-JAG">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -388,10 +393,10 @@ DQ
                     </connections>
                 </button>
                 <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="i5g-xn-58g">
-                    <rect key="frame" x="118" y="181" width="16" height="16"/>
+                    <rect key="frame" x="134" y="181" width="16" height="16"/>
                 </progressIndicator>
                 <textField toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x4L-IT-Z51">
-                    <rect key="frame" x="18" y="57" width="217" height="17"/>
+                    <rect key="frame" x="34" y="57" width="217" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="When to scrobble?" id="lES-J9-ixW">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -399,28 +404,24 @@ DQ
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xAp-YS-eoM">
-                    <rect key="frame" x="20" y="93" width="213" height="5"/>
+                    <rect key="frame" x="36" y="93" width="213" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
                 <slider toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="smd-WT-3o0">
-                    <rect key="frame" x="18" y="18" width="217" height="25"/>
+                    <rect key="frame" x="34" y="18" width="217" height="25"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="50" maxValue="100" doubleValue="50" tickMarkPosition="above" numberOfTickMarks="6" allowsTickMarkValuesOnly="YES" sliderType="linear" id="psK-Sb-1hv"/>
                     <connections>
                         <binding destination="RtU-Wd-pY6" name="value" keyPath="self.percentForScrobbleTime" id="SaE-Dx-yyf"/>
                     </connections>
                 </slider>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="924-tl-lb3">
-                    <rect key="frame" x="253" y="20" width="106" height="201"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="lastfmbackground" id="XiI-sY-5uA"/>
-                </imageView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ohM-zy-ZuK">
-                    <rect key="frame" x="94" y="157" width="64" height="64"/>
+                    <rect key="frame" x="110" y="157" width="64" height="64"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="y1V-2b-6IK"/>
                 </imageView>
             </subviews>
-            <point key="canvasLocation" x="417.5" y="65.5"/>
+            <point key="canvasLocation" x="281" y="76.5"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
             <rect key="frame" x="0.0" y="0.0" width="379" height="131"/>
@@ -462,6 +463,13 @@ DQ
             </subviews>
             <point key="canvasLocation" x="848.5" y="28.5"/>
         </customView>
+        <customObject id="meH-td-39k" customClass="CoverSettingsController">
+            <connections>
+                <outlet property="albumCoverCheckbox" destination="FC7-Gj-ts8" id="dmU-Na-3Un"/>
+                <outlet property="albumCoverPosition" destination="sSl-AB-SzG" id="kYR-dA-n0u"/>
+                <outlet property="ignoreMissionControlCheckbox" destination="zm6-1c-ADT" id="MS4-Xt-sYf"/>
+            </connections>
+        </customObject>
         <customObject id="RtU-Wd-pY6" customClass="SettingsController">
             <connections>
                 <outlet property="hideNotificationsCheckbox" destination="pRt-Oe-auy" id="Vx2-Kg-rt4"/>
@@ -469,16 +477,15 @@ DQ
                 <outlet property="integrationWithiTunesCheckbox" destination="8JU-zN-Ysh" id="JT1-Pk-8kf"/>
                 <outlet property="launchAtLoginCheckbox" destination="4aF-Vt-GhG" id="unE-vS-njE"/>
                 <outlet property="loveTrackOniTunesCheckbox" destination="1KD-x4-UIA" id="cPs-FV-OLC"/>
-                <outlet property="menuController" destination="vaR-DS-2Ew" id="Fdi-G6-gb1"/>
                 <outlet property="numberOfRecentItems" destination="RV4-a2-oHw" id="cqg-Qe-fXD"/>
                 <outlet property="openPreferencesWhenThereIsNoUserCheckbox" destination="BUV-yB-Cr1" id="7xP-WL-6b3"/>
                 <outlet property="percentForScrobbleTimeLabel" destination="x4L-IT-Z51" id="Eor-HL-pGP"/>
                 <outlet property="percentForScrobbleTimeSlider" destination="smd-WT-3o0" id="uTd-ia-of2"/>
+                <outlet property="preferencesController" destination="-2" id="o5W-0y-IA2"/>
                 <outlet property="showRecentTrackIniTunesCheckbox" destination="x4Z-Rv-GHo" id="nwh-hz-3zZ"/>
                 <outlet property="showSimilarArtistsOnAppleMusicCheckbox" destination="wNV-gc-P02" id="0Qz-jz-snf"/>
             </connections>
         </customObject>
-        <customObject id="vaR-DS-2Ew" customClass="MenuController"/>
         <customObject id="48D-K4-yYd" customClass="HotkeyController">
             <connections>
                 <outlet property="loveSongView" destination="wMx-L5-uoG" id="b9N-O2-rmz"/>
@@ -490,6 +497,13 @@ DQ
             <rect key="frame" x="0.0" y="0.0" width="512" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8JA-zT-DPW">
+                    <rect key="frame" x="381" y="30" width="140" height="140"/>
+                    <shadow key="shadow" blurRadius="15">
+                        <size key="offset" width="-9" height="-9"/>
+                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </shadow>
+                </customView>
                 <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Ob-th-RMz" customClass="CoverView">
                     <rect key="frame" x="371" y="20" width="160" height="160"/>
                     <subviews>
@@ -524,24 +538,24 @@ DQ
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="showAlbumCover:" target="-2" id="8QN-bu-ZRO"/>
+                        <action selector="showAlbumCover:" target="meH-td-39k" id="oQk-Z9-Pjg"/>
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSl-AB-SzG">
-                    <rect key="frame" x="38" y="76" width="198" height="26"/>
-                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="saW-BB-FIA" id="7MB-rq-jRw">
+                    <rect key="frame" x="38" y="76" width="288" height="26"/>
+                    <popUpButtonCell key="cell" type="push" title="Mixed in with other windows" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="3" imageScaling="proportionallyDown" inset="2" selectedItem="1pB-jf-hx5" id="7MB-rq-jRw">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" id="awj-AY-Hqa">
                             <items>
-                                <menuItem title="Item 1" state="on" id="saW-BB-FIA"/>
-                                <menuItem title="Item 2" id="4jg-61-qpN"/>
-                                <menuItem title="Item 3" id="1pB-jf-hx5"/>
+                                <menuItem title="Stuck to the Desktop" state="on" tag="1" id="saW-BB-FIA"/>
+                                <menuItem title="Above all other windows" tag="2" id="4jg-61-qpN"/>
+                                <menuItem title="Mixed in with other windows" state="on" tag="3" id="1pB-jf-hx5"/>
                             </items>
                         </menu>
                     </popUpButtonCell>
                     <connections>
-                        <action selector="changeAlbumCoverPosition:" target="-2" id="mXC-BN-ddD"/>
+                        <action selector="changeAlbumCoverPosition:" target="meH-td-39k" id="TuG-JO-FZN"/>
                     </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S40-9x-jaE">
@@ -559,19 +573,24 @@ DQ
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="ignoreMissionControl:" target="-2" id="JSc-nM-xdL"/>
+                        <action selector="ignoreMissionControl:" target="meH-td-39k" id="om8-Ig-myL"/>
                     </connections>
                 </button>
             </subviews>
             <point key="canvasLocation" x="299" y="546"/>
         </customView>
+        <customObject id="Y3U-Am-JUO" customClass="PreferencesCoverController">
+            <connections>
+                <outlet property="coverView" destination="8Ob-th-RMz" id="DPC-rS-dtk"/>
+                <outlet property="shadowView" destination="8JA-zT-DPW" id="Gmv-FO-0so"/>
+            </connections>
+        </customObject>
     </objects>
     <resources>
         <image name="album cover" width="28" height="28"/>
         <image name="general" width="28" height="28"/>
         <image name="hotkey" width="28" height="28"/>
         <image name="lastfm" width="28" height="28"/>
-        <image name="lastfmbackground" width="106" height="201"/>
         <image name="menu" width="28" height="28"/>
     </resources>
 </document>

@@ -22,4 +22,5 @@
 -(void)invalidateTimers;
 -(void)updateTrackInfo:(NSNotification *)note;
 -(NSImage *)currentTrackCover;
+-(void)setupCover;
 @end

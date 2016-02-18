@@ -26,6 +26,7 @@
 		5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */; };
 		5BAE71031C50199700779081 /* SavedTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71021C50199700779081 /* SavedTrack.m */; };
 		5BAE71081C528D1000779081 /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71071C528D1000779081 /* SettingsController.m */; };
+		5BB9965F1C7621CF0088B46B /* PreferencesCoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */; };
 		5BBD4C501C34562000AFA182 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Track.m */; };
 		5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A8E01C610C83009C3E9F /* MusicController.m */; };
 		5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6E5D41B6BF87300631537 /* HotkeyController.m */; };
@@ -35,6 +36,7 @@
 		5BDD6B1B1A1D0C95001D87D6 /* Interface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B191A1D0C95001D87D6 /* Interface.xib */; };
 		5BDD6B271A1D0C95001D87D6 /* NepTunesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */; };
 		5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B301A1D0CA2001D87D6 /* Podfile */; };
+		5BE3FBCE1C7646F900F95E9A /* CoverSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE3FBCD1C7646F900F95E9A /* CoverSettingsController.m */; };
 		5BF402E71C73A156004FD0FA /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF402E51C73A156004FD0FA /* PreferencesController.m */; };
 		5BF402E81C73A156004FD0FA /* PreferencesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BF402E61C73A156004FD0FA /* PreferencesController.xib */; };
 		5BF5AA0E1C4EB02B00C4FBA3 /* NepTunesHelperApp.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5BF5AA0C1C4EAFC500C4FBA3 /* NepTunesHelperApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -125,6 +127,8 @@
 		5BAE71021C50199700779081 /* SavedTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedTrack.m; sourceTree = "<group>"; };
 		5BAE71061C528D1000779081 /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
 		5BAE71071C528D1000779081 /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
+		5BB9965D1C7621CF0088B46B /* PreferencesCoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesCoverController.h; sourceTree = "<group>"; };
+		5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesCoverController.m; sourceTree = "<group>"; };
 		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		5BBD4C4F1C34562000AFA182 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		5BC6A8DF1C610C83009C3E9F /* MusicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicController.h; sourceTree = "<group>"; };
@@ -142,6 +146,8 @@
 		5BDD6B251A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BDD6B261A1D0C95001D87D6 /* NepTunesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NepTunesTests.m; sourceTree = "<group>"; };
 		5BDD6B301A1D0CA2001D87D6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5BE3FBCC1C7646F900F95E9A /* CoverSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverSettingsController.h; sourceTree = "<group>"; };
+		5BE3FBCD1C7646F900F95E9A /* CoverSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverSettingsController.m; sourceTree = "<group>"; };
 		5BF402E41C73A156004FD0FA /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		5BF402E51C73A156004FD0FA /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		5BF402E61C73A156004FD0FA /* PreferencesController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesController.xib; sourceTree = "<group>"; };
@@ -239,9 +245,13 @@
 			children = (
 				5BAE71061C528D1000779081 /* SettingsController.h */,
 				5BAE71071C528D1000779081 /* SettingsController.m */,
+				5BE3FBCC1C7646F900F95E9A /* CoverSettingsController.h */,
+				5BE3FBCD1C7646F900F95E9A /* CoverSettingsController.m */,
 				5BF402E41C73A156004FD0FA /* PreferencesController.h */,
 				5BF402E51C73A156004FD0FA /* PreferencesController.m */,
 				5BF402E61C73A156004FD0FA /* PreferencesController.xib */,
+				5BB9965D1C7621CF0088B46B /* PreferencesCoverController.h */,
+				5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */,
 			);
 			name = "Settings and preferences";
 			sourceTree = "<group>";
@@ -567,6 +577,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */,
+				5BE3FBCE1C7646F900F95E9A /* CoverSettingsController.m in Sources */,
 				5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */,
 				5BBD4C501C34562000AFA182 /* Track.m in Sources */,
 				5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */,
@@ -586,6 +597,7 @@
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
 				5BAE71031C50199700779081 /* SavedTrack.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
+				5BB9965F1C7621CF0088B46B /* PreferencesCoverController.m in Sources */,
 				5B0734221C6E382D00167934 /* CoverView.m in Sources */,
 				5B9F07401C72300200F73566 /* CoverLabel.m in Sources */,
 				5BAE71081C528D1000779081 /* SettingsController.m in Sources */,

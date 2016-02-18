@@ -11,12 +11,9 @@
 
 @interface PreferencesController : NSWindowController
 
-@property (weak, nonatomic) IBOutlet MenuController *menuController;
 @property (weak, nonatomic) IBOutlet NSToolbar *settingsToolbar;
 @property (nonatomic) NSString *lastChosenToolbarIdentifier;
 
-+ (instancetype)sharedPreferences;
-- (IBAction)logOut:(id)sender;
-- (void)forceLogOut;
+//+ (instancetype)sharedPreferences;
 
 @end

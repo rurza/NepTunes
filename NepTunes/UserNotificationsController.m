@@ -139,12 +139,12 @@
 
 -(void)forceLogOutUser
 {
-    [[PreferencesController sharedPreferences] forceLogOut];
+    [[MenuController sharedController] forceLogOut];
     [OfflineScrobbler sharedInstance].userWasLoggedOut = YES;
     [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser = YES;
-#if DEBUG
-    NSLog(@"User %@ was logged out", [SettingsController sharedSettings].username);
-#endif
+    if ([SettingsController sharedSettings].debugMode) {
+        NSLog(@"User %@ was logged out", [SettingsController sharedSettings].username);
+    }
 
 }
 
@@ -163,7 +163,7 @@
 -(void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification
 {
     if ([[notification.userInfo objectForKey:@"logout"] boolValue]) {
-        [[PreferencesController sharedPreferences].menuController openPreferences:nil];
+        [[MenuController sharedController] openPreferences:nil];
     }
 }
 

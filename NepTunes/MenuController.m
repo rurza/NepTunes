@@ -24,7 +24,7 @@
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;
 
-@interface MenuController () <ItunesSearchCache>
+@interface MenuController () <ItunesSearchCache, NSWindowDelegate>
 
 @property (nonatomic) NSStatusItem *statusItem;
 @property (nonatomic) IBOutlet NSMenu *statusMenu;
@@ -180,11 +180,20 @@ static NSUInteger const kNumberOfFrames = 10;
     self.statusItem.image = icon;
 }
 
+
 #pragma mark - Last.fm related
 -(IBAction)loveSong:(id)sender {
     [self.musicController loveTrackWithCompletionHandler:nil];
 }
 
+- (void)forceLogOut
+{
+    [self.musicScrobbler logOut];
+    self.settings.session = nil;
+    self.settings.userAvatar = nil;
+
+    [self updateMenu];
+}
 
 #pragma mark - Menu Bar Items
 - (IBAction)showUserProfile:(id)sender {
@@ -210,14 +219,23 @@ static NSUInteger const kNumberOfFrames = 10;
     [[NSApplication sharedApplication] terminate:self];
 }
 
+#pragma mark - Preferences
 
 -(IBAction)openPreferences:(id)sender
 {
     [NSApp activateIgnoringOtherApps:YES];
-    self.preferencesController = nil;
-//    [self.appDelegate.window makeKeyAndOrderFront:nil];
-    self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"PreferencesController"];
+    if (!self.preferencesController) {
+        self.preferencesController = nil;
+        self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"PreferencesController"];
+        self.preferencesController.window.delegate = self;
+    }
     [self.preferencesController showWindow:self];
+    [self.preferencesController.window makeKeyAndOrderFront:nil];
+}
+
+-(BOOL)windowShouldClose:(id)sender
+{
+    return YES;
 }
 
 

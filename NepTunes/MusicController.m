@@ -13,6 +13,7 @@
 #import "Track.h"
 #import "CoverWindowController.h"
 #import "UserNotificationsController.h"
+#import "CoverSettingsController.h"
 
 #define FOUR_MINUTES 60 * 4
 static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
@@ -65,10 +66,14 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)setupCover
 {
-    self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
-    if (self.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack) {
-        [self.coverWindowController showWindow:self];
-        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
+    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
+    if (coverSettingsController.showCover) {
+        self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
+        if (self.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack) {
+            [self.coverWindowController showWindow:self];
+            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
+            [self.coverWindowController.window makeKeyAndOrderFront:nil];
+        }
     }
 }
 

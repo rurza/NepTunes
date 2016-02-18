@@ -38,23 +38,22 @@ static void *MASObservingContext = &MASObservingContext;
 
 -(void)bindShortcutsToAction
 {
-    PreferencesController *prefController = [PreferencesController sharedPreferences];
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
-        [prefController.menuController loveSong:nil];
+        [[MenuController sharedController] loveSong:nil];
      }];
     
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kshowYourProfileShortcut
      toAction:^{
-         [prefController.menuController showUserProfile:nil];
+         [[MenuController sharedController] showUserProfile:nil];
      }];
     
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kshowSimilarArtistsShortcut
      toAction:^{
-         [prefController.menuController showSimilarArtists:nil];
+         [[MenuController sharedController] showSimilarArtists:nil];
      }];
 }
 
@@ -86,35 +85,34 @@ static void *MASObservingContext = &MASObservingContext;
         return;
     }
     else {
-        PreferencesController *prefController = [PreferencesController sharedPreferences];
 
         if ([keyPath isEqualToString:kloveSongShortcut]) {
             if (self.loveSongView.shortcutValue.modifierFlags) {
-                prefController.menuController.loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];
-                prefController.menuController.loveSongMenuTitle.keyEquivalentModifierMask = self.loveSongView.shortcutValue.modifierFlags;
+                [MenuController sharedController].loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];
+                [MenuController sharedController].loveSongMenuTitle.keyEquivalentModifierMask = self.loveSongView.shortcutValue.modifierFlags;
             }
             else {
-                prefController.menuController.loveSongMenuTitle.keyEquivalent = @"";
+                [MenuController sharedController].loveSongMenuTitle.keyEquivalent = @"";
             }
         }
         
         else if ([keyPath isEqualToString:kshowSimilarArtistsShortcut]) {
             if (self.showSimilarArtistsView.shortcutValue.modifierFlags) {
-                prefController.menuController.similarArtistMenuTtitle.keyEquivalent = [self.showSimilarArtistsView.shortcutValue.keyCodeString lowercaseString];
-                prefController.menuController.similarArtistMenuTtitle.keyEquivalentModifierMask = self.showSimilarArtistsView.shortcutValue.modifierFlags;
+                [MenuController sharedController].similarArtistMenuTtitle.keyEquivalent = [self.showSimilarArtistsView.shortcutValue.keyCodeString lowercaseString];
+                [MenuController sharedController].similarArtistMenuTtitle.keyEquivalentModifierMask = self.showSimilarArtistsView.shortcutValue.modifierFlags;
             }
             else {
-                prefController.menuController.similarArtistMenuTtitle.keyEquivalent = @"";
+                [MenuController sharedController].similarArtistMenuTtitle.keyEquivalent = @"";
             }
         }
         
         else if ([keyPath isEqualToString:kshowYourProfileShortcut]) {
             if (self.showYourProfileView.shortcutValue.modifierFlags) {
-                prefController.menuController.profileMenuTitle.keyEquivalent = [self.showYourProfileView.shortcutValue.keyCodeString lowercaseString];
-                prefController.menuController.profileMenuTitle.keyEquivalentModifierMask = self.showYourProfileView.shortcutValue.modifierFlags;
+                [MenuController sharedController].profileMenuTitle.keyEquivalent = [self.showYourProfileView.shortcutValue.keyCodeString lowercaseString];
+                [MenuController sharedController].profileMenuTitle.keyEquivalentModifierMask = self.showYourProfileView.shortcutValue.modifierFlags;
             }
             else {
-                prefController.menuController.profileMenuTitle.keyEquivalent = @"";
+                [MenuController sharedController].profileMenuTitle.keyEquivalent = @"";
             }
         }
     }

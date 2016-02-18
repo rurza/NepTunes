@@ -9,10 +9,12 @@
 #import "AppDelegate.h"
 #import "SettingsController.h"
 #import "PreferencesController.h"
+#import "MenuController.h"
 
 
 @interface AppDelegate ()
 @property (nonatomic) SettingsController *settingsController;
+@property (nonatomic) IBOutlet MenuController *menuController;
 @end
 
 
@@ -27,7 +29,7 @@
 -(void)applicationDidBecomeActive:(NSNotification *)notification
 {
     if (self.settingsController.hideStatusBarIcon) {
-        [[PreferencesController sharedPreferences].menuController openPreferences:nil];
+        [self.menuController openPreferences:nil];
     }
 }
 

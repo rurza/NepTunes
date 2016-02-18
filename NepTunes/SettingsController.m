@@ -9,7 +9,6 @@
 #import "SettingsController.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "MenuController.h"
-//#import "AppDelegate.h"
 #import "PreferencesController.h"
 
 
@@ -34,6 +33,8 @@ static NSString *const kDebugMode = @"debugMode";
 @property (nonatomic, weak) NSUserDefaults *userDefaults;
 @property (nonatomic, weak) NSWindow *alertWindow;
 @property (weak) IBOutlet NSTextField *percentForScrobbleTimeLabel;
+@property (nonatomic, weak) IBOutlet PreferencesController *preferencesController;
+
 @end
 
 @implementation SettingsController
@@ -183,9 +184,8 @@ static NSString *const kDebugMode = @"debugMode";
 -(IBAction)toggleHideStatusBarIcon:(NSButton *)sender
 {
     self.hideStatusBarIcon = sender.state;
-    __weak typeof(self) weakSelf = self;
         if (sender.state) {
-            [self.menuController removeStatusBarItem];
+            [[MenuController sharedController] removeStatusBarItem];
             __block NSAlert *alert = [[NSAlert alloc] init];
             alert.window.releasedWhenClosed = YES;
             alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
@@ -196,11 +196,11 @@ static NSString *const kDebugMode = @"debugMode";
             restoreNowButton.target = self;
             restoreNowButton.action = @selector(restoreStatusBarIcon);
             self.alertWindow = alert.window;
-            [alert beginSheetModalForWindow:[PreferencesController sharedPreferences].window completionHandler:^(NSModalResponse returnCode) {
+            [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
             }];
         } else {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [weakSelf.menuController installStatusBar];
+                [[MenuController sharedController] installStatusBar];
             });
         }
 }
@@ -218,8 +218,8 @@ static NSString *const kDebugMode = @"debugMode";
 -(void)restoreStatusBarIcon
 {
     self.hideStatusBarIcon = NO;
-    [self.menuController installStatusBar];
-    [[PreferencesController sharedPreferences].window endSheet:self.alertWindow];
+    [[MenuController sharedController] installStatusBar];
+    [self.preferencesController.window endSheet:self.alertWindow];
     [self.hideStatusBarCheckbox setState:NSOffState];
 }
 
@@ -244,7 +244,7 @@ static NSString *const kDebugMode = @"debugMode";
 - (IBAction)changeNumberOfRecentItems:(NSPopUpButton *)popUp
 {
     self.numberOfTracksInRecent = @(popUp.selectedTag);
-    [self.menuController prepareRecentItemsMenu];
+    [[MenuController sharedController] prepareRecentItemsMenu];
     [self toggleShowRecentTracksCheckbox];
 }
 
@@ -260,7 +260,7 @@ static NSString *const kDebugMode = @"debugMode";
 -(IBAction)toggleIntegrationWithiTunes:(NSButton *)sender
 {
     self.integrationWithiTunes = sender.state;
-    [self.menuController updateMenu];
+    [[MenuController sharedController] updateMenu];
     if (self.numberOfTracksInRecent.integerValue == 0) {
         self.showRecentTrackIniTunesCheckbox.enabled = NO;
     }
@@ -268,7 +268,7 @@ static NSString *const kDebugMode = @"debugMode";
 -(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender
 {
     self.loveTrackOniTunes = sender.state;
-    [self.menuController updateMenu];
+    [[MenuController sharedController] updateMenu];
     if (sender.state) {
         __block NSAlert *alert = [[NSAlert alloc] init];
         alert.window.releasedWhenClosed = YES;
@@ -277,7 +277,7 @@ static NSString *const kDebugMode = @"debugMode";
         alert.alertStyle = NSInformationalAlertStyle;
         [alert addButtonWithTitle:@"I'm aware"];
         self.alertWindow = alert.window;
-        [alert beginSheetModalForWindow:[PreferencesController sharedPreferences].window completionHandler:^(NSModalResponse returnCode) {
+        [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
         }];
     }
 }
@@ -285,14 +285,14 @@ static NSString *const kDebugMode = @"debugMode";
 -(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender
 {
     self.showSimilarArtistsOnAppleMusic = sender.state;
-    [self.menuController updateMenu];
+    [[MenuController sharedController] updateMenu];
     
 }
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender
 {
     self.showRecentTrackIniTunes = sender.state;
-    [self.menuController prepareRecentItemsMenu];
-    [self.menuController updateMenu];
+    [[MenuController sharedController] prepareRecentItemsMenu];
+    [[MenuController sharedController] updateMenu];
 }
 
 
@@ -388,10 +388,10 @@ static NSString *const kDebugMode = @"debugMode";
     if (numberOfTracksInRecent) {
         [self.userDefaults setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
         if (numberOfTracksInRecent.integerValue != 0) {
-            [self.menuController showRecentMenu];
+            [[MenuController sharedController] showRecentMenu];
             self.showRecentTrackIniTunesCheckbox.enabled = YES;
         } else {
-            [self.menuController hideRecentMenu];
+            [[MenuController sharedController] hideRecentMenu];
             self.showRecentTrackIniTunesCheckbox.enabled = NO;
         }
     } else {

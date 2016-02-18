@@ -17,6 +17,7 @@
 #import "CoverLabel.h"
 #import "ControlViewController.h"
 #import <pop/POP.h>
+#import "CoverSettingsController.h"
 
 
 @interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
@@ -42,6 +43,7 @@
                                                     owner:self userInfo:nil];
     [self.window.contentView addTrackingArea:self.hoverArea];
     self.controlViewController.delegate = self;
+    [self readSettings];
 }
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo
@@ -262,6 +264,41 @@
     }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
+}
+
+-(void)readSettings
+{
+    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
+    CoverPosition coverPosition = coverSettingsController.coverPosition;
+    switch (coverPosition) {
+        case CoverPositionStuckToTheDesktop:
+            [self.window setLevel:kCGDesktopIconWindowLevel+1];
+            if (coverSettingsController.ignoreMissionControl) {
+                self.window.collectionBehavior = NSWindowCollectionBehaviorStationary | NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle;
+            } else {
+                self.window.collectionBehavior = NSWindowCollectionBehaviorManaged | NSWindowCollectionBehaviorIgnoresCycle | NSWindowCollectionBehaviorCanJoinAllSpaces;
+            }
+            break;
+        case CoverPositionAboveAllOtherWindows:
+            [self.window setLevel:NSScreenSaverWindowLevel];
+            if (coverSettingsController.ignoreMissionControl) {
+                self.window.collectionBehavior = NSWindowCollectionBehaviorStationary | NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle;
+            } else {
+                self.window.collectionBehavior = NSWindowCollectionBehaviorManaged | NSWindowCollectionBehaviorIgnoresCycle | NSWindowCollectionBehaviorCanJoinAllSpaces;
+            }
+            break;
+        case CoverPositionMixedInWithOtherWindows:
+            [self.window setLevel:NSNormalWindowLevel];
+            if (coverSettingsController.ignoreMissionControl) {
+                self.window.collectionBehavior = NSWindowCollectionBehaviorStationary | NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorParticipatesInCycle;
+            } else {
+                self.window.collectionBehavior = NSWindowCollectionBehaviorManaged | NSWindowCollectionBehaviorParticipatesInCycle | NSWindowCollectionBehaviorCanJoinAllSpaces;
+            }
+            break;
+        default:
+            break;
+    }
+    [self.window makeKeyAndOrderFront:nil];
 }
 
 @end

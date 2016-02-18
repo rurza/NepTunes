@@ -45,8 +45,6 @@
 
 
 
-@property (nonatomic,weak) IBOutlet MenuController *menuController;
-
 +(SettingsController *)sharedSettings;
 -(void)saveSettings;
 -(IBAction)changeNumberOfRecentItems:(NSPopUpButton *)popUp;

@@ -66,7 +66,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     if (self.musicController.isiTunesRunning) {
         [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1 withSuccessHandler:^{
-            [[PreferencesController sharedPreferences].menuController blinkMenuIcon];
+            [[MenuController sharedController] blinkMenuIcon];
         }];
     }
 }

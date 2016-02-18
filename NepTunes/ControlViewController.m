@@ -197,4 +197,9 @@ static NSUInteger const kNumberOfFrames = 10;
     return _emptyHeartImage;
 }
 
+-(void)dealloc
+{
+    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"com.apple.iTunes.playerInfo" object:nil];
+}
+
 @end
