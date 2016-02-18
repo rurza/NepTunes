@@ -249,6 +249,7 @@
     if (!self.popoverIsShown) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(1);
+        controlOpacity.duration = 0.3;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
      }
     [self.controlsTimer invalidate];

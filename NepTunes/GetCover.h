@@ -21,5 +21,5 @@
 
 +(GetCover *)sharedInstance;
 -(void)getCoverWithTrack:(Track *)track withCompletionHandler:(void(^)(NSImage *cover))handler;
-
+-(NSImage *)defaultCover;
 @end

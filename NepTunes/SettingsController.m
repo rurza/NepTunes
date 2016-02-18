@@ -184,25 +184,25 @@ static NSString *const kDebugMode = @"debugMode";
 -(IBAction)toggleHideStatusBarIcon:(NSButton *)sender
 {
     self.hideStatusBarIcon = sender.state;
-        if (sender.state) {
-            [[MenuController sharedController] removeStatusBarItem];
-            __block NSAlert *alert = [[NSAlert alloc] init];
-            alert.window.releasedWhenClosed = YES;
-            alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
-            alert.informativeText = NSLocalizedString(@"To open NepTunes settings again, click its icon in Launchpad or double-click it in Finder.", nil);
-            alert.alertStyle = NSInformationalAlertStyle;
-            [alert addButtonWithTitle:@"OK"];
-            NSButton *restoreNowButton = [alert addButtonWithTitle:NSLocalizedString(@"Restore now", nil)];
-            restoreNowButton.target = self;
-            restoreNowButton.action = @selector(restoreStatusBarIcon);
-            self.alertWindow = alert.window;
-            [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
-            }];
-        } else {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [[MenuController sharedController] installStatusBar];
-            });
-        }
+    if (sender.state) {
+        [[MenuController sharedController] removeStatusBarItem];
+        __block NSAlert *alert = [[NSAlert alloc] init];
+        alert.window.releasedWhenClosed = YES;
+        alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
+        alert.informativeText = NSLocalizedString(@"To open NepTunes settings again, click its icon in Launchpad or double-click it in Finder.", nil);
+        alert.alertStyle = NSInformationalAlertStyle;
+        [alert addButtonWithTitle:@"OK"];
+        NSButton *restoreNowButton = [alert addButtonWithTitle:NSLocalizedString(@"Restore now", nil)];
+        restoreNowButton.target = self;
+        restoreNowButton.action = @selector(restoreStatusBarIcon);
+        self.alertWindow = alert.window;
+        [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
+        }];
+    } else {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[MenuController sharedController] installStatusBar];
+        });
+    }
 }
 
 -(IBAction)toggleOpenPreferencesWhenThereIsNoUser:(NSButton *)sender

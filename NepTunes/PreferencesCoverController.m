@@ -43,12 +43,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)setupCoverView
 {
-    self.coverView.wantsLayer = YES;
-    self.coverView.layer.shadowOpacity = 1;
-    self.coverView.layer.shadowColor = [NSColor blackColor].CGColor;
-    self.coverView.layer.shadowOffset = CGSizeMake(-3, -3);
     [self.shadowView.layer setBackgroundColor:CGColorCreateGenericRGB(0.0, 0.0, 0.0, 1)];
-    [self.coverView.layer setNeedsLayout];
 }
 
 -(void)updateCover:(NSNotification *)note
@@ -71,12 +66,14 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
                 [weakSelf updateWith:track andCover:cover];
             }];
         }
+    } else {
+        Track *noTrack = [[Track alloc] initWithTrackName:@"Turn on iTunes" artist:@"" album:@"" andDuration:0];
+        [self updateWith:noTrack andCover:[self.getCover defaultCover]];
     }
 }
 
 -(void)updateWith:(Track *)track andCover:(NSImage *)cover
 {
-    
     self.coverView.coverImageView.image = cover;
     [self updateWithTrack:track];
 }

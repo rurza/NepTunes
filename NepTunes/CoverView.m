@@ -18,6 +18,7 @@
 
     [self setupArtistView];
     [self setupTitleLabel];
+    self.layer.masksToBounds = YES;
 }
 
 -(void)setupTitleLabel

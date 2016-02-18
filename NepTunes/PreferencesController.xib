@@ -500,7 +500,7 @@ DQ
                 <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8JA-zT-DPW">
                     <rect key="frame" x="381" y="30" width="140" height="140"/>
                     <shadow key="shadow" blurRadius="15">
-                        <size key="offset" width="-9" height="-9"/>
+                        <size key="offset" width="-6" height="-8"/>
                         <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </shadow>
                 </customView>
@@ -548,7 +548,7 @@ DQ
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" id="awj-AY-Hqa">
                             <items>
-                                <menuItem title="Stuck to the Desktop" state="on" tag="1" id="saW-BB-FIA"/>
+                                <menuItem title="Stuck to the Desktop" tag="1" id="saW-BB-FIA"/>
                                 <menuItem title="Above all other windows" tag="2" id="4jg-61-qpN"/>
                                 <menuItem title="Mixed in with other windows" state="on" tag="3" id="1pB-jf-hx5"/>
                             </items>

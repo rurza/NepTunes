@@ -13,6 +13,7 @@
 -(void)awakeFromNib
 {
     self.wantsLayer = YES;
+    self.layer.cornerRadius = 6;
     self.layer.masksToBounds = YES;
 }
 
