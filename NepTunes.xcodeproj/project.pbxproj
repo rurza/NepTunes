@@ -26,6 +26,7 @@
 		5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */; };
 		5BAE71031C50199700779081 /* SavedTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71021C50199700779081 /* SavedTrack.m */; };
 		5BAE71081C528D1000779081 /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71071C528D1000779081 /* SettingsController.m */; };
+		5BAEB68A1C78AF2700F7B2F4 /* ControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAEB6891C78AF2700F7B2F4 /* ControlView.m */; };
 		5BB9965F1C7621CF0088B46B /* PreferencesCoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */; };
 		5BBD4C501C34562000AFA182 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Track.m */; };
 		5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A8E01C610C83009C3E9F /* MusicController.m */; };
@@ -127,6 +128,8 @@
 		5BAE71021C50199700779081 /* SavedTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedTrack.m; sourceTree = "<group>"; };
 		5BAE71061C528D1000779081 /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
 		5BAE71071C528D1000779081 /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
+		5BAEB6881C78AF2700F7B2F4 /* ControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlView.h; sourceTree = "<group>"; };
+		5BAEB6891C78AF2700F7B2F4 /* ControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlView.m; sourceTree = "<group>"; };
 		5BB9965D1C7621CF0088B46B /* PreferencesCoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesCoverController.h; sourceTree = "<group>"; };
 		5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesCoverController.m; sourceTree = "<group>"; };
 		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
@@ -201,6 +204,8 @@
 			children = (
 				5B0734201C6E382D00167934 /* CoverView.h */,
 				5B0734211C6E382D00167934 /* CoverView.m */,
+				5BAEB6881C78AF2700F7B2F4 /* ControlView.h */,
+				5BAEB6891C78AF2700F7B2F4 /* ControlView.m */,
 				5B1BC24A1C6CE4BF004EB785 /* CoverWindow.h */,
 				5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */,
 				5B9F073E1C72300200F73566 /* CoverLabel.h */,
@@ -598,6 +603,7 @@
 				5BAE71031C50199700779081 /* SavedTrack.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
 				5BB9965F1C7621CF0088B46B /* PreferencesCoverController.m in Sources */,
+				5BAEB68A1C78AF2700F7B2F4 /* ControlView.m in Sources */,
 				5B0734221C6E382D00167934 /* CoverView.m in Sources */,
 				5B9F07401C72300200F73566 /* CoverLabel.m in Sources */,
 				5BAE71081C528D1000779081 /* SettingsController.m in Sources */,

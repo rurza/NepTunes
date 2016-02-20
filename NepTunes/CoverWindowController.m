@@ -18,6 +18,7 @@
 #import "ControlViewController.h"
 #import <pop/POP.h>
 #import "CoverSettingsController.h"
+#import "ControlView.h"
 
 
 @interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
@@ -26,7 +27,6 @@
 @property (nonatomic) CoverLabel *artistLabel;
 @property (nonatomic) CoverLabel *trackLabel;
 @property (nonatomic) NSTrackingArea *hoverArea;
-@property (weak) IBOutlet ControlViewController *controlViewController;
 @property (nonatomic) NSTimer *controlsTimer;
 
 @end
@@ -63,7 +63,8 @@
             [self animateWindowOpacity:0];
         }
     } else {
-        [self animateWindowOpacity:0];
+//        [self animateWindowOpacity:0];
+        self.window.alphaValue = 0;
     }
 }
 
@@ -251,6 +252,7 @@
         controlOpacity.toValue = @(1);
         controlOpacity.duration = 0.3;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
+        [self.controlViewController updateVolumeIcon];
      }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
@@ -301,5 +303,6 @@
     }
     [self.window makeKeyAndOrderFront:nil];
 }
+
 
 @end

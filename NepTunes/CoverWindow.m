@@ -8,6 +8,10 @@
 
 #import "CoverWindow.h"
 #import "CoverImageView.h"
+#import "ControlView.h"
+
+@interface CoverWindow ()
+@end
 
 @implementation CoverWindow
 
@@ -15,6 +19,7 @@
 {
     [self setupWindow];
     [self setupControlView];
+    [self makeFirstResponder:self.controlView];
 }
 
 -(void)setupWindow
@@ -33,6 +38,7 @@
 {
     self.controlView.layer.cornerRadius = 6;
 }
+
 
 
 

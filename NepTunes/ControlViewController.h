@@ -23,8 +23,6 @@
 @property (nonatomic, weak) IBOutlet NSButton *volumeButton;
 @property (nonatomic, weak) IBOutlet NSPopover *volumePopover;
 
-
-
 @property (nonatomic, weak) id<ControlViewDelegate>delegate;
 
 - (IBAction)playOrPauseTrack:(NSButton *)sender;
@@ -32,5 +30,7 @@
 - (IBAction)nextTrack:(NSButton *)sender;
 - (IBAction)loveTrack:(NSButton *)sender;
 - (IBAction)changeVolume:(NSButton *)sender;
+
+-(void)updateVolumeIcon;
 
 @end

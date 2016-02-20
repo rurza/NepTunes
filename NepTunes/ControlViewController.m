@@ -40,6 +40,8 @@ static NSUInteger const kNumberOfFrames = 10;
     [self.backwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(backwardButtonWasPressed:)]];
     self.volumePopover.delegate = self;
     [self updateControlsState:nil];
+    
+    
 }
 
 -(void)updateControlsState:(NSNotification *)note
@@ -94,6 +96,21 @@ static NSUInteger const kNumberOfFrames = 10;
     
 }
 
+-(void)updateVolumeIcon
+{
+    NSInteger soundVolume = [MusicController sharedController].iTunes.soundVolume;
+    if (soundVolume > 66) {
+        self.volumeButton.image = [NSImage imageNamed:@"volume-max"];
+    } else if (soundVolume > 33) {
+        self.volumeButton.image = [NSImage imageNamed:@"volume-mid"];
+    } else if (soundVolume > 0) {
+        self.volumeButton.image = [NSImage imageNamed:@"volume-min"];
+    } else {
+        self.volumeButton.image = [NSImage imageNamed:@"volume-mute"];
+    }
+    self.volumeButton.image.template = YES;
+}
+
 - (IBAction)backTrack:(NSButton *)sender
 {
     [[MusicController sharedController].iTunes backTrack];
@@ -106,17 +123,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)loveTrack:(NSButton *)sender
 {
-//    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [[MusicController sharedController] loveTrackWithCompletionHandler:^{
-        [self animationLoveButton];
-//        POPSpringAnimation *heartAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerBounds];
-//        heartAnimation.autoreverses = YES;
-//        heartAnimation.toValue = [NSValue valueWithRect:NSMakeRect(0, 0, 30, 30)];
-//        heartAnimation.completionBlock = ^(POPAnimation *animation, BOOL finished) {
-//            weakSelf.loveButton.image = [NSImage imageNamed:@"fullheart"];
-//            weakSelf.loveButton.image.template = YES;
-//        };
-//        [self.loveButton.layer pop_addAnimation:heartAnimation forKey:@"heart animation"];
+        [weakSelf animationLoveButton];
     }];
 }
 

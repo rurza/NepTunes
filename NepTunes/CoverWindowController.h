@@ -8,8 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 @class Track;
+@class ControlViewController;
 
 @interface CoverWindowController : NSWindowController
+
+@property (weak) IBOutlet ControlViewController *controlViewController;
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo;
 -(void)fadeCover:(BOOL)direction;

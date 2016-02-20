@@ -9,6 +9,7 @@
 #import "VolumeViewController.h"
 #import "MusicController.h"
 #import "CoverWindowController.h"
+#import "ControlViewController.h"
 
 @interface VolumeViewController ()
 @property (weak) IBOutlet CoverWindowController *coverWindowController;
@@ -29,6 +30,7 @@
 - (IBAction)changeVolume:(NSSlider *)sender
 {
     [MusicController sharedController].iTunes.soundVolume = sender.integerValue;
+    [self.coverWindowController.controlViewController updateVolumeIcon];
 }
 
 

@@ -12,4 +12,5 @@
 
 @property (weak) IBOutlet NSSlider *slider;
 
+
 @end

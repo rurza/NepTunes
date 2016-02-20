@@ -29,10 +29,18 @@ static NSString *const kShowCover = @"ShowCover";
 
 @synthesize showCover = _showCover, coverPosition = _coverPosition, ignoreMissionControl = _ignoreMissionControl;
 
+
 #pragma mark - Initialization
+-(instancetype)init
+{
+    if (self = [super init]) {
+        [self registerDefaultsSettings];
+    }
+    return self;
+}
+
 -(void)awakeFromNib
 {
-    [self registerDefaultsSettings];
     [self updateUI];
     [self saveSettings];
 }

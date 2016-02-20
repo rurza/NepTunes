@@ -48,7 +48,7 @@
                             <outlet property="titleLabel" destination="uJx-QW-zlc" id="ian-xy-Wlb"/>
                         </connections>
                     </customView>
-                    <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" alphaValue="0.0" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="eEN-fB-qSK">
+                    <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" alphaValue="0.0" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="eEN-fB-qSK" customClass="ControlView">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gZi-jA-PJl">
@@ -57,7 +57,7 @@
                                     <constraint firstAttribute="height" constant="24" id="FNU-wQ-a3f"/>
                                     <constraint firstAttribute="width" constant="24" id="qas-hZ-Lel"/>
                                 </constraints>
-                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="volume" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="3Rg-nk-D6a">
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="volume-max" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="3Rg-nk-D6a">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -191,6 +191,6 @@
         <image name="next track" width="57" height="36"/>
         <image name="play" width="34" height="40"/>
         <image name="previous track" width="57" height="36"/>
-        <image name="volume" width="33" height="27"/>
+        <image name="volume-max" width="40" height="33"/>
     </resources>
 </document>

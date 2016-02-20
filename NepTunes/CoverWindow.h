@@ -9,9 +9,10 @@
 #import <Cocoa/Cocoa.h>
 @class CoverImageView;
 @class CoverView;
+@class ControlView;
 
 @interface CoverWindow : NSWindow
 @property (strong) IBOutlet CoverView *coverView;
-@property (strong) IBOutlet NSVisualEffectView *controlView;
+@property (strong) IBOutlet ControlView *controlView;
 
 @end

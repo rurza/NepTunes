@@ -12,11 +12,12 @@
 #import "MusicController.h"
 #import "FXReachability.h"
 #import "iTunesSearch.h"
-#include <CommonCrypto/CommonDigest.h>
 #import "SettingsController.h"
+#import <PINDiskCache.h>
+#include <CommonCrypto/CommonDigest.h>
 
 @interface GetCover () <NSURLSessionDelegate>
-@property (nonatomic) NSCache *cache;
+@property (nonatomic) PINDiskCache *cache;
 
 @end
 
@@ -176,7 +177,7 @@
         if ([SettingsController sharedSettings].debugMode) {
             NSLog(@"Cover image for key %@", key);
         }
-        return [self.cache objectForKey:key];
+        return (NSImage *)[self.cache objectForKey:key];
     }
     if ([SettingsController sharedSettings].debugMode) {
         NSLog(@"There is no cover image for key %@...", key);
@@ -204,11 +205,11 @@
 }
 
 
--(NSCache *)cache
+-(PINDiskCache *)cache
 {
     if (!_cache) {
-        _cache = [[NSCache alloc] init];
-        _cache.countLimit = 20;
+        _cache = [[PINDiskCache alloc] initWithName:@"imageCache"];
+        _cache.byteLimit = 1024 * 1024;
     }
     return _cache;
 }

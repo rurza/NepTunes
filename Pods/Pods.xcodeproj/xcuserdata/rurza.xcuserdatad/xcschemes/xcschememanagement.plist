@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>PINCache.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,22 +62,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9DECD792D6187659B6464BFA1FA854FB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>A08AEFDC024D13A4C5F909784AEE8C56</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AC4C17CBF8773E5717F041BCBE49DB16</key>
+		<key>ABAF7B8ACBF1EFEA5312E2690CDAA658</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>B06136E20319968562A2B7554C8BFE6A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B6D174A8D6F8A3588007D47D83F73039</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -83,6 +88,11 @@
 			<true/>
 		</dict>
 		<key>E1CD368B83CE2370B066D5F5A8DCD811</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F8D13750E8C210E7C2323EB6E0C7FBFA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

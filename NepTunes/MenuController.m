@@ -18,6 +18,7 @@
 #import "iTunesSearch.h"
 #import "LastFm.h"
 #import "PreferencesController.h"
+#import <PINCache.h>
 
 @import QuartzCore;
 
@@ -36,7 +37,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) SettingsController *settings;
 @property (nonatomic) ItunesSearch *iTunesSearch;
 @property (nonatomic) NSUInteger animationCurrentStep;
-@property (nonatomic) NSCache *cachediTunesSearchResults;
+@property (nonatomic) PINCache *cachediTunesSearchResults;
 @property (nonatomic) PreferencesController *preferencesController;
 @end
 
@@ -676,7 +677,8 @@ static NSUInteger const kNumberOfFrames = 10;
 #pragma mark - iTunes Search Cache
 - (NSArray *)cachedArrayForKey:(NSString *)key
 {
-    return [self.cachediTunesSearchResults objectForKey:key];
+    NSArray *result = [self.cachediTunesSearchResults objectForKey:key];
+    return result;
 }
 
 - (void)cacheArray:(NSArray *)array forKey:(NSString *)key requestParams:(NSDictionary *)params maxAge:(NSTimeInterval)maxAge
@@ -728,11 +730,12 @@ static NSUInteger const kNumberOfFrames = 10;
     return _iTunesSearch;
 }
 
--(NSCache *)cachediTunesSearchResults
+-(PINCache *)cachediTunesSearchResults
 {
     if (!_cachediTunesSearchResults) {
-        _cachediTunesSearchResults = [NSCache new];
-        _cachediTunesSearchResults.countLimit = 20;
+        _cachediTunesSearchResults = [[PINCache alloc] initWithName:@"iTunesSearchCache"];
+        _cachediTunesSearchResults.memoryCache.ageLimit = 60 * 60 * 24;
+        _cachediTunesSearchResults.diskCache.byteLimit = 60 * 60 * 24;
     }
     return _cachediTunesSearchResults;
 }
