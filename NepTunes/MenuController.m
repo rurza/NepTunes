@@ -28,7 +28,6 @@ static NSUInteger const kNumberOfFrames = 10;
 @interface MenuController () <ItunesSearchCache, NSWindowDelegate>
 
 @property (nonatomic) NSStatusItem *statusItem;
-@property (nonatomic) IBOutlet NSMenu *statusMenu;
 @property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
 @property (nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
 @property (nonatomic) IBOutlet MusicController *musicController;

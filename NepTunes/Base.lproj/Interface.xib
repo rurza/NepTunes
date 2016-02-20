@@ -701,7 +701,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-777" y="22.5"/>
+            <point key="canvasLocation" x="-655.5" y="130.5"/>
         </menu>
         <customObject id="aMi-64-iJ4" customClass="MenuController">
             <connections>

@@ -14,13 +14,15 @@
 @property (weak, nonatomic) IBOutlet NSMenuItem *loveSongMenuTitle;
 @property (weak, nonatomic) IBOutlet NSMenuItem *profileMenuTitle;
 @property (weak, nonatomic) IBOutlet NSMenuItem *similarArtistMenuTtitle;
+@property (nonatomic) IBOutlet NSMenu *statusMenu;
 
 +(instancetype)sharedController;
 -(IBAction)loveSong:(id)sender;
 -(IBAction)showUserProfile:(id)sender;
 -(IBAction)showSimilarArtists:(id)sender;
 -(IBAction)openPreferences:(id)sender;
-- (void)forceLogOut;
+-(IBAction)quit:(id)sender;
+-(void)forceLogOut;
 -(void)updateMenu;
 -(void)prepareRecentItemsMenu;
 -(void)installStatusBar;

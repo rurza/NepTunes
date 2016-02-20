@@ -8,6 +8,9 @@
 
 #import "ControlView.h"
 
+@interface ControlView ()
+@end
+
 @implementation ControlView
 
 -(void)rotateWithEvent:(NSEvent *)event
@@ -25,10 +28,6 @@
     return YES;
 }
 
--(void)mouseDown:(NSEvent *)theEvent
-{
-    NSLog(@"mouseDown: %@", theEvent);
-}
 
 -(BOOL)acceptsFirstResponder
 {

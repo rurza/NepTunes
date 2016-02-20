@@ -33,7 +33,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) IBOutlet NSView *loggedInUserView;
 @property (nonatomic) IBOutlet NSView *hotkeyView;
 @property (nonatomic) IBOutlet NSView *generalView;
-@property (nonatomic) IBOutlet NSView *menuView;
 @property (nonatomic) IBOutlet NSView *albumCoverView;
 
 
@@ -47,7 +46,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) IBOutlet NSToolbarItem *accountToolbarItem;
 @property (nonatomic) IBOutlet NSToolbarItem *hotkeysToolbarItem;
 @property (nonatomic) IBOutlet NSToolbarItem *generalToolbarItem;
-@property (nonatomic) IBOutlet NSToolbarItem *menuToolbarItem;
 @property (nonatomic) IBOutlet NSToolbarItem *albumCoverToolbarItem;
 @property (nonatomic) IBOutlet HotkeyController *hotkeyController;
 @property (nonatomic) IBOutlet PreferencesCoverController *preferencesCoverController;
@@ -76,23 +74,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @implementation PreferencesController
 
 #pragma mark - Initialization
-//+ (instancetype)sharedPreferences
-//{
-//    __strong static id _sharedInstance = nil;
-//    static dispatch_once_t onlyOnce;
-//    dispatch_once(&onlyOnce, ^{
-//        _sharedInstance = [[self _alloc] _init];
-//        
-//    });
-//    return _sharedInstance;
-//}
-//
-//+ (id) allocWithZone:(NSZone*)z { return [self sharedPreferences];              }
-//+ (id) alloc                    { return [self sharedPreferences];              }
-//- (id) init                     { return self;}
-//+ (id)_alloc                    { return [super allocWithZone:NULL]; }
-//- (id)_init                     { return [super init];               }
-
 
 
 - (void)windowDidLoad
@@ -203,7 +184,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                  [weakSelf.indicator stopAnimation:weakSelf];
                  
                  weakSelf.passwordField.stringValue = @"";
-                 [weakSelf.loginButton setTitle:@"Sign In"];
+                 [weakSelf.loginButton setTitle:NSLocalizedString(@"Sign In", nil)];
                  [weakSelf.loginButton setEnabled:NO];
                  weakSelf.loginField.hidden = NO;
                  weakSelf.passwordField.hidden = NO;
@@ -211,11 +192,11 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
                  NSAlert *alert = [[NSAlert alloc] init];
                  alert.alertStyle = NSCriticalAlertStyle;
                  if (error.code == kLastFmErrorCodeAuthenticationFailed) {
-                     alert.informativeText = @"It looks like you typed wrong username or/and password. 😤";
+                     alert.informativeText = NSLocalizedString(@"It looks like you typed wrong username or/and password. 🤔\nYou can always change the password on the Last.fm website.", nil);
                  } else {
                      alert.informativeText = [error localizedDescription];
                  }
-                 alert.messageText = NSLocalizedString(@"Try again :)", nil);
+                 alert.messageText = NSLocalizedString(@"Try again 😤", nil);
                  [alert beginSheetModalForWindow:weakSelf.window completionHandler:^(NSModalResponse returnCode) {
                      [alert.window close];
                  }];
@@ -264,6 +245,30 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 #pragma mark - preferences
 
+
+-(IBAction)switchView:(id)sender {
+    
+    int senderTag = (int)[sender tag];
+    
+    NSView *view = [self viewForTag:senderTag];
+    NSView *previousView = [self viewForTag:self.currentViewTag];
+    
+    self.currentViewTag = senderTag;
+    
+    NSRect newFrame = [self newFrameForNewContentView:view];
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:0.2];
+    if ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) {
+        [[NSAnimationContext currentContext] setDuration:2];
+    }
+    [[[self window] animator] setFrame:newFrame display:YES];
+    [[[[self window] contentView] animator] replaceSubview:previousView with:view];
+    [NSAnimationContext endGrouping];
+    [self.window recalculateKeyViewLoop];
+    [self.window invalidateShadow];
+}
+
+
 -(NSRect)newFrameForNewContentView:(NSView *)view {
     NSWindow *window = self.window;
     NSRect newFrameRect = [window frameRectForContentRect:[view frame]];
@@ -289,9 +294,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         case 3:
             view = self.hotkeyView;
             break;
-        case 4:
-            view = self.menuView;
-            break;
         case 5:
             view = self.albumCoverView;
             break;
@@ -312,28 +314,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 }
 
 
--(IBAction)switchView:(id)sender {
-    
-    int senderTag = (int)[sender tag];
-    
-    NSView *view = [self viewForTag:senderTag];
-    NSView *previousView = [self viewForTag:self.currentViewTag];
-    
-    self.currentViewTag = senderTag;
-    
-    NSRect newFrame = [self newFrameForNewContentView:view];
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:0.2];
-    if ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) {
-        [[NSAnimationContext currentContext] setDuration:2];
-    }
-    [[[self window] animator] setFrame:newFrame display:YES];
-    [[[[self window] contentView] animator] replaceSubview:previousView with:view];
-    [NSAnimationContext endGrouping];
-    [self.window recalculateKeyViewLoop];
-    [self.window invalidateShadow];
-}
-
 -(NSString *)lastChosenToolbarIdentifier
 {
     NSString *identifier;
@@ -349,9 +329,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             break;
         case 3:
             identifier = @"Hotkeys";
-            break;
-        case 4:
-            identifier = @"Menu";
             break;
         case 5:
             identifier = @"Album Cover";
@@ -454,7 +431,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)animateAvatar
 {
     POPSpringAnimation *avatarSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
-    avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(110, 157, 64, 64)];
+    avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(94, 157, 64, 64)];
     avatarSpringAnimation.springBounciness = 12;
     
     POPSpringAnimation *avatarCornerRadiusSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerCornerRadius];

@@ -41,7 +41,6 @@ static NSUInteger const kNumberOfFrames = 10;
     self.volumePopover.delegate = self;
     [self updateControlsState:nil];
     
-    
 }
 
 -(void)updateControlsState:(NSNotification *)note
