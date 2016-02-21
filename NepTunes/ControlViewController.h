@@ -30,7 +30,7 @@
 - (IBAction)nextTrack:(NSButton *)sender;
 - (IBAction)loveTrack:(NSButton *)sender;
 - (IBAction)changeVolume:(NSButton *)sender;
-
+-(void)animationLoveButton;
 -(void)updateVolumeIcon;
 
 @end

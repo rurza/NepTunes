@@ -71,7 +71,12 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             }];
         }
     } else {
-        Track *noTrack = [[Track alloc] initWithTrackName:@"Turn on iTunes" artist:@"" album:@"" andDuration:0];
+        Track *noTrack;
+        if (![MusicController sharedController].isiTunesRunning) {
+            noTrack = [[Track alloc] initWithTrackName:@"Turn on iTunes" artist:@"" album:@"" andDuration:0];
+        } else {
+            noTrack = [[Track alloc] initWithTrackName:@"Pause/play track to refresh" artist:@"" album:@"" andDuration:0];
+        }
         [self updateWith:noTrack andCover:[self.getCover defaultCover]];
         if (fullInfo) {
             [self displayFullInfoForTrack:noTrack];
@@ -242,8 +247,14 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         labelsHeight = self.artistLabel.frame.size.height + self.trackLabel.frame.size.height;
         
     }
-    self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2-5, 140, self.trackLabel.frame.size.height);
-    self.artistLabel.frame = NSMakeRect(10, (160-labelsHeight)/2+5 + self.trackLabel.frame.size.height, 140, self.artistLabel.frame.size.height);
+    if (self.artistLabel.stringValue.length) {
+        self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2-5, 140, self.trackLabel.frame.size.height);
+        self.artistLabel.frame = NSMakeRect(10, (160-labelsHeight)/2+5 + self.trackLabel.frame.size.height, 140, self.artistLabel.frame.size.height);
+    } else {
+        self.artistLabel.frame = NSMakeRect(0, 0, 0, 0);
+        self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2, 140, self.trackLabel.frame.size.height);
+    }
+
 }
 
 -(CoverLabel *)artistLabel

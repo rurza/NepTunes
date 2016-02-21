@@ -117,6 +117,7 @@
     [NSAnimationContext endGrouping];
 }
 
+#pragma mark - Full info
 
 -(void)displayFullInfoForTrack:(Track *)track
 {

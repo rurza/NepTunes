@@ -20,6 +20,8 @@
 #import "PreferencesController.h"
 #import <PINCache.h>
 #import "OfflineScrobbler.h"
+#import "CoverWindowController.h"
+#import "ControlViewController.h"
 
 @import QuartzCore;
 
@@ -213,7 +215,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 #pragma mark - Last.fm related
 -(IBAction)loveSong:(id)sender {
-    [self.musicController loveTrackWithCompletionHandler:nil];
+    [self.musicController loveTrackWithCompletionHandler:^{
+        [self.musicController.coverWindowController.controlViewController animationLoveButton];
+    }];
 }
 
 - (void)forceLogOut

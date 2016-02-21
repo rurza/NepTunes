@@ -9,7 +9,6 @@
 #import "PreferencesController.h"
 #import "MusicScrobbler.h"
 #import "Track.h"
-#import "FXReachability.h"
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
 #import "LastFm.h"
