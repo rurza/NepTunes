@@ -304,6 +304,11 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             view = self.generalView;
             break;
     }
+    if (viewtag == 5) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.preferencesCoverController animateCover];
+        });
+    }
     return view;
 }
 
@@ -496,6 +501,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     return _musicController;
 }
 
-
+-(void)dealloc
+{
+    NSLog(@"Preferences deallocated");
+}
 
 @end

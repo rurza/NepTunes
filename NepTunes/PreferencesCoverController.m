@@ -20,13 +20,15 @@
 static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @interface PreferencesCoverController () <CoverGetterDelegate>
-@property (strong) IBOutlet CoverView *coverView;
+@property (strong, nonatomic) IBOutlet CoverView *coverView;
 @property (nonatomic) IBOutlet NSView *shadowView;
+@property (nonatomic, strong) IBOutlet NSImageView *blurredView;
+
 @property (nonatomic) BOOL changeTrackAnimation;
 @property (nonatomic) CoverLabel *artistLabel;
 @property (nonatomic) CoverLabel *trackLabel;
 @property (nonatomic) GetCover *getCover;
-
+@property (nonatomic) CoverLabel *infoAboutiTunes;
 @end
 
 @implementation PreferencesCoverController
@@ -34,7 +36,6 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)awakeFromNib
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCover:) name:kTrackInfoUpdated object:nil];
-    [self updateCover:nil];
     [self setupCoverView];
 }
 
@@ -69,13 +70,53 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     } else {
         Track *noTrack = [[Track alloc] initWithTrackName:@"Turn on iTunes" artist:@"" album:@"" andDuration:0];
         [self updateWith:noTrack andCover:[self.getCover defaultCover]];
+        [self displayFullInfoForTrack:noTrack];
     }
+}
+
+-(void)animateCover
+{
+    if (![MusicScrobbler sharedScrobbler].currentTrack) {
+        [self updateCoverWithTrack:nil andUserInfo:nil];
+    } else {
+        [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil];
+    }
+}
+
+-(void)makeBlurredBackgroundWithImage:(NSImage *)image
+{
+    CIImage *backgroundCover = [CIImage imageWithData:image.TIFFRepresentation];
+    CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [blurFilter setDefaults];
+    [blurFilter setValue:backgroundCover forKey:@"inputImage"];
+    NSInteger blur = 24;
+    [blurFilter setValue:@(blur) forKey:@"inputRadius"];
+    CIImage *result = [blurFilter valueForKey:kCIOutputImageKey];
+    
+    result = [result imageByCroppingToRect:(CGRect){
+        .origin.x = 0,
+        .origin.y = 0,
+        .size.width = backgroundCover.extent.size.width,
+        .size.height = backgroundCover.extent.size.height
+    }];
+    
+    NSImage *mask = [NSImage imageNamed:@"mask"];
+    CIFilter *maskWithBlended = [CIFilter filterWithName:@"CIBlendWithAlphaMask"];
+    CIImage *maskImage = [CIImage imageWithData:mask.TIFFRepresentation];
+    [maskWithBlended setValue:maskImage forKey:@"inputMaskImage"];
+    [maskWithBlended setValue:result forKey:kCIInputImageKey];
+    result = [maskWithBlended valueForKey:kCIOutputImageKey];
+    NSCIImageRep *rep = [NSCIImageRep imageRepWithCIImage:result];
+    NSImage *nsImage = [[NSImage alloc] initWithSize:rep.size];
+    [nsImage addRepresentation:rep];
+    self.blurredView.image = nsImage;
 }
 
 -(void)updateWith:(Track *)track andCover:(NSImage *)cover
 {
     self.coverView.coverImageView.image = cover;
     [self updateWithTrack:track];
+    [self makeBlurredBackgroundWithImage:cover];
 }
 
 -(void)updateWithTrack:(Track *)track

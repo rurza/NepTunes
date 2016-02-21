@@ -22,7 +22,6 @@
                 <outlet property="loginButton" destination="fls-93-1YP" id="8LR-JU-UbF"/>
                 <outlet property="loginField" destination="6Kg-jb-IJn" id="zZU-w1-5UX"/>
                 <outlet property="logoutButton" destination="FVe-0m-KWf" id="ogw-hR-Rx2"/>
-                <outlet property="menuView" destination="5tq-gv-q9a" id="32e-fk-0cK"/>
                 <outlet property="passwordField" destination="gzR-PE-rsD" id="TpV-qR-mOm"/>
                 <outlet property="preferencesCoverController" destination="Y3U-Am-JUO" id="XXz-Jv-vku"/>
                 <outlet property="settingsToolbar" destination="L8W-3N-nM6" id="PP4-h5-4VN"/>
@@ -32,11 +31,6 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView identifier="Menu" id="5tq-gv-q9a">
-            <rect key="frame" x="0.0" y="0.0" width="357" height="215"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <point key="canvasLocation" x="1070.5" y="-242.5"/>
-        </customView>
         <customView identifier="General" id="80n-oM-tZ8" userLabel="General">
             <rect key="frame" x="0.0" y="0.0" width="379" height="374"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -105,12 +99,12 @@
                 </textField>
                 <popUpButton toolTip="Number of tracks in Recent tracks menu" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pOc-ID-6g9">
                     <rect key="frame" x="18" y="17" width="199" height="26"/>
-                    <popUpButtonCell key="cell" type="push" title="No recent tracks menu" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="e27-NS-EF7">
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="e27-NS-EF7">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" title="Number of tracks in recent" id="Wsa-J0-rNp">
                             <items>
-                                <menuItem title="No recent tracks menu" state="on" id="Vru-WQ-0TI">
+                                <menuItem title="No recent tracks menu" id="Vru-WQ-0TI">
                                     <modifierMask key="keyEquivalentModifierMask"/>
                                 </menuItem>
                                 <menuItem title="5 Tracks" tag="5" id="D5Q-oj-7Dr"/>
@@ -417,6 +411,10 @@ DQ
             <rect key="frame" x="0.0" y="0.0" width="512" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ga-oD-g2t">
+                    <rect key="frame" x="331" y="0.0" width="181" height="200"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="YcC-bP-b8f"/>
+                </imageView>
                 <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8JA-zT-DPW">
                     <rect key="frame" x="381" y="30" width="140" height="140"/>
                     <shadow key="shadow" blurRadius="15">
@@ -501,6 +499,7 @@ DQ
         </customView>
         <customObject id="Y3U-Am-JUO" customClass="PreferencesCoverController">
             <connections>
+                <outlet property="blurredView" destination="7Ga-oD-g2t" id="2ci-SR-AuZ"/>
                 <outlet property="coverView" destination="8Ob-th-RMz" id="DPC-rS-dtk"/>
                 <outlet property="shadowView" destination="8JA-zT-DPW" id="Gmv-FO-0so"/>
             </connections>

@@ -10,4 +10,6 @@
 
 @interface PreferencesCoverController : NSObject
 
+-(void)animateCover;
+
 @end

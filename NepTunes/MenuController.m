@@ -228,6 +228,10 @@ static NSUInteger const kNumberOfFrames = 10;
         self.preferencesController = nil;
         self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"PreferencesController"];
         self.preferencesController.window.delegate = self;
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(windowWillClose:)
+//                                                     name:NSWindowWillCloseNotification
+//                                                   object:self.preferencesController.window];
     }
     [self.preferencesController showWindow:self];
     [self.preferencesController.window makeKeyAndOrderFront:nil];
@@ -238,6 +242,14 @@ static NSUInteger const kNumberOfFrames = 10;
     return YES;
 }
 
+//- (void)windowWillClose:(NSNotification *)notification
+//{
+//    NSWindow* window = notification.object;
+//    if (window == self.preferencesController.window) {
+//        self.preferencesController = nil;
+//        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:window];
+//    }
+//}
 
 #pragma mark Update menu
 -(void)updateMenu {
