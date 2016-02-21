@@ -49,16 +49,15 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) IBOutlet HotkeyController *hotkeyController;
 @property (nonatomic) IBOutlet PreferencesCoverController *preferencesCoverController;
 
-//reachability
-@property (nonatomic) BOOL reachability;
+
 //Offline
-@property (nonatomic) OfflineScrobbler *offlineScrobbler;
+@property (nonatomic, weak) OfflineScrobbler *offlineScrobbler;
 //Settings
-@property (nonatomic) SettingsController *settingsController;
+@property (nonatomic, weak) SettingsController *settingsController;
 //Scrobbler
-@property (nonatomic) MusicScrobbler *musicScrobbler;
+@property (nonatomic, weak) MusicScrobbler *musicScrobbler;
 //Music Controller
-@property (nonatomic) MusicController *musicController;
+@property (nonatomic, weak) MusicController *musicController;
 
 
 
@@ -78,20 +77,11 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    [self setupReachability];
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
  }
 
--(void)setupReachability
-{
-    //1. this must be first
-    self.reachability = YES;
-    //2. this must be second
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:FXReachabilityStatusDidChangeNotification object:nil];
-    
-}
 
 -(void)awakeFromNib {
     if (self.settingsController.session) {
@@ -452,19 +442,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     [self.userAvatar.layer pop_addAnimation:avatarBorderSpringAnimation forKey:nil];
 }
 
-#pragma mark Reachability
--(void)reachabilityDidChange:(NSNotification *)note
-{
-    BOOL reachable = [FXReachability isReachable];
-    if (!reachable && self.musicController.playerState == iTunesEPlSPlaying && self.settingsController.session) {
-        [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsDown];
-        self.reachability = NO;
-    } else if (reachable && !self.reachability && self.musicScrobbler.currentTrack && self.offlineScrobbler.tracks.count && self.settingsController.session) {
-        [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsBack];
-        self.reachability = YES;
-    }
-}
-
 #pragma mark - Getters
 -(OfflineScrobbler *)offlineScrobbler
 {
@@ -478,7 +455,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 {
     if (!_musicScrobbler) {
         _musicScrobbler = [MusicScrobbler sharedScrobbler];
-        _musicScrobbler.delegate = self.offlineScrobbler;
     }
     return _musicScrobbler;
 }

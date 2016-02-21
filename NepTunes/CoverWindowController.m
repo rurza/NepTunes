@@ -20,6 +20,7 @@
 #import "CoverSettingsController.h"
 #import "ControlView.h"
 #import "MenuController.h"
+#import "VolumeViewController.h"
 
 @interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
 @property (nonatomic) CoverWindow *window;
@@ -28,7 +29,7 @@
 @property (nonatomic) CoverLabel *trackLabel;
 @property (nonatomic) NSTrackingArea *hoverArea;
 @property (nonatomic) NSTimer *controlsTimer;
-
+@property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
 @end
 
 @implementation CoverWindowController
@@ -317,6 +318,11 @@
     [theMenu insertItem:quitApp atIndex:1];
 
     [NSMenu popUpContextMenu:[MenuController sharedController].statusMenu withEvent:theEvent forView:self.window.controlView];
+}
+
+- (void)scrollWheel:(NSEvent *)theEvent
+{
+    [self.volumeViewController updateVolumeWithDeltaValue:-[theEvent scrollingDeltaY]];
 }
 
 -(BOOL)acceptsFirstResponder

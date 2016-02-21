@@ -45,14 +45,15 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)setupCoverView
 {
     [self.shadowView.layer setBackgroundColor:CGColorCreateGenericRGB(0.0, 0.0, 0.0, 1)];
+    [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil andFullInfo:NO];
 }
 
 -(void)updateCover:(NSNotification *)note
 {
-    [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:note.userInfo];
+    [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:note.userInfo andFullInfo:YES];
 }
 
--(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo
+-(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo andFullInfo:(BOOL)fullInfo
 {
     if (track) {
         [self updateWithTrack:track];
@@ -60,7 +61,9 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             __weak typeof(self) weakSelf = self;
             if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf displayFullInfoForTrack:track];
+                    if (fullInfo) {
+                        [weakSelf displayFullInfoForTrack:track];
+                    }
                 });
             }
             [self.getCover getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
@@ -70,16 +73,18 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     } else {
         Track *noTrack = [[Track alloc] initWithTrackName:@"Turn on iTunes" artist:@"" album:@"" andDuration:0];
         [self updateWith:noTrack andCover:[self.getCover defaultCover]];
-        [self displayFullInfoForTrack:noTrack];
+        if (fullInfo) {
+            [self displayFullInfoForTrack:noTrack];
+        }
     }
 }
 
 -(void)animateCover
 {
     if (![MusicScrobbler sharedScrobbler].currentTrack) {
-        [self updateCoverWithTrack:nil andUserInfo:nil];
+        [self updateCoverWithTrack:nil andUserInfo:nil andFullInfo:YES];
     } else {
-        [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil];
+        [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil andFullInfo:YES];
     }
 }
 

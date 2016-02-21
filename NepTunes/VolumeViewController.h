@@ -12,5 +12,6 @@
 
 @property (weak) IBOutlet NSSlider *slider;
 
+-(void)updateVolumeWithDeltaValue:(NSInteger)delta;
 
 @end

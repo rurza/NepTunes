@@ -13,23 +13,14 @@
 
 @implementation ControlView
 
--(void)rotateWithEvent:(NSEvent *)event
-{
-    NSLog(@"=== rotate: %@ ===", event);
-}
 
--(void)magnifyWithEvent:(NSEvent *)event
-{
-    NSLog(@"magnify: %@", event);
-}
-
--(BOOL)wantsScrollEventsForSwipeTrackingOnAxis:(NSEventGestureAxis)axis
+-(BOOL)acceptsTouchEvents
 {
     return YES;
 }
 
 
--(BOOL)acceptsFirstResponder
+-(BOOL)becomeFirstResponder
 {
     return YES;
 }

@@ -55,7 +55,6 @@
         if ([FXReachability sharedInstance].isReachable) {
             [self getCoverURLFromiTunesAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
                 handler(cover);
-                NSLog(@"Zaktualizowałem okładkę i wysłałem do handlera");
                 if ([weakSelf.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
                     [weakSelf.delegate trackInfoShouldBeDisplayed];
                 }

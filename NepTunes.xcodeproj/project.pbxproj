@@ -143,7 +143,7 @@
 		5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5BDD6B151A1D0C95001D87D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5BDD6B171A1D0C95001D87D6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		5BDD6B171A1D0C95001D87D6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NepTunes/Images.xcassets; sourceTree = "<group>"; };
 		5BDD6B1A1A1D0C95001D87D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Interface.xib; sourceTree = "<group>"; };
 		5BDD6B201A1D0C95001D87D6 /* NepTunesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NepTunesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDD6B251A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -309,6 +309,7 @@
 			children = (
 				5BDD6B301A1D0CA2001D87D6 /* Podfile */,
 				5BDD6B0F1A1D0C95001D87D6 /* NepTunes */,
+				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B231A1D0C95001D87D6 /* NepTunesTests */,
 				5BDD6B0E1A1D0C95001D87D6 /* Products */,
 				2D4E72722E193F7BAEB5AA5E /* Pods */,
@@ -329,12 +330,11 @@
 		5BDD6B0F1A1D0C95001D87D6 /* NepTunes */ = {
 			isa = PBXGroup;
 			children = (
+				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
 				5B1BC24D1C6CE4CA004EB785 /* Cover */,
 				5BAE70F31C4EC91500779081 /* Hotkeys */,
-				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
-				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
 				5B427BDD1C52B4B700EA1D4A /* Menu */,
 				5BC6A8E31C611C3A009C3E9F /* Music */,
 				5BAE70FD1C50058200779081 /* Reachability */,

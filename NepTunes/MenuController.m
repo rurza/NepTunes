@@ -19,6 +19,7 @@
 #import "LastFm.h"
 #import "PreferencesController.h"
 #import <PINCache.h>
+#import "OfflineScrobbler.h"
 
 @import QuartzCore;
 
@@ -38,6 +39,10 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) NSUInteger animationCurrentStep;
 @property (nonatomic) PINCache *cachediTunesSearchResults;
 @property (nonatomic) PreferencesController *preferencesController;
+//reachability
+@property (nonatomic) BOOL reachability;
+@property (nonatomic) OfflineScrobbler *offlineScrobbler;
+
 @end
 
 @implementation MenuController
@@ -74,7 +79,7 @@ static NSUInteger const kNumberOfFrames = 10;
         [self openPreferences:self];
     }
     //Are we offline?
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMenu) name:FXReachabilityStatusDidChangeNotification object:nil];
+    [self setupReachability];
     
     if (self.settings.numberOfTracksInRecent.integerValue != 0) {
         [self showRecentMenu];
@@ -85,6 +90,31 @@ static NSUInteger const kNumberOfFrames = 10;
     [self.loveSongMenuTitle setEnabled:NO];
     
     [self updateMenu];    
+}
+
+#pragma mark - Reachability
+
+
+-(void)setupReachability
+{
+    //1. this must be first
+    self.reachability = YES;
+    //2. this must be second
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:FXReachabilityStatusDidChangeNotification object:nil];
+    
+}
+
+-(void)reachabilityDidChange:(NSNotification *)note
+{
+    BOOL reachable = [FXReachability isReachable];
+    if (!reachable && self.musicController.playerState == iTunesEPlSPlaying && self.settings.session) {
+        [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsDown];
+        self.reachability = NO;
+    } else if (reachable && !self.reachability && self.musicScrobbler.currentTrack && self.offlineScrobbler.tracks.count && self.settings.session) {
+        [[UserNotificationsController sharedNotificationsController] displayNotificationThatInternetConnectionIsBack];
+        self.reachability = YES;
+    }
+    [self updateMenu];
 }
 
 #pragma mark - Status Bar Icon
@@ -719,6 +749,8 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if (!_musicScrobbler) {
         _musicScrobbler = [MusicScrobbler sharedScrobbler];
+        _musicScrobbler.delegate = self.offlineScrobbler;
+
     }
     return _musicScrobbler;
 }
@@ -745,10 +777,17 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if (!_cachediTunesSearchResults) {
         _cachediTunesSearchResults = [[PINCache alloc] initWithName:@"iTunesSearchCache"];
-        _cachediTunesSearchResults.memoryCache.ageLimit = 60 * 60 * 24;
-        _cachediTunesSearchResults.diskCache.byteLimit = 60 * 60 * 24;
+        _cachediTunesSearchResults.diskCache.ageLimit = 60 * 60 * 24;
     }
     return _cachediTunesSearchResults;
+}
+
+-(OfflineScrobbler *)offlineScrobbler
+{
+    if (!_offlineScrobbler) {
+        _offlineScrobbler = [OfflineScrobbler sharedInstance];
+    }
+    return _offlineScrobbler;
 }
 
 @end

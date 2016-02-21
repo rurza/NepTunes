@@ -7,6 +7,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="CoverWindowController">
             <connections>
                 <outlet property="controlViewController" destination="wPK-FC-1hR" id="x30-UK-zoj"/>
+                <outlet property="volumeViewController" destination="4tG-gB-LjI" id="URR-xH-JSr"/>
                 <outlet property="window" destination="r1X-Hd-BPu" id="fIm-yo-pvm"/>
             </connections>
         </customObject>

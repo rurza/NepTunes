@@ -29,10 +29,20 @@
 
 - (IBAction)changeVolume:(NSSlider *)sender
 {
-    [MusicController sharedController].iTunes.soundVolume = sender.integerValue;
-    [self.coverWindowController.controlViewController updateVolumeIcon];
+    [self updateVolumeWithValue:sender.integerValue];
 }
 
+-(void)updateVolumeWithValue:(NSInteger)value
+{
+    [MusicController sharedController].iTunes.soundVolume = value;
+    [self.coverWindowController.controlViewController updateVolumeIcon];
+    self.slider.integerValue = [MusicController sharedController].iTunes.soundVolume;
+}
 
+-(void)updateVolumeWithDeltaValue:(NSInteger)delta
+{
+    NSInteger newValue = [MusicController sharedController].iTunes.soundVolume + delta;
+    [self updateVolumeWithValue:newValue];
+}
 
 @end
