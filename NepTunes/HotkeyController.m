@@ -118,5 +118,12 @@ static void *MASObservingContext = &MASObservingContext;
     }
 }
 
+-(void)dealloc
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObserver:self forKeyPath:kloveSongShortcut];
+    [defaults removeObserver:self forKeyPath:kshowSimilarArtistsShortcut];
+    [defaults removeObserver:self forKeyPath:kshowYourProfileShortcut];
+}
 
 @end

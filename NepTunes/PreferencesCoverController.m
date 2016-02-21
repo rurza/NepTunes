@@ -273,5 +273,6 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kTrackInfoUpdated object:nil];
+    CGColorRelease(self.shadowView.layer.backgroundColor);
 }
 @end

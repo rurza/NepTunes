@@ -35,7 +35,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) IBOutlet NSView *generalView;
 @property (nonatomic) IBOutlet NSView *albumCoverView;
 
-
 @property (nonatomic) IBOutlet NSImageView *userAvatar;
 
 @property (nonatomic) IBOutlet NSButton *createAccountButton;
@@ -503,7 +502,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 -(void)dealloc
 {
-    NSLog(@"Preferences deallocated");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

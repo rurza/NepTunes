@@ -14,6 +14,5 @@
 @property (weak, nonatomic) IBOutlet NSToolbar *settingsToolbar;
 @property (nonatomic) NSString *lastChosenToolbarIdentifier;
 
-//+ (instancetype)sharedPreferences;
 
 @end
