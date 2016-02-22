@@ -43,6 +43,7 @@
                                                   options:NSTrackingMouseEnteredAndExited |NSTrackingAssumeInside | NSTrackingActiveAlways
                                                     owner:self userInfo:nil];
     [self.window.contentView addTrackingArea:self.hoverArea];
+    self.window.contentView.acceptsTouchEvents = YES;
     self.controlViewController.delegate = self;
     [self readSettings];
 }
@@ -323,8 +324,15 @@
 
 - (void)scrollWheel:(NSEvent *)theEvent
 {
-    [self.volumeViewController updateVolumeWithDeltaValue:-[theEvent scrollingDeltaY]];
+    CGFloat value;
+    if (theEvent.isDirectionInvertedFromDevice) {
+        value = -[theEvent scrollingDeltaY];
+    } else {
+        value = [theEvent scrollingDeltaY];
+    }
+    [self.volumeViewController updateVolumeWithDeltaValue:value];
 }
+
 
 -(BOOL)acceptsFirstResponder
 {

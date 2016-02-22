@@ -13,12 +13,12 @@
 #import "FXReachability.h"
 #import "iTunesSearch.h"
 #import "SettingsController.h"
-#import <PINDiskCache.h>
+#import <PINCache.h>
 #include <CommonCrypto/CommonDigest.h>
 
 @interface GetCover () <NSURLSessionDelegate>
-@property (nonatomic) PINDiskCache *cache;
-
+@property (nonatomic) PINDiskCache *imagesCache;
+@property (nonatomic) ItunesSearch *itunesSearch;
 @end
 
 @implementation GetCover
@@ -84,7 +84,7 @@
 -(void)getCoverURLFromiTunesAndSetItAsCoverForTrack:(Track *)track inCompletionHandler:(void(^)(NSImage *cover))handler
 {
     __weak typeof(self) weakSelf = self;
-    [[ItunesSearch sharedInstance] getAlbumWithArtist:track.artist andName:track.album limitOrNil:@20 successHandler:^(NSArray *result) {
+    [self.itunesSearch getAlbumWithArtist:track.artist andName:track.album limitOrNil:@20 successHandler:^(NSArray *result) {
         NSString *coverURL;
         for (NSDictionary *singleResult in result) {
             if ([singleResult objectForKey:@"artworkUrl100"]) {
@@ -160,10 +160,22 @@
     return [NSImage imageNamed:@"nocover"];
 }
 
+#pragma mark - NSURLSession
+- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(nullable NSError *)error
+{
+    if (error && [SettingsController sharedSettings].debugMode) {
+        NSLog(@"Session invalid: %@", error.localizedDescription);
+    }
+    [session invalidateAndCancel];
+    session = nil;
+}
+
+#pragma mark - Cache
+
 -(void)saveCoverImage:(NSImage *)image forTrack:(Track *)track
 {
     NSString *key = [self md5sumFromString: [NSString stringWithFormat:@"%@%@", track.artist, track.album]];
-    [self.cache setObject:image forKey:key];
+    [self.imagesCache setObject:image forKey:key];
     if ([SettingsController sharedSettings].debugMode) {
         NSLog(@"saving image to cache for key %@", key);
     }
@@ -172,11 +184,11 @@
 -(NSImage *)cachedCoverImageForTrack:(Track *)track
 {
     NSString *key = [self md5sumFromString:[NSString stringWithFormat:@"%@%@", track.artist, track.album]];
-    if ([self.cache objectForKey:key]) {
+    if ([self.imagesCache objectForKey:key]) {
         if ([SettingsController sharedSettings].debugMode) {
             NSLog(@"Cover image for key %@", key);
         }
-        return (NSImage *)[self.cache objectForKey:key];
+        return (NSImage *)[self.imagesCache objectForKey:key];
     }
     if ([SettingsController sharedSettings].debugMode) {
         NSLog(@"There is no cover image for key %@...", key);
@@ -194,23 +206,25 @@
     return [ms copy];
 }
 
-- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(nullable NSError *)error
+
+#pragma mark - Getters
+
+-(PINDiskCache *)imagesCache
 {
-    if (error && [SettingsController sharedSettings].debugMode) {
-        NSLog(@"Session invalid: %@", error.localizedDescription);
+    if (!_imagesCache) {
+        _imagesCache = [[PINDiskCache alloc] initWithName:@"imageCache"];
+        _imagesCache.byteLimit = 1024 * 1024;
     }
-    [session invalidateAndCancel];
-    session = nil;
+    return _imagesCache;
 }
 
 
--(PINDiskCache *)cache
+-(ItunesSearch *)itunesSearch
 {
-    if (!_cache) {
-        _cache = [[PINDiskCache alloc] initWithName:@"imageCache"];
-        _cache.byteLimit = 1024 * 1024;
+    if (!_itunesSearch) {
+        _itunesSearch = [[ItunesSearch alloc] init];
     }
-    return _cache;
+    return _itunesSearch;
 }
 
 @end

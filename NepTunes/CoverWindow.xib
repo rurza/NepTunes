@@ -72,7 +72,7 @@
                                     <constraint firstAttribute="width" constant="24" id="IA0-bg-gZh"/>
                                     <constraint firstAttribute="height" constant="24" id="x6a-ds-jVf"/>
                                 </constraints>
-                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="play" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="0kb-bQ-bKi">
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="play" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="0kb-bQ-bKi">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -173,18 +173,18 @@
             </connections>
         </popover>
         <customView id="qoH-4P-ncx">
-            <rect key="frame" x="0.0" y="0.0" width="136" height="56"/>
+            <rect key="frame" x="0.0" y="0.0" width="136" height="36"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pa5-ck-vgY">
-                    <rect key="frame" x="18" y="18" width="100" height="20"/>
+                    <rect key="frame" x="8" y="8" width="120" height="20"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="fCs-4F-rhA"/>
                     <connections>
                         <action selector="changeVolume:" target="4tG-gB-LjI" id="95S-Qb-r6c"/>
                     </connections>
                 </slider>
             </subviews>
-            <point key="canvasLocation" x="-303" y="149"/>
+            <point key="canvasLocation" x="-490" y="102"/>
         </customView>
     </objects>
     <resources>

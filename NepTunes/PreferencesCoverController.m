@@ -73,7 +73,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     } else {
         Track *noTrack;
         if (![MusicController sharedController].isiTunesRunning) {
-            noTrack = [[Track alloc] initWithTrackName:@"Turn on iTunes" artist:@"" album:@"" andDuration:0];
+            noTrack = [[Track alloc] initWithTrackName:@"Play track to refresh" artist:@"" album:@"" andDuration:0];
         } else {
             noTrack = [[Track alloc] initWithTrackName:@"Pause/play track to refresh" artist:@"" album:@"" andDuration:0];
         }
@@ -99,7 +99,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [blurFilter setDefaults];
     [blurFilter setValue:backgroundCover forKey:@"inputImage"];
-    NSInteger blur = 24;
+    NSInteger blur = 16;
     [blurFilter setValue:@(blur) forKey:@"inputRadius"];
     CIImage *result = [blurFilter valueForKey:kCIOutputImageKey];
     
@@ -134,6 +134,8 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     self.coverView.titleLabel.stringValue = [NSString stringWithFormat:@"%@",track.trackName];
 }
 
+#pragma mark -
+
 
 -(void)fadeCover:(BOOL)direction
 {
@@ -157,6 +159,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     [self fadeCover:YES];
 }
 
+#pragma mark -
 
 
 -(void)displayFullInfoForTrack:(Track *)track
@@ -256,6 +259,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
 
 }
+#pragma mark -
 
 -(CoverLabel *)artistLabel
 {
@@ -285,6 +289,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
     return _getCover;
 }
+#pragma mark -
 
 -(void)dealloc
 {

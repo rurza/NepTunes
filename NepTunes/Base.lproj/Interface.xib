@@ -690,6 +690,13 @@
                         <action selector="showUserProfile:" target="aMi-64-iJ4" id="Ee0-Ec-iDi"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="Pdx-mI-Ztv"/>
+                <menuItem title="About NepTunes" id="4aB-li-Gnw">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="openAboutWindow:" target="aMi-64-iJ4" id="bKx-xA-Hpw"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Preferences..." keyEquivalent="," id="rQL-im-FvJ">
                     <connections>
                         <action selector="openPreferences:" target="aMi-64-iJ4" id="8u7-vc-L1t"/>
@@ -701,7 +708,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-655.5" y="130.5"/>
+            <point key="canvasLocation" x="-765.5" y="176.5"/>
         </menu>
         <customObject id="aMi-64-iJ4" customClass="MenuController">
             <connections>

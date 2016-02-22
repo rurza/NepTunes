@@ -161,7 +161,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
              [weakSelf.loginButton setTitle:@"Sign In"];
              [weakSelf.logoutButton setTitle:[NSString stringWithFormat:@"Sign Out %@", weakSelf.settingsController.username]];
              weakSelf.passwordField.stringValue = @"";
-             [weakSelf.musicController updateTrackInfo:nil];
+//             [weakSelf.musicController updateTrackInfo:nil];
          } failureHandler:^(NSError *error) {
              if (error.code == -1001) {
                  if (tryCounter <= 3) {
@@ -241,6 +241,10 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     NSView *view = [self viewForTag:senderTag];
     NSView *previousView = [self viewForTag:self.currentViewTag];
     
+    if (senderTag == 5) {
+        [self animateCoverAfterSwitchingTab];
+    }
+    
     self.currentViewTag = senderTag;
     
     NSRect newFrame = [self newFrameForNewContentView:view];
@@ -292,14 +296,15 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
             view = self.generalView;
             break;
     }
-    if (viewtag == 5) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.preferencesCoverController animateCover];
-        });
-    }
     return view;
 }
 
+-(void)animateCoverAfterSwitchingTab
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.preferencesCoverController animateCover];
+    });
+}
 
 -(BOOL)validateToolbarItem:(NSToolbarItem *)item {
     if ([item tag] == self.currentViewTag) return NO;
@@ -425,20 +430,20 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 {
     POPSpringAnimation *avatarSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
     avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(94, 157, 64, 64)];
-    avatarSpringAnimation.springBounciness = 12;
+    avatarSpringAnimation.springBounciness = 16;
     
     POPSpringAnimation *avatarCornerRadiusSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerCornerRadius];
     avatarCornerRadiusSpringAnimation.toValue = @(32);
-    avatarCornerRadiusSpringAnimation.springBounciness = 12;
+    avatarCornerRadiusSpringAnimation.springBounciness = 16;
     
     
-    POPSpringAnimation *avatarBorderSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerBorderWidth];
-    avatarBorderSpringAnimation.toValue = @(2);
-    avatarBorderSpringAnimation.springBounciness = 12;
+//    POPSpringAnimation *avatarBorderSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerBorderWidth];
+//    avatarBorderSpringAnimation.toValue = @(2);
+//    avatarBorderSpringAnimation.springBounciness = 12;
 
     [self.userAvatar pop_addAnimation:avatarSpringAnimation forKey:nil];
     [self.userAvatar.layer pop_addAnimation:avatarCornerRadiusSpringAnimation forKey:nil];
-    [self.userAvatar.layer pop_addAnimation:avatarBorderSpringAnimation forKey:nil];
+//    [self.userAvatar.layer pop_addAnimation:avatarBorderSpringAnimation forKey:nil];
 }
 
 #pragma mark - Getters

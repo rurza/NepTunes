@@ -18,6 +18,8 @@
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
+		5B881D9A1C7B64F9004AF260 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B881D981C7B64F9004AF260 /* AboutWindowController.m */; };
+		5B881D9B1C7B64F9004AF260 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B881D991C7B64F9004AF260 /* AboutWindowController.xib */; };
 		5B9662741C725A640095AF54 /* VolumeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9662731C725A640095AF54 /* VolumeViewController.m */; };
 		5B9F07401C72300200F73566 /* CoverLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F073F1C72300200F73566 /* CoverLabel.m */; };
 		5B9F07431C723BFE00F73566 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F07421C723BFE00F73566 /* ControlViewController.m */; };
@@ -111,6 +113,9 @@
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
+		5B881D971C7B64F9004AF260 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
+		5B881D981C7B64F9004AF260 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
+		5B881D991C7B64F9004AF260 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
 		5B9662721C725A640095AF54 /* VolumeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeViewController.h; sourceTree = "<group>"; };
 		5B9662731C725A640095AF54 /* VolumeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeViewController.m; sourceTree = "<group>"; };
 		5B9F073B1C722C5B00F73566 /* NepTunes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NepTunes-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -143,7 +148,7 @@
 		5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5BDD6B151A1D0C95001D87D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5BDD6B171A1D0C95001D87D6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NepTunes/Images.xcassets; sourceTree = "<group>"; };
+		5BDD6B171A1D0C95001D87D6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		5BDD6B1A1A1D0C95001D87D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Interface.xib; sourceTree = "<group>"; };
 		5BDD6B201A1D0C95001D87D6 /* NepTunesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NepTunesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDD6B251A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -228,6 +233,10 @@
 		5B427BDD1C52B4B700EA1D4A /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				5B881D971C7B64F9004AF260 /* AboutWindowController.h */,
+				5B881D981C7B64F9004AF260 /* AboutWindowController.m */,
+				5B881D991C7B64F9004AF260 /* AboutWindowController.xib */,
+				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
 				5B2F4CE51B763C16009F0C53 /* MenuController.h */,
 				5B2F4CE61B763C16009F0C53 /* MenuController.m */,
 				5B427BD91C52B4A300EA1D4A /* RecentTracksController.h */,
@@ -300,6 +309,8 @@
 				5BC6A8E01C610C83009C3E9F /* MusicController.m */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
 				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
+				5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */,
+				5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */,
 			);
 			name = Music;
 			sourceTree = "<group>";
@@ -309,7 +320,6 @@
 			children = (
 				5BDD6B301A1D0CA2001D87D6 /* Podfile */,
 				5BDD6B0F1A1D0C95001D87D6 /* NepTunes */,
-				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B231A1D0C95001D87D6 /* NepTunesTests */,
 				5BDD6B0E1A1D0C95001D87D6 /* Products */,
 				2D4E72722E193F7BAEB5AA5E /* Pods */,
@@ -330,7 +340,7 @@
 		5BDD6B0F1A1D0C95001D87D6 /* NepTunes */ = {
 			isa = PBXGroup;
 			children = (
-				5BDD6B191A1D0C95001D87D6 /* Interface.xib */,
+				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
 				5B1BC24D1C6CE4CA004EB785 /* Cover */,
@@ -352,8 +362,6 @@
 				5B9F073B1C722C5B00F73566 /* NepTunes-Bridging-Header.h */,
 				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,
 				5BFB29E81A1D800900EA87AA /* dsa_pub.pem */,
-				5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */,
-				5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */,
 				5BDD6B111A1D0C95001D87D6 /* Info.plist */,
 				5BDD6B151A1D0C95001D87D6 /* main.m */,
 			);
@@ -499,6 +507,7 @@
 			files = (
 				5BF402E81C73A156004FD0FA /* PreferencesController.xib in Resources */,
 				5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */,
+				5B881D9B1C7B64F9004AF260 /* AboutWindowController.xib in Resources */,
 				5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */,
 				5BDD6B181A1D0C95001D87D6 /* Images.xcassets in Resources */,
 				5BDD6B1B1A1D0C95001D87D6 /* Interface.xib in Resources */,
@@ -598,6 +607,7 @@
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */,
 				5B9662741C725A640095AF54 /* VolumeViewController.m in Sources */,
+				5B881D9A1C7B64F9004AF260 /* AboutWindowController.m in Sources */,
 				5B9F07431C723BFE00F73566 /* ControlViewController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
 				5BAE71031C50199700779081 /* SavedTrack.m in Sources */,

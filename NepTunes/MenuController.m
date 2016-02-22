@@ -22,6 +22,7 @@
 #import "OfflineScrobbler.h"
 #import "CoverWindowController.h"
 #import "ControlViewController.h"
+#import "AboutWindowController.h"
 
 @import QuartzCore;
 
@@ -44,7 +45,7 @@ static NSUInteger const kNumberOfFrames = 10;
 //reachability
 @property (nonatomic) BOOL reachability;
 @property (nonatomic) OfflineScrobbler *offlineScrobbler;
-
+@property (nonatomic) AboutWindowController *aboutWindowController;
 @end
 
 @implementation MenuController
@@ -248,6 +249,23 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 
+- (IBAction)openAboutWindow:(NSMenuItem *)sender
+{
+    [NSApp activateIgnoringOtherApps:YES];
+    if (!self.aboutWindowController) {
+        self.aboutWindowController = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
+        self.aboutWindowController.window.delegate = self;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(windowWillClose:)
+                                                     name:NSWindowWillCloseNotification
+                                                   object:self.aboutWindowController.window];
+
+    }
+    [self.aboutWindowController showWindow:self];
+    [self.aboutWindowController.window makeKeyAndOrderFront:nil];
+}
+
+
 -(IBAction)quit:(id)sender
 {
     [[NSApplication sharedApplication] terminate:self];
@@ -281,6 +299,9 @@ static NSUInteger const kNumberOfFrames = 10;
     NSWindow* window = notification.object;
     if (window == self.preferencesController.window) {
         self.preferencesController = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:window];
+    } else if (window == self.aboutWindowController.window) {
+        self.aboutWindowController = nil;
         [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:window];
     }
 }
@@ -782,6 +803,7 @@ static NSUInteger const kNumberOfFrames = 10;
     if (!_cachediTunesSearchResults) {
         _cachediTunesSearchResults = [[PINCache alloc] initWithName:@"iTunesSearchCache"];
         _cachediTunesSearchResults.diskCache.ageLimit = 60 * 60 * 24;
+        _cachediTunesSearchResults.memoryCache.ageLimit = 60 * 60;
     }
     return _cachediTunesSearchResults;
 }
