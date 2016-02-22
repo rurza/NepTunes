@@ -189,7 +189,7 @@ static NSString *const kDebugMode = @"debugMode";
         __block NSAlert *alert = [[NSAlert alloc] init];
         alert.window.releasedWhenClosed = YES;
         alert.messageText = NSLocalizedString(@"Icon Hidden", nil);
-        alert.informativeText = NSLocalizedString(@"To open NepTunes settings again, click its icon in Launchpad or double-click it in Finder.", nil);
+        alert.informativeText = NSLocalizedString(@"To open NepTunes preferences again, click its icon in Launchpad or double-click it in Finder.", nil);
         alert.alertStyle = NSInformationalAlertStyle;
         [alert addButtonWithTitle:@"OK"];
         NSButton *restoreNowButton = [alert addButtonWithTitle:NSLocalizedString(@"Restore now", nil)];

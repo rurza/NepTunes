@@ -529,7 +529,9 @@ static NSUInteger const kNumberOfFrames = 10;
     NSString *link = [url stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
     NSLog(@"%@", link);
     [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-    [self.musicController.iTunes openLocation:link];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.musicController.iTunes openLocation:link];
+    });
 }
 
 -(NSString *)asciiString:(NSString *)string
@@ -705,8 +707,9 @@ static NSUInteger const kNumberOfFrames = 10;
         if (result.count) {
             NSString *link = [(NSString *)result.firstObject[@"trackViewUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
             [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-
-            [self.musicController.iTunes openLocation:link];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.musicController.iTunes openLocation:link];
+            });
             
         } else {
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
