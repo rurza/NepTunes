@@ -19,7 +19,9 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    [self.window.contentView setBackgroundColor:[NSColor colorWithRed:0.8 green:0.849 blue:0.91 alpha:1]];
+//    [self.window.contentView setBackgroundColor:[NSColor colorWithRed:0.8 green:0.849 blue:0.91 alpha:1]];
+    [self.window.contentView setBackgroundColor:[NSColor whiteColor]];
+
     self.window.titlebarAppearsTransparent = YES;
     self.window.titleVisibility = NSWindowTitleHidden;
     NSDictionary *plist = [NSBundle mainBundle].infoDictionary;
