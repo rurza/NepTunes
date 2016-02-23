@@ -83,6 +83,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 
 
 -(void)awakeFromNib {
+    self.window.restorable = NO;
+    
     if (self.settingsController.session) {
         self.accountToolbarItem.tag = 0;
         self.currentViewTag = 2;
@@ -311,32 +313,32 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     else return YES;
 }
 
-
--(NSString *)lastChosenToolbarIdentifier
-{
-    NSString *identifier;
-    switch (self.currentViewTag) {
-        case 0:
-            identifier = @"Account";
-            break;
-        case 1:
-            identifier = @"Account";
-            break;
-        case 2:
-            identifier = @"General";
-            break;
-        case 3:
-            identifier = @"Hotkeys";
-            break;
-        case 5:
-            identifier = @"Album Cover";
-            break;
-        default:
-            identifier = @"General";
-            break;
-    }
-    return identifier;
-}
+//
+//-(NSString *)lastChosenToolbarIdentifier
+//{
+//    NSString *identifier;
+//    switch (self.currentViewTag) {
+//        case 0:
+//            identifier = @"Account";
+//            break;
+//        case 1:
+//            identifier = @"Account";
+//            break;
+//        case 2:
+//            identifier = @"General";
+//            break;
+//        case 3:
+//            identifier = @"Hotkeys";
+//            break;
+//        case 5:
+//            identifier = @"Album Cover";
+//            break;
+//        default:
+//            identifier = @"General";
+//            break;
+//    }
+//    return identifier;
+//}
 
 #pragma mark - NSTextField Delegate
 

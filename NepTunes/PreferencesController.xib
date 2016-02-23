@@ -248,13 +248,13 @@ DQ
             </subviews>
             <point key="canvasLocation" x="571.5" y="-207"/>
         </customView>
-        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="Preferences" id="GMI-IS-lMx">
+        <window title="NepTunes" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="" id="GMI-IS-lMx">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
-            <rect key="contentRect" x="335" y="390" width="285" height="215"/>
+            <rect key="contentRect" x="335" y="390" width="379" height="374"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
-                <rect key="frame" x="0.0" y="0.0" width="285" height="215"/>
+                <rect key="frame" x="0.0" y="0.0" width="379" height="374"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="L8W-3N-nM6">
@@ -335,7 +335,7 @@ DQ
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="y1V-2b-6IK"/>
                 </imageView>
             </subviews>
-            <point key="canvasLocation" x="265.5" y="76.5"/>
+            <point key="canvasLocation" x="451.5" y="83.5"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
             <rect key="frame" x="0.0" y="0.0" width="379" height="131"/>

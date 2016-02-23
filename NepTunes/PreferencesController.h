@@ -12,7 +12,7 @@
 @interface PreferencesController : NSWindowController
 
 @property (weak, nonatomic) IBOutlet NSToolbar *settingsToolbar;
-@property (nonatomic) NSString *lastChosenToolbarIdentifier;
+//@property (nonatomic) NSString *lastChosenToolbarIdentifier;
 
 
 @end
