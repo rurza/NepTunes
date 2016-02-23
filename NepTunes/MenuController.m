@@ -532,9 +532,13 @@ static NSUInteger const kNumberOfFrames = 10;
 
     NSLog(@"%@", link);
     [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    if (self.musicController.isiTunesRunning) {
         [self.musicController.iTunes openLocation:link];
-    });
+    } else {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.musicController.iTunes openLocation:link];
+        });
+    }
 }
 
 -(NSString *)asciiString:(NSString *)string
@@ -706,15 +710,19 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)openAppleMusicPageForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
 {
+    __weak typeof(self) weakSelf = self;
     [self.iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
         if (result.count) {
             NSString *link = [(NSString *)result.firstObject[@"trackViewUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
             link = [link stringByAppendingString:@"&ct=neptunes"];
             [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (weakSelf.musicController.isiTunesRunning) {
                 [self.musicController.iTunes openLocation:link];
-            });
-            
+            } else {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.musicController.iTunes openLocation:link];
+                });
+            }
         } else {
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
         }
