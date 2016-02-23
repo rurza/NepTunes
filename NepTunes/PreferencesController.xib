@@ -167,7 +167,7 @@
                     <font key="titleFont" metaFont="system"/>
                 </box>
             </subviews>
-            <point key="canvasLocation" x="839.5" y="360"/>
+            <point key="canvasLocation" x="100.5" y="99"/>
         </customView>
         <customView identifier="Account" id="skh-Ke-u6J" userLabel="Account">
             <rect key="frame" x="0.0" y="0.0" width="507" height="258"/>
@@ -251,8 +251,9 @@ DQ
         <window title="NepTunes" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="" id="GMI-IS-lMx">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
-            <rect key="contentRect" x="335" y="390" width="379" height="374"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="335" y="490" width="379" height="374"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
                 <rect key="frame" x="0.0" y="0.0" width="379" height="374"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -287,7 +288,7 @@ DQ
                     <toolbarItem reference="tdm-m5-M5x"/>
                 </defaultToolbarItems>
             </toolbar>
-            <point key="canvasLocation" x="-83.5" y="110.5"/>
+            <point key="canvasLocation" x="-319.5" y="99"/>
         </window>
         <customView identifier="AccountLogged" id="FtI-IT-OHd">
             <rect key="frame" x="0.0" y="0.0" width="253" height="241"/>
@@ -412,13 +413,13 @@ DQ
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ga-oD-g2t">
-                    <rect key="frame" x="331" y="0.0" width="181" height="200"/>
+                    <rect key="frame" x="325" y="0.0" width="187" height="200"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="YcC-bP-b8f"/>
                 </imageView>
                 <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8JA-zT-DPW">
                     <rect key="frame" x="381" y="30" width="140" height="140"/>
-                    <shadow key="shadow" blurRadius="15">
-                        <size key="offset" width="-6" height="-8"/>
+                    <shadow key="shadow" blurRadius="10">
+                        <size key="offset" width="-3" height="-4"/>
                         <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </shadow>
                 </customView>

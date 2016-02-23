@@ -99,7 +99,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [blurFilter setDefaults];
     [blurFilter setValue:backgroundCover forKey:@"inputImage"];
-    NSInteger blur = 16;
+    NSInteger blur = 24;
     [blurFilter setValue:@(blur) forKey:@"inputRadius"];
     CIImage *result = [blurFilter valueForKey:kCIOutputImageKey];
     

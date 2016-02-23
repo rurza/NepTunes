@@ -702,6 +702,7 @@
                         <action selector="openPreferences:" target="aMi-64-iJ4" id="8u7-vc-L1t"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="mpx-Sr-5hk"/>
                 <menuItem title="Quit" keyEquivalent="q" id="nbH-9A-Y7P">
                     <connections>
                         <action selector="quit:" target="aMi-64-iJ4" id="2mW-JV-Fpz"/>

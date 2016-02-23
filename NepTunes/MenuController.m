@@ -527,6 +527,9 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)openLocationWithURL:(NSString *)url
 {
     NSString *link = [url stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
+    //Compaign
+    link = [link stringByAppendingString:@"&ct=neptunes"];
+
     NSLog(@"%@", link);
     [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -706,6 +709,7 @@ static NSUInteger const kNumberOfFrames = 10;
     [self.iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
         if (result.count) {
             NSString *link = [(NSString *)result.firstObject[@"trackViewUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
+            link = [link stringByAppendingString:@"&ct=neptunes"];
             [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.musicController.iTunes openLocation:link];
@@ -796,6 +800,7 @@ static NSUInteger const kNumberOfFrames = 10;
     if (!_iTunesSearch) {
         _iTunesSearch = [ItunesSearch sharedInstance];
         _iTunesSearch.affiliateToken = @"1010l3j7";
+        _iTunesSearch.campaignToken = @"neptunes";
         _iTunesSearch.cacheDelegate = self;
     }
     return _iTunesSearch;

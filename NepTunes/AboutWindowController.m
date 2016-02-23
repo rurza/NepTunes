@@ -11,6 +11,8 @@
 @interface AboutWindowController ()
 @property (strong) IBOutlet NSTextField *buildLabel;
 @property (strong) IBOutlet NSTextField *copyrightLabel;
+@property (strong) IBOutlet NSButton *followOnTwitterButton;
+@property (strong) IBOutlet NSButton *supportButton;
 
 @end
 
@@ -19,8 +21,8 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-//    [self.window.contentView setBackgroundColor:[NSColor colorWithRed:0.8 green:0.849 blue:0.91 alpha:1]];
-    [self.window.contentView setBackgroundColor:[NSColor whiteColor]];
+    [self.window.contentView setBackgroundColor:[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1]];
+//    [self.window.contentView setBackgroundColor:[NSColor whiteColor]];
 
     self.window.titlebarAppearsTransparent = YES;
     self.window.titleVisibility = NSWindowTitleHidden;
@@ -28,6 +30,7 @@
     self.buildLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Version %@ (%@)", nil), [plist objectForKey:@"CFBundleShortVersionString"], [plist objectForKey:@"CFBundleVersion"]];
     self.copyrightLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [plist objectForKey:@"NSHumanReadableCopyright"]];
 }
+
 - (IBAction)followOnTwitter:(NSButton *)sender
 {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://twitter.com/neptunesformac"]];
