@@ -256,6 +256,15 @@
         controlOpacity.duration = 0.3;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
         [self.controlViewController updateVolumeIcon];
+        if ((![MusicController sharedController].currentTrack.artist.length &&
+            ![MusicController sharedController].currentTrack.name.length &&
+            ![SettingsController sharedSettings].session) || (![SettingsController sharedSettings].session && ![SettingsController sharedSettings].integrationWithiTunes)) {
+            self.controlViewController.loveButton.alphaValue = 0.5;
+            self.controlViewController.loveButton.enabled = NO;
+        } else {
+            self.controlViewController.loveButton.alphaValue = 1;
+            self.controlViewController.loveButton.enabled = YES;
+        }
      }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;

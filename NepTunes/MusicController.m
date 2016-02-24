@@ -219,6 +219,9 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
     if (settings.integrationWithiTunes && settings.loveTrackOniTunes) {
         [self loveTrackOniTunes];
+        if (handler && !settings.session) {
+            handler();
+        }
     }
 }
 
