@@ -252,8 +252,8 @@ DQ
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="490" width="379" height="374"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="contentRect" x="335" y="310" width="379" height="374"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
                 <rect key="frame" x="0.0" y="0.0" width="379" height="374"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -291,11 +291,11 @@ DQ
             <point key="canvasLocation" x="-319.5" y="99"/>
         </window>
         <customView identifier="AccountLogged" id="FtI-IT-OHd">
-            <rect key="frame" x="0.0" y="0.0" width="253" height="241"/>
+            <rect key="frame" x="0.0" y="0.0" width="277" height="275"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="FVe-0m-KWf">
-                    <rect key="frame" x="14" y="109" width="225" height="32"/>
+                    <rect key="frame" x="26" y="143" width="225" height="32"/>
                     <buttonCell key="cell" type="push" title="Log out :(" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d5V-8o-JAG">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -307,11 +307,8 @@ DQ
                         <action selector="logOut:" target="-2" id="Wfc-fP-kKA"/>
                     </connections>
                 </button>
-                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="i5g-xn-58g">
-                    <rect key="frame" x="118" y="181" width="16" height="16"/>
-                </progressIndicator>
                 <textField toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x4L-IT-Z51">
-                    <rect key="frame" x="18" y="57" width="217" height="17"/>
+                    <rect key="frame" x="18" y="91" width="217" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="When to scrobble?" id="lES-J9-ixW">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -319,24 +316,37 @@ DQ
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xAp-YS-eoM">
-                    <rect key="frame" x="20" y="93" width="213" height="5"/>
+                    <rect key="frame" x="20" y="127" width="237" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
                 <slider toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="smd-WT-3o0">
-                    <rect key="frame" x="18" y="18" width="217" height="25"/>
+                    <rect key="frame" x="18" y="52" width="241" height="25"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="50" maxValue="100" doubleValue="50" tickMarkPosition="above" numberOfTickMarks="6" allowsTickMarkValuesOnly="YES" sliderType="linear" id="psK-Sb-1hv"/>
                     <connections>
                         <binding destination="RtU-Wd-pY6" name="value" keyPath="self.percentForScrobbleTime" id="SaE-Dx-yyf"/>
                     </connections>
                 </slider>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZjP-mB-emy">
+                    <rect key="frame" x="18" y="18" width="241" height="18"/>
+                    <buttonCell key="cell" type="check" title="Scrobble Podcasts and iTunes U" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6GH-U5-vnG">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleScrobblePodcastsAndiTunesU:" target="RtU-Wd-pY6" id="u5k-d2-fnG"/>
+                    </connections>
+                </button>
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="i5g-xn-58g">
+                    <rect key="frame" x="130" y="215" width="16" height="16"/>
+                </progressIndicator>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ohM-zy-ZuK">
-                    <rect key="frame" x="94" y="157" width="64" height="64"/>
+                    <rect key="frame" x="106" y="191" width="64" height="64"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="y1V-2b-6IK"/>
                 </imageView>
             </subviews>
-            <point key="canvasLocation" x="451.5" y="83.5"/>
+            <point key="canvasLocation" x="463.5" y="100.5"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
             <rect key="frame" x="0.0" y="0.0" width="379" height="131"/>
@@ -397,6 +407,7 @@ DQ
                 <outlet property="percentForScrobbleTimeLabel" destination="x4L-IT-Z51" id="Eor-HL-pGP"/>
                 <outlet property="percentForScrobbleTimeSlider" destination="smd-WT-3o0" id="uTd-ia-of2"/>
                 <outlet property="preferencesController" destination="-2" id="o5W-0y-IA2"/>
+                <outlet property="scrobblePodcastsAndiTunesUButton" destination="ZjP-mB-emy" id="PVf-my-IKg"/>
                 <outlet property="showRecentTrackIniTunesCheckbox" destination="QVJ-aV-evQ" id="FE7-xe-0XE"/>
                 <outlet property="showSimilarArtistsOnAppleMusicCheckbox" destination="0OG-gS-1lE" id="Ais-f8-6Ja"/>
             </connections>

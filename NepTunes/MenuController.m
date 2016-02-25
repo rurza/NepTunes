@@ -126,8 +126,9 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     NSImage *icon = [NSImage imageNamed:@"statusIcon"];
+    self.statusItem.button.image = icon;
     [icon setTemplate:YES];
-    self.statusItem.image = icon;
+//    self.statusItem.image = icon;
     self.statusItem.menu = self.statusMenu;
 }
 
@@ -175,7 +176,7 @@ static NSUInteger const kNumberOfFrames = 10;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.animationCurrentStep != 0) {
-                self.statusItem.image = [self imageForStep:self.animationCurrentStep];
+                self.statusItem.button.image = [self imageForStep:self.animationCurrentStep];
             } else {
                 if (forward) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -210,7 +211,7 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     NSImage *icon = [NSImage imageNamed:@"statusIcon"];
     [icon setTemplate:YES];
-    self.statusItem.image = icon;
+    self.statusItem.button.image = icon;
 }
 
 

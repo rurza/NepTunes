@@ -30,12 +30,15 @@
 @property (nonatomic) NSString *username;
 @property (nonatomic) NSNumber *numberOfTracksInRecent;
 @property (nonatomic) NSNumber *percentForScrobbleTime;
+@property (nonatomic) BOOL scrobblePodcastsAndiTunesU;
+
 @property (nonatomic,weak) IBOutlet NSPopUpButton *numberOfRecentItems;
 @property (nonatomic,weak) IBOutlet NSButton *launchAtLoginCheckbox;
 @property (nonatomic,weak) IBOutlet NSButton *hideStatusBarCheckbox;
 @property (nonatomic,weak) IBOutlet NSButton *openPreferencesWhenThereIsNoUserCheckbox;
 @property (nonatomic,weak) IBOutlet NSButton *hideNotificationsCheckbox;
 @property (nonatomic,weak) IBOutlet NSSlider *percentForScrobbleTimeSlider;
+@property (weak) IBOutlet NSButton *scrobblePodcastsAndiTunesUButton;
 
 //Menu
 @property (nonatomic,weak) IBOutlet NSButton *integrationWithiTunesCheckbox;
@@ -57,5 +60,8 @@
 -(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender;
 -(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender;
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender;
+
+- (IBAction)toggleScrobblePodcastsAndiTunesU:(NSButton *)sender;
+
 
 @end

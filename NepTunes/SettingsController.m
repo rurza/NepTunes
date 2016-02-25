@@ -27,6 +27,8 @@ static NSString *const kIntegrationWithiTunes = @"integrationWithiTunes";
 static NSString *const kLoveTrackOniTunes = @"loveTrackOniTunes";
 static NSString *const kShowSimilarArtistsOnAppleMusic = @"showSimilarArtistsOnAppleMusic";
 static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
+static NSString *const kScrobblePodcastsAndiTunesUButton = @"scrobblePodcastsAndiTunesUButton";
+
 static NSString *const kDebugMode = @"debugMode";
 
 @interface SettingsController ()
@@ -54,7 +56,7 @@ static NSString *const kDebugMode = @"debugMode";
 @synthesize showSimilarArtistsOnAppleMusic = _showSimilarArtistsOnAppleMusic;
 @synthesize showRecentTrackIniTunes = _showRecentTrackIniTunes;
 @synthesize debugMode = _debugMode;
-
+@synthesize scrobblePodcastsAndiTunesU = _scrobblePodcastsAndiTunesU;
 
 
 
@@ -87,17 +89,18 @@ static NSString *const kDebugMode = @"debugMode";
 
 -(void)registerDefaultsSettings
 {
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideStatusBarIcon: @NO}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kPercentForScrobbleTime: @50}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kNumberOfTracksInRecent: @5}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kLaunchAtLogin: @NO}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kOpenPreferencesAtLogin: @YES}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideNotifications: @NO}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kIntegrationWithiTunes: @NO}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kLoveTrackOniTunes: @NO}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kShowSimilarArtistsOnAppleMusic: @NO}];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kShowRecentTrackIniTunes: @NO}];
-
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kHideStatusBarIcon:                   @NO,
+                                                              kPercentForScrobbleTime:              @50,
+                                                              kNumberOfTracksInRecent:              @5,
+                                                              kLaunchAtLogin:                       @NO,
+                                                              kOpenPreferencesAtLogin:              @YES,
+                                                              kHideNotifications:                   @NO,
+                                                              kIntegrationWithiTunes:               @NO,
+                                                              kLoveTrackOniTunes:                   @NO,
+                                                              kShowSimilarArtistsOnAppleMusic:      @NO,
+                                                              kShowRecentTrackIniTunes:             @NO,
+                                                              kScrobblePodcastsAndiTunesUButton:    @NO}];
+ 
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -152,6 +155,11 @@ static NSString *const kDebugMode = @"debugMode";
         self.showRecentTrackIniTunesCheckbox.state = NSOnState;
     } else {
         self.showRecentTrackIniTunesCheckbox.state = NSOffState;
+    }
+    if (self.scrobblePodcastsAndiTunesU) {
+        self.scrobblePodcastsAndiTunesUButton.state = NSOnState;
+    } else {
+        self.scrobblePodcastsAndiTunesUButton.state = NSOffState;
     }
 
 }
@@ -293,6 +301,11 @@ static NSString *const kDebugMode = @"debugMode";
     self.showRecentTrackIniTunes = sender.state;
     [[MenuController sharedController] prepareRecentItemsMenu];
     [[MenuController sharedController] updateMenu];
+}
+
+- (IBAction)toggleScrobblePodcastsAndiTunesU:(NSButton *)sender
+{
+    self.scrobblePodcastsAndiTunesU = sender.state;
 }
 
 
@@ -465,7 +478,7 @@ static NSString *const kDebugMode = @"debugMode";
     if (!_percentForScrobbleTime) {
         _percentForScrobbleTime = [self.userDefaults objectForKey:kPercentForScrobbleTime];
     }
-    self.percentForScrobbleTimeLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Scrobble track at %@%% of it length.", nil), _percentForScrobbleTime];
+    self.percentForScrobbleTimeLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Scrobble track at %@%% of its length.", nil), _percentForScrobbleTime];
     return _percentForScrobbleTime;
 }
 
@@ -474,7 +487,7 @@ static NSString *const kDebugMode = @"debugMode";
     _percentForScrobbleTime = percentForScrobbleTime;
     if (percentForScrobbleTime) {
         [self.userDefaults setObject:percentForScrobbleTime forKey:kPercentForScrobbleTime];
-        self.percentForScrobbleTimeLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Scrobble track at %@%% of it length.", nil), percentForScrobbleTime];
+        self.percentForScrobbleTimeLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Scrobble track at %@%% of its length.", nil), percentForScrobbleTime];
     } else {
         [self.userDefaults removeObjectForKey:kPercentForScrobbleTime];
     }
@@ -590,6 +603,22 @@ static NSString *const kDebugMode = @"debugMode";
         _debugMode = [[self.userDefaults objectForKey:kDebugMode] boolValue];
     }
     return _debugMode;
+}
+
+#pragma mark   scrobblePodcastsAndiTunesU
+-(void)setScrobblePodcastsAndiTunesU:(BOOL)scrobblePodcastsAndiTunesU
+{
+    _scrobblePodcastsAndiTunesU = scrobblePodcastsAndiTunesU;
+    [self.userDefaults setObject:@(scrobblePodcastsAndiTunesU) forKey:kScrobblePodcastsAndiTunesUButton];
+    [self saveSettings];
+}
+
+-(BOOL)scrobblePodcastsAndiTunesU
+{
+    if (!_scrobblePodcastsAndiTunesU) {
+        _scrobblePodcastsAndiTunesU = [[self.userDefaults objectForKey:kScrobblePodcastsAndiTunesUButton] boolValue];
+    }
+    return _scrobblePodcastsAndiTunesU;
 }
 
 #pragma mark - Save

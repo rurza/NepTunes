@@ -91,7 +91,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         [[self window] setContentSize:[self.generalView frame].size];
         [[[self window] contentView ] addSubview:self.generalView];
         [self.settingsToolbar setSelectedItemIdentifier:@"General"];
-        [self.logoutButton setTitle:[NSString stringWithFormat:@"Log out %@", self.musicScrobbler.scrobbler.username]];
+        [self.logoutButton setTitle:[NSString stringWithFormat:@"Sign Out %@", self.settingsController.username]];
         [self setAvatarForUserWithInfo:nil];
     }
     else {

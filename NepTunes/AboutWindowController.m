@@ -21,7 +21,7 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    [self.window.contentView setBackgroundColor:[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1]];
+    [self.window.contentView setBackgroundColor:[NSColor colorWithRed:0.074 green:0.113 blue:0.18 alpha:1]];//[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1]];
 //    [self.window.contentView setBackgroundColor:[NSColor whiteColor]];
 
     self.window.titlebarAppearsTransparent = YES;

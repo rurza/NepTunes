@@ -28,7 +28,7 @@
                         <rect key="frame" x="211" y="122" width="180" height="54"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="NepTunes" id="H57-Na-QI3">
                             <font key="font" metaFont="system" size="39"/>
-                            <color key="textColor" red="0.090196078430000007" green="0.1843137255" blue="0.31764705879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.94005966186523438" green="0.96755892038345337" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -36,7 +36,7 @@
                         <rect key="frame" x="221" y="113" width="160" height="18"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="version xx (build xx)" id="c4s-dQ-8Y5">
                             <font key="font" metaFont="system"/>
-                            <color key="textColor" red="0.090196078430000007" green="0.1843137255" blue="0.31764705879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.94005966186523438" green="0.96755892038345337" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -44,13 +44,13 @@
                         <rect key="frame" x="18" y="6" width="373" height="16"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Copyright © 2014-2015 Adam Rozynski" id="oMo-56-wVT">
                             <font key="font" metaFont="miniSystem"/>
-                            <color key="textColor" red="0.090196078430000007" green="0.1843137255" blue="0.31764705879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.94005966186523438" green="0.96755892038345337" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJa-wt-nRY">
-                        <rect key="frame" x="207" y="72" width="188" height="32"/>
-                        <buttonCell key="cell" type="push" title="Follow on Twitter" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6h0-nc-ovz">
+                        <rect key="frame" x="207" y="79" width="188" height="25"/>
+                        <buttonCell key="cell" type="roundTextured" title="Follow on Twitter" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6h0-nc-ovz">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -63,8 +63,8 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="aNb-Hh-MkZ"/>
                     </imageView>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PAl-Z3-vod">
-                        <rect key="frame" x="207" y="41" width="188" height="32"/>
-                        <buttonCell key="cell" type="push" title="Support" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4bi-QA-vtk">
+                        <rect key="frame" x="207" y="48" width="188" height="25"/>
+                        <buttonCell key="cell" type="roundTextured" title="Support" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4bi-QA-vtk">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>

@@ -107,7 +107,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
                 NSLog(@"iTunes is running");
             }
 
-            if (self.playerState == iTunesEPlSPlaying) {
+            if (self.playerState == iTunesEPlSPlaying && !self.musicScrobbler.currentTrack.itIsNotMusic && self.musicScrobbler.currentTrack) {
                 NSTimeInterval trackLength;
                 
                 
@@ -174,15 +174,23 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)getInfoAboutTrackFromNotificationOrFromiTunes:(NSDictionary *)userInfo
 {
+//    NSLog(@"%@", userInfo);
     [self.musicScrobbler updateCurrentTrackWithUserInfo:userInfo];
     //2s są po to by Itunes sie ponownie nie wlaczal
     //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0 && self.currentTrack.artist.length) {
         self.musicScrobbler.currentTrack.duration = self.iTunes.currentTrack.duration;
     }
-    else if (self.currentTrack.name && self.currentTrack.album) {
+    else if (self.currentTrack.name && self.currentTrack.artist) {
         self.musicScrobbler.currentTrack = [Track trackWithiTunesTrack:self.currentTrack];
-        //            [self updateMenu];
+    }
+    if (!self.settingsController.scrobblePodcastsAndiTunesU) {
+        if (self.currentTrack.podcast || self.currentTrack.iTunesU || [userInfo objectForKey:@"Category"] || [(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"]) {
+            self.musicScrobbler.currentTrack.itIsNotMusic = YES;
+            if (self.settingsController.debugMode) {
+                NSLog(@"This isn't a music track or iTunes switched playing from one streaming to another.");
+            }
+        }
     }
 }
 
