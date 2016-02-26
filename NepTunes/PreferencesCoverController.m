@@ -212,7 +212,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         [weakSelf.coverView.artistView pop_addAnimation:hideFullInfoAnimation forKey:@"frame"];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            POPSpringAnimation *titleLabelOpacity = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+            POPBasicAnimation *titleLabelOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
             titleLabelOpacity.toValue = @(1);
             titleLabelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
                 weakSelf.changeTrackAnimation = NO;
@@ -220,7 +220,8 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             [layer pop_addAnimation:titleLabelOpacity forKey:@"titlelabel opacity"];
         });
         
-        
+        [self.artistLabel.layer pop_removeAllAnimations];
+        [self.trackLabel.layer pop_removeAllAnimations];
     };
     [self.artistLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];
     [self.trackLabel.layer pop_addAnimation:labelOpacity forKey:@"opacity"];

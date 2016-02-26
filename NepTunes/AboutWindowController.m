@@ -21,14 +21,34 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    [self.window.contentView setBackgroundColor:[NSColor colorWithRed:0.074 green:0.113 blue:0.18 alpha:1]];//[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1]];
-//    [self.window.contentView setBackgroundColor:[NSColor whiteColor]];
+    NSColor *backgroundColor = [NSColor colorWithRed:0.074 green:0.113 blue:0.18 alpha:1];
+    [self.window.contentView setBackgroundColor:backgroundColor];
+    //[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1]];
+    //    [self.window.contentView setBackgroundColor:[NSColor whiteColor]];
 
     self.window.titlebarAppearsTransparent = YES;
     self.window.titleVisibility = NSWindowTitleHidden;
     NSDictionary *plist = [NSBundle mainBundle].infoDictionary;
     self.buildLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Version %@ (%@)", nil), [plist objectForKey:@"CFBundleShortVersionString"], [plist objectForKey:@"CFBundleVersion"]];
     self.copyrightLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [plist objectForKey:@"NSHumanReadableCopyright"]];
+
+    for (NSButton *button in @[self.supportButton, self.followOnTwitterButton]) {
+        [button.cell setBackgroundColor:backgroundColor];
+        button.wantsLayer = YES;
+        button.layer.borderColor = [NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1].CGColor;
+        button.layer.borderWidth = 1;
+        button.layer.cornerRadius = 4;
+    }
+    NSMutableParagraphStyle *centredStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [centredStyle setAlignment:NSCenterTextAlignment];
+    self.supportButton.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Support", nil)
+                                                                         attributes:@{NSForegroundColorAttributeName : [NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1],
+                                                                                      NSParagraphStyleAttributeName: centredStyle}];
+    
+    self.followOnTwitterButton.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Follow on Twitter", nil)
+                                                                                 attributes:@{NSForegroundColorAttributeName : [NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1],
+                                                                                              NSParagraphStyleAttributeName: centredStyle}];
+
 }
 
 - (IBAction)followOnTwitter:(NSButton *)sender

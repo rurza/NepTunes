@@ -308,7 +308,7 @@ DQ
                     </connections>
                 </button>
                 <textField toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x4L-IT-Z51">
-                    <rect key="frame" x="18" y="91" width="217" height="17"/>
+                    <rect key="frame" x="18" y="91" width="241" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="When to scrobble?" id="lES-J9-ixW">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
