@@ -30,6 +30,7 @@
 @property (nonatomic) NSTrackingArea *hoverArea;
 @property (nonatomic) NSTimer *controlsTimer;
 @property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
+@property (nonatomic) GetCover *getCover;
 @end
 
 @implementation CoverWindowController
@@ -45,6 +46,8 @@
     [self.window.contentView addTrackingArea:self.hoverArea];
     self.window.contentView.acceptsTouchEvents = YES;
     self.controlViewController.delegate = self;
+    self.getCover = [[GetCover alloc] init];
+    self.getCover.delegate = self;
     [self readSettings];
 }
 
@@ -52,13 +55,12 @@
 {
     if (track) {
         [self updateWithTrack:track];
-        [GetCover sharedInstance].delegate = self;
         if (self.window && [MusicController sharedController].isiTunesRunning) {
             if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
                 [self displayFullInfoForTrack:track];
             }
             __weak typeof(self) weakSelf = self;
-            [[GetCover sharedInstance] getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
+            [self.getCover getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
                 [weakSelf updateWith:track andCover:cover];
             }];
         } else {
@@ -357,4 +359,8 @@
     return YES;
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end

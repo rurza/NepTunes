@@ -41,8 +41,9 @@
             [self.delegate trackInfoShouldBeDisplayed];
         }
     } else {
-        if ([self cachedCoverImageForTrack:track]) {
-            handler([[GetCover sharedInstance] cachedCoverImageForTrack:track]);
+        NSImage *cover = [self cachedCoverImageForTrack:track];
+        if (cover) {
+            handler(cover);
             if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
                 [self.delegate trackInfoShouldBeDisplayed];
             }

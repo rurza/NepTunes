@@ -249,6 +249,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
+#pragma mark - About window
 
 - (IBAction)openAboutWindow:(NSMenuItem *)sender
 {
@@ -299,11 +300,11 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     NSWindow* window = notification.object;
     if (window == self.preferencesController.window) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:window];
         self.preferencesController = nil;
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:window];
     } else if (window == self.aboutWindowController.window) {
-        self.aboutWindowController = nil;
         [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:window];
+        self.aboutWindowController = nil;
     }
 }
 

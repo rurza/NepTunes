@@ -330,7 +330,7 @@ DQ
                 </slider>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZjP-mB-emy">
                     <rect key="frame" x="18" y="18" width="241" height="18"/>
-                    <buttonCell key="cell" type="check" title="Scrobble Podcasts and iTunes U" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6GH-U5-vnG">
+                    <buttonCell key="cell" type="check" title="Scrobble Podcasts, iTunes U etc." bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6GH-U5-vnG">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

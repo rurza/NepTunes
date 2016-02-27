@@ -745,6 +745,27 @@
 				INFOPLIST_FILE = NepTunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"EGOCache\"",
+					"-l\"KissXML\"",
+					"-l\"LastFm\"",
+					"-l\"MASShortcut\"",
+					"-l\"PINCache\"",
+					"-l\"c++\"",
+					"-l\"iTunesSearch\"",
+					"-l\"pop\"",
+					"-l\"xml2\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-weak_framework",
+					"\"AppKit\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -773,6 +794,27 @@
 				INFOPLIST_FILE = NepTunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"EGOCache\"",
+					"-l\"KissXML\"",
+					"-l\"LastFm\"",
+					"-l\"MASShortcut\"",
+					"-l\"PINCache\"",
+					"-l\"c++\"",
+					"-l\"iTunesSearch\"",
+					"-l\"pop\"",
+					"-l\"xml2\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-weak_framework",
+					"\"AppKit\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.micropixels.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

@@ -18,14 +18,14 @@
         <window title="About NepTunes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" showsToolbarButton="NO" animationBehavior="documentWindow" frameAutosaveName="" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="410" width="410" height="258"/>
+            <rect key="contentRect" x="196" y="410" width="379" height="222"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="410" height="258"/>
+                <rect key="frame" x="0.0" y="0.0" width="379" height="222"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Sz-JR-eag">
-                        <rect key="frame" x="212" y="127" width="180" height="54"/>
+                        <rect key="frame" x="182" y="139" width="179" height="47"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="NepTunes" id="H57-Na-QI3">
                             <font key="font" size="40" name="HelveticaNeue-Thin"/>
                             <color key="textColor" red="0.94005966186523438" green="0.96755892038345337" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -33,7 +33,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h5X-jd-qDa">
-                        <rect key="frame" x="222" y="118" width="160" height="18"/>
+                        <rect key="frame" x="192" y="125" width="160" height="18"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="version xx (build xx)" id="c4s-dQ-8Y5">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="0.94005966186523438" green="0.96755892038345337" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -41,19 +41,15 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="175" translatesAutoresizingMaskIntoConstraints="NO" id="LNp-qb-hRo">
-                        <rect key="frame" x="18" y="5" width="373" height="16"/>
+                        <rect key="frame" x="9" y="5" width="373" height="16"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Copyright © 2014-2015 Adam Rozynski" id="oMo-56-wVT">
                             <font key="font" metaFont="miniSystem"/>
                             <color key="textColor" red="0.94005966186523438" green="0.96755892038345337" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hMI-DF-gvm">
-                        <rect key="frame" x="20" y="85" width="128" height="128"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="aNb-Hh-MkZ"/>
-                    </imageView>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PAl-Z3-vod">
-                        <rect key="frame" x="210" y="31" width="180" height="24"/>
+                        <rect key="frame" x="212" y="47" width="120" height="24"/>
                         <buttonCell key="cell" type="smallSquare" title="Support" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="4bi-QA-vtk">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -63,7 +59,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJa-wt-nRY">
-                        <rect key="frame" x="20" y="31" width="180" height="24"/>
+                        <rect key="frame" x="212" y="81" width="120" height="24"/>
                         <buttonCell key="cell" type="smallSquare" title="Follow on Twitter" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="6h0-nc-ovz">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -72,12 +68,16 @@
                             <action selector="followOnTwitter:" target="-2" id="AW8-3m-zdu"/>
                         </connections>
                     </button>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hMI-DF-gvm">
+                        <rect key="frame" x="20" y="47" width="128" height="128"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="aNb-Hh-MkZ"/>
+                    </imageView>
                 </subviews>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="269" y="276"/>
+            <point key="canvasLocation" x="253.5" y="255"/>
         </window>
     </objects>
     <resources>
