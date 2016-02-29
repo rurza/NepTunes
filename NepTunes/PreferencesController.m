@@ -431,7 +431,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)animateAvatar
 {
     POPSpringAnimation *avatarSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
-    avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(106, 191, 64, 64)];
+    avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(self.window.contentView.bounds.size.width/2-32, self.window.contentView.bounds.size.height-20-64, 64, 64)];
     avatarSpringAnimation.springBounciness = 16;
     
     POPSpringAnimation *avatarCornerRadiusSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerCornerRadius];

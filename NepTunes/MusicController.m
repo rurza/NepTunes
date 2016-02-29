@@ -16,6 +16,8 @@
 #import "CoverSettingsController.h"
 
 #define FOUR_MINUTES 60 * 4
+#define DELAY_FOR_RADIO 2
+
 static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @interface MusicController ()
@@ -84,7 +86,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         NSLog(@"Notification sent from iTunes");
     }
     [self invalidateTimers];
-    self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
+    self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
     [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
     [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:note.userInfo];
     [self updateMenu];
@@ -127,7 +129,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
                     NSLog(@"Scrobble time for track %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime); 
                 }
                 
-                scrobbleTime -=2;
+                scrobbleTime -=DELAY_FOR_RADIO;
                 
                 if (scrobbleTime == 0) {
                     scrobbleTime = 16.0f;
@@ -185,10 +187,22 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         self.musicScrobbler.currentTrack = [Track trackWithiTunesTrack:self.currentTrack];
     }
     if (!self.settingsController.scrobblePodcastsAndiTunesU) {
-        if (self.currentTrack.podcast || self.currentTrack.iTunesU || [userInfo objectForKey:@"Category"] || [(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"]) {
-            self.musicScrobbler.currentTrack.itIsNotMusic = YES;
+        if (self.currentTrack.podcast || self.currentTrack.iTunesU || [userInfo objectForKey:@"Category"] || ([(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"] && (!self.currentTrack.name || !self.currentTrack.artist))) {
             if (self.settingsController.debugMode) {
-                NSLog(@"This isn't a music track or iTunes switched playing from one streaming to another.");
+                if ([(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"]) {
+                    NSLog(@"userInfo link contains: itms://itunes.com/link? and I don't have name of track or artist in tags");
+                }
+                if (self.currentTrack.podcast) {
+                    NSLog(@"iTunes tells me that this is a podcast");
+                }
+                if (self.currentTrack.iTunesU) {
+                    NSLog(@"iTunes tells me that this is a iTunes U");
+                }
+                if ([userInfo objectForKey:@"Category"]) {
+                    NSLog(@"userInfo contains Category");
+                }
+                self.musicScrobbler.currentTrack.itIsNotMusic = YES;
+                NSLog(@"This isn't a music track from Library (or Apple Music stream) or iTunes switched playing from one streaming to another.");
             }
         }
     }

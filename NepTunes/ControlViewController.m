@@ -57,6 +57,13 @@ static NSUInteger const kNumberOfFrames = 10;
     } else {
         self.playButton.image = self.playImage;
     }
+    if ([[note.userInfo objectForKey:@"Back Button State"] isEqualToString:@"Info"]) {
+        self.backwardButton.enabled = NO;
+        self.backwardButton.alphaValue = 0.5;
+    } else {
+        self.backwardButton.enabled = YES;
+        self.backwardButton.alphaValue = 1;
+    }
 }
 
 - (IBAction)playOrPauseTrack:(NSButton *)sender
@@ -92,7 +99,6 @@ static NSUInteger const kNumberOfFrames = 10;
         [musicController.iTunes resume];
         
     }
-    
 }
 
 -(void)updateVolumeIcon

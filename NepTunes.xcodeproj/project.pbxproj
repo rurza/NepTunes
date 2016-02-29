@@ -291,7 +291,6 @@
 		5BAE71041C5019A200779081 /* Track */ = {
 			isa = PBXGroup;
 			children = (
-				5BA37AC51C63842000F69380 /* iTunes.h */,
 				5BBD4C4E1C34562000AFA182 /* Track.h */,
 				5BBD4C4F1C34562000AFA182 /* Track.m */,
 				5BAE71011C50199700779081 /* SavedTrack.h */,
@@ -303,6 +302,8 @@
 		5BC6A8E31C611C3A009C3E9F /* Music */ = {
 			isa = PBXGroup;
 			children = (
+				5BA37AC51C63842000F69380 /* iTunes.h */,
+				5BAE71041C5019A200779081 /* Track */,
 				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
 				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
 				5BC6A8DF1C610C83009C3E9F /* MusicController.h */,
@@ -350,7 +351,6 @@
 				5BAE70FD1C50058200779081 /* Reachability */,
 				5B9662711C725A400095AF54 /* Settings and preferences */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
-				5BAE71041C5019A200779081 /* Track */,
 				5B9662701C725A340095AF54 /* User Notifications */,
 			);
 			path = NepTunes;
