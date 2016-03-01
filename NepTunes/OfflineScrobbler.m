@@ -102,6 +102,16 @@
     return plistPath;
 }
 
+-(BOOL)removePlistFile
+{
+    NSError *error;
+    BOOL succeed = [NSFileManager defaultManager] removeItemAtPath:[self pathToPlist] error:&error];
+    if (error) {
+        NSLog(@"Can't remove file, %@", error.localizedDescription);
+    }
+    return succeed;
+}
+
 -(void)removeIncompatibleFiles
 {
     NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -149,6 +159,7 @@
             if (idx == tempArray.count - 1) {
                 NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
                     [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
+                    [self removePlistFile];
                 }];
                 [weakSelf.offlineScrobblerOperationQueue addOperation:sendNotification];
             }
