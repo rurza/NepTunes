@@ -159,7 +159,7 @@
             if (idx == tempArray.count - 1) {
                 NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
                     [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
-                    [self removePlistFile];
+                    [self save];
                 }];
                 [weakSelf.offlineScrobblerOperationQueue addOperation:sendNotification];
             }
