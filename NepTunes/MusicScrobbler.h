@@ -14,6 +14,7 @@
 @class CoverWindowController;
 
 @protocol MusicScrobblerDelegate <NSObject>
+@property (nonatomic, readonly) NSMutableArray *tracks;
 -(void)trackWasSuccessfullyScrobbled:(Track *)track;
 -(void)trackWasNotScrobbled:(Track *)track;
 @end

@@ -252,10 +252,10 @@ DQ
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="310" width="379" height="374"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="contentRect" x="335" y="310" width="379" height="369"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
-                <rect key="frame" x="0.0" y="0.0" width="379" height="374"/>
+                <rect key="frame" x="0.0" y="0.0" width="379" height="369"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
             <toolbar key="toolbar" implicitIdentifier="4A4F21CB-6BDE-402F-9CE4-8B144351E9D6" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="L8W-3N-nM6">

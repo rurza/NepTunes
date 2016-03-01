@@ -73,7 +73,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)scrobbleTrack:(Track *)track atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter withSuccessHandler:(void(^)(void))successHandler
 {
-    if (self.musicController.isiTunesRunning && self.musicController.playerState == iTunesEPlSPlaying && [SettingsController sharedSettings].username) {
+    if ((self.musicController.playerState == iTunesEPlSPlaying || self.delegate.tracks.count) && [SettingsController sharedSettings].username) {
         __weak typeof(self) weakSelf = self;
         [self.scrobbler sendScrobbledTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
@@ -95,7 +95,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                         if ([SettingsController sharedSettings].debugMode) {
                             NSLog(@"Cannot scrobble. %@. Trying again", error.localizedDescription);
                         }
-
+                        
                     }
                 });
             }
@@ -108,7 +108,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                     [OfflineScrobbler sharedInstance].lastFmIsDown = YES;
                     [[OfflineScrobbler sharedInstance] saveTrack:track];
                     NSLog(@"Some issues with Last.fm service.");
-
+                    
                 }
                 if ([OfflineScrobbler sharedInstance].areWeOffline || [SettingsController sharedSettings].userWasLoggedOut) {
                     [[OfflineScrobbler sharedInstance] saveTrack:track];
@@ -167,7 +167,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             }
             [[GetCover sharedInstance] getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
                 completion(track, cover);
-            }];           
+            }];
         } failureHandler:^(NSError *error) {
             if (error.code == -1001 || error.code == kLastFmerrorCodeServiceError) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

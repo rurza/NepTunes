@@ -59,6 +59,11 @@
     }
     if (self.tracks.count == 0) {
         [self save];
+        NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
+            [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
+        }];
+        [self.offlineScrobblerOperationQueue addOperation:sendNotification];
+        
     }
 }
 
@@ -158,12 +163,6 @@
                 [[MusicScrobbler sharedScrobbler] scrobbleOfflineTrack:savedSong];
             }];
             [weakSelf.offlineScrobblerOperationQueue addOperation:scrobbleTrack];
-            if (idx == tempArray.count - 1) {
-                NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
-                    [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
-                }];
-                [weakSelf.offlineScrobblerOperationQueue addOperation:sendNotification];
-            }
         }];
     }
 }
