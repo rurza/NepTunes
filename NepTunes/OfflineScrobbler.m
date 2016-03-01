@@ -41,7 +41,6 @@
 -(void)deleteTrack:(SavedTrack *)track
 {
     [self.tracks removeObject:track];
-    [self save];
 }
 
 -(void)deleteAllSavedTracks
@@ -59,7 +58,7 @@
         [self deleteTrack:(SavedTrack *)track];
     }
     if (self.tracks.count == 0) {
-        [self removePlistFile];
+        [self save];
     }
 }
 
