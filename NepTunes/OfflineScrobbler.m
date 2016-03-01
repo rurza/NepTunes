@@ -107,7 +107,7 @@
 -(BOOL)removePlistFile
 {
     NSError *error;
-    BOOL succeed = [NSFileManager defaultManager] removeItemAtPath:[self pathToPlist] error:&error];
+    BOOL succeed = [[NSFileManager defaultManager] removeItemAtPath:[self pathToPlist] error:&error];
     if (error) {
         NSLog(@"Can't remove file, %@", error.localizedDescription);
     }
