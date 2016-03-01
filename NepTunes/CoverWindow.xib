@@ -192,6 +192,6 @@
         <image name="next track" width="57" height="36"/>
         <image name="play" width="34" height="40"/>
         <image name="previous track" width="57" height="36"/>
-        <image name="volume-max" width="40" height="33"/>
+        <image name="volume-max" width="24" height="20"/>
     </resources>
 </document>
