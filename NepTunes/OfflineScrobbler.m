@@ -41,13 +41,12 @@
 -(void)deleteTrack:(SavedTrack *)track
 {
     [self.tracks removeObject:track];
-    [self save];
 }
 
 -(void)deleteAllSavedTracks
 {
     [self.tracks removeAllObjects];
-    [self save];
+    [self removePlistFile];
 }
 
 
@@ -57,6 +56,9 @@
 {
     if ([track isKindOfClass:[SavedTrack class]]) {
         [self deleteTrack:(SavedTrack *)track];
+    }
+    if (self.tracks.count == 0) {
+        [self save];
     }
 }
 
@@ -100,6 +102,16 @@
     NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesOfflineTracksToScrobble.plist"];
     return plistPath;
+}
+
+-(BOOL)removePlistFile
+{
+    NSError *error;
+    BOOL succeed = [[NSFileManager defaultManager] removeItemAtPath:[self pathToPlist] error:&error];
+    if (error) {
+        NSLog(@"Can't remove file, %@", error.localizedDescription);
+    }
+    return succeed;
 }
 
 -(void)removeIncompatibleFiles
