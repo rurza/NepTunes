@@ -47,7 +47,7 @@
 -(void)deleteAllSavedTracks
 {
     [self.tracks removeAllObjects];
-    [self save];
+    [self removePlistFile];
 }
 
 
@@ -57,6 +57,9 @@
 {
     if ([track isKindOfClass:[SavedTrack class]]) {
         [self deleteTrack:(SavedTrack *)track];
+    }
+    if (self.tracks.count == 0) {
+        [self removePlistFile];
     }
 }
 
@@ -159,7 +162,6 @@
             if (idx == tempArray.count - 1) {
                 NSBlockOperation *sendNotification = [NSBlockOperation blockOperationWithBlock:^{
                     [[UserNotificationsController sharedNotificationsController] displayNotificationThatAllTracksAreScrobbled];
-                    [self save];
                 }];
                 [weakSelf.offlineScrobblerOperationQueue addOperation:sendNotification];
             }
