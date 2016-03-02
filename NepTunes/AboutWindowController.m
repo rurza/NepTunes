@@ -36,8 +36,8 @@
         [button.cell setBackgroundColor:backgroundColor];
         button.wantsLayer = YES;
         button.layer.borderColor = [NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1].CGColor;
-        button.layer.borderWidth = 1;
-        button.layer.cornerRadius = 3;
+        button.layer.borderWidth = 2;
+        button.layer.cornerRadius = 5;
     }
     NSMutableParagraphStyle *centredStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     [centredStyle setAlignment:NSCenterTextAlignment];
