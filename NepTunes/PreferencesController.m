@@ -85,7 +85,14 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)awakeFromNib {
     self.window.restorable = NO;
     
-    if (self.settingsController.session) {
+    if (!self.settingsController.session && self.settingsController.openPreferencesWhenThereIsNoUser) {
+        [[self window] setContentSize:[self.accountView frame].size];
+        [[[self window] contentView ] addSubview:self.accountView];
+        [self.settingsToolbar setSelectedItemIdentifier:kAccountItemToolbarIdentifier];
+        [self.loginButton setEnabled:NO];
+        self.accountToolbarItem.tag = 1;
+        [self switchView:self.accountToolbarItem];        
+    } else {
         self.accountToolbarItem.tag = 0;
         self.currentViewTag = 2;
         [[self window] setContentSize:[self.generalView frame].size];
@@ -93,14 +100,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         [self.settingsToolbar setSelectedItemIdentifier:@"General"];
         [self.logoutButton setTitle:[NSString stringWithFormat:@"Sign Out %@", self.settingsController.username]];
         [self setAvatarForUserWithInfo:nil];
-    }
-    else {
-        [[self window] setContentSize:[self.accountView frame].size];
-        [[[self window] contentView ] addSubview:self.accountView];
-        [self.settingsToolbar setSelectedItemIdentifier:kAccountItemToolbarIdentifier];
-        [self.loginButton setEnabled:NO];
-        self.accountToolbarItem.tag = 1;
-        [self switchView:self.accountToolbarItem];        
     }
     [self.window recalculateKeyViewLoop];
     
