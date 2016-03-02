@@ -357,7 +357,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
     
     //when the button must be disabled
-    if ((!internetIsReachable && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || (!self.settings.session && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || !self.musicScrobbler.currentTrack || (!self.settings.session && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && !self.musicController.currentTrack.name.length)) {
+    if ((!internetIsReachable && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || (!self.settings.session && ![self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) || !self.musicScrobbler.currentTrack || (!self.settings.session && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && !self.musicController.currentTrack.name.length) || [self.loveSongMenuTitle.title isEqualToString:[NSString stringWithFormat:NSLocalizedString(@"Love Track", nil)]]) {
         self.loveSongMenuTitle.enabled = NO;
     } else {
         self.loveSongMenuTitle.enabled = YES;
