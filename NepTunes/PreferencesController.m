@@ -91,8 +91,17 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         [self.settingsToolbar setSelectedItemIdentifier:kAccountItemToolbarIdentifier];
         [self.loginButton setEnabled:NO];
         self.accountToolbarItem.tag = 1;
-        [self switchView:self.accountToolbarItem];        
-    } else {
+        [self switchView:self.accountToolbarItem];
+    }
+    else if (!self.settingsController.session && !self.settingsController.openPreferencesWhenThereIsNoUser) {
+        self.accountToolbarItem.tag = 1;
+        self.currentViewTag = 2;
+        [[self window] setContentSize:[self.generalView frame].size];
+        [[[self window] contentView ] addSubview:self.generalView];
+        [self.settingsToolbar setSelectedItemIdentifier:@"General"];
+        [self setAvatarForUserWithInfo:nil];
+    }
+    else {
         self.accountToolbarItem.tag = 0;
         self.currentViewTag = 2;
         [[self window] setContentSize:[self.generalView frame].size];
