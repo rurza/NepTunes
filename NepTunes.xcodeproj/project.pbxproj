@@ -23,6 +23,7 @@
 		5B9662741C725A640095AF54 /* VolumeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9662731C725A640095AF54 /* VolumeViewController.m */; };
 		5B9F07401C72300200F73566 /* CoverLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F073F1C72300200F73566 /* CoverLabel.m */; };
 		5B9F07431C723BFE00F73566 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9F07421C723BFE00F73566 /* ControlViewController.m */; };
+		5BADDDD71C97219E00F0BFAB /* MASShortcut+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BADDDD61C97219E00F0BFAB /* MASShortcut+UserDefaults.m */; };
 		5BAE70F71C50023500779081 /* FXReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70F61C50023500779081 /* FXReachability.m */; };
 		5BAE70F91C50030C00779081 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAE70F81C50030C00779081 /* SystemConfiguration.framework */; };
 		5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */; };
@@ -124,6 +125,8 @@
 		5B9F07411C723BFE00F73566 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		5B9F07421C723BFE00F73566 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
 		5BA37AC51C63842000F69380 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		5BADDDD51C97219E00F0BFAB /* MASShortcut+UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASShortcut+UserDefaults.h"; sourceTree = "<group>"; };
+		5BADDDD61C97219E00F0BFAB /* MASShortcut+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MASShortcut+UserDefaults.m"; sourceTree = "<group>"; };
 		5BAE70F51C50023500779081 /* FXReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXReachability.h; sourceTree = "<group>"; };
 		5BAE70F61C50023500779081 /* FXReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXReachability.m; sourceTree = "<group>"; };
 		5BAE70F81C50030C00779081 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -273,6 +276,8 @@
 		5BAE70F31C4EC91500779081 /* Hotkeys */ = {
 			isa = PBXGroup;
 			children = (
+				5BADDDD51C97219E00F0BFAB /* MASShortcut+UserDefaults.h */,
+				5BADDDD61C97219E00F0BFAB /* MASShortcut+UserDefaults.m */,
 				5BD6E5D31B6BF87300631537 /* HotkeyController.h */,
 				5BD6E5D41B6BF87300631537 /* HotkeyController.m */,
 			);
@@ -594,6 +599,7 @@
 				5BE3FBCE1C7646F900F95E9A /* CoverSettingsController.m in Sources */,
 				5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */,
 				5BBD4C501C34562000AFA182 /* Track.m in Sources */,
+				5BADDDD71C97219E00F0BFAB /* MASShortcut+UserDefaults.m in Sources */,
 				5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */,
 				5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */,
 				5BAE70F71C50023500779081 /* FXReachability.m in Sources */,

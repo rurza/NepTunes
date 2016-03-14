@@ -9,6 +9,7 @@
 #import "HotkeyController.h"
 #import "PreferencesController.h"
 #import <MASShortcut/Shortcut.h>
+#import "MASShortcut+UserDefaults.h"
 
 static NSString *const kloveSongShortcut = @"loveSongShortcut";
 static NSString *const kshowYourProfileShortcut = @"showYourProfileShortcut";
@@ -36,12 +37,22 @@ static void *MASObservingContext = &MASObservingContext;
     [self setUpObservers];
 }
 
+-(instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self updateMenu];
+    }
+    return self;
+}
+
+
 -(void)bindShortcutsToAction
 {
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
-        [[MenuController sharedController] loveSong:nil];
+         [[MenuController sharedController] loveSong:nil];
      }];
     
     [[MASShortcutBinder sharedBinder]
@@ -55,6 +66,39 @@ static void *MASObservingContext = &MASObservingContext;
      toAction:^{
          [[MenuController sharedController] showSimilarArtists:nil];
      }];
+}
+
+-(void)updateMenu
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    MASShortcut *loveTrackShortcut = [MASShortcut shortcutWithData:[defaults objectForKey:kloveSongShortcut]];
+    MASShortcut *showSimilarArtistsShortcut = [MASShortcut shortcutWithData:[defaults objectForKey:kshowSimilarArtistsShortcut]];
+    MASShortcut *userProfileShortcut = [MASShortcut shortcutWithData:[defaults objectForKey:kshowYourProfileShortcut]];
+    
+    
+    if (userProfileShortcut.modifierFlags) {
+        [MenuController sharedController].profileMenuTitle.keyEquivalent = [userProfileShortcut.keyCodeString lowercaseString];
+        [MenuController sharedController].profileMenuTitle.keyEquivalentModifierMask = userProfileShortcut.modifierFlags;
+    }
+    else {
+        [MenuController sharedController].profileMenuTitle.keyEquivalent = @"";
+    }
+    
+    if (loveTrackShortcut.modifierFlags) {
+        [MenuController sharedController].loveSongMenuTitle.keyEquivalent = [loveTrackShortcut.keyCodeString lowercaseString];
+        [MenuController sharedController].loveSongMenuTitle.keyEquivalentModifierMask = loveTrackShortcut.modifierFlags;
+    }
+    else {
+        [MenuController sharedController].loveSongMenuTitle.keyEquivalent = @"";
+    }
+    
+    if (showSimilarArtistsShortcut.modifierFlags) {
+        [MenuController sharedController].similarArtistMenuTtitle.keyEquivalent = [showSimilarArtistsShortcut.keyCodeString lowercaseString];
+        [MenuController sharedController].similarArtistMenuTtitle.keyEquivalentModifierMask = showSimilarArtistsShortcut.modifierFlags;
+    }
+    else {
+        [MenuController sharedController].similarArtistMenuTtitle.keyEquivalent = @"";
+    }
 }
 
 -(void)setUpObservers
@@ -73,19 +117,22 @@ static void *MASObservingContext = &MASObservingContext;
     
     
     [defaults addObserver:self forKeyPath:kshowYourProfileShortcut
-                   options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-                   context:MASObservingContext];
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
     
 }
 
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
+    if ([change objectForKey:NSKeyValueChangeNewKey]) {
+        
+    }
     if (context != MASObservingContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
     else {
-
+        
         if ([keyPath isEqualToString:kloveSongShortcut]) {
             if (self.loveSongView.shortcutValue.modifierFlags) {
                 [MenuController sharedController].loveSongMenuTitle.keyEquivalent = [self.loveSongView.shortcutValue.keyCodeString lowercaseString];
@@ -121,9 +168,13 @@ static void *MASObservingContext = &MASObservingContext;
 -(void)dealloc
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults removeObserver:self forKeyPath:kloveSongShortcut];
-    [defaults removeObserver:self forKeyPath:kshowSimilarArtistsShortcut];
-    [defaults removeObserver:self forKeyPath:kshowYourProfileShortcut];
+    @try {
+        [defaults removeObserver:self forKeyPath:kloveSongShortcut];
+        [defaults removeObserver:self forKeyPath:kshowSimilarArtistsShortcut];
+        [defaults removeObserver:self forKeyPath:kshowYourProfileShortcut];
+    }
+    @catch (NSException * __unused exception) {}
+    
 }
 
 @end
