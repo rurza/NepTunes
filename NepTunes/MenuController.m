@@ -23,6 +23,7 @@
 #import "CoverWindowController.h"
 #import "ControlViewController.h"
 #import "AboutWindowController.h"
+#import "HotkeyController.h"
 
 @import QuartzCore;
 
@@ -92,7 +93,11 @@ static NSUInteger const kNumberOfFrames = 10;
     self.statusMenu.autoenablesItems = NO;
     [self.loveSongMenuTitle setEnabled:NO];
     
-    [self updateMenu];    
+    [self updateMenu];
+    //initialize hotkey to update menu
+    HotkeyController *hotkey = [[HotkeyController alloc] init];
+    hotkey = nil;
+    //
 }
 
 #pragma mark - Reachability
