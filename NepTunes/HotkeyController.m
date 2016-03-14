@@ -9,6 +9,7 @@
 #import "HotkeyController.h"
 #import "PreferencesController.h"
 #import <MASShortcut/Shortcut.h>
+#import "HUDWindowController.h"
 
 static NSString *const kloveSongShortcut = @"loveSongShortcut";
 static NSString *const kshowYourProfileShortcut = @"showYourProfileShortcut";
@@ -22,6 +23,7 @@ static void *MASObservingContext = &MASObservingContext;
 @property (strong) IBOutlet MASShortcutView *showYourProfileView;
 @property (strong) IBOutlet MASShortcutView *showSimilarArtistsView;
 
+@property (nonatomic) HUDWindowController *hudWindowController;
 
 @end
 
@@ -42,6 +44,8 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
         [[MenuController sharedController] loveSong:nil];
+         self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:@"HUDWindowController"];
+         [self.hudWindowController presentHUD];
      }];
     
     [[MASShortcutBinder sharedBinder]

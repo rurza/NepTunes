@@ -11,7 +11,6 @@
 #import "PreferencesController.h"
 #import "MenuController.h"
 
-
 @interface AppDelegate ()
 @property (nonatomic) SettingsController *settingsController;
 @property (nonatomic) IBOutlet MenuController *menuController;
@@ -21,10 +20,6 @@
 
 @implementation AppDelegate
 
-//-(void)applicationDidFinishLaunching:(NSNotification *)aNotification
-//{
-//
-//}
 
 -(void)applicationDidBecomeActive:(NSNotification *)notification
 {

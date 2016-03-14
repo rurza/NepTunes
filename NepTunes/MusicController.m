@@ -14,6 +14,7 @@
 #import "CoverWindowController.h"
 #import "UserNotificationsController.h"
 #import "CoverSettingsController.h"
+#import "HUDWindowController.h"
 
 #define FOUR_MINUTES 60 * 4
 #define DELAY_FOR_RADIO 2
@@ -27,6 +28,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 @property (nonatomic) NSTimer* scrobbleTimer;
 @property (nonatomic) NSTimer* nowPlayingTimer;
 @property (nonatomic) NSTimer* mainTimer;
+@property (nonatomic) HUDWindowController *hud;
 @end
 
 @implementation MusicController
@@ -75,6 +77,9 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             [self.coverWindowController showWindow:self];
             [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
             [self.coverWindowController.window makeKeyAndOrderFront:nil];
+            HUDWindowController *window =[[HUDWindowController alloc] initWithWindowNibName:@"HUDWindowController"];
+            [window.window makeKeyAndOrderFront:nil];
+
         }
     }
 }
