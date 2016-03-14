@@ -44,6 +44,7 @@ static void *MASObservingContext = &MASObservingContext;
     self = [super init];
     if (self) {
         [self updateMenu];
+        [self bindShortcutsToAction];
     }
     return self;
 }
