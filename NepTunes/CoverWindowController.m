@@ -31,6 +31,7 @@
 @property (nonatomic) NSTimer *controlsTimer;
 @property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
 @property (nonatomic) GetCover *getCover;
+@property (nonatomic) NSClickGestureRecognizer *doubleClickRecognizer;
 @end
 
 @implementation CoverWindowController
@@ -45,6 +46,10 @@
                                                     owner:self userInfo:nil];
     [self.window.contentView addTrackingArea:self.hoverArea];
     self.window.contentView.acceptsTouchEvents = YES;
+    self.doubleClickRecognizer = [[NSClickGestureRecognizer alloc] initWithTarget:self action:@selector(bringiTunesToFront:)];
+    self.doubleClickRecognizer.numberOfClicksRequired = 2;
+    self.doubleClickRecognizer.delaysPrimaryMouseButtonEvents = NO;
+    [self.window.controlView addGestureRecognizer:self.doubleClickRecognizer];
     self.controlViewController.delegate = self;
     self.getCover = [[GetCover alloc] init];
     self.getCover.delegate = self;
@@ -290,6 +295,15 @@
     }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
+}
+
+- (void)bringiTunesToFront:(NSGestureRecognizer *)gestureRecognizer
+{
+    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
+    
+    if (coverSettingsController.bringiTunesToFrontWithDoubleClick) {
+        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+    }
 }
 
 -(void)readSettings

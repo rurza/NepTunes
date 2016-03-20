@@ -10,11 +10,18 @@
 
 @interface HUDWindowController : NSWindowController
 
-@property (strong) IBOutlet NSImageView *centerImageView;
+@property (strong, nonatomic) IBOutlet NSImageView *centerImageView;
+@property (strong, nonatomic) IBOutlet NSImageView *bottomImageView;
+@property (strong, nonatomic) IBOutlet NSVisualEffectView *bottomVisualEffectView;
+@property (strong, nonatomic) IBOutlet NSVisualEffectView *visualEffectView;
 @property (strong) IBOutlet NSTextField *bottomLabel;
-@property (strong) IBOutlet NSImageView *bottomImageView;
-@property (strong) IBOutlet NSVisualEffectView *bottomVisualEffectView;
+
+
+@property (nonatomic) NSUInteger visibilityTime;
+@property (nonatomic, readonly, getter=isVisible) BOOL visible;
+
 
 -(void)presentHUD;
+-(void)updateCurrentHUD;
 
 @end

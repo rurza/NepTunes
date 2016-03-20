@@ -19,9 +19,11 @@ typedef NS_ENUM(NSInteger, CoverPosition) {
 @property (nonatomic) BOOL showCover;
 @property (nonatomic) CoverPosition coverPosition;
 @property (nonatomic) BOOL ignoreMissionControl;
+@property (nonatomic) BOOL bringiTunesToFrontWithDoubleClick;
 
-@property (strong) IBOutlet NSButton *albumCoverCheckbox;
-@property (strong) IBOutlet NSPopUpButton *albumCoverPosition;
-@property (strong) IBOutlet NSButton *ignoreMissionControlCheckbox;
+@property (nonatomic) IBOutlet NSButton *albumCoverCheckbox;
+@property (nonatomic) IBOutlet NSPopUpButton *albumCoverPosition;
+@property (nonatomic) IBOutlet NSButton *ignoreMissionControlCheckbox;
+@property (nonatomic) IBOutlet NSButton *bringiTunesToFrontWithDoubleClickCheckbox;
 
 @end

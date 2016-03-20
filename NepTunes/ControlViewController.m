@@ -11,6 +11,7 @@
 #import "SettingsController.h"
 #import "MusicScrobbler.h"
 #import "Track.h"
+#import "CoverSettingsController.h"
 #import <POP.h>
 
 static NSUInteger const kFPS = 30;
@@ -136,7 +137,11 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)changeVolume:(NSButton *)sender
 {
+    NSLog(@"BEFORE %f", CACurrentMediaTime());
     [self.volumePopover showRelativeToRect:sender.bounds ofView:sender preferredEdge:NSMinYEdge];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateVolumeIcon];
+    });
 }
 
 

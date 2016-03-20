@@ -14,6 +14,8 @@
 static NSString *const kCoverPosition = @"CoverPosition";
 static NSString *const kIgnoreMissionControl = @"IgnoreMissionControl";
 static NSString *const kShowCover = @"ShowCover";
+static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFrontWithDoubleClick";
+
 
 
 @interface CoverSettingsController ()
@@ -27,7 +29,7 @@ static NSString *const kShowCover = @"ShowCover";
 
 @implementation CoverSettingsController
 
-@synthesize showCover = _showCover, coverPosition = _coverPosition, ignoreMissionControl = _ignoreMissionControl;
+@synthesize showCover = _showCover, coverPosition = _coverPosition, ignoreMissionControl = _ignoreMissionControl, bringiTunesToFrontWithDoubleClick = _bringiTunesToFrontWithDoubleClick;
 
 
 #pragma mark - Initialization
@@ -50,6 +52,8 @@ static NSString *const kShowCover = @"ShowCover";
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kShowCover: @YES}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kIgnoreMissionControl: @YES}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kCoverPosition: @1}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kBringiTunesToFrontWithDoubleClick: @YES}];
+
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -64,6 +68,7 @@ static NSString *const kShowCover = @"ShowCover";
         self.albumCoverPosition.enabled = YES;
     }
     self.ignoreMissionControlCheckbox.state = self.ignoreMissionControl;
+    self.bringiTunesToFrontWithDoubleClickCheckbox.state = self.bringiTunesToFrontWithDoubleClick;
     [self.albumCoverPosition selectItemWithTag:self.coverPosition];
 }
 
@@ -140,6 +145,11 @@ static NSString *const kShowCover = @"ShowCover";
     }
 }
 
+-(IBAction)bringiTunesToFrontWithDoubleClick:(NSButton *)sender
+{
+    self.bringiTunesToFrontWithDoubleClick = sender.state;
+}
+
 #pragma mark Show Cover
 -(BOOL)showCover
 {
@@ -187,6 +197,24 @@ static NSString *const kShowCover = @"ShowCover";
     [self.userDefaults setObject:@(ignoreMissionControl) forKey:kIgnoreMissionControl];
     [self saveSettings];
 }
+
+#pragma mark Bring iTunes to front
+-(BOOL)bringiTunesToFrontWithDoubleClick
+{
+    if (!_bringiTunesToFrontWithDoubleClick) {
+        _bringiTunesToFrontWithDoubleClick = [[self.userDefaults objectForKey:kBringiTunesToFrontWithDoubleClick] boolValue];
+    }
+    return _bringiTunesToFrontWithDoubleClick;
+}
+
+-(void)setBringiTunesToFrontWithDoubleClick:(BOOL)bringiTunesToFrontWithDoubleClick
+{
+    _bringiTunesToFrontWithDoubleClick = bringiTunesToFrontWithDoubleClick;
+    [self.userDefaults setObject:@(bringiTunesToFrontWithDoubleClick) forKey:kBringiTunesToFrontWithDoubleClick];
+    [self saveSettings];
+}
+
+#pragma mark -
 
 -(NSUserDefaults *)userDefaults
 {
