@@ -33,8 +33,8 @@
     self.visualEffectView.layer.cornerRadius = 6;
     self.centerImageView.image.template = YES;
     self.bottomImageView.image.template = YES;
+    self.starsImageView.image.template = YES;
     self.bottomLabel.hidden = YES;
-    
     [self.window makeKeyAndOrderFront:nil];
 }
 
@@ -85,6 +85,7 @@
     }
     self.bottomImageView.image = nil;
     self.centerImageView.image = nil;
+    self.starsImageView.image = nil;
     self.bottomVisualEffectView.hidden = YES;
     self.bottomLabel.hidden = YES;
     self.bottomLabel.stringValue = @"";

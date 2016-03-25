@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) IBOutlet NSImageView *centerImageView;
 @property (strong, nonatomic) IBOutlet NSImageView *bottomImageView;
+@property (strong) IBOutlet NSImageView *starsImageView;
+
 @property (strong, nonatomic) IBOutlet NSVisualEffectView *bottomVisualEffectView;
 @property (strong, nonatomic) IBOutlet NSVisualEffectView *visualEffectView;
 @property (strong) IBOutlet NSTextField *bottomLabel;

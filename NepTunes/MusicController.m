@@ -93,7 +93,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     [self invalidateTimers];
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
     [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
-    [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:note.userInfo];
+    [self updateCoverWithInfo:note.userInfo];
     [self updateMenu];
     [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:nil userInfo:note.userInfo];
 }
@@ -157,6 +157,20 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
                 }
             }
         }
+    }
+}
+
+-(void)updateCoverWithInfo:(NSDictionary *)info
+{
+    if (self.musicScrobbler.currentTrack && self.isiTunesRunning) {
+        if (!self.coverWindowController) {
+            [self setupCover];
+        }
+        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:info];
+    } else {
+        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:info];
+        [self.coverWindowController.window close];
+        self.coverWindowController = nil;
     }
 }
 

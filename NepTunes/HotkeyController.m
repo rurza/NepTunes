@@ -21,6 +21,9 @@ static NSString *const kIncreaseVolumeShortcut = @"increaseVolumeShortcut";
 static NSString *const kDecreaseVolumeShortcut = @"decreaseVolumeShortcut";
 static NSString *const kMuteVolumeShortcut = @"muteVolumeShortcut";
 
+static NSString *const kIncreaseRatingShortcut = @"increaseRatingShortcut";
+static NSString *const kDecreaseRatingShortcut = @"decreaseRatingShortcut";
+
 static NSString *const kHUDXibName = @"HUDWindowController";
 
 
@@ -31,11 +34,14 @@ static void *MASObservingContext = &MASObservingContext;
 @property (strong) IBOutlet MASShortcutView *loveSongView;
 @property (strong) IBOutlet MASShortcutView *showYourProfileView;
 @property (strong) IBOutlet MASShortcutView *showSimilarArtistsView;
+
 @property (weak, nonatomic) IBOutlet MASShortcutView *increaseVolumeView;
 @property (weak, nonatomic) IBOutlet MASShortcutView *decreaseVolumeView;
 @property (weak, nonatomic) IBOutlet MASShortcutView *muteVolumeView;
 @property (nonatomic) NSInteger oldVolume;
 
+@property (weak, nonatomic) IBOutlet MASShortcutView *increaseRatingView;
+@property (weak, nonatomic) IBOutlet MASShortcutView *decreaseRatingView;
 
 @property (nonatomic) HUDWindowController *hudWindowController;
 
@@ -52,6 +58,9 @@ static void *MASObservingContext = &MASObservingContext;
     self.increaseVolumeView.associatedUserDefaultsKey = kIncreaseVolumeShortcut;
     self.decreaseVolumeView.associatedUserDefaultsKey = kDecreaseVolumeShortcut;
     self.muteVolumeView.associatedUserDefaultsKey = kMuteVolumeShortcut;
+    
+    self.increaseRatingView.associatedUserDefaultsKey = kIncreaseRatingShortcut;
+    self.decreaseRatingView.associatedUserDefaultsKey = kDecreaseRatingShortcut;
     
     [self bindShortcutsToAction];
     [self setUpObservers];
@@ -129,7 +138,7 @@ static void *MASObservingContext = &MASObservingContext;
          self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Similar Artists", nil);
      }];
     
-    //increase
+    //increase volume
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kIncreaseVolumeShortcut
      toAction:^{
@@ -194,7 +203,7 @@ static void *MASObservingContext = &MASObservingContext;
          self.hudWindowController.centerImageView.image.template = YES;
      }];
     
-    //Decrease
+    //Decrease volume
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kDecreaseVolumeShortcut
      toAction:^{
@@ -318,6 +327,82 @@ static void *MASObservingContext = &MASObservingContext;
          self.hudWindowController.bottomImageView.image.template = YES;
          self.hudWindowController.centerImageView.image.template = YES;
      }];
+    
+    //Rating
+    [[MASShortcutBinder sharedBinder]
+     bindShortcutWithDefaultsKey:kIncreaseRatingShortcut
+     toAction:^{
+         if (self.hudWindowController.isVisible) {
+             [self.hudWindowController updateCurrentHUD];
+         } else {
+             self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             [self.hudWindowController presentHUD];
+         }
+         self.hudWindowController.bottomVisualEffectView.hidden = YES;
+         self.hudWindowController.visibilityTime = 1;
+         MusicController *musicController = [MusicController sharedController];
+         NSInteger rating = musicController.iTunes.currentTrack.rating;
+         if (rating >= 80) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-5"];
+             musicController.iTunes.currentTrack.rating = 100;
+         } else if (rating >= 60) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
+             musicController.iTunes.currentTrack.rating = 80;
+         } else if (rating >= 40) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
+             musicController.iTunes.currentTrack.rating = 60;
+         } else if (rating >= 20) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
+             musicController.iTunes.currentTrack.rating = 40;
+         } else if (rating >= 0) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
+             musicController.iTunes.currentTrack.rating = 20;
+         } else {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
+             musicController.iTunes.currentTrack.rating = 20;
+         }
+         self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
+         self.hudWindowController.starsImageView.image.template = YES;
+         self.hudWindowController.centerImageView.image.template = YES;
+     }];
+    
+    [[MASShortcutBinder sharedBinder]
+     bindShortcutWithDefaultsKey:kDecreaseRatingShortcut
+     toAction:^{
+         if (self.hudWindowController.isVisible) {
+             [self.hudWindowController updateCurrentHUD];
+         } else {
+             self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             [self.hudWindowController presentHUD];
+         }
+         self.hudWindowController.bottomVisualEffectView.hidden = YES;
+         self.hudWindowController.visibilityTime = 1;
+         MusicController *musicController = [MusicController sharedController];
+         NSInteger rating = musicController.iTunes.currentTrack.rating;
+         if (rating > 80) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
+             musicController.iTunes.currentTrack.rating = 80;
+         } else if (rating > 60) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
+             musicController.iTunes.currentTrack.rating = 60;
+         } else if (rating > 40) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
+             musicController.iTunes.currentTrack.rating = 40;
+         } else if (rating > 20) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
+             musicController.iTunes.currentTrack.rating = 20;
+         } else if (rating > 0) {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
+             musicController.iTunes.currentTrack.rating = 00;
+         } else {
+             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
+             musicController.iTunes.currentTrack.rating = 0;
+         }
+         self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
+         self.hudWindowController.starsImageView.image.template = YES;
+         self.hudWindowController.centerImageView.image.template = YES;
+     }];
+
 
 }
 
@@ -379,6 +464,15 @@ static void *MASObservingContext = &MASObservingContext;
     [defaults addObserver:self forKeyPath:kMuteVolumeShortcut
                   options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
                   context:MASObservingContext];
+    
+    //Rating
+    [defaults addObserver:self forKeyPath:kIncreaseRatingShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+    [defaults addObserver:self forKeyPath:kDecreaseRatingShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+
 }
 
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
@@ -434,6 +528,8 @@ static void *MASObservingContext = &MASObservingContext;
         [defaults removeObserver:self forKeyPath:kIncreaseVolumeShortcut];
         [defaults removeObserver:self forKeyPath:kDecreaseVolumeShortcut];
         [defaults removeObserver:self forKeyPath:kMuteVolumeShortcut];
+        [defaults removeObserver:self forKeyPath:kIncreaseRatingShortcut];
+        [defaults removeObserver:self forKeyPath:kDecreaseRatingShortcut];
     }
     @catch (NSException * __unused exception) {}
 }

@@ -69,10 +69,9 @@
                 [weakSelf updateWith:track andCover:cover];
             }];
         } else {
-            [self animateWindowOpacity:0];
+            self.window.alphaValue = 0;
         }
     } else {
-//        [self animateWindowOpacity:0];
         self.window.alphaValue = 0;
     }
 }

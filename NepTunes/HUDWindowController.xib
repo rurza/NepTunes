@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="HUDWindowController">
@@ -10,6 +10,7 @@
                 <outlet property="bottomLabel" destination="f9h-Yg-Be9" id="NGf-L4-db2"/>
                 <outlet property="bottomVisualEffectView" destination="VD7-T8-tEj" id="Bpu-dB-776"/>
                 <outlet property="centerImageView" destination="mBn-R8-809" id="1B4-tr-S9i"/>
+                <outlet property="starsImageView" destination="1wD-1i-NLc" id="YFL-0R-xcZ"/>
                 <outlet property="visualEffectView" destination="3nn-Ip-eEn" id="9LU-qs-hyk"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
@@ -20,7 +21,7 @@
             <windowStyleMask key="styleMask" fullSizeContentView="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES" stationary="YES" ignoresCycle="YES" fullScreenDisallowsTiling="YES"/>
             <rect key="contentRect" x="196" y="120" width="160" height="160"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1050"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -49,6 +50,10 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1wD-1i-NLc">
+                                <rect key="frame" x="7" y="9" width="146" height="26"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="5fp-j1-kHs"/>
+                            </imageView>
                         </subviews>
                     </visualEffectView>
                 </subviews>
