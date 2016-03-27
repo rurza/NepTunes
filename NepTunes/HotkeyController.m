@@ -82,18 +82,19 @@ static void *MASObservingContext = &MASObservingContext;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
-        [[MenuController sharedController] loveSong:nil];
+         [[MenuController sharedController] loveSong:nil];
          if (self.hudWindowController.isVisible) {
+             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController updateCurrentHUD];
              self.hudWindowController.bottomImageView.image = nil;
              self.hudWindowController.centerImageView.image = nil;
              self.hudWindowController.bottomVisualEffectView.hidden = YES;
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController presentHUD];
              self.hudWindowController.bottomVisualEffectView.hidden = YES;
          }
-         self.hudWindowController.visibilityTime = 3;
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
          self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"fullheart"];
          self.hudWindowController.centerImageView.image.template = YES;
@@ -106,13 +107,14 @@ static void *MASObservingContext = &MASObservingContext;
      toAction:^{
          [[MenuController sharedController] showUserProfile:nil];
          if (self.hudWindowController.isVisible) {
+             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         self.hudWindowController.visibilityTime = 3;
          self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"profile"];
          self.hudWindowController.centerImageView.image.template = YES;
          self.hudWindowController.bottomLabel.hidden = NO;
@@ -125,13 +127,14 @@ static void *MASObservingContext = &MASObservingContext;
      toAction:^{
          [[MenuController sharedController] showSimilarArtists:nil];
          if (self.hudWindowController.isVisible) {
+             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         self.hudWindowController.visibilityTime = 3;
          self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"similar"];
          self.hudWindowController.centerImageView.image.template = YES;
          self.hudWindowController.bottomLabel.hidden = NO;
@@ -208,13 +211,14 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kDecreaseVolumeShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
              self.hudWindowController.bottomVisualEffectView.hidden = NO;
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
-         self.hudWindowController.visibilityTime = 1;
          MusicController *musicController = [MusicController sharedController];
          NSInteger volume = musicController.iTunes.soundVolume;
          if (volume > 90 && volume <= 100) {
@@ -271,13 +275,14 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kMuteVolumeShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
              self.hudWindowController.bottomVisualEffectView.hidden = NO;
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
-         self.hudWindowController.visibilityTime = 1;
          MusicController *musicController = [MusicController sharedController];
          NSInteger volume = musicController.iTunes.soundVolume;
          if (volume > 0) {
@@ -333,13 +338,14 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kIncreaseRatingShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         self.hudWindowController.visibilityTime = 1;
          MusicController *musicController = [MusicController sharedController];
          NSInteger rating = musicController.iTunes.currentTrack.rating;
          if (rating >= 80) {
@@ -370,13 +376,14 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kDecreaseRatingShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         self.hudWindowController.visibilityTime = 1;
          MusicController *musicController = [MusicController sharedController];
          NSInteger rating = musicController.iTunes.currentTrack.rating;
          if (rating > 80) {

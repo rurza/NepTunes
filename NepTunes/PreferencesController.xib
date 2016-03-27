@@ -25,6 +25,8 @@
                 <outlet property="passwordField" destination="gzR-PE-rsD" id="TpV-qR-mOm"/>
                 <outlet property="preferencesCoverController" destination="Y3U-Am-JUO" id="XXz-Jv-vku"/>
                 <outlet property="settingsToolbar" destination="L8W-3N-nM6" id="PP4-h5-4VN"/>
+                <outlet property="socialToolbarItem" destination="tiP-1Z-kOf" id="Hqh-0V-jK4"/>
+                <outlet property="socialView" destination="yKC-FW-Ibs" id="AGp-Fa-0rf"/>
                 <outlet property="userAvatar" destination="ohM-zy-ZuK" id="5M5-Qq-oeb"/>
                 <outlet property="window" destination="GMI-IS-lMx" id="O3A-Ye-EZz"/>
             </connections>
@@ -253,7 +255,7 @@ DQ
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="310" width="379" height="369"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
                 <rect key="frame" x="0.0" y="0.0" width="379" height="369"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -280,15 +282,20 @@ DQ
                             <action selector="switchView:" target="-2" id="xT4-fb-Rs8"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="BECCFCE6-50E3-4CCB-AEA2-DAA41F998728" explicitItemIdentifier="Social" label="Social" paletteLabel="Social" tag="4" image="social" autovalidates="NO" selectable="YES" id="tiP-1Z-kOf">
+                        <connections>
+                            <action selector="switchView:" target="-2" id="Ire-oG-9LK"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="54o-Fj-vN1"/>
                     <toolbarItem reference="Cx9-Pj-89g"/>
-                    <toolbarItem reference="jrg-GE-RR3"/>
                     <toolbarItem reference="tdm-m5-M5x"/>
+                    <toolbarItem reference="jrg-GE-RR3"/>
                 </defaultToolbarItems>
             </toolbar>
-            <point key="canvasLocation" x="-319.5" y="99"/>
+            <point key="canvasLocation" x="-360.5" y="96.5"/>
         </window>
         <customView identifier="AccountLogged" id="FtI-IT-OHd">
             <rect key="frame" x="0.0" y="0.0" width="276" height="287"/>
@@ -354,7 +361,7 @@ DQ
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="463" y="113.5"/>
+            <point key="canvasLocation" x="-300" y="838.5"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
             <rect key="frame" x="0.0" y="0.0" width="379" height="451"/>
@@ -497,6 +504,8 @@ DQ
         </customObject>
         <customObject id="RtU-Wd-pY6" customClass="SettingsController">
             <connections>
+                <outlet property="automaticallyShareOnFacebookCheckbox" destination="HaV-r6-cSC" id="eRi-34-cNO"/>
+                <outlet property="automaticallyShareOnTwitterCheckbox" destination="1J2-b9-EpI" id="LpO-ki-nLr"/>
                 <outlet property="hideNotificationsCheckbox" destination="pRt-Oe-auy" id="Vx2-Kg-rt4"/>
                 <outlet property="hideStatusBarCheckbox" destination="ZBj-H1-CpX" id="Cai-ys-eo4"/>
                 <outlet property="integrationWithiTunesCheckbox" destination="uWl-cS-eOC" id="Fo9-RV-ggt"/>
@@ -525,22 +534,22 @@ DQ
             </connections>
         </customObject>
         <customView identifier="Album Cover" wantsLayer="YES" id="TyO-c4-qci">
-            <rect key="frame" x="0.0" y="0.0" width="542" height="200"/>
+            <rect key="frame" x="0.0" y="0.0" width="532" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ga-oD-g2t">
-                    <rect key="frame" x="355" y="0.0" width="187" height="200"/>
+                    <rect key="frame" x="345" y="0.0" width="187" height="200"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="YcC-bP-b8f"/>
                 </imageView>
                 <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8JA-zT-DPW">
-                    <rect key="frame" x="411" y="30" width="140" height="140"/>
+                    <rect key="frame" x="401" y="30" width="140" height="140"/>
                     <shadow key="shadow" blurRadius="10">
                         <size key="offset" width="-3" height="-4"/>
                         <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </shadow>
                 </customView>
                 <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Ob-th-RMz" customClass="CoverView">
-                    <rect key="frame" x="401" y="20" width="160" height="160"/>
+                    <rect key="frame" x="391" y="20" width="160" height="160"/>
                     <subviews>
                         <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kBP-uk-mZe" customClass="CoverImageView">
                             <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
@@ -622,7 +631,7 @@ DQ
                     </connections>
                 </button>
             </subviews>
-            <point key="canvasLocation" x="284" y="546"/>
+            <point key="canvasLocation" x="289" y="546"/>
         </customView>
         <customObject id="Y3U-Am-JUO" customClass="PreferencesCoverController">
             <connections>
@@ -631,11 +640,47 @@ DQ
                 <outlet property="shadowView" destination="8JA-zT-DPW" id="Gmv-FO-0so"/>
             </connections>
         </customObject>
+        <customView id="yKC-FW-Ibs">
+            <rect key="frame" x="0.0" y="0.0" width="276" height="114"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField toolTip="Number of tracks in recent tracks menu" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CzT-kk-Irh">
+                    <rect key="frame" x="18" y="77" width="240" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Automatically share loved track on:" id="Pnb-xl-knu">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HaV-r6-cSC">
+                    <rect key="frame" x="18" y="47" width="240" height="18"/>
+                    <buttonCell key="cell" type="check" title="Facebook" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="QbU-fM-hQS">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleAutomaticallyShareOnFacebook:" target="RtU-Wd-pY6" id="aPc-2J-XtG"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1J2-b9-EpI">
+                    <rect key="frame" x="18" y="18" width="240" height="18"/>
+                    <buttonCell key="cell" type="check" title="Twitter" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="lIS-6I-epv">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleAutomaticallyShareOnTwitter:" target="RtU-Wd-pY6" id="tF9-RM-nNw"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="-300" y="493"/>
+        </customView>
     </objects>
     <resources>
         <image name="album cover" width="28" height="28"/>
         <image name="general" width="28" height="28"/>
         <image name="hotkey" width="28" height="28"/>
         <image name="lastfm" width="28" height="28"/>
+        <image name="social" width="28" height="28"/>
     </resources>
 </document>

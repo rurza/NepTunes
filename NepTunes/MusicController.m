@@ -15,6 +15,9 @@
 #import "UserNotificationsController.h"
 #import "CoverSettingsController.h"
 #import "HUDWindowController.h"
+#import "SocialMessage.h"
+@import Social;
+@import Accounts;
 
 #define FOUR_MINUTES 60 * 4
 #define DELAY_FOR_RADIO 2
@@ -55,7 +58,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)awakeFromNib
 {
     [self setupNotifications];
-    [self setupCover];
+//    [self setupCover];
 }
 
 -(void)setupNotifications
@@ -68,21 +71,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
                                                           object:nil];
 }
 
--(void)setupCover
-{
-    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
-    if (coverSettingsController.showCover) {
-        self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
-        if (self.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack) {
-            [self.coverWindowController showWindow:self];
-            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
-            [self.coverWindowController.window makeKeyAndOrderFront:nil];
-            HUDWindowController *window =[[HUDWindowController alloc] initWithWindowNibName:@"HUDWindowController"];
-            [window.window makeKeyAndOrderFront:nil];
 
-        }
-    }
-}
 
 
 -(void)updateTrackInfo:(NSNotification *)note
@@ -105,7 +94,6 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
    
     if ([timer isValid]) {
-//        [self invalidateTimers];
         [self getInfoAboutTrackFromNotificationOrFromiTunes:timer.userInfo];
         [self updateMenu];
         
@@ -171,6 +159,22 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:info];
         [self.coverWindowController.window close];
         self.coverWindowController = nil;
+    }
+}
+
+-(void)setupCover
+{
+    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
+    if (coverSettingsController.showCover) {
+        self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
+        if (self.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack) {
+            [self.coverWindowController showWindow:self];
+            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
+            [self.coverWindowController.window makeKeyAndOrderFront:nil];
+            HUDWindowController *window =[[HUDWindowController alloc] initWithWindowNibName:@"HUDWindowController"];
+            [window.window makeKeyAndOrderFront:nil];
+            
+        }
     }
 }
 
@@ -264,6 +268,98 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             handler();
         }
     }
+//    NSSharingService *service = [NSSharingService sharingServiceNamed:NSSharingServiceNamePostOnFacebook];
+//
+//    if (settings.automaticallyShareOnFacebook && [service canPerformWithItems:nil]) {
+//        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+//        
+//        ACAccountType *accountTypeFacebook =
+//        [accountStore accountTypeWithAccountTypeIdentifier:
+//         ACAccountTypeIdentifierFacebook];
+//        
+//        NSDictionary *options = @{
+//                                  ACFacebookAppIdKey: @"557679431058428",
+//                                  ACFacebookPermissionsKey: @[@"basic_info", @"publish_actions"],
+//                                  ACFacebookAudienceKey: ACFacebookAudienceFriends
+//                                  };
+//        
+//        [accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
+//            if (granted) {
+//                
+//                NSArray *accounts = [accountStore accountsWithAccountType:accountTypeFacebook];
+//                ACAccount* facebookAccount = [accounts lastObject];
+//                
+//                [SocialMessage messageForLovedTrackWithCompletionHandler:^(NSString *message) {
+//                    NSDictionary *parameters =
+//                    @{@"access_token":facebookAccount.credential.oauthToken,
+//                      @"message": message};
+//                    
+//                    NSURL *feedURL = [NSURL
+//                                      URLWithString:@"https://graph.facebook.com/me/feed"];
+//                    
+//                    SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+//                    
+//                    [feedRequest performRequestWithHandler:^(NSData *responseData,
+//                                                 NSHTTPURLResponse *urlResponse, NSError *error)
+//                     {
+//                         NSLog(@"Request failed, %@", [urlResponse description]);
+//                     }];
+//                }];
+//            } else {
+//                NSLog(@"Access Denied");
+//                NSLog(@"[%@]",[error localizedDescription]);
+//            }
+//        }];
+//    }
+//    
+//    service = [NSSharingService sharingServiceNamed:NSSharingServiceNamePostOnTwitter];
+//
+//    if (settings.automaticallyShareOnTwitter && [service canPerformWithItems:nil]) {
+//        ACAccountStore *account = [[ACAccountStore alloc] init];
+//        ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:
+//                                      ACAccountTypeIdentifierTwitter];
+//        
+//        [account requestAccessToAccountsWithType:accountType options:nil
+//                                      completion:^(BOOL granted, NSError *error)
+//         {
+//             if (granted == YES)
+//             {
+//                 NSArray *arrayOfAccounts = [account
+//                                             accountsWithAccountType:accountType];
+//                 
+//                 if ([arrayOfAccounts count] > 0)
+//                 {
+//                     ACAccount *twitterAccount = [arrayOfAccounts lastObject];
+//                     [SocialMessage messageForLovedTrackWithCompletionHandler:^(NSString *message) {
+//                         NSDictionary *parameters = @{@"status": message};
+//                         
+//                         NSURL *requestURL = [NSURL
+//                                              URLWithString:@"http://api.twitter.com/1/statuses/update.json"];
+//                         
+//                         SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
+//                                                                     requestMethod:SLRequestMethodPOST
+//                                                                               URL:requestURL
+//                                                                        parameters:parameters];
+//                         
+//                         postRequest.account = twitterAccount;
+//                         
+//                         [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+//                          {
+//                              if (settings.debugMode) {
+//                                  NSLog(@"Twitter HTTP response: %li", (long)[urlResponse statusCode]);
+//                              }
+//                          }];
+//                         
+//                     }];
+//                 }
+//             }
+//             else {
+//                 if (settings.debugMode) {
+//                     NSLog(@"Access to Twitter Accounts not granted: %@", error.localizedDescription);
+//                 }
+//             }
+//         }];
+//    }
 }
 
 

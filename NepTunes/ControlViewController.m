@@ -13,6 +13,7 @@
 #import "Track.h"
 #import "CoverSettingsController.h"
 #import <POP.h>
+#import "MenuController.h"
 
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;
@@ -33,6 +34,7 @@ static NSUInteger const kNumberOfFrames = 10;
     self.forwardButton.image.template = YES;
     self.backwardButton.image.template = YES;
     self.volumeButton.image.template = YES;
+    self.shareButton.image.template = YES;
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                         selector:@selector(updateControlsState:)
                                                             name:@"com.apple.iTunes.playerInfo"
@@ -41,7 +43,8 @@ static NSUInteger const kNumberOfFrames = 10;
     [self.backwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(backwardButtonWasPressed:)]];
     self.volumePopover.delegate = self;
     [self updateControlsState:nil];
-    
+    self.shareButton.action = @selector(openShareMenu:);
+    self.shareButton.target = self;
 }
 
 -(void)updateControlsState:(NSNotification *)note
@@ -137,7 +140,6 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)changeVolume:(NSButton *)sender
 {
-    NSLog(@"BEFORE %f", CACurrentMediaTime());
     [self.volumePopover showRelativeToRect:sender.bounds ofView:sender preferredEdge:NSMinYEdge];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self updateVolumeIcon];
@@ -176,6 +178,18 @@ static NSUInteger const kNumberOfFrames = 10;
         });
     });
 }
+
+#pragma mark - Sharing
+
+-(void)openShareMenu:(NSButton *)button
+{
+    NSEvent *event = [NSEvent mouseEventWithType:NSLeftMouseDown location:button.frame.origin modifierFlags:NSDeviceIndependentModifierFlagsMask timestamp:0 windowNumber:button.window.windowNumber context:button.window.graphicsContext eventNumber:0 clickCount:1 pressure:1];
+    [NSMenu popUpContextMenu:[MenuController sharedController].shareMenu withEvent:event forView:button];
+}
+
+
+
+#pragma mark - Getters
 
 -(NSImage *)imageForStep:(NSUInteger)step
 {

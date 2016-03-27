@@ -343,15 +343,6 @@
 
 -(void)rightMouseUp:(NSEvent *)theEvent
 {
-    NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
-    NSMenuItem *openPreferences = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Preferences...", nil) action:@selector(openPreferences:) keyEquivalent:@""];
-    openPreferences.target = [MenuController sharedController];
-    NSMenuItem *quitApp = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Quit", nil) action:@selector(quit:) keyEquivalent:@""];
-    quitApp.target = [MenuController sharedController];
-    
-    [theMenu insertItem:openPreferences atIndex:0];
-    [theMenu insertItem:quitApp atIndex:1];
-
     [NSMenu popUpContextMenu:[MenuController sharedController].statusMenu withEvent:theEvent forView:self.window.controlView];
 }
 

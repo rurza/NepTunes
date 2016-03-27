@@ -28,6 +28,8 @@ static NSString *const kLoveTrackOniTunes = @"loveTrackOniTunes";
 static NSString *const kShowSimilarArtistsOnAppleMusic = @"showSimilarArtistsOnAppleMusic";
 static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 static NSString *const kScrobblePodcastsAndiTunesUButton = @"scrobblePodcastsAndiTunesUButton";
+static NSString *const kAutomaticallyShareOnFacebook = @"automaticallyShareOnFacebook";
+static NSString *const kAutomaticallyShareOnTwitter = @"automaticallyShareOnTwitter";
 
 static NSString *const kDebugMode = @"debugMode";
 
@@ -57,7 +59,8 @@ static NSString *const kDebugMode = @"debugMode";
 @synthesize showRecentTrackIniTunes = _showRecentTrackIniTunes;
 @synthesize debugMode = _debugMode;
 @synthesize scrobblePodcastsAndiTunesU = _scrobblePodcastsAndiTunesU;
-
+@synthesize automaticallyShareOnTwitter = _automaticallyShareOnTwitter;
+@synthesize automaticallyShareOnFacebook = _automaticallyShareOnFacebook;
 
 
 #pragma mark - Initialization
@@ -99,7 +102,9 @@ static NSString *const kDebugMode = @"debugMode";
                                                               kLoveTrackOniTunes:                   @NO,
                                                               kShowSimilarArtistsOnAppleMusic:      @NO,
                                                               kShowRecentTrackIniTunes:             @NO,
-                                                              kScrobblePodcastsAndiTunesUButton:    @NO}];
+                                                              kScrobblePodcastsAndiTunesUButton:    @NO,
+                                                              kAutomaticallyShareOnTwitter:         @NO,
+                                                              kAutomaticallyShareOnFacebook:        @NO}];
  
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -161,7 +166,31 @@ static NSString *const kDebugMode = @"debugMode";
     } else {
         self.scrobblePodcastsAndiTunesUButton.state = NSOffState;
     }
-
+    //Social
+    if (self.automaticallyShareOnFacebook) {
+        self.automaticallyShareOnFacebookCheckbox.state = NSOnState;
+    } else {
+        self.automaticallyShareOnFacebookCheckbox.state = NSOffState;
+    }
+    NSSharingService *service;
+    service = [NSSharingService sharingServiceNamed:NSSharingServiceNamePostOnTwitter];
+    if (self.automaticallyShareOnTwitter && [service canPerformWithItems:nil]) {
+        self.automaticallyShareOnTwitterCheckbox.state = NSOnState;
+    } else if ([service canPerformWithItems:nil]) {
+        self.automaticallyShareOnTwitterCheckbox.state = NSOffState;
+    } else {
+        self.automaticallyShareOnTwitterCheckbox.state = NSOffState;
+        self.automaticallyShareOnTwitterCheckbox.enabled = NO;
+    }
+    service = [NSSharingService sharingServiceNamed:NSSharingServiceNamePostOnFacebook];
+    if (self.automaticallyShareOnFacebook && [service canPerformWithItems:nil]) {
+        self.automaticallyShareOnFacebookCheckbox.state = NSOnState;
+    } else if ([service canPerformWithItems:nil]) {
+        self.automaticallyShareOnFacebookCheckbox.state = NSOffState;
+    } else {
+        self.automaticallyShareOnFacebookCheckbox.state = NSOffState;
+        self.automaticallyShareOnFacebookCheckbox.enabled = NO;
+    }
 }
 
 -(void)updateNumberOfRecentItemsPopUp
@@ -303,9 +332,19 @@ static NSString *const kDebugMode = @"debugMode";
     [[MenuController sharedController] updateMenu];
 }
 
-- (IBAction)toggleScrobblePodcastsAndiTunesU:(NSButton *)sender
+-(IBAction)toggleScrobblePodcastsAndiTunesU:(NSButton *)sender
 {
     self.scrobblePodcastsAndiTunesU = sender.state;
+}
+
+//Social
+-(IBAction)toggleAutomaticallyShareOnFacebook:(NSButton *)sender
+{
+    self.automaticallyShareOnFacebook = sender.state;
+}
+-(IBAction)toggleAutomaticallyShareOnTwitter:(NSButton *)sender;
+{
+    self.automaticallyShareOnTwitter = sender.state;
 }
 
 
@@ -619,6 +658,38 @@ static NSString *const kDebugMode = @"debugMode";
         _scrobblePodcastsAndiTunesU = [[self.userDefaults objectForKey:kScrobblePodcastsAndiTunesUButton] boolValue];
     }
     return _scrobblePodcastsAndiTunesU;
+}
+
+#pragma mark   automaticallyShareOnTwitter
+-(void)setAutomaticallyShareOnTwitter:(BOOL)automaticallyShareOnTwitter
+{
+    _automaticallyShareOnTwitter = automaticallyShareOnTwitter;
+    [self.userDefaults setObject:@(automaticallyShareOnTwitter) forKey:kAutomaticallyShareOnTwitter];
+    [self saveSettings];
+}
+
+-(BOOL)automaticallyShareOnTwitter
+{
+    if (!_automaticallyShareOnTwitter) {
+        _automaticallyShareOnTwitter = [[self.userDefaults objectForKey:kAutomaticallyShareOnTwitter] boolValue];
+    }
+    return _automaticallyShareOnTwitter;
+}
+
+#pragma mark   automaticallyShareOnFacebook
+-(void)setAutomaticallyShareOnFacebook:(BOOL)automaticallyShareOnFacebook
+{
+    _automaticallyShareOnFacebook = automaticallyShareOnFacebook;
+    [self.userDefaults setObject:@(automaticallyShareOnFacebook) forKey:kAutomaticallyShareOnFacebook];
+    [self saveSettings];
+}
+
+-(BOOL)automaticallyShareOnFacebook
+{
+    if (!_automaticallyShareOnFacebook) {
+        _automaticallyShareOnFacebook = [[self.userDefaults objectForKey:kAutomaticallyShareOnFacebook] boolValue];
+    }
+    return _automaticallyShareOnFacebook;
 }
 
 #pragma mark - Save

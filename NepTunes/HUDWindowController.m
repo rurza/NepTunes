@@ -94,7 +94,7 @@
 -(NSUInteger)visibilityTime
 {
     if (!_visibilityTime) {
-        _visibilityTime = 3;
+        _visibilityTime = 2;
     }
     return _visibilityTime;
 }

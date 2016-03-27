@@ -18,6 +18,7 @@
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
+		5B8534811CA6987100C26129 /* ShareMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8534801CA6987100C26129 /* ShareMenuController.m */; };
 		5B881D9A1C7B64F9004AF260 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B881D981C7B64F9004AF260 /* AboutWindowController.m */; };
 		5B881D9B1C7B64F9004AF260 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B881D991C7B64F9004AF260 /* AboutWindowController.xib */; };
 		5B8F653A1C961383000F3366 /* HUDWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8F65381C961383000F3366 /* HUDWindowController.m */; };
@@ -36,6 +37,7 @@
 		5BBD4C501C34562000AFA182 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Track.m */; };
 		5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A8E01C610C83009C3E9F /* MusicController.m */; };
 		5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6E5D41B6BF87300631537 /* HotkeyController.m */; };
+		5BD775DE1CA7D421002C8BCF /* SocialMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD775DD1CA7D421002C8BCF /* SocialMessage.m */; };
 		5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */; };
 		5BDD6B161A1D0C95001D87D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD6B151A1D0C95001D87D6 /* main.m */; };
 		5BDD6B181A1D0C95001D87D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BDD6B171A1D0C95001D87D6 /* Images.xcassets */; };
@@ -116,6 +118,8 @@
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
+		5B85347F1CA6987100C26129 /* ShareMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareMenuController.h; sourceTree = "<group>"; };
+		5B8534801CA6987100C26129 /* ShareMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareMenuController.m; sourceTree = "<group>"; };
 		5B881D971C7B64F9004AF260 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
 		5B881D981C7B64F9004AF260 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
 		5B881D991C7B64F9004AF260 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 		5BC6A8E01C610C83009C3E9F /* MusicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicController.m; sourceTree = "<group>"; };
 		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
 		5BD6E5D41B6BF87300631537 /* HotkeyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotkeyController.m; sourceTree = "<group>"; };
+		5BD775DC1CA7D421002C8BCF /* SocialMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialMessage.h; sourceTree = "<group>"; };
+		5BD775DD1CA7D421002C8BCF /* SocialMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialMessage.m; sourceTree = "<group>"; };
 		5BDD6B0D1A1D0C95001D87D6 /* NepTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NepTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDD6B111A1D0C95001D87D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -249,6 +255,8 @@
 				5B2F4CE61B763C16009F0C53 /* MenuController.m */,
 				5B427BD91C52B4A300EA1D4A /* RecentTracksController.h */,
 				5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */,
+				5B85347F1CA6987100C26129 /* ShareMenuController.h */,
+				5B8534801CA6987100C26129 /* ShareMenuController.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -365,6 +373,8 @@
 				5B9662711C725A400095AF54 /* Settings and preferences */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
 				5B9662701C725A340095AF54 /* User Notifications */,
+				5BD775DC1CA7D421002C8BCF /* SocialMessage.h */,
+				5BD775DD1CA7D421002C8BCF /* SocialMessage.m */,
 			);
 			path = NepTunes;
 			sourceTree = "<group>";
@@ -625,11 +635,13 @@
 				5B881D9A1C7B64F9004AF260 /* AboutWindowController.m in Sources */,
 				5B9F07431C723BFE00F73566 /* ControlViewController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
+				5B8534811CA6987100C26129 /* ShareMenuController.m in Sources */,
 				5BAE71031C50199700779081 /* SavedTrack.m in Sources */,
 				5B8F653A1C961383000F3366 /* HUDWindowController.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
 				5BB9965F1C7621CF0088B46B /* PreferencesCoverController.m in Sources */,
 				5BAEB68A1C78AF2700F7B2F4 /* ControlView.m in Sources */,
+				5BD775DE1CA7D421002C8BCF /* SocialMessage.m in Sources */,
 				5B0734221C6E382D00167934 /* CoverView.m in Sources */,
 				5B9F07401C72300200F73566 /* CoverLabel.m in Sources */,
 				5BAE71081C528D1000779081 /* SettingsController.m in Sources */,

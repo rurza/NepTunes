@@ -39,7 +39,6 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) RecentTracksController *recentTracksController;
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settings;
-@property (nonatomic) ItunesSearch *iTunesSearch;
 @property (nonatomic) NSUInteger animationCurrentStep;
 @property (nonatomic) PINCache *cachediTunesSearchResults;
 @property (nonatomic) PreferencesController *preferencesController;
@@ -102,14 +101,12 @@ static NSUInteger const kNumberOfFrames = 10;
 
 #pragma mark - Reachability
 
-
 -(void)setupReachability
 {
     //1. this must be first
     self.reachability = YES;
     //2. this must be second
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:FXReachabilityStatusDidChangeNotification object:nil];
-    
 }
 
 -(void)reachabilityDidChange:(NSNotification *)note
@@ -133,7 +130,6 @@ static NSUInteger const kNumberOfFrames = 10;
     NSImage *icon = [NSImage imageNamed:@"statusIcon"];
     self.statusItem.button.image = icon;
     [icon setTemplate:YES];
-//    self.statusItem.image = icon;
     self.statusItem.menu = self.statusMenu;
 }
 

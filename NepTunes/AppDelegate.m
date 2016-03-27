@@ -20,6 +20,10 @@
 
 @implementation AppDelegate
 
+-(void)applicationDidFinishLaunching:(NSNotification *)notification
+{
+    
+}
 
 -(void)applicationDidBecomeActive:(NSNotification *)notification
 {

@@ -46,7 +46,11 @@
 @property (nonatomic,weak) IBOutlet NSButton *showSimilarArtistsOnAppleMusicCheckbox;
 @property (nonatomic,weak) IBOutlet NSButton *showRecentTrackIniTunesCheckbox;
 
-
+//Social
+@property (nonatomic) BOOL automaticallyShareOnFacebook;
+@property (nonatomic) BOOL automaticallyShareOnTwitter;
+@property (nonatomic,weak) IBOutlet NSButton *automaticallyShareOnFacebookCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *automaticallyShareOnTwitterCheckbox;
 
 +(SettingsController *)sharedSettings;
 -(void)saveSettings;
@@ -62,6 +66,8 @@
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender;
 
 - (IBAction)toggleScrobblePodcastsAndiTunesU:(NSButton *)sender;
-
+//Social
+-(IBAction)toggleAutomaticallyShareOnFacebook:(NSButton *)sender;
+-(IBAction)toggleAutomaticallyShareOnTwitter:(NSButton *)sender;
 
 @end

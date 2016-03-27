@@ -63,9 +63,11 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
     if (!self.showCover) {
         self.ignoreMissionControlCheckbox.enabled = NO;
         self.albumCoverPosition.enabled = NO;
+        self.bringiTunesToFrontWithDoubleClickCheckbox.enabled = NO;
     } else {
         self.ignoreMissionControlCheckbox.enabled = YES;
         self.albumCoverPosition.enabled = YES;
+        self.bringiTunesToFrontWithDoubleClickCheckbox.enabled = YES;
     }
     self.ignoreMissionControlCheckbox.state = self.ignoreMissionControl;
     self.bringiTunesToFrontWithDoubleClickCheckbox.state = self.bringiTunesToFrontWithDoubleClick;
@@ -137,11 +139,13 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
     if (!sender.state) {
         self.ignoreMissionControlCheckbox.enabled = NO;
         self.albumCoverPosition.enabled = NO;
+        self.bringiTunesToFrontWithDoubleClickCheckbox.enabled = NO;
         [[MusicController sharedController].coverWindowController.window close];
     } else {
         [[MusicController sharedController] setupCover];
         self.ignoreMissionControlCheckbox.enabled = YES;
         self.albumCoverPosition.enabled = YES;
+        self.bringiTunesToFrontWithDoubleClickCheckbox.enabled = YES;
     }
 }
 
