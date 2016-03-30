@@ -41,6 +41,7 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+
     self.hoverArea = [[NSTrackingArea alloc] initWithRect:self.window.contentView.frame
                                                   options:NSTrackingMouseEnteredAndExited |NSTrackingAssumeInside | NSTrackingActiveAlways
                                                     owner:self userInfo:nil];
@@ -54,6 +55,7 @@
     self.getCover = [[GetCover alloc] init];
     self.getCover.delegate = self;
     [self readSettings];
+    self.shouldCascadeWindows = NO;
 }
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo

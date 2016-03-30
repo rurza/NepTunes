@@ -183,7 +183,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)openShareMenu:(NSButton *)button
 {
-    NSEvent *event = [NSEvent mouseEventWithType:NSLeftMouseDown location:button.frame.origin modifierFlags:NSDeviceIndependentModifierFlagsMask timestamp:0 windowNumber:button.window.windowNumber context:button.window.graphicsContext eventNumber:0 clickCount:1 pressure:1];
+    NSEvent *event = [NSEvent mouseEventWithType:NSLeftMouseDown location:NSPointFromCGPoint(CGPointMake(button.frame.origin.x + button.frame.size.width, button.frame.origin.y + button.frame.size.height)) modifierFlags:NSDeviceIndependentModifierFlagsMask timestamp:0 windowNumber:button.window.windowNumber context:button.window.graphicsContext eventNumber:0 clickCount:1 pressure:1];
     [NSMenu popUpContextMenu:[MenuController sharedController].shareMenu withEvent:event forView:button];
 }
 

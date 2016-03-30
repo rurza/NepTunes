@@ -24,7 +24,7 @@
 
 -(void)setupWindow
 {
-    self.releasedWhenClosed = NO;
+    self.releasedWhenClosed = YES;
     [self setMovableByWindowBackground:YES];
     [self setMovable:YES];
     [self setOpaque: NO];
@@ -32,6 +32,7 @@
     [self setIgnoresMouseEvents:NO];
     [self setStyleMask:NSBorderlessWindowMask];
     [self setHasShadow:YES];
+    self.restorable = YES;
 }
 
 -(void)setupControlView

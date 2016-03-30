@@ -51,11 +51,9 @@ static NSString *const kHUDXibName = @"HUDWindowController";
             NSArray *copiedObjects = @[[firstResult objectForKey:@"collectionViewUrl"]];
             [clipboard writeObjects:copiedObjects];
             if (self.hudWindowController.isVisible) {
-                self.hudWindowController.visibilityTime = 2;
                 [self.hudWindowController updateCurrentHUD];
             } else {
                 self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-                self.hudWindowController.visibilityTime = 2;
                 [self.hudWindowController presentHUD];
             }
             self.hudWindowController.bottomVisualEffectView.hidden = YES;
@@ -74,11 +72,9 @@ static NSString *const kHUDXibName = @"HUDWindowController";
 -(void)displayInfoThatLinkCannotBeCopied
 {
     if (self.hudWindowController.isVisible) {
-        self.hudWindowController.visibilityTime = 2;
         [self.hudWindowController updateCurrentHUD];
     } else {
         self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-        self.hudWindowController.visibilityTime = 2;
         [self.hudWindowController presentHUD];
     }
     self.hudWindowController.bottomVisualEffectView.hidden = YES;
@@ -98,15 +94,12 @@ static NSString *const kHUDXibName = @"HUDWindowController";
         NSArray *copiedObjects = @[[NSString stringWithFormat:@"%@ - %@", currentTrack.artist, currentTrack.trackName]];
         [clipboard writeObjects:copiedObjects];
         if (self.hudWindowController.isVisible) {
-            self.hudWindowController.visibilityTime = 1;
             [self.hudWindowController updateCurrentHUD];
         } else {
             self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-            self.hudWindowController.visibilityTime = 1;
             [self.hudWindowController presentHUD];
         }
         self.hudWindowController.bottomVisualEffectView.hidden = YES;
-        self.hudWindowController.visibilityTime = 1;
         self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"copied"];
         self.hudWindowController.centerImageView.image.template = YES;
         self.hudWindowController.bottomLabel.hidden = NO;

@@ -158,6 +158,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     } else {
         [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:info];
         [self.coverWindowController.window close];
+
         self.coverWindowController = nil;
     }
 }

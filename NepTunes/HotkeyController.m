@@ -84,14 +84,12 @@ static void *MASObservingContext = &MASObservingContext;
      toAction:^{
          [[MenuController sharedController] loveSong:nil];
          if (self.hudWindowController.isVisible) {
-             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController updateCurrentHUD];
              self.hudWindowController.bottomImageView.image = nil;
              self.hudWindowController.centerImageView.image = nil;
              self.hudWindowController.bottomVisualEffectView.hidden = YES;
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController presentHUD];
              self.hudWindowController.bottomVisualEffectView.hidden = YES;
          }
@@ -107,11 +105,9 @@ static void *MASObservingContext = &MASObservingContext;
      toAction:^{
          [[MenuController sharedController] showUserProfile:nil];
          if (self.hudWindowController.isVisible) {
-             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
@@ -127,11 +123,9 @@ static void *MASObservingContext = &MASObservingContext;
      toAction:^{
          [[MenuController sharedController] showSimilarArtists:nil];
          if (self.hudWindowController.isVisible) {
-             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             self.hudWindowController.visibilityTime = 2;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
@@ -153,7 +147,6 @@ static void *MASObservingContext = &MASObservingContext;
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
              [self.hudWindowController presentHUD];
          }
-         self.hudWindowController.visibilityTime = 1;
 
          MusicController *musicController = [MusicController sharedController];
          NSInteger volume = musicController.iTunes.soundVolume;
@@ -211,12 +204,10 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kDecreaseVolumeShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
              self.hudWindowController.bottomVisualEffectView.hidden = NO;
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
          MusicController *musicController = [MusicController sharedController];
@@ -275,12 +266,10 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kMuteVolumeShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
              self.hudWindowController.bottomVisualEffectView.hidden = NO;
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
          MusicController *musicController = [MusicController sharedController];
@@ -338,11 +327,9 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kIncreaseRatingShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
@@ -376,11 +363,9 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kDecreaseRatingShortcut
      toAction:^{
          if (self.hudWindowController.isVisible) {
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController updateCurrentHUD];
          } else {
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             self.hudWindowController.visibilityTime = 1;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;

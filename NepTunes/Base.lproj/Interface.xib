@@ -708,7 +708,7 @@
                                     <action selector="shareOnTwitter:" target="mAz-ZV-umj" id="3lF-gS-ycv"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Post track to Facebook..." id="igs-iw-Q4Q">
+                            <menuItem title="Post Track to Facebook..." id="igs-iw-Q4Q">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="shareOnFacebook:" target="mAz-ZV-umj" id="tJd-qL-RSe"/>
