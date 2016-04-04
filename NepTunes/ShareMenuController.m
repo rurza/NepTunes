@@ -110,10 +110,13 @@ static NSString *const kHUDXibName = @"HUDWindowController";
 - (IBAction)searchForLyrics:(NSMenuItem *)sender
 {
     Track *currentTrack = [MusicScrobbler sharedScrobbler].currentTrack;
+    
     NSString *urlString = [NSString stringWithFormat:@"%@+%@+lyrics", currentTrack.artist, currentTrack.trackName];
-    urlString = [urlString stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
     urlString = [NSString stringWithFormat:@"https://www.google.com/search?rls=en&q=%@", urlString];
+    
     NSURL *url = [NSURL URLWithString:urlString];
     [[NSWorkspace sharedWorkspace] openURL:url];
 }

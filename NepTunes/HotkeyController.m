@@ -326,6 +326,9 @@ static void *MASObservingContext = &MASObservingContext;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kIncreaseRatingShortcut
      toAction:^{
+         MusicController *musicController = [MusicController sharedController];
+         NSInteger rating = musicController.iTunes.currentTrack.rating;
+
          if (self.hudWindowController.isVisible) {
              [self.hudWindowController updateCurrentHUD];
          } else {
@@ -333,8 +336,6 @@ static void *MASObservingContext = &MASObservingContext;
              [self.hudWindowController presentHUD];
          }
          self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         MusicController *musicController = [MusicController sharedController];
-         NSInteger rating = musicController.iTunes.currentTrack.rating;
          if (rating >= 80) {
              self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-5"];
              musicController.iTunes.currentTrack.rating = 100;
@@ -347,12 +348,13 @@ static void *MASObservingContext = &MASObservingContext;
          } else if (rating >= 20) {
              self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
              musicController.iTunes.currentTrack.rating = 40;
-         } else if (rating >= 0) {
+         } else if (rating >= 0 && musicController.currentTrack.name.length && musicController.currentTrack.artist.length && musicController.currentTrack.kind.length) {
              self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
              musicController.iTunes.currentTrack.rating = 20;
          } else {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
-             musicController.iTunes.currentTrack.rating = 20;
+             self.hudWindowController.starsImageView.hidden = YES;
+             self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
+             self.hudWindowController.bottomLabel.hidden = NO;
          }
          self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
          self.hudWindowController.starsImageView.image.template = YES;
@@ -383,12 +385,13 @@ static void *MASObservingContext = &MASObservingContext;
          } else if (rating > 20) {
              self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
              musicController.iTunes.currentTrack.rating = 20;
-         } else if (rating > 0) {
+         } else if (rating >= 0 && musicController.currentTrack.name.length && musicController.currentTrack.artist.length && musicController.currentTrack.kind.length) {
              self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
              musicController.iTunes.currentTrack.rating = 00;
          } else {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
-             musicController.iTunes.currentTrack.rating = 0;
+             self.hudWindowController.starsImageView.hidden = YES;
+             self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
+             self.hudWindowController.bottomLabel.hidden = NO;
          }
          self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
          self.hudWindowController.starsImageView.image.template = YES;
