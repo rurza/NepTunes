@@ -31,6 +31,7 @@
 @property (nonatomic) NSTimer *controlsTimer;
 @property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
 @property (nonatomic) GetCover *getCover;
+@property (nonatomic) NSClickGestureRecognizer *doubleClickRecognizer;
 @end
 
 @implementation CoverWindowController
@@ -40,15 +41,21 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+
     self.hoverArea = [[NSTrackingArea alloc] initWithRect:self.window.contentView.frame
                                                   options:NSTrackingMouseEnteredAndExited |NSTrackingAssumeInside | NSTrackingActiveAlways
                                                     owner:self userInfo:nil];
     [self.window.contentView addTrackingArea:self.hoverArea];
     self.window.contentView.acceptsTouchEvents = YES;
+    self.doubleClickRecognizer = [[NSClickGestureRecognizer alloc] initWithTarget:self action:@selector(bringiTunesToFront:)];
+    self.doubleClickRecognizer.numberOfClicksRequired = 2;
+    self.doubleClickRecognizer.delaysPrimaryMouseButtonEvents = NO;
+    [self.window.controlView addGestureRecognizer:self.doubleClickRecognizer];
     self.controlViewController.delegate = self;
     self.getCover = [[GetCover alloc] init];
     self.getCover.delegate = self;
     [self readSettings];
+    self.shouldCascadeWindows = NO;
 }
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo
@@ -64,10 +71,9 @@
                 [weakSelf updateWith:track andCover:cover];
             }];
         } else {
-            [self animateWindowOpacity:0];
+            self.window.alphaValue = 0;
         }
     } else {
-//        [self animateWindowOpacity:0];
         self.window.alphaValue = 0;
     }
 }
@@ -292,6 +298,15 @@
     self.controlsTimer = nil;
 }
 
+- (void)bringiTunesToFront:(NSGestureRecognizer *)gestureRecognizer
+{
+    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
+    
+    if (coverSettingsController.bringiTunesToFrontWithDoubleClick) {
+        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+    }
+}
+
 -(void)readSettings
 {
     CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
@@ -330,15 +345,6 @@
 
 -(void)rightMouseUp:(NSEvent *)theEvent
 {
-    NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
-    NSMenuItem *openPreferences = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Preferences...", nil) action:@selector(openPreferences:) keyEquivalent:@""];
-    openPreferences.target = [MenuController sharedController];
-    NSMenuItem *quitApp = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Quit", nil) action:@selector(quit:) keyEquivalent:@""];
-    quitApp.target = [MenuController sharedController];
-    
-    [theMenu insertItem:openPreferences atIndex:0];
-    [theMenu insertItem:quitApp atIndex:1];
-
     [NSMenu popUpContextMenu:[MenuController sharedController].statusMenu withEvent:theEvent forView:self.window.controlView];
 }
 

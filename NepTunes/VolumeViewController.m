@@ -35,7 +35,9 @@
 -(void)updateVolumeWithValue:(NSInteger)value
 {
     [MusicController sharedController].iTunes.soundVolume = value;
-    [self.coverWindowController.controlViewController updateVolumeIcon];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.coverWindowController.controlViewController updateVolumeIcon];
+    });
     self.slider.integerValue = [MusicController sharedController].iTunes.soundVolume;
 }
 

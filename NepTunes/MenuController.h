@@ -6,8 +6,7 @@
 //  Copyright (c) 2015 micropixels. All rights reserved.
 //
 @import Cocoa;
-
-#import <Foundation/Foundation.h>
+@class ItunesSearch;
 
 @interface MenuController : NSObject
 
@@ -15,6 +14,10 @@
 @property (weak, nonatomic) IBOutlet NSMenuItem *profileMenuTitle;
 @property (weak, nonatomic) IBOutlet NSMenuItem *similarArtistMenuTtitle;
 @property (nonatomic) IBOutlet NSMenu *statusMenu;
+@property (nonatomic, weak) IBOutlet NSMenu *shareMenu;
+
+@property (nonatomic) ItunesSearch *iTunesSearch;
+
 
 +(instancetype)sharedController;
 -(IBAction)loveSong:(id)sender;
@@ -30,5 +33,7 @@
 -(void)hideRecentMenu;
 -(void)showRecentMenu;
 -(void)blinkMenuIcon;
+-(NSString *)asciiString:(NSString *)string;
+
 
 @end

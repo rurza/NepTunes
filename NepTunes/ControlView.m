@@ -19,6 +19,10 @@
     return YES;
 }
 
+-(BOOL)acceptsFirstMouse:(NSEvent *)theEvent
+{
+    return YES;
+}
 
 -(BOOL)becomeFirstResponder
 {

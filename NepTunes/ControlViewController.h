@@ -19,6 +19,7 @@
 @property (nonatomic, weak) IBOutlet NSButton *playButton;
 @property (nonatomic, weak) IBOutlet NSButton *forwardButton;
 @property (nonatomic, weak) IBOutlet NSButton *backwardButton;
+@property (nonatomic, weak) IBOutlet NSButton *shareButton;
 
 @property (nonatomic, weak) IBOutlet NSButton *volumeButton;
 @property (nonatomic, weak) IBOutlet NSPopover *volumePopover;
@@ -30,6 +31,8 @@
 - (IBAction)nextTrack:(NSButton *)sender;
 - (IBAction)loveTrack:(NSButton *)sender;
 - (IBAction)changeVolume:(NSButton *)sender;
+- (IBAction)openShareMenu:(NSButton *)sender;
+
 -(void)animationLoveButton;
 -(void)updateVolumeIcon;
 

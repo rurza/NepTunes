@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -14,6 +14,13 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="menuController" destination="aMi-64-iJ4" id="PlT-qN-Wao"/>
+            </connections>
+        </customObject>
+        <customObject id="mAz-ZV-umj" customClass="ShareMenuController">
+            <connections>
+                <outlet property="shareOnFacebookMenuItem" destination="igs-iw-Q4Q" id="PqP-7n-ohB"/>
+                <outlet property="shareOnTwitterMenuItem" destination="zBJ-2m-Ijo" id="H50-1C-NKx"/>
+                <outlet property="trackInfoMenuItem" destination="LW8-ts-Geg" id="Kf7-iR-vtQ"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
@@ -680,15 +687,55 @@
                         <action selector="showSimilarArtists:" target="aMi-64-iJ4" id="WZp-If-zE5"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Recent Tracks" id="ezK-Lj-iX4">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Recent Tracks" autoenablesItems="NO" id="VA4-FS-C7L"/>
-                </menuItem>
                 <menuItem title="Profile" id="f29-yU-Mdy">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="showUserProfile:" target="aMi-64-iJ4" id="Ee0-Ec-iDi"/>
                     </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="ylp-Y1-7gf"/>
+                <menuItem title="Recent Tracks" id="ezK-Lj-iX4">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Recent Tracks" autoenablesItems="NO" id="VA4-FS-C7L"/>
+                </menuItem>
+                <menuItem title="Share" id="1Ep-3S-kxW">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Share" id="cYl-64-koj">
+                        <items>
+                            <menuItem title="Tweet..." id="zBJ-2m-Ijo">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="shareOnTwitter:" target="mAz-ZV-umj" id="3lF-gS-ycv"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Post Track to Facebook..." id="igs-iw-Q4Q">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="shareOnFacebook:" target="mAz-ZV-umj" id="tJd-qL-RSe"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="UVW-vv-iXR"/>
+                            <menuItem title="Copy Track Link" id="LW8-ts-Geg">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="copyTrackLink:" target="mAz-ZV-umj" id="Rma-pM-XRV"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Copy Track Info" id="vha-HM-oIE">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="copyTrackInfo:" target="mAz-ZV-umj" id="HSj-Vj-TOj"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="R2l-q6-O2A"/>
+                            <menuItem title="Search for Lyrics" id="Uv0-fS-xYe">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="searchForLyrics:" target="mAz-ZV-umj" id="ZRg-Nz-d0V"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="Pdx-mI-Ztv"/>
                 <menuItem title="About NepTunes" id="4aB-li-Gnw">
@@ -709,7 +756,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-765.5" y="176.5"/>
+            <point key="canvasLocation" x="-971" y="177.5"/>
         </menu>
         <customObject id="aMi-64-iJ4" customClass="MenuController">
             <connections>
@@ -718,6 +765,7 @@
                 <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="wW7-Da-pNi"/>
                 <outlet property="recentTracksMenu" destination="VA4-FS-C7L" id="IGV-4e-hNZ"/>
                 <outlet property="recentTracksMenuItem" destination="ezK-Lj-iX4" id="eN0-Wg-BvW"/>
+                <outlet property="shareMenu" destination="cYl-64-koj" id="EU1-jh-gym"/>
                 <outlet property="similarArtistMenuTtitle" destination="wza-2X-Avd" id="v9z-FG-bzu"/>
                 <outlet property="statusMenu" destination="XPD-Mx-1cp" id="gTn-At-Fw2"/>
             </connections>

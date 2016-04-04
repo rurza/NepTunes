@@ -258,7 +258,6 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         self.artistLabel.frame = NSMakeRect(0, 0, 0, 0);
         self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2, 140, self.trackLabel.frame.size.height);
     }
-
 }
 #pragma mark -
 

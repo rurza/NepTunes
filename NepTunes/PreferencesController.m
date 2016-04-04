@@ -33,6 +33,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) IBOutlet NSView *hotkeyView;
 @property (nonatomic) IBOutlet NSView *generalView;
 @property (nonatomic) IBOutlet NSView *albumCoverView;
+@property (nonatomic) IBOutlet NSView *socialView;
+
 
 @property (nonatomic) IBOutlet NSImageView *userAvatar;
 
@@ -45,6 +47,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) IBOutlet NSToolbarItem *hotkeysToolbarItem;
 @property (nonatomic) IBOutlet NSToolbarItem *generalToolbarItem;
 @property (nonatomic) IBOutlet NSToolbarItem *albumCoverToolbarItem;
+@property (nonatomic) IBOutlet NSToolbarItem *socialToolbarItem;
+
 @property (nonatomic) IBOutlet HotkeyController *hotkeyController;
 @property (nonatomic) IBOutlet PreferencesCoverController *preferencesCoverController;
 
@@ -296,6 +300,9 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
         case 3:
             view = self.hotkeyView;
             break;
+        case 4:
+            view = self.socialView;
+            break;
         case 5:
             view = self.albumCoverView;
             break;
@@ -321,32 +328,6 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     else return YES;
 }
 
-//
-//-(NSString *)lastChosenToolbarIdentifier
-//{
-//    NSString *identifier;
-//    switch (self.currentViewTag) {
-//        case 0:
-//            identifier = @"Account";
-//            break;
-//        case 1:
-//            identifier = @"Account";
-//            break;
-//        case 2:
-//            identifier = @"General";
-//            break;
-//        case 3:
-//            identifier = @"Hotkeys";
-//            break;
-//        case 5:
-//            identifier = @"Album Cover";
-//            break;
-//        default:
-//            identifier = @"General";
-//            break;
-//    }
-//    return identifier;
-//}
 
 #pragma mark - NSTextField Delegate
 
