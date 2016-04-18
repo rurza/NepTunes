@@ -383,6 +383,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     return _settingsController;
 }
 
+#pragma mark - iTunes
 
 -(iTunesApplication *)iTunes
 {
@@ -425,5 +426,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
     return nil;
 }
+
+#pragma mark - Spotify
 
 @end

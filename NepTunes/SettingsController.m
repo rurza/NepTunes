@@ -30,6 +30,8 @@ static NSString *const kShowRecentTrackIniTunes = @"showRecentTrackIniTunes";
 static NSString *const kScrobblePodcastsAndiTunesUButton = @"scrobblePodcastsAndiTunesUButton";
 static NSString *const kAutomaticallyShareOnFacebook = @"automaticallyShareOnFacebook";
 static NSString *const kAutomaticallyShareOnTwitter = @"automaticallyShareOnTwitter";
+static NSString *const kSpotifyOnly = @"spotifyOnly";
+static NSString *const kiTunesOnly = @"iTunesOnly";
 
 static NSString *const kDebugMode = @"debugMode";
 
@@ -61,7 +63,8 @@ static NSString *const kDebugMode = @"debugMode";
 @synthesize scrobblePodcastsAndiTunesU = _scrobblePodcastsAndiTunesU;
 @synthesize automaticallyShareOnTwitter = _automaticallyShareOnTwitter;
 @synthesize automaticallyShareOnFacebook = _automaticallyShareOnFacebook;
-
+@synthesize iTunesOnly = _iTunesOnly;
+@synthesize spotifyOnly = _spotifyOnly;
 
 #pragma mark - Initialization
 + (instancetype)sharedSettings

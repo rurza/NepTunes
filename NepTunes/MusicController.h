@@ -8,13 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import "iTunes.h"
+#import "Spotify.h"
 @class CoverWindowController;
 
 @interface MusicController : NSObject
 @property (nonatomic) iTunesApplication *iTunes;
+@property (nonatomic) SpotifyApplication *spotify;
 @property (nonatomic, readonly) BOOL isiTunesRunning;
-@property (nonatomic, readonly) iTunesEPlS playerState;
-@property (nonatomic) iTunesTrack *currentTrack;
+@property (nonatomic, readonly) BOOL isSpotifyRunning;
+@property (nonatomic, readonly) iTunesEPlS iTunesPlayerState;
+@property (nonatomic, readonly) SpotifyEPlS SpotifyplayerState;
+@property (nonatomic) iTunesTrack *currentiTunesTrack;
+@property (nonatomic) SpotifyTrack *currentSpotifyTrack;
 @property (nonatomic) CoverWindowController *coverWindowController ;
 
 +(instancetype)sharedController;

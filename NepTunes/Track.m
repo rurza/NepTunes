@@ -8,6 +8,7 @@
 
 #import "Track.h"
 #import "iTunes.h"
+#import "Spotify.h"
 
 @implementation Track
 
@@ -50,6 +51,15 @@
 }
 
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track
+{
+    if (!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) {
+        return nil;
+    }
+    Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    return song;
+}
+
++(Track *)trackWithSpotifyTrack:(SpotifyTrack *)track
 {
     if (!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) {
         return nil;

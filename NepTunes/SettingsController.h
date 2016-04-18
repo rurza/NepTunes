@@ -25,6 +25,10 @@
 @property (nonatomic) BOOL showSimilarArtistsOnAppleMusic;
 @property (nonatomic) BOOL showRecentTrackIniTunes;
 
+//Player
+@property (nonatomic) BOOL spotifyOnly;
+@property (nonatomic) BOOL iTunesOnly;
+
 //Scrobbler And General
 @property (nonatomic) NSString *session;
 @property (nonatomic) NSString *username;
