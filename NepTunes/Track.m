@@ -1,5 +1,5 @@
 //
-//  Song.m
+//  Track.m
 //  NepTunes
 //
 //  Created by rurza on 30/12/15.
@@ -9,8 +9,10 @@
 #import "Track.h"
 #import "iTunes.h"
 #import "Spotify.h"
+#import "MusicPlayer.h"
 
 @implementation Track
+@synthesize loved = _loved;
 
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d
 {
@@ -56,6 +58,7 @@
         return nil;
     }
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    song.trackOrigin = TrackFromiTunes;
     return song;
 }
 
@@ -65,12 +68,14 @@
         return nil;
     }
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    song.trackOrigin = TrackFromSpotify;
     return song;
 }
 
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ by %@ [%fs]", self.trackName, self.artist, self.duration];
+    return [NSString stringWithFormat:@"%@ by %@ with duration of [%fs]", self.trackName, self.artist, self.duration];
 }
 
 #pragma mark Equality

@@ -8,27 +8,45 @@
 //one class to control music from iTunes and Spotify
 
 #import <Foundation/Foundation.h>
-@class Track;
+#import "Track.h"
 @class iTunesTrack;
 @class SpotifyTrack;
 
 typedef NS_ENUM(NSInteger, MusicPlayerApplication) {
+    MusicPlayerUndefined,
     MusicPlayeriTunes,
     MusicPlayerSpotify
 };
 
 typedef NS_ENUM(NSInteger, MusicPlayerState) {
     MusicPlayerStateUndefined,
-    MusicPlayerPlaying,
-    MusicPlayerPaused,
-    MusicPlayerStopped
+    MusicPlayerStatePlaying,
+    MusicPlayerStatePaused,
+    MusicPlayerStateStopped
 };
+
+extern NSString *const kMusicPlayerNotification;
 
 @interface MusicPlayer : NSObject
 
-@property (atomic) MusicPlayerApplication currentPlayer;
-@property (atomic, readonly) Track *currentTrack;
-@property (atomic, readonly) SpotifyTrack *currentSpotifyTrack;
-@property (atomic, readonly) iTunesTrack *currentiTunesTrack;
-@property (atomic) MusicPlayerState playerState;
+@property (atomic, readonly) MusicPlayerApplication currentPlayer;
+@property (nonatomic, readonly) Track *currentTrack;
+@property (nonatomic, readonly) MusicPlayerState playerState;
+@property (nonatomic, readonly) BOOL isPlayerRunning;
+@property (nonatomic) BOOL playerIntegration;
+@property (nonatomic) BOOL currentTrackIsLoved;
+@property (nonatomic) NSInteger soundVolume;
+
++(instancetype)sharedPlayer;
+-(void)openArtistPageForTrack:(Track *)track;
+-(NSImage *)currentTrackCover;
+//playback
+-(void)playPause;
+-(void)nextTrack;
+-(void)backTrack;
+-(void)fastForward;
+-(void)rewind;
+-(void)resume;
+-(void)loveCurrentTrack;
+
 @end

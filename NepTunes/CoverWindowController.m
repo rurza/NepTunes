@@ -21,6 +21,7 @@
 #import "ControlView.h"
 #import "MenuController.h"
 #import "VolumeViewController.h"
+#import "MusicPlayer.h"
 
 @interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
 @property (nonatomic) CoverWindow *window;
@@ -62,8 +63,8 @@
 {
     if (track) {
         [self updateWithTrack:track];
-        if (self.window && [MusicController sharedController].isiTunesRunning) {
-            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+        if (self.window && [MusicPlayer sharedPlayer].isPlayerRunning) {
+            if ([MusicPlayer sharedPlayer].playerState == MusicPlayerStatePlaying) {
                 [self displayFullInfoForTrack:track];
             }
             __weak typeof(self) weakSelf = self;
@@ -273,8 +274,8 @@
         controlOpacity.duration = 0.3;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
         [self.controlViewController updateVolumeIcon];
-        if ((![MusicController sharedController].currentTrack.artist.length &&
-            ![MusicController sharedController].currentTrack.name.length &&
+        if ((![MusicPlayer sharedPlayer].currentTrack.artist.length &&
+            ![MusicPlayer sharedPlayer].currentTrack.trackName.length &&
             ![SettingsController sharedSettings].session) || (![SettingsController sharedSettings].session && ![SettingsController sharedSettings].integrationWithiTunes)) {
             self.controlViewController.loveButton.alphaValue = 0.5;
             self.controlViewController.loveButton.enabled = NO;

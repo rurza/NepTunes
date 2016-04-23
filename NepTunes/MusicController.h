@@ -7,25 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "iTunes.h"
-#import "Spotify.h"
 @class CoverWindowController;
+@class MusicPlayer;
 
 @interface MusicController : NSObject
-@property (nonatomic) iTunesApplication *iTunes;
-@property (nonatomic) SpotifyApplication *spotify;
-@property (nonatomic, readonly) BOOL isiTunesRunning;
-@property (nonatomic, readonly) BOOL isSpotifyRunning;
-@property (nonatomic, readonly) iTunesEPlS iTunesPlayerState;
-@property (nonatomic, readonly) SpotifyEPlS SpotifyplayerState;
-@property (nonatomic) iTunesTrack *currentiTunesTrack;
-@property (nonatomic) SpotifyTrack *currentSpotifyTrack;
+
+
 @property (nonatomic) CoverWindowController *coverWindowController ;
+@property (nonatomic) MusicPlayer *musicPlayer;
 
 +(instancetype)sharedController;
 -(void)loveTrackWithCompletionHandler:(void(^)(void))handler;
 -(void)invalidateTimers;
 -(void)updateTrackInfo:(NSNotification *)note;
--(NSImage *)currentTrackCover;
 -(void)setupCover;
 @end

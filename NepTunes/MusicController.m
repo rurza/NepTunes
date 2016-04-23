@@ -16,11 +16,12 @@
 #import "CoverSettingsController.h"
 #import "HUDWindowController.h"
 #import "SocialMessage.h"
+#import "MusicPlayer.h"
 @import Social;
 @import Accounts;
 
 #define FOUR_MINUTES 60 * 4
-#define DELAY_FOR_RADIO 2
+#define DELAY_FOR_RADIO 4
 
 static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
@@ -44,16 +45,15 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     static dispatch_once_t onlyOnce;
     dispatch_once(&onlyOnce, ^{
         _sharedInstance = [[self _alloc] _init];
-        
     });
     return _sharedInstance;
 }
 
-+ (id) allocWithZone:(NSZone*)z { return [self sharedController];              }
-+ (id) alloc                    { return [self sharedController];              }
-- (id) init                     { return self;}
-+ (id)_alloc                    { return [super allocWithZone:NULL]; }
-- (id)_init                     { return [super init];               }
++ (id) allocWithZone:(NSZone*)z { return [self sharedController];                                   }
++ (id) alloc                    { return [self sharedController];                                   }
+- (id) init                     { return self;                                                      }
++ (id)_alloc                    { return [super allocWithZone:NULL];                                }
+- (id)_init                     { self.musicPlayer = [MusicPlayer sharedPlayer];return [super init];}
 
 -(void)awakeFromNib
 {
@@ -67,7 +67,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                         selector:@selector(updateTrackInfo:)
-                                                            name:@"com.apple.iTunes.playerInfo"
+                                                            name:kMusicPlayerNotification
                                                           object:nil];
 }
 
@@ -77,11 +77,11 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)updateTrackInfo:(NSNotification *)note
 {
     if (self.settingsController.debugMode) {
-        NSLog(@"Notification sent from iTunes");
+        NSLog(@"Notification sent from Music Player");
     }
     [self invalidateTimers];
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
-    [self getInfoAboutTrackFromNotificationOrFromiTunes:note.userInfo];
+    [self setScrobblerCurrentTrack];
     [self updateCoverWithInfo:note.userInfo];
     [self updateMenu];
     [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:nil userInfo:note.userInfo];
@@ -94,20 +94,18 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
    
     if ([timer isValid]) {
-        [self getInfoAboutTrackFromNotificationOrFromiTunes:timer.userInfo];
         [self updateMenu];
-        
-        if (self.isiTunesRunning) {
+        if (self.musicPlayer.isPlayerRunning) {
             if (self.settingsController.debugMode) {
-                NSLog(@"iTunes is running");
+                NSLog(@"Any player is running is running");
             }
 
-            if (self.playerState == iTunesEPlSPlaying && !self.musicScrobbler.currentTrack.itIsNotMusic && self.musicScrobbler.currentTrack) {
+            if (self.musicPlayer.playerState == MusicPlayerStatePlaying && !self.musicScrobbler.currentTrack.itIsNotMusic && self.musicScrobbler.currentTrack) {
                 NSTimeInterval trackLength;
                 
                 
-                if (self.currentTrack.artist && self.currentTrack.artist.length) {
-                    trackLength = (NSTimeInterval)self.currentTrack.duration;
+                if (self.musicPlayer.currentTrack.artist && self.musicPlayer.currentTrack.artist.length) {
+                    trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
                 }
                 else {
                     trackLength = (NSTimeInterval)self.musicScrobbler.currentTrack.duration;
@@ -150,7 +148,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)updateCoverWithInfo:(NSDictionary *)info
 {
-    if (self.musicScrobbler.currentTrack && self.isiTunesRunning) {
+    if (self.musicScrobbler.currentTrack && self.musicPlayer.isPlayerRunning) {
         if (!self.coverWindowController) {
             [self setupCover];
         }
@@ -168,7 +166,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
     if (coverSettingsController.showCover) {
         self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
-        if (self.playerState == iTunesEPlSPlaying && self.musicScrobbler.currentTrack) {
+        if (self.musicPlayer.playerState == MusicPlayerStatePlaying && self.musicScrobbler.currentTrack) {
             [self.coverWindowController showWindow:self];
             [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
             [self.coverWindowController.window makeKeyAndOrderFront:nil];
@@ -198,43 +196,14 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
 }
 
--(void)getInfoAboutTrackFromNotificationOrFromiTunes:(NSDictionary *)userInfo
+-(void)setScrobblerCurrentTrack
 {
-//    NSLog(@"%@", userInfo);
-    [self.musicScrobbler updateCurrentTrackWithUserInfo:userInfo];
-    //2s są po to by Itunes sie ponownie nie wlaczal
-    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    if (self.musicScrobbler.currentTrack.trackName && self.musicScrobbler.currentTrack.artist && self.musicScrobbler.currentTrack.duration == 0 && self.currentTrack.artist.length) {
-        self.musicScrobbler.currentTrack.duration = self.iTunes.currentTrack.duration;
-    }
-    else if (self.currentTrack.name && self.currentTrack.artist) {
-        self.musicScrobbler.currentTrack = [Track trackWithiTunesTrack:self.currentTrack];
-    }
-    if (!self.settingsController.scrobblePodcastsAndiTunesU) {
-        if (self.currentTrack.podcast || self.currentTrack.iTunesU || [userInfo objectForKey:@"Category"] || ([(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"] && (!self.currentTrack.name || !self.currentTrack.artist))) {
-            if (self.settingsController.debugMode) {
-                if ([(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"]) {
-                    NSLog(@"userInfo link contains: itms://itunes.com/link? and I don't have name of track or artist in tags");
-                }
-                if (self.currentTrack.podcast) {
-                    NSLog(@"iTunes tells me that this is a podcast");
-                }
-                if (self.currentTrack.iTunesU) {
-                    NSLog(@"iTunes tells me that this is a iTunes U");
-                }
-                if ([userInfo objectForKey:@"Category"]) {
-                    NSLog(@"userInfo contains Category");
-                }
-                self.musicScrobbler.currentTrack.itIsNotMusic = YES;
-                NSLog(@"This isn't a music track from Library (or Apple Music stream) or iTunes switched playing from one streaming to another.");
-            }
-        }
-    }
+    self.musicScrobbler.currentTrack = self.musicPlayer.currentTrack;
 }
 
 -(void)loveTrackOniTunes
 {
-    self.currentTrack.loved = YES;
+    [self.musicPlayer loveCurrentTrack];
 }
 
 -(void)updateMenu
@@ -269,98 +238,6 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             handler();
         }
     }
-//    NSSharingService *service = [NSSharingService sharingServiceNamed:NSSharingServiceNamePostOnFacebook];
-//
-//    if (settings.automaticallyShareOnFacebook && [service canPerformWithItems:nil]) {
-//        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-//        
-//        ACAccountType *accountTypeFacebook =
-//        [accountStore accountTypeWithAccountTypeIdentifier:
-//         ACAccountTypeIdentifierFacebook];
-//        
-//        NSDictionary *options = @{
-//                                  ACFacebookAppIdKey: @"557679431058428",
-//                                  ACFacebookPermissionsKey: @[@"basic_info", @"publish_actions"],
-//                                  ACFacebookAudienceKey: ACFacebookAudienceFriends
-//                                  };
-//        
-//        [accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
-//            if (granted) {
-//                
-//                NSArray *accounts = [accountStore accountsWithAccountType:accountTypeFacebook];
-//                ACAccount* facebookAccount = [accounts lastObject];
-//                
-//                [SocialMessage messageForLovedTrackWithCompletionHandler:^(NSString *message) {
-//                    NSDictionary *parameters =
-//                    @{@"access_token":facebookAccount.credential.oauthToken,
-//                      @"message": message};
-//                    
-//                    NSURL *feedURL = [NSURL
-//                                      URLWithString:@"https://graph.facebook.com/me/feed"];
-//                    
-//                    SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
-//                    
-//                    [feedRequest performRequestWithHandler:^(NSData *responseData,
-//                                                 NSHTTPURLResponse *urlResponse, NSError *error)
-//                     {
-//                         NSLog(@"Request failed, %@", [urlResponse description]);
-//                     }];
-//                }];
-//            } else {
-//                NSLog(@"Access Denied");
-//                NSLog(@"[%@]",[error localizedDescription]);
-//            }
-//        }];
-//    }
-//    
-//    service = [NSSharingService sharingServiceNamed:NSSharingServiceNamePostOnTwitter];
-//
-//    if (settings.automaticallyShareOnTwitter && [service canPerformWithItems:nil]) {
-//        ACAccountStore *account = [[ACAccountStore alloc] init];
-//        ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:
-//                                      ACAccountTypeIdentifierTwitter];
-//        
-//        [account requestAccessToAccountsWithType:accountType options:nil
-//                                      completion:^(BOOL granted, NSError *error)
-//         {
-//             if (granted == YES)
-//             {
-//                 NSArray *arrayOfAccounts = [account
-//                                             accountsWithAccountType:accountType];
-//                 
-//                 if ([arrayOfAccounts count] > 0)
-//                 {
-//                     ACAccount *twitterAccount = [arrayOfAccounts lastObject];
-//                     [SocialMessage messageForLovedTrackWithCompletionHandler:^(NSString *message) {
-//                         NSDictionary *parameters = @{@"status": message};
-//                         
-//                         NSURL *requestURL = [NSURL
-//                                              URLWithString:@"http://api.twitter.com/1/statuses/update.json"];
-//                         
-//                         SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
-//                                                                     requestMethod:SLRequestMethodPOST
-//                                                                               URL:requestURL
-//                                                                        parameters:parameters];
-//                         
-//                         postRequest.account = twitterAccount;
-//                         
-//                         [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
-//                          {
-//                              if (settings.debugMode) {
-//                                  NSLog(@"Twitter HTTP response: %li", (long)[urlResponse statusCode]);
-//                              }
-//                          }];
-//                         
-//                     }];
-//                 }
-//             }
-//             else {
-//                 if (settings.debugMode) {
-//                     NSLog(@"Access to Twitter Accounts not granted: %@", error.localizedDescription);
-//                 }
-//             }
-//         }];
-//    }
 }
 
 
@@ -383,49 +260,6 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     return _settingsController;
 }
 
-#pragma mark - iTunes
-
--(iTunesApplication *)iTunes
-{
-    if (!_iTunes) {
-        _iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-    }
-    return _iTunes;
-}
-
--(iTunesEPlS)playerState
-{
-    if (self.isiTunesRunning) {
-        return self.iTunes.playerState;
-    }
-    return iTunesEPlSStopped;
-}
-
--(BOOL)isiTunesRunning
-{
-    return self.iTunes.isRunning;
-}
-
--(iTunesTrack *)currentTrack
-{
-    if (self.isiTunesRunning) {
-        return self.iTunes.currentTrack;
-    }
-    return nil;
-}
-
--(NSImage *)currentTrackCover
-{
-    iTunesTrack *track = self.currentTrack;
-    for (iTunesArtwork *artwork in track.artworks) {
-        if ([artwork.data isKindOfClass:[NSImage class]]) {
-            return artwork.data;
-        } else if ([artwork.rawData isKindOfClass:[NSData class]]) {
-            return [[NSImage alloc] initWithData:artwork.rawData];
-        }
-    }
-    return nil;
-}
 
 #pragma mark - Spotify
 

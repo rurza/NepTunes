@@ -15,6 +15,7 @@
 #import "SettingsController.h"
 #import <PINCache.h>
 #include <CommonCrypto/CommonDigest.h>
+#import "MusicPlayer.h"
 
 @interface GetCover () <NSURLSessionDelegate>
 @property (nonatomic) PINDiskCache *imagesCache;
@@ -35,8 +36,8 @@
 
 -(void)getCoverWithTrack:(Track *)track withCompletionHandler:(void(^)(NSImage *cover))handler
 {
-    if ([[MusicController sharedController] currentTrackCover]) {
-        handler([[MusicController sharedController] currentTrackCover]);
+    if ([[MusicPlayer sharedPlayer] currentTrackCover]) {
+        handler([[MusicPlayer sharedPlayer] currentTrackCover]);
         if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
             [self.delegate trackInfoShouldBeDisplayed];
         }

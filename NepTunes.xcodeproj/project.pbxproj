@@ -14,6 +14,7 @@
 		5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC2481C6CE337004EB785 /* CoverImageView.m */; };
 		5B1BC24C1C6CE4BF004EB785 /* CoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */; };
 		5B1E16AA1CC5418600AB572A /* MusicPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1E16A91CC5418600AB572A /* MusicPlayer.m */; };
+		5B1E16AE1CCBAB9E00AB572A /* Track+Cover.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1E16AD1CCBAB9E00AB572A /* Track+Cover.m */; };
 		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */; };
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
@@ -112,6 +113,8 @@
 		5B1E16A61CC4050A00AB572A /* Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
 		5B1E16A81CC5418600AB572A /* MusicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayer.h; sourceTree = "<group>"; };
 		5B1E16A91CC5418600AB572A /* MusicPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPlayer.m; sourceTree = "<group>"; };
+		5B1E16AC1CCBAB9E00AB572A /* Track+Cover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Track+Cover.h"; sourceTree = "<group>"; };
+		5B1E16AD1CCBAB9E00AB572A /* Track+Cover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Track+Cover.m"; sourceTree = "<group>"; };
 		5B2F4CE51B763C16009F0C53 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
 		5B2F4CE61B763C16009F0C53 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 		5B427BD91C52B4A300EA1D4A /* RecentTracksController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTracksController.h; sourceTree = "<group>"; };
@@ -248,6 +251,15 @@
 			name = Cover;
 			sourceTree = "<group>";
 		};
+		5B1E16AB1CC7E43300AB572A /* Music Player */ = {
+			isa = PBXGroup;
+			children = (
+				5B1E16A81CC5418600AB572A /* MusicPlayer.h */,
+				5B1E16A91CC5418600AB572A /* MusicPlayer.m */,
+			);
+			name = "Music Player";
+			sourceTree = "<group>";
+		};
 		5B427BDD1C52B4B700EA1D4A /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +330,8 @@
 			children = (
 				5BBD4C4E1C34562000AFA182 /* Track.h */,
 				5BBD4C4F1C34562000AFA182 /* Track.m */,
+				5B1E16AC1CCBAB9E00AB572A /* Track+Cover.h */,
+				5B1E16AD1CCBAB9E00AB572A /* Track+Cover.m */,
 				5BAE71011C50199700779081 /* SavedTrack.h */,
 				5BAE71021C50199700779081 /* SavedTrack.m */,
 			);
@@ -338,8 +352,6 @@
 				5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */,
 				5BC6A8DF1C610C83009C3E9F /* MusicController.h */,
 				5BC6A8E01C610C83009C3E9F /* MusicController.m */,
-				5B1E16A81CC5418600AB572A /* MusicPlayer.h */,
-				5B1E16A91CC5418600AB572A /* MusicPlayer.m */,
 			);
 			name = Music;
 			sourceTree = "<group>";
@@ -372,10 +384,11 @@
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
+				5B1E16AB1CC7E43300AB572A /* Music Player */,
+				5BC6A8E31C611C3A009C3E9F /* Music */,
 				5B1BC24D1C6CE4CA004EB785 /* Cover */,
 				5BAE70F31C4EC91500779081 /* Hotkeys */,
 				5B427BDD1C52B4B700EA1D4A /* Menu */,
-				5BC6A8E31C611C3A009C3E9F /* Music */,
 				5BAE70FD1C50058200779081 /* Reachability */,
 				5B9662711C725A400095AF54 /* Settings and preferences */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
@@ -648,6 +661,7 @@
 				5B8F653A1C961383000F3366 /* HUDWindowController.m in Sources */,
 				5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */,
 				5BB9965F1C7621CF0088B46B /* PreferencesCoverController.m in Sources */,
+				5B1E16AE1CCBAB9E00AB572A /* Track+Cover.m in Sources */,
 				5BAEB68A1C78AF2700F7B2F4 /* ControlView.m in Sources */,
 				5BD775DE1CA7D421002C8BCF /* SocialMessage.m in Sources */,
 				5B0734221C6E382D00167934 /* CoverView.m in Sources */,

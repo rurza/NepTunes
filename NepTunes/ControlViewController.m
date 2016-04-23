@@ -14,6 +14,7 @@
 #import "CoverSettingsController.h"
 #import <POP.h>
 #import "MenuController.h"
+#import "MusicPlayer.h"
 
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;
@@ -23,6 +24,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) NSImage *pauseImage;
 @property (nonatomic) NSImage *emptyHeartImage;
 @property (nonatomic) NSUInteger animationCurrentStep;
+@property (nonatomic) MusicPlayer *musicPlayer;
 @end
 
 @implementation ControlViewController
@@ -49,9 +51,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)updateControlsState:(NSNotification *)note
 {
-    if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+    if (self.musicPlayer.playerState == MusicPlayerStatePlaying) {
         self.playButton.image = self.pauseImage;
-        if ([SettingsController sharedSettings].integrationWithiTunes && [MusicController sharedController].currentTrack.loved) {
+        if ([SettingsController sharedSettings].integrationWithiTunes && self.musicPlayer.currentTrack.loved) {
             self.loveButton.image = [NSImage imageNamed:@"fullheart"];
             self.loveButton.image.template = YES;
         } else {
@@ -72,20 +74,18 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)playOrPauseTrack:(NSButton *)sender
 {
-    [[MusicController sharedController].iTunes playpause];
+    [self.musicPlayer playPause];
 }
 
 -(void)backwardButtonWasPressed:(NSGestureRecognizer *)gestureRecognizer
 {
-    MusicController *musicController = [MusicController sharedController];
-
     if (gestureRecognizer.state == NSGestureRecognizerStateBegan) {
         [self.backwardButton highlight:YES];
-        [musicController.iTunes rewind];
+        [self.musicPlayer rewind];
     }
     if (gestureRecognizer.state == NSGestureRecognizerStateEnded || gestureRecognizer.state == NSGestureRecognizerStateCancelled || gestureRecognizer.state == NSGestureRecognizerStateFailed) {
         [self.backwardButton highlight:NO];
-        [musicController.iTunes resume];
+        [self.musicPlayer resume];
     }
     
 }
@@ -96,18 +96,18 @@ static NSUInteger const kNumberOfFrames = 10;
     
     if (gestureRecognizer.state == NSGestureRecognizerStateBegan) {
         [self.forwardButton highlight:YES];
-        [musicController.iTunes fastForward];
+        [self.musicPlayer fastForward];
     }
     if (gestureRecognizer.state == NSGestureRecognizerStateEnded || gestureRecognizer.state == NSGestureRecognizerStateCancelled || gestureRecognizer.state == NSGestureRecognizerStateFailed) {
         [self.forwardButton highlight:NO];
-        [musicController.iTunes resume];
+        [self.musicPlayer resume];
         
     }
 }
 
 -(void)updateVolumeIcon
 {
-    NSInteger soundVolume = [MusicController sharedController].iTunes.soundVolume;
+    NSInteger soundVolume = self.musicPlayer.soundVolume;
     if (soundVolume > 66) {
         self.volumeButton.image = [NSImage imageNamed:@"volume-max"];
     } else if (soundVolume > 33) {
@@ -122,12 +122,12 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)backTrack:(NSButton *)sender
 {
-    [[MusicController sharedController].iTunes backTrack];
+    [self.musicPlayer backTrack];
 }
 
 - (IBAction)nextTrack:(NSButton *)sender
 {
-    [[MusicController sharedController].iTunes nextTrack];
+    [self.musicPlayer nextTrack];
 }
 
 - (IBAction)loveTrack:(NSButton *)sender
@@ -228,6 +228,14 @@ static NSUInteger const kNumberOfFrames = 10;
         _emptyHeartImage.template = YES;
     }
     return _emptyHeartImage;
+}
+
+-(MusicPlayer *)musicPlayer
+{
+    if (!_musicPlayer) {
+        _musicPlayer = [MusicPlayer sharedPlayer];
+    }
+    return _musicPlayer;
 }
 
 -(void)dealloc

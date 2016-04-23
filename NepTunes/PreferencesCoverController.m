@@ -15,7 +15,7 @@
 #import "Track.h"
 #import "MusicScrobbler.h"
 #import "MusicController.h"
-#import "iTunes.h"
+#import "MusicPlayer.h"
 
 static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
@@ -57,9 +57,9 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 {
     if (track) {
         [self updateWithTrack:track];
-        if ([MusicController sharedController].isiTunesRunning) {
+        if ([MusicPlayer sharedPlayer].isPlayerRunning) {
             __weak typeof(self) weakSelf = self;
-            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+            if ([MusicPlayer sharedPlayer].playerState == MusicPlayerStatePlaying) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (fullInfo) {
                         [weakSelf displayFullInfoForTrack:track];
@@ -72,7 +72,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         }
     } else {
         Track *noTrack;
-        if (![MusicController sharedController].isiTunesRunning) {
+        if (![MusicPlayer sharedPlayer].isPlayerRunning) {
             noTrack = [[Track alloc] initWithTrackName:@"Play track to refresh" artist:@"" album:@"" andDuration:0];
         } else {
             noTrack = [[Track alloc] initWithTrackName:@"Pause/play track to refresh" artist:@"" album:@"" andDuration:0];
