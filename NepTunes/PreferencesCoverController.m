@@ -17,7 +17,6 @@
 #import "MusicController.h"
 #import "MusicPlayer.h"
 
-static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @interface PreferencesCoverController () <CoverGetterDelegate>
 @property (strong, nonatomic) IBOutlet CoverView *coverView;
@@ -50,11 +49,12 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)updateCover:(NSNotification *)note
 {
-    [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:note.userInfo andFullInfo:YES];
+    [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil andFullInfo:YES];
 }
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo andFullInfo:(BOOL)fullInfo
 {
+#warning do poprawy
     if (track) {
         [self updateWithTrack:track];
         if ([MusicPlayer sharedPlayer].isPlayerRunning) {

@@ -33,6 +33,11 @@
 -(void)hideRecentMenu;
 -(void)showRecentMenu;
 -(void)blinkMenuIcon;
+
+-(void)insertNewSourceWithName:(NSString *)sourceName;
+-(void)removeSourceWithName:(NSString *)sourceName;
+-(void)addCheckmarkToSourceWithName:(NSString *)sourceName;
+
 -(NSString *)asciiString:(NSString *)string;
 
 

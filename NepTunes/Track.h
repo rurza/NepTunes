@@ -20,22 +20,26 @@ typedef NS_ENUM(NSInteger, TrackKind) {
     TrackKindMusic,
     TrackKindPodcast,
     TrackKindVideo,
-    TrackKindiTunesU
+    TrackKindiTunesU,
+    TrackKindAd
 };
 
 @interface Track : NSObject <NSCoding>
 
-@property (nonatomic) NSString *trackName;
-@property (nonatomic) NSString *artist;
-@property (nonatomic) NSString *album;
+@property (nonatomic, copy) NSString *trackName;
+@property (nonatomic, copy) NSString *artist;
+@property (nonatomic, copy) NSString *album;
+@property (nonatomic, copy) NSString *kind;
+@property (nonatomic, copy) NSString *artworkURL;
+
 @property (nonatomic) double duration;//in seconds
 @property (nonatomic) BOOL itIsNotMusic;
 @property (nonatomic) BOOL loved;
 @property (nonatomic) TrackOrigin trackOrigin;
 @property (nonatomic) TrackKind trackKind;
 @property (nonatomic) NSInteger rating;
-#warning do zrobienia, kind z iTunesa
-@property (nonatomic) NSString *kind;
+
+@property (nonatomic) NSImage *artwork;
 
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d;
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track;

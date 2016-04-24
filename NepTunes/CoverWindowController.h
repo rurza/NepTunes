@@ -14,7 +14,7 @@
 
 @property (weak) IBOutlet ControlViewController *controlViewController;
 
--(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo;
+-(void)updateCoverWithTrack:(Track *)track;
 -(void)fadeCover:(BOOL)direction;
 -(void)showControls;
 -(void)hideControls;

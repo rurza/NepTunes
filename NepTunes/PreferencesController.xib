@@ -34,7 +34,7 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView identifier="General" id="80n-oM-tZ8" userLabel="General">
-            <rect key="frame" x="0.0" y="0.0" width="379" height="389"/>
+            <rect key="frame" x="0.0" y="0.0" width="382" height="389"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button toolTip="Launch NepTunes automatically when you turn on your Mac." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4aF-Vt-GhG">
@@ -86,7 +86,7 @@
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="nbC-59-MlC">
-                    <rect key="frame" x="20" y="81" width="339" height="5"/>
+                    <rect key="frame" x="20" y="81" width="342" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
@@ -122,7 +122,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWl-cS-eOC">
                     <rect key="frame" x="18" y="189" width="321" height="18"/>
                     <string key="toolTip">Integration with iTunes &amp; Apple Music brings power of Last.fm with Apple Music library, e.g. similar artists menu takes similar artists from Last.fm and open them on Apple Music</string>
-                    <buttonCell key="cell" type="check" title="Integration with iTunes and Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="yAb-BD-8al">
+                    <buttonCell key="cell" type="check" title="Integration with Spotify and iTunes" bezelStyle="regularSquare" imagePosition="left" inset="2" id="yAb-BD-8al">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="systemBold"/>
                     </buttonCell>
@@ -141,9 +141,9 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0OG-gS-1lE">
-                    <rect key="frame" x="38" y="131" width="264" height="18"/>
+                    <rect key="frame" x="38" y="131" width="274" height="18"/>
                     <string key="toolTip">Similar artist menu item become both menu and button. If you just click it, it opens Last.fm webpage with similar artists. If you hover it, it opens menu with similar artists (from Last.fm) where you can click to open Apple Music page for each of them.</string>
-                    <buttonCell key="cell" type="check" title="Open similar artist page on Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="49v-XZ-UII">
+                    <buttonCell key="cell" type="check" title="Open similar artist page on current player" bezelStyle="regularSquare" imagePosition="left" inset="2" id="49v-XZ-UII">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -152,9 +152,9 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QVJ-aV-evQ">
-                    <rect key="frame" x="38" y="102" width="239" height="18"/>
+                    <rect key="frame" x="38" y="102" width="245" height="18"/>
                     <string key="toolTip">Clicking each track from Recent tracks menu opens Apple Music page for album with that track. Disabled if you have Recent menu disabled.</string>
-                    <buttonCell key="cell" type="check" title="Open recent tracks on Apple Music" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oZY-gE-CUY">
+                    <buttonCell key="cell" type="check" title="Open recent tracks on current player" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oZY-gE-CUY">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -163,13 +163,13 @@
                     </connections>
                 </button>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gCU-gf-MGQ">
-                    <rect key="frame" x="20" y="223" width="339" height="5"/>
+                    <rect key="frame" x="20" y="223" width="342" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
             </subviews>
-            <point key="canvasLocation" x="100.5" y="106.5"/>
+            <point key="canvasLocation" x="102" y="106.5"/>
         </customView>
         <customView identifier="Account" id="skh-Ke-u6J" userLabel="Account">
             <rect key="frame" x="0.0" y="0.0" width="507" height="254"/>
@@ -424,7 +424,7 @@ DQ
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LGD-ID-Lec">
                     <rect key="frame" x="18" y="218" width="166" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Increase iTunes volume:" id="3ew-1J-4aM">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Increase player volume:" id="3ew-1J-4aM">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -432,7 +432,7 @@ DQ
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jcl-d0-pmO">
                     <rect key="frame" x="18" y="181" width="166" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Decrease iTunes volume:" id="ac3-Zj-gZK">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Decrease player volume:" id="ac3-Zj-gZK">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -446,7 +446,7 @@ DQ
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NbZ-91-hTJ">
                     <rect key="frame" x="18" y="144" width="166" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Mute iTunes:" id="umH-Th-amN">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Mute player:" id="umH-Th-amN">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -463,7 +463,7 @@ DQ
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vi3-Yw-rtR">
                     <rect key="frame" x="18" y="86" width="114" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Rating" id="Zug-4y-VmU">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Rating (iTunes)" id="Zug-4y-VmU">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

@@ -11,8 +11,10 @@
 #import "iTunes.h"
 #import "Spotify.h"
 #import "Track.h"
+#import "MusicController.h"
 
-NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
+NSString * const kiTunesBundleIdentifier = @"com.apple.iTunes";
+NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 
 @interface MusicPlayer ()
 
@@ -21,8 +23,8 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
 @property (nonatomic, readwrite) MusicPlayerState playerState;
 
 @property (nonatomic) NSTimer * _noDurationTimer;
-@property (nonatomic, readwrite) SpotifyTrack *_currentSpotifyTrack;
-@property (nonatomic, readwrite) iTunesTrack *_currentiTunesTrack;
+@property (nonatomic, readonly) SpotifyTrack *_currentSpotifyTrack;
+@property (nonatomic, readonly) iTunesTrack *_currentiTunesTrack;
 
 @property (nonatomic) iTunesApplication *_iTunesApp;
 @property (nonatomic) SpotifyApplication *_spotifyApp;
@@ -32,31 +34,69 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
 
 @implementation MusicPlayer
 @synthesize currentPlayer = _currentPlayer;
+
++ (id) allocWithZone:(NSZone*)z { return [self sharedPlayer];              }
++ (id) alloc                    { return [self sharedPlayer];              }
++ (id)_alloc                    { return [super allocWithZone:NULL]; }
+- (id)_init                     { return [super init];               }
+
+
+-(instancetype)init
+{
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                        selector:@selector(notificationFromiTunes:)
+                                                            name:@"com.apple.iTunes.playerInfo"
+                                                          object:nil];
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                        selector:@selector(notificationFromSpotify:)
+                                                            name:@"com.spotify.client.PlaybackStateChanged"
+                                                          object:nil];
+    NSNotificationCenter *center = [[NSWorkspace sharedWorkspace] notificationCenter];
+    
+    // Install the notifications.
+    
+    [center addObserver:self
+               selector:@selector(appLaunched:)
+                   name:NSWorkspaceDidLaunchApplicationNotification
+                 object:nil
+     ];
+    [center addObserver:self
+               selector:@selector(appTerminated:)
+                   name:NSWorkspaceDidTerminateApplicationNotification
+                 object:nil
+     ];
+    
+    self.delegate = [MusicController sharedController];
+    return self;
+}
+
+-(void)awakeFromNib
+{
+    NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
+    for (NSRunningApplication *app in runningApps) {
+        if ([app.bundleIdentifier isEqualToString:kiTunesBundleIdentifier]) {
+            if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
+                [self.delegate iTunesIsAvailable];
+            }
+        } else if ([app.bundleIdentifier isEqualToString:kSpotifyBundlerIdentifier]) {
+            if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
+                [self.delegate spotifyIsAvailable];
+            }
+        }
+    }
+    [self detectCurrentPlayer];
+}
+
 +(instancetype)sharedPlayer
 {
     static MusicPlayer *musicPlayer = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        musicPlayer = [[MusicPlayer alloc] init];
+        musicPlayer = [[self _alloc] _init];
     });
     return musicPlayer;
 }
 
--(instancetype)init
-{
-    if (self = [super init]) {
-        [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                            selector:@selector(notificationFromiTunes:)
-                                                                name:@"com.apple.iTunes.playerInfo"
-                                                              object:nil];
-        [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                            selector:@selector(notificationFromSpotify:)
-                                                                name:@"com.spotify.client.PlaybackStateChanged"
-                                                              object:nil];
-
-    }
-    return self;
-}
 
 #pragma mark - iTunes
 
@@ -66,43 +106,39 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
     if (self.currentPlayer == MusicPlayeriTunes) {
         [self invalidateNoDurationTimerIfNeeded];
         NSDictionary *userInfoFromNotification = notification.userInfo;
-        NSDictionary *trackInfo = @{ @"Artist"              : userInfoFromNotification[@"Artist"],
-                                     @"Album Artist"        : userInfoFromNotification[@"Album Artist"],
-                                     @"Artist"              : userInfoFromNotification[@"Artist"],
-                                     @"TrackName"           : userInfoFromNotification[@"Name"],
-                                     @"Player State"        : userInfoFromNotification[@"Player State"],
-                                     @"Store URL"           : userInfoFromNotification[@"Store URL"],
-                                     @"Duration"            : userInfoFromNotification[@"Total Time"],
-                                     @"Player"              : @"iTunes"
-                                     };
-        self.currentPlayer = MusicPlayeriTunes;
+//        NSDictionary *trackInfo = @{ @"Artist"              : userInfoFromNotification[@"Artist"],
+//                                     @"Album Artist"        : userInfoFromNotification[@"Album Artist"],
+//                                     @"Artist"              : userInfoFromNotification[@"Artist"],
+//                                     @"TrackName"           : userInfoFromNotification[@"Name"],
+//                                     @"Player State"        : userInfoFromNotification[@"Player State"],
+//                                     @"Store URL"           : userInfoFromNotification[@"Store URL"],
+//                                     @"Duration"            : userInfoFromNotification[@"Total Time"],
+//                                     @"Player"              : @"iTunes"
+//                                     };
         [self setCurrentTrackFromiTunesOrUserInfo:userInfoFromNotification];
-        [self postNotificationWithTrackInfo:trackInfo];
+        [self.delegate trackChanged];
     }
 }
 
 -(void)setCurrentTrackFromiTunesOrUserInfo:(NSDictionary *)userInfo
 {
-    self._iTunesApp = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-    if (self._iTunesApp.currentTrack.name.length && self._iTunesApp.currentTrack.duration) {
+    if (self._currentiTunesTrack.name.length && self._currentiTunesTrack.duration) {
         self.currentTrack = [Track trackWithiTunesTrack:self._iTunesApp.currentTrack];
-        self._currentiTunesTrack = self._iTunesApp.currentTrack;
-        self._currentSpotifyTrack = nil;
     } else {
-        self._currentSpotifyTrack = nil;
-        self.currentTrack = [[Track alloc] initWithTrackName:userInfo[@"Name"] artist:userInfo[@"Artist"] album:userInfo[@"Album"] andDuration:[userInfo[@"Total Time"] doubleValue]];
-        if ([userInfo[@"Total Time"] isEqualToNumber:@(0)]) {
-            self._noDurationTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(updateTrackDuration:) userInfo:nil repeats:NO];
-         }
+        if (self.isiTunesRunning) {
+            self.currentTrack = [[Track alloc] initWithTrackName:userInfo[@"Name"] artist:userInfo[@"Artist"] album:userInfo[@"Album"] andDuration:[userInfo[@"Total Time"] doubleValue] / 1000];
+            if ([userInfo[@"Total Time"] isEqualToNumber:@(0)]) {
+                self._noDurationTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(updateTrackDuration:) userInfo:nil repeats:NO];
+            }
+            self.currentTrack.trackOrigin = TrackFromiTunes;
+        }
     }
-    self.currentTrack.trackOrigin = TrackFromiTunes;
 }
 
 -(void)updateTrackDuration:(NSTimer *)timer
 {
-    iTunesApplication *iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-    if (iTunes.isRunning) {
-        self.currentTrack.duration = iTunes.currentTrack.duration;
+    if (self.isiTunesRunning) {
+        self.currentTrack.duration = self._currentiTunesTrack.duration;
     }
 }
 
@@ -131,6 +167,7 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
     }
     return nil;
 }
+
 #pragma mark iTunes playback
 -(void)fastForward
 {
@@ -158,29 +195,14 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
 {
     self.currentPlayer = MusicPlayerSpotify;
     if (self.currentPlayer == MusicPlayerSpotify) {
-        NSDictionary *userInfoFromNotification = notification.userInfo;
-        NSDictionary *trackInfo = @{ @"Artist"              : userInfoFromNotification[@"Artist"],
-                                     @"Album Artist"        : userInfoFromNotification[@"Album Artist"],
-                                     @"Artist"              : userInfoFromNotification[@"Artist"],
-                                     @"TrackName"           : userInfoFromNotification[@"Name"],
-                                     @"Player State"        : userInfoFromNotification[@"Player State"],
-                                     @"Store URL"           : [NSNull null],
-                                     @"Duration"            : userInfoFromNotification[@"Duration"],
-                                     @"Player"              : @"Spotify"
-                                     };
-        self.currentPlayer = MusicPlayerSpotify;
         [self setCurrentTrackFromSpotify];
-        [self postNotificationWithTrackInfo:trackInfo];
+        [self.delegate trackChanged];
     }
 }
 
 -(void)setCurrentTrackFromSpotify
 {
-    self._spotifyApp = [SBApplication applicationWithBundleIdentifier:@"com.spotify.client"];
-    self._currentSpotifyTrack = self._spotifyApp.currentTrack;
-    self._currentiTunesTrack = nil;
     self.currentTrack = [Track trackWithSpotifyTrack:self._spotifyApp.currentTrack];
-    self.currentTrack.trackOrigin = TrackFromSpotify;
 }
 
 -(NSImage *)currentSpotifyTrackCover
@@ -190,15 +212,27 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
 }
 
 #pragma mark - Common
--(void)postNotificationWithTrackInfo:(NSDictionary *)info
+-(void)detectCurrentPlayer
 {
-    NSNotification *note = [NSNotification notificationWithName:kMusicPlayerNotification object:nil userInfo:info];
-    [[NSNotificationCenter defaultCenter] postNotification:note];
+    if (self.isSpotifyRunning && self._spotifyApp.playerState == SpotifyEPlSPlaying) {
+        self.currentPlayer = MusicPlayerSpotify;
+        [self setCurrentTrackFromSpotify];
+        [self.delegate trackChanged];
+    } else if (self.isiTunesRunning && self._iTunesApp.playerState == iTunesEPlSPlaying) {
+        self.currentPlayer = MusicPlayeriTunes;
+        [self setCurrentTrackFromiTunesOrUserInfo:nil];
+        [self.delegate trackChanged];
+    }
 }
 
 -(void)openArtistPageForTrack:(Track *)track
 {
 #warning do zrobienia strona artysty w playerze
+}
+
+-(void)bringPlayerToFront
+{
+#warning do zrobienia bringPlayerToFront
 }
 
 -(NSImage *)currentTrackCover
@@ -208,6 +242,26 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
     } else if (self.currentPlayer == MusicPlayerSpotify) {
         return [self currentSpotifyTrackCover];
     } else return nil;
+}
+
+#pragma mark Soundvolume
+-(void)setSoundVolume:(NSInteger)soundVolume
+{
+    if (self.currentPlayer == MusicPlayerSpotify) {
+        self._spotifyApp.soundVolume = soundVolume;
+    } else if (self.currentPlayer == MusicPlayeriTunes) {
+        self._iTunesApp.soundVolume = soundVolume;
+    }
+}
+
+-(NSInteger)soundVolume
+{
+    if (self.currentPlayer == MusicPlayerSpotify) {
+        return self._spotifyApp.soundVolume;
+    } else if (self.currentPlayer == MusicPlayeriTunes) {
+        return self._iTunesApp.soundVolume;
+    }
+    return 0;
 }
 
 #pragma mark Playback
@@ -237,27 +291,61 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
     }
 }
 
+-(void)appLaunched:(NSNotification *)note
+{
+    if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
+        if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
+            [self.delegate spotifyIsAvailable];
+        }
+    } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
+        if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
+            [self.delegate iTunesIsAvailable];
+        }
+    }
+}
+
+-(void)appTerminated:(NSNotification *)note
+{
+    if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
+        if ([self.delegate respondsToSelector:@selector(spotifyWasTerminated)]) {
+            [self.delegate spotifyWasTerminated];
+        }
+    } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
+        if ([self.delegate respondsToSelector:@selector(iTunesWasTerminated)]) {
+            [self.delegate iTunesWasTerminated];
+        }
+    }
+}
 
 -(void)setCurrentPlayer:(MusicPlayerApplication)currentPlayer
 {
     @synchronized (self) {
         if (_currentPlayer == MusicPlayerUndefined) {
             _currentPlayer = currentPlayer;
+            [self.delegate newActivePlayer];
             return;
         }
         if (_currentPlayer == MusicPlayerSpotify && currentPlayer == MusicPlayeriTunes && !self.isSpotifyRunning) {
             _currentPlayer = currentPlayer;
+            [self.delegate newActivePlayer];
             return;
         }
         if (_currentPlayer == MusicPlayeriTunes && currentPlayer == MusicPlayerSpotify && !self.isiTunesRunning) {
             _currentPlayer = currentPlayer;
+            [self.delegate newActivePlayer];
+
             return;
         }
     }
 }
 
+#pragma mark - GETTERS
+
 -(MusicPlayerApplication)currentPlayer
 {
+    if (_currentPlayer == MusicPlayerUndefined) {
+        [self detectCurrentPlayer];
+    }
     return _currentPlayer;
 }
 
@@ -308,8 +396,7 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
 
 -(BOOL)isiTunesRunning
 {
-    iTunesApplication *iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-    if (iTunes.isRunning) {
+    if (self._iTunesApp.isRunning) {
         return YES;
     }
     return NO;
@@ -317,13 +404,42 @@ NSString *const kMusicPlayerNotification = @"NepTunes.playerInfo";
 
 -(BOOL)isSpotifyRunning
 {
-    SpotifyApplication *spotify = [SBApplication applicationWithBundleIdentifier:@"com.spotify.client"];
-    if (spotify.isRunning) {
+    if (self._spotifyApp.isRunning) {
         return YES;
     }
     return NO;
 }
 
-#pragma mark Soundvolume
-#warning Soundvolume do napisania
+-(SpotifyTrack *)_currentSpotifyTrack
+{
+    if (self.currentPlayer == MusicPlayerSpotify && self.isSpotifyRunning) {
+        return self._spotifyApp.currentTrack;
+    }
+    return nil;
+}
+
+-(iTunesTrack *)_currentiTunesTrack
+{
+    if (self.currentPlayer == MusicPlayeriTunes && self.isiTunesRunning) {
+        return self._iTunesApp.currentTrack;
+    }
+    return nil;
+
+}
+
+-(SpotifyApplication *)_spotifyApp
+{
+    if (!__spotifyApp) {
+        __spotifyApp = (SpotifyApplication *)[SBApplication applicationWithBundleIdentifier:kSpotifyBundlerIdentifier];
+    }
+    return __spotifyApp;
+}
+
+-(iTunesApplication *)_iTunesApp
+{
+    if (!__iTunesApp) {
+        __iTunesApp = (iTunesApplication *)[SBApplication applicationWithBundleIdentifier:kiTunesBundleIdentifier];
+    }
+    return __iTunesApp;
+}
 @end

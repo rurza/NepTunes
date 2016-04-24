@@ -37,10 +37,12 @@ static NSUInteger const kNumberOfFrames = 10;
     self.backwardButton.image.template = YES;
     self.volumeButton.image.template = YES;
     self.shareButton.image.template = YES;
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(updateControlsState:)
-                                                            name:@"com.apple.iTunes.playerInfo"
-                                                          object:nil];
+#warning do usunięcia
+    //    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+//                                                        selector:@selector(updateControlsState:)
+//                                                            name:@"com.apple.iTunes.playerInfo"
+//                                                          object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateControlsState:) name:kTrackInfoUpdated object:nil];
     [self.forwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(forwardButtonWasPressed:)]];
     [self.backwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(backwardButtonWasPressed:)]];
     self.volumePopover.delegate = self;

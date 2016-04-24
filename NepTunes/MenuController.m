@@ -36,7 +36,6 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) NSStatusItem *statusItem;
 @property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
 @property (nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
-@property (nonatomic) IBOutlet MusicController *musicController;
 @property (nonatomic) RecentTracksController *recentTracksController;
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settings;
@@ -47,7 +46,8 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) BOOL reachability;
 @property (nonatomic) OfflineScrobbler *offlineScrobbler;
 @property (nonatomic) AboutWindowController *aboutWindowController;
-@property (nonatomic) MusicPlayer *musicPlayer;
+@property (nonatomic) IBOutlet MusicPlayer *musicPlayer;
+@property (nonatomic) MusicController *musicController;
 @end
 
 @implementation MenuController
@@ -94,7 +94,7 @@ static NSUInteger const kNumberOfFrames = 10;
     self.statusMenu.autoenablesItems = NO;
     [self.loveSongMenuTitle setEnabled:NO];
     
-    [self updateMenu];
+//    [self updateMenu];
     //initialize hotkey to update menu
     HotkeyController *hotkey = [[HotkeyController alloc] init];
     hotkey = nil;
@@ -774,8 +774,41 @@ static NSUInteger const kNumberOfFrames = 10;
     [self.cachediTunesSearchResults setObject:array forKey:key];
 }
 
-#pragma mark - Getters
+#pragma mark - update available sources
+-(void)insertNewSourceWithName:(NSString *)sourceName
+{
+    if ([self.statusMenu indexOfItemWithTitle:sourceName] == -1) {
+        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:sourceName action:nil keyEquivalent:@""];
+        menuItem.enabled = NO;
+        [self.statusMenu insertItem:menuItem atIndex:[self.statusMenu indexOfItemWithTitle:@"Source:"]+1];
+    }
+}
 
+-(void)removeSourceWithName:(NSString *)sourceName
+{
+    NSInteger index = [self.statusMenu indexOfItemWithTitle:sourceName];
+    if (index != -1) {
+        [self.statusMenu removeItemAtIndex:index];
+    }
+}
+
+-(void)addCheckmarkToSourceWithName:(NSString *)sourceName
+{
+    NSInteger index = [self.statusMenu indexOfItemWithTitle:sourceName];
+    if (index != -1) {
+        [self.statusMenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (menuItem.state == 1) {
+                menuItem.state = 0;
+            }
+        }];
+
+        NSMenuItem *item = [self.statusMenu itemAtIndex:index];
+        item.state = 1;
+    }
+    
+}
+
+#pragma mark - Getters
 -(RecentTracksController *)recentTracksController
 {
     if (!_recentTracksController) {

@@ -9,8 +9,11 @@
 
 #import <Foundation/Foundation.h>
 #import "Track.h"
+#import "MusicPlayerDelegate.h"
 @class iTunesTrack;
 @class SpotifyTrack;
+
+
 
 typedef NS_ENUM(NSInteger, MusicPlayerApplication) {
     MusicPlayerUndefined,
@@ -25,7 +28,8 @@ typedef NS_ENUM(NSInteger, MusicPlayerState) {
     MusicPlayerStateStopped
 };
 
-extern NSString *const kMusicPlayerNotification;
+extern NSString *const kiTunesBundleIdentifier;
+extern NSString *const kSpotifyBundlerIdentifier;
 
 @interface MusicPlayer : NSObject
 
@@ -36,10 +40,12 @@ extern NSString *const kMusicPlayerNotification;
 @property (nonatomic) BOOL playerIntegration;
 @property (nonatomic) BOOL currentTrackIsLoved;
 @property (nonatomic) NSInteger soundVolume;
+@property (nonatomic) id<MusicPlayerDelegate> delegate;
 
 +(instancetype)sharedPlayer;
 -(void)openArtistPageForTrack:(Track *)track;
 -(NSImage *)currentTrackCover;
+
 //playback
 -(void)playPause;
 -(void)nextTrack;
@@ -48,5 +54,5 @@ extern NSString *const kMusicPlayerNotification;
 -(void)rewind;
 -(void)resume;
 -(void)loveCurrentTrack;
-
+-(void)bringPlayerToFront;
 @end

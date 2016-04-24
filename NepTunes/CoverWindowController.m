@@ -59,7 +59,7 @@
     self.shouldCascadeWindows = NO;
 }
 
--(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo
+-(void)updateCoverWithTrack:(Track *)track
 {
     if (track) {
         [self updateWithTrack:track];

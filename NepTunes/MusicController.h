@@ -7,18 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MusicPlayerDelegate.h"
+
 @class CoverWindowController;
 @class MusicPlayer;
 
-@interface MusicController : NSObject
+extern NSString * const kTrackInfoUpdated;
 
+@interface MusicController : NSObject <MusicPlayerDelegate>
 
 @property (nonatomic) CoverWindowController *coverWindowController ;
 @property (nonatomic) MusicPlayer *musicPlayer;
 
 +(instancetype)sharedController;
 -(void)loveTrackWithCompletionHandler:(void(^)(void))handler;
+///wyłącza wszystkie timery, np. po zmianie utworu
 -(void)invalidateTimers;
--(void)updateTrackInfo:(NSNotification *)note;
+///konfiguruje okładkę
 -(void)setupCover;
+
 @end

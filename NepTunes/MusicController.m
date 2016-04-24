@@ -23,12 +23,12 @@
 #define FOUR_MINUTES 60 * 4
 #define DELAY_FOR_RADIO 4
 
-static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
+NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @interface MusicController ()
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settingsController;
-@property (nonatomic) IBOutlet MenuController *menuController;
+@property (nonatomic) MenuController *menuController;
 @property (nonatomic) NSTimer* scrobbleTimer;
 @property (nonatomic) NSTimer* nowPlayingTimer;
 @property (nonatomic) NSTimer* mainTimer;
@@ -53,38 +53,49 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 + (id) alloc                    { return [self sharedController];                                   }
 - (id) init                     { return self;                                                      }
 + (id)_alloc                    { return [super allocWithZone:NULL];                                }
-- (id)_init                     { self.musicPlayer = [MusicPlayer sharedPlayer];return [super init];}
+- (id)_init                     { return [super init];}
 
--(void)awakeFromNib
-{
-    [self setupNotifications];
-//    [self setupCover];
-}
-
--(void)setupNotifications
-{
-    [self updateTrackInfo:nil];
-
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(updateTrackInfo:)
-                                                            name:kMusicPlayerNotification
-                                                          object:nil];
-}
-
-
-
-
--(void)updateTrackInfo:(NSNotification *)note
+#pragma mark Music Player Delegate
+-(void)trackChanged
 {
     if (self.settingsController.debugMode) {
         NSLog(@"Notification sent from Music Player");
     }
     [self invalidateTimers];
-    self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:note.userInfo ? note.userInfo : nil repeats:NO];
+    self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:nil repeats:NO];
     [self setScrobblerCurrentTrack];
-    [self updateCoverWithInfo:note.userInfo];
+    [self updateCover];
     [self updateMenu];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:nil userInfo:note.userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:nil userInfo:nil];
+}
+
+-(void)spotifyIsAvailable
+{
+    [self.menuController insertNewSourceWithName:@"Spotify"];
+}
+
+-(void)iTunesIsAvailable
+{
+    [self.menuController insertNewSourceWithName:@"iTunes"];
+}
+
+-(void)spotifyWasTerminated
+{
+    [self.menuController removeSourceWithName:@"Spotify"];
+}
+
+-(void)iTunesWasTerminated
+{
+    [self.menuController removeSourceWithName:@"iTunes"];
+}
+
+-(void)newActivePlayer
+{
+    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+        [self.menuController addCheckmarkToSourceWithName:@"iTunes"];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        [self.menuController addCheckmarkToSourceWithName:@"Spotify"];
+    }
 }
 
 -(void)prepareTrack:(NSTimer *)timer
@@ -146,15 +157,15 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
 }
 
--(void)updateCoverWithInfo:(NSDictionary *)info
+-(void)updateCover
 {
     if (self.musicScrobbler.currentTrack && self.musicPlayer.isPlayerRunning) {
         if (!self.coverWindowController) {
             [self setupCover];
         }
-        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:info];
+        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack];
     } else {
-        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:info];
+        [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack];
         [self.coverWindowController.window close];
 
         self.coverWindowController = nil;
@@ -168,7 +179,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
         if (self.musicPlayer.playerState == MusicPlayerStatePlaying && self.musicScrobbler.currentTrack) {
             [self.coverWindowController showWindow:self];
-            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack andUserInfo:nil];
+            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack];
             [self.coverWindowController.window makeKeyAndOrderFront:nil];
             HUDWindowController *window =[[HUDWindowController alloc] initWithWindowNibName:@"HUDWindowController"];
             [window.window makeKeyAndOrderFront:nil];
@@ -260,7 +271,21 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     return _settingsController;
 }
 
+-(MenuController *)menuController
+{
+    if (!_menuController) {
+        _menuController = [MenuController sharedController];
+    }
+    return _menuController;
+}
 
-#pragma mark - Spotify
+-(MusicPlayer *)musicPlayer
+{
+    if (!_musicPlayer) {
+        _musicPlayer = [MusicPlayer sharedPlayer];
+    }
+    return _musicPlayer;
+}
+
 
 @end
