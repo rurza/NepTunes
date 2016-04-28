@@ -243,7 +243,6 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 #pragma mark Soundvolume
 -(void)setSoundVolume:(NSInteger)soundVolume
 {
-    NSLog(@"soundVolume = %li", (long)soundVolume);
     if (self.currentPlayer == MusicPlayerSpotify) {
         self._spotifyApp.soundVolume = soundVolume;
     } else if (self.currentPlayer == MusicPlayeriTunes) {
