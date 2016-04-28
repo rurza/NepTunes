@@ -12,6 +12,7 @@
 #import "Spotify.h"
 #import "Track.h"
 #import "MusicController.h"
+#import "SpotifySearch.h"
 
 NSString * const kiTunesBundleIdentifier = @"com.apple.iTunes";
 NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
@@ -150,7 +151,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     }
 }
 
--(void)loveCurrentTrack
+-(void)loveCurrentTrackOniTunes
 {
     self._iTunesApp.currentTrack.loved = YES;
 }
@@ -205,9 +206,11 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     self.currentTrack = [Track trackWithSpotifyTrack:self._spotifyApp.currentTrack];
 }
 
--(NSImage *)currentSpotifyTrackCover
+-(NSString *)currentSpotifyTrackCover
 {
-#warning currentSpotifyTrackCover do zrobienia
+    if (self._currentSpotifyTrack.artworkUrl) {
+        return self._currentSpotifyTrack.artworkUrl;
+    }
     return nil;
 }
 
@@ -232,10 +235,14 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 
 -(void)bringPlayerToFront
 {
-#warning do zrobienia bringPlayerToFront
+    if (self.currentPlayer == MusicPlayeriTunes) {
+        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kiTunesBundleIdentifier options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+    } else if (self.currentPlayer == MusicPlayerSpotify) {
+        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kSpotifyBundlerIdentifier options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+    }
 }
 
--(NSImage *)currentTrackCover
+-(id)currentTrackCoverOrURL;
 {
     if (self.currentPlayer == MusicPlayeriTunes) {
         return [self currentiTunesTrackCover];
@@ -291,6 +298,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     }
 }
 
+#pragma mark - iTunes and Spotify Lifecycle
 -(void)appLaunched:(NSNotification *)note
 {
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
@@ -309,14 +317,21 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
         if ([self.delegate respondsToSelector:@selector(spotifyWasTerminated)]) {
             [self.delegate spotifyWasTerminated];
+            if (self.isiTunesRunning) {
+                self.currentPlayer = MusicPlayeriTunes;
+            }
         }
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
         if ([self.delegate respondsToSelector:@selector(iTunesWasTerminated)]) {
             [self.delegate iTunesWasTerminated];
+            if (self.isSpotifyRunning) {
+                self.currentPlayer = MusicPlayerSpotify;
+            }
         }
     }
 }
 
+#pragma mark - Source
 -(void)setCurrentPlayer:(MusicPlayerApplication)currentPlayer
 {
     @synchronized (self) {
@@ -338,6 +353,13 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
         }
     }
 }
+
+-(void)changeSourceTo:(MusicPlayerApplication)source
+{
+    _currentPlayer = source;
+    [self.delegate newActivePlayer];
+}
+
 
 #pragma mark - GETTERS
 

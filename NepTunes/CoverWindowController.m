@@ -44,7 +44,7 @@
     [super windowDidLoad];
 
     self.hoverArea = [[NSTrackingArea alloc] initWithRect:self.window.contentView.frame
-                                                  options:NSTrackingMouseEnteredAndExited |NSTrackingAssumeInside | NSTrackingActiveAlways
+                                                  options:NSTrackingMouseEnteredAndExited | NSTrackingAssumeInside | NSTrackingActiveAlways
                                                     owner:self userInfo:nil];
     [self.window.contentView addTrackingArea:self.hoverArea];
     self.window.contentView.acceptsTouchEvents = YES;
@@ -276,7 +276,7 @@
         [self.controlViewController updateVolumeIcon];
         if ((![MusicPlayer sharedPlayer].currentTrack.artist.length &&
             ![MusicPlayer sharedPlayer].currentTrack.trackName.length &&
-            ![SettingsController sharedSettings].session) || (![SettingsController sharedSettings].session && ![SettingsController sharedSettings].integrationWithiTunes)) {
+            ![SettingsController sharedSettings].session) || (![SettingsController sharedSettings].session && ![SettingsController sharedSettings].integrationWithMusicPlayer)) {
             self.controlViewController.loveButton.alphaValue = 0.5;
             self.controlViewController.loveButton.enabled = NO;
         } else {
@@ -304,7 +304,7 @@
     CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
     
     if (coverSettingsController.bringiTunesToFrontWithDoubleClick) {
-        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+        [[MusicPlayer sharedPlayer] bringPlayerToFront];
     }
 }
 

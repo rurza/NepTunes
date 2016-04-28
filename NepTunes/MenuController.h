@@ -7,6 +7,7 @@
 //
 @import Cocoa;
 @class ItunesSearch;
+@class SpotifySearch;
 
 @interface MenuController : NSObject
 
@@ -17,7 +18,7 @@
 @property (nonatomic, weak) IBOutlet NSMenu *shareMenu;
 
 @property (nonatomic) ItunesSearch *iTunesSearch;
-
+@property (nonatomic) SpotifySearch *spotifySearch;
 
 +(instancetype)sharedController;
 -(IBAction)loveSong:(id)sender;

@@ -16,4 +16,5 @@
 -(void)spotifyWasTerminated;
 -(void)iTunesWasTerminated;
 -(void)newActivePlayer;
+
 @end

@@ -14,6 +14,7 @@
 		5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC2481C6CE337004EB785 /* CoverImageView.m */; };
 		5B1BC24C1C6CE4BF004EB785 /* CoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */; };
 		5B1E16AA1CC5418600AB572A /* MusicPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1E16A91CC5418600AB572A /* MusicPlayer.m */; };
+		5B1E16B61CD11D0400AB572A /* SpotifySearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1E16B41CD11D0400AB572A /* SpotifySearch.m */; };
 		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */; };
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
@@ -113,6 +114,8 @@
 		5B1E16A81CC5418600AB572A /* MusicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayer.h; sourceTree = "<group>"; };
 		5B1E16A91CC5418600AB572A /* MusicPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPlayer.m; sourceTree = "<group>"; };
 		5B1E16AF1CCCEB1900AB572A /* MusicPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayerDelegate.h; sourceTree = "<group>"; };
+		5B1E16B41CD11D0400AB572A /* SpotifySearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifySearch.m; sourceTree = "<group>"; };
+		5B1E16B51CD11D0400AB572A /* SpotifySearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifySearch.h; sourceTree = "<group>"; };
 		5B2F4CE51B763C16009F0C53 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
 		5B2F4CE61B763C16009F0C53 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 		5B427BD91C52B4A300EA1D4A /* RecentTracksController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTracksController.h; sourceTree = "<group>"; };
@@ -252,11 +255,22 @@
 		5B1E16AB1CC7E43300AB572A /* Music Player */ = {
 			isa = PBXGroup;
 			children = (
+				5B1E16A61CC4050A00AB572A /* Spotify.h */,
+				5BA37AC51C63842000F69380 /* iTunes.h */,
 				5B1E16A81CC5418600AB572A /* MusicPlayer.h */,
 				5B1E16A91CC5418600AB572A /* MusicPlayer.m */,
 				5B1E16AF1CCCEB1900AB572A /* MusicPlayerDelegate.h */,
 			);
 			name = "Music Player";
+			sourceTree = "<group>";
+		};
+		5B1E16B71CD11E9400AB572A /* Spotify Search */ = {
+			isa = PBXGroup;
+			children = (
+				5B1E16B51CD11D0400AB572A /* SpotifySearch.h */,
+				5B1E16B41CD11D0400AB572A /* SpotifySearch.m */,
+			);
+			name = "Spotify Search";
 			sourceTree = "<group>";
 		};
 		5B427BDD1C52B4B700EA1D4A /* Menu */ = {
@@ -340,8 +354,6 @@
 			children = (
 				5BC6A8DF1C610C83009C3E9F /* MusicController.h */,
 				5BC6A8E01C610C83009C3E9F /* MusicController.m */,
-				5B1E16A61CC4050A00AB572A /* Spotify.h */,
-				5BA37AC51C63842000F69380 /* iTunes.h */,
 				5BAE71041C5019A200779081 /* Track */,
 				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
 				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
@@ -381,6 +393,7 @@
 				5BDD6B171A1D0C95001D87D6 /* Images.xcassets */,
 				5BDD6B121A1D0C95001D87D6 /* AppDelegate.h */,
 				5BDD6B131A1D0C95001D87D6 /* AppDelegate.m */,
+				5B1E16B71CD11E9400AB572A /* Spotify Search */,
 				5B1E16AB1CC7E43300AB572A /* Music Player */,
 				5BC6A8E31C611C3A009C3E9F /* Music */,
 				5B427BDD1C52B4B700EA1D4A /* Menu */,
@@ -645,6 +658,7 @@
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
 				5BF402E71C73A156004FD0FA /* PreferencesController.m in Sources */,
 				5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */,
+				5B1E16B61CD11D0400AB572A /* SpotifySearch.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */,

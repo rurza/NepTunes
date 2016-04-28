@@ -37,11 +37,6 @@ static NSUInteger const kNumberOfFrames = 10;
     self.backwardButton.image.template = YES;
     self.volumeButton.image.template = YES;
     self.shareButton.image.template = YES;
-#warning do usunięcia
-    //    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-//                                                        selector:@selector(updateControlsState:)
-//                                                            name:@"com.apple.iTunes.playerInfo"
-//                                                          object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateControlsState:) name:kTrackInfoUpdated object:nil];
     [self.forwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(forwardButtonWasPressed:)]];
     [self.backwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(backwardButtonWasPressed:)]];
@@ -55,7 +50,7 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if (self.musicPlayer.playerState == MusicPlayerStatePlaying) {
         self.playButton.image = self.pauseImage;
-        if ([SettingsController sharedSettings].integrationWithiTunes && self.musicPlayer.currentTrack.loved) {
+        if ([SettingsController sharedSettings].integrationWithMusicPlayer && self.musicPlayer.currentTrack.loved) {
             self.loveButton.image = [NSImage imageNamed:@"fullheart"];
             self.loveButton.image.template = YES;
         } else {

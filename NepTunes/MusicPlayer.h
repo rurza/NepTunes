@@ -43,8 +43,9 @@ extern NSString *const kSpotifyBundlerIdentifier;
 @property (nonatomic) id<MusicPlayerDelegate> delegate;
 
 +(instancetype)sharedPlayer;
+
 -(void)openArtistPageForTrack:(Track *)track;
--(NSImage *)currentTrackCover;
+-(id)currentTrackCoverOrURL;
 
 //playback
 -(void)playPause;
@@ -53,6 +54,8 @@ extern NSString *const kSpotifyBundlerIdentifier;
 -(void)fastForward;
 -(void)rewind;
 -(void)resume;
--(void)loveCurrentTrack;
+
+-(void)loveCurrentTrackOniTunes;
 -(void)bringPlayerToFront;
+-(void)changeSourceTo:(MusicPlayerApplication)source;
 @end

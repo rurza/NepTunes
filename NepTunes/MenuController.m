@@ -16,6 +16,7 @@
 #import "UserNotificationsController.h"
 #import "MusicController.h"
 #import "iTunesSearch.h"
+#import "SpotifySearch.h"
 #import "LastFm.h"
 #import "PreferencesController.h"
 #import <PINCache.h>
@@ -31,7 +32,7 @@
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;
 
-@interface MenuController () <ItunesSearchCache, NSWindowDelegate>
+@interface MenuController () <ItunesSearchCache, NSWindowDelegate, SpotifySearchCache>
 
 @property (nonatomic) NSStatusItem *statusItem;
 @property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
@@ -41,6 +42,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) SettingsController *settings;
 @property (nonatomic) NSUInteger animationCurrentStep;
 @property (nonatomic) PINCache *cachediTunesSearchResults;
+@property (nonatomic) PINCache *cachedSpotifySearchResults;
 @property (nonatomic) PreferencesController *preferencesController;
 //reachability
 @property (nonatomic) BOOL reachability;
@@ -325,7 +327,7 @@ static NSUInteger const kNumberOfFrames = 10;
     //if user is logged in, there is Internet conenction and we have a track
     if (self.settings.session && self.musicScrobbler.currentTrack && internetIsReachable && self.musicPlayer.isPlayerRunning) {
         //if user choose to love track also in iTunes  and track listened is available to love in iTunes
-        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
+        if ([self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) {
             if (self.musicScrobbler.currentTrack.artist.length && self.musicScrobbler.currentTrack.trackName.length) {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.trackName];
             } else {
@@ -339,7 +341,7 @@ static NSUInteger const kNumberOfFrames = 10;
         //if user ISN'T logged in, we have a track
     } else if (!self.settings.session && self.musicScrobbler.currentTrack) {
         //if user choose to love track also in iTunes and track listened is available to love in iTunes
-        if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
+        if ([self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) {
             if (self.musicScrobbler.currentTrack.artist.length && self.musicScrobbler.currentTrack.trackName.length) {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.trackName];
             } else {
@@ -369,7 +371,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(BOOL)userHasTurnedOnIntegrationAndLovingMusicOniTunes
 {
-    if (self.settings.integrationWithiTunes && self.settings.loveTrackOniTunes) {
+    if (self.settings.integrationWithMusicPlayer && self.settings.loveTrackOniTunes && self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
         return YES;
     }
     return NO;
@@ -385,7 +387,7 @@ static NSUInteger const kNumberOfFrames = 10;
             if (!internetIsReachable) {
                 self.similarArtistMenuTtitle.enabled = NO;
             }
-            if (self.settings.showSimilarArtistsOnAppleMusic && self.settings.integrationWithiTunes && internetIsReachable) {
+            if (self.settings.showSimilarArtistsOnMusicPlayer && self.settings.integrationWithMusicPlayer && internetIsReachable) {
                 __weak typeof(self) weakSelf = self;
                 if (![self.similarArtistMenuTtitle hasSubmenu]) {
                     [self.musicScrobbler.scrobbler getSimilarArtistsTo:self.musicScrobbler.currentTrack.artist successHandler:^(NSArray *result) {
@@ -636,7 +638,7 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     Track *trackFromMenu = [self returnTrackFromMenuItem:menuItem];
     //got track
-    if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
+    if (self.settings.integrationWithMusicPlayer && self.settings.showRecentTrackOnMusicPlayer) {
         [self validateAppleMusicLinkForTrack:trackFromMenu andMenuItem:menuItem];
     } else {
         [self generateLastFmLinkForTrack:trackFromMenu andMenuItem:menuItem];
@@ -697,7 +699,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)openWebsite:(NSMenuItem *)menuItem
 {
-    if (self.settings.integrationWithiTunes && self.settings.showRecentTrackIniTunes) {
+    if (self.settings.integrationWithMusicPlayer && self.settings.showRecentTrackOnMusicPlayer) {
         Track *track = [self returnTrackFromMenuItem:menuItem];
         
         [self openAppleMusicPageForTrack:track andMenuItem:menuItem];
@@ -765,13 +767,22 @@ static NSUInteger const kNumberOfFrames = 10;
 #pragma mark - iTunes Search Cache
 - (NSArray *)cachedArrayForKey:(NSString *)key
 {
-    NSArray *result = [self.cachediTunesSearchResults objectForKey:key];
+    NSArray *result;
+    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+        result = [self.cachediTunesSearchResults objectForKey:key];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        result = [self.cachediTunesSearchResults objectForKey:key];
+    }
     return result;
 }
 
 - (void)cacheArray:(NSArray *)array forKey:(NSString *)key requestParams:(NSDictionary *)params maxAge:(NSTimeInterval)maxAge
 {
-    [self.cachediTunesSearchResults setObject:array forKey:key];
+    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+        [self.cachediTunesSearchResults setObject:array forKey:key];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        [self.cachedSpotifySearchResults setObject:array forKey:key];
+    }
 }
 
 #pragma mark - update available sources
@@ -854,6 +865,15 @@ static NSUInteger const kNumberOfFrames = 10;
     return _iTunesSearch;
 }
 
+-(SpotifySearch *)spotifySearch
+{
+    if (!_spotifySearch) {
+        _spotifySearch = [SpotifySearch sharedInstance];
+        _spotifySearch.cacheDelegate = self;
+    }
+    return _spotifySearch;
+}
+
 -(PINCache *)cachediTunesSearchResults
 {
     if (!_cachediTunesSearchResults) {
@@ -862,6 +882,16 @@ static NSUInteger const kNumberOfFrames = 10;
         _cachediTunesSearchResults.memoryCache.ageLimit = 60 * 60;
     }
     return _cachediTunesSearchResults;
+}
+
+-(PINCache *)cachedSpotifySearchResults
+{
+    if (!_cachedSpotifySearchResults) {
+        _cachedSpotifySearchResults = [[PINCache alloc] initWithName:@"SpotifySearchCache"];
+        _cachedSpotifySearchResults.diskCache.ageLimit = 60 * 60 * 24;
+        _cachedSpotifySearchResults.memoryCache.ageLimit = 60 * 60;
+    }
+    return _cachedSpotifySearchResults;
 }
 
 -(OfflineScrobbler *)offlineScrobbler

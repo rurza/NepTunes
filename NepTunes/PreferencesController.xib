@@ -121,7 +121,7 @@
                 </popUpButton>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWl-cS-eOC">
                     <rect key="frame" x="18" y="189" width="321" height="18"/>
-                    <string key="toolTip">Integration with iTunes &amp; Apple Music brings power of Last.fm with Apple Music library, e.g. similar artists menu takes similar artists from Last.fm and open them on Apple Music</string>
+                    <string key="toolTip">Integration with iTunes and Spotify brings power of Last.fm with Apple Music and/or Spotify library, e.g. similar artists menu takes similar artists from Last.fm and open them on Apple Music or Spotify</string>
                     <buttonCell key="cell" type="check" title="Integration with Spotify and iTunes" bezelStyle="regularSquare" imagePosition="left" inset="2" id="yAb-BD-8al">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="systemBold"/>
@@ -142,7 +142,7 @@
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0OG-gS-1lE">
                     <rect key="frame" x="38" y="131" width="274" height="18"/>
-                    <string key="toolTip">Similar artist menu item become both menu and button. If you just click it, it opens Last.fm webpage with similar artists. If you hover it, it opens menu with similar artists (from Last.fm) where you can click to open Apple Music page for each of them.</string>
+                    <string key="toolTip">Similar artist menu item become both menu and button. If you just click it, it opens Last.fm webpage with similar artists. If you hover it, it opens menu with similar artists (from Last.fm) where you can click to open Apple Music or Spotify page for each of them.</string>
                     <buttonCell key="cell" type="check" title="Open similar artist page on current player" bezelStyle="regularSquare" imagePosition="left" inset="2" id="49v-XZ-UII">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -153,7 +153,7 @@
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QVJ-aV-evQ">
                     <rect key="frame" x="38" y="102" width="245" height="18"/>
-                    <string key="toolTip">Clicking each track from Recent tracks menu opens Apple Music page for album with that track. Disabled if you have Recent menu disabled.</string>
+                    <string key="toolTip">Clicking each track from Recent tracks menu opens Apple Music or Spotify page for album with that track. Disabled if you have Recent menu disabled.</string>
                     <buttonCell key="cell" type="check" title="Open recent tracks on current player" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oZY-gE-CUY">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -255,7 +255,7 @@ DQ
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="310" width="379" height="369"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
                 <rect key="frame" x="0.0" y="0.0" width="379" height="369"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -298,11 +298,11 @@ DQ
             <point key="canvasLocation" x="-360.5" y="96.5"/>
         </window>
         <customView identifier="AccountLogged" id="FtI-IT-OHd">
-            <rect key="frame" x="0.0" y="0.0" width="276" height="287"/>
+            <rect key="frame" x="0.0" y="0.0" width="276" height="366"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="FVe-0m-KWf">
-                    <rect key="frame" x="26" y="155" width="224" height="32"/>
+                    <rect key="frame" x="26" y="234" width="224" height="32"/>
                     <buttonCell key="cell" type="push" title="Log out :(" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d5V-8o-JAG">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -315,7 +315,7 @@ DQ
                     </connections>
                 </button>
                 <textField toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x4L-IT-Z51">
-                    <rect key="frame" x="18" y="104" width="240" height="17"/>
+                    <rect key="frame" x="18" y="183" width="240" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="When to scrobble?" id="lES-J9-ixW">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -323,20 +323,20 @@ DQ
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xAp-YS-eoM">
-                    <rect key="frame" x="20" y="139" width="236" height="5"/>
+                    <rect key="frame" x="20" y="218" width="236" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
                 <slider toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="smd-WT-3o0">
-                    <rect key="frame" x="18" y="74" width="240" height="25"/>
+                    <rect key="frame" x="18" y="153" width="240" height="25"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="50" maxValue="100" doubleValue="50" tickMarkPosition="above" numberOfTickMarks="6" allowsTickMarkValuesOnly="YES" sliderType="linear" id="psK-Sb-1hv"/>
                     <connections>
                         <binding destination="RtU-Wd-pY6" name="value" keyPath="self.percentForScrobbleTime" id="SaE-Dx-yyf"/>
                     </connections>
                 </slider>
                 <button toolTip="Check this to scrobble music, podcasts and iTunes U." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZjP-mB-emy">
-                    <rect key="frame" x="18" y="40" width="240" height="18"/>
+                    <rect key="frame" x="18" y="98" width="240" height="18"/>
                     <buttonCell key="cell" type="check" title="Scrobble Podcasts and iTunes U" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6GH-U5-vnG">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -346,22 +346,44 @@ DQ
                     </connections>
                 </button>
                 <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="i5g-xn-58g">
-                    <rect key="frame" x="130" y="227" width="16" height="16"/>
+                    <rect key="frame" x="130" y="306" width="16" height="16"/>
                 </progressIndicator>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ohM-zy-ZuK">
-                    <rect key="frame" x="106" y="203" width="64" height="64"/>
+                    <rect key="frame" x="106" y="282" width="64" height="64"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="y1V-2b-6IK"/>
                 </imageView>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="Brc-0J-WVL">
-                    <rect key="frame" x="18" y="20" width="240" height="17"/>
+                    <rect key="frame" x="18" y="75" width="240" height="17"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Music is scrobbled by default." id="40L-kf-WiB">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="k3T-9E-NVN">
+                    <rect key="frame" x="20" y="132" width="236" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="vH4-FU-8aZ">
+                    <rect key="frame" x="20" y="52" width="236" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lBp-MP-DtZ">
+                    <rect key="frame" x="18" y="18" width="240" height="18"/>
+                    <buttonCell key="cell" type="check" title="Scrobble from Spotify" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="AM9-cm-u9f">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleScrobbleFromSpotify:" target="RtU-Wd-pY6" id="TzG-EF-Yfv"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="-300" y="838.5"/>
+            <point key="canvasLocation" x="-300" y="878"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
             <rect key="frame" x="0.0" y="0.0" width="379" height="441"/>
@@ -508,7 +530,7 @@ DQ
                 <outlet property="automaticallyShareOnTwitterCheckbox" destination="1J2-b9-EpI" id="LpO-ki-nLr"/>
                 <outlet property="hideNotificationsCheckbox" destination="pRt-Oe-auy" id="Vx2-Kg-rt4"/>
                 <outlet property="hideStatusBarCheckbox" destination="ZBj-H1-CpX" id="Cai-ys-eo4"/>
-                <outlet property="integrationWithiTunesCheckbox" destination="uWl-cS-eOC" id="Fo9-RV-ggt"/>
+                <outlet property="integrationWithMusicPlayerCheckbox" destination="uWl-cS-eOC" id="Bws-UU-X4N"/>
                 <outlet property="launchAtLoginCheckbox" destination="4aF-Vt-GhG" id="unE-vS-njE"/>
                 <outlet property="loveTrackOniTunesCheckbox" destination="I8v-7m-K2K" id="eLM-VV-rTe"/>
                 <outlet property="numberOfRecentItems" destination="pOc-ID-6g9" id="SML-q1-C82"/>
@@ -516,9 +538,10 @@ DQ
                 <outlet property="percentForScrobbleTimeLabel" destination="x4L-IT-Z51" id="Eor-HL-pGP"/>
                 <outlet property="percentForScrobbleTimeSlider" destination="smd-WT-3o0" id="uTd-ia-of2"/>
                 <outlet property="preferencesController" destination="-2" id="o5W-0y-IA2"/>
-                <outlet property="scrobblePodcastsAndiTunesUButton" destination="ZjP-mB-emy" id="PVf-my-IKg"/>
-                <outlet property="showRecentTrackIniTunesCheckbox" destination="QVJ-aV-evQ" id="FE7-xe-0XE"/>
-                <outlet property="showSimilarArtistsOnAppleMusicCheckbox" destination="0OG-gS-1lE" id="Ais-f8-6Ja"/>
+                <outlet property="scrobbleFromSpotifyCheckbox" destination="lBp-MP-DtZ" id="rrw-kF-uSi"/>
+                <outlet property="scrobblePodcastsAndiTunesUCheckbox" destination="ZjP-mB-emy" id="4IS-R3-Ohc"/>
+                <outlet property="showRecentTrackOnMusicPlayerCheckbox" destination="QVJ-aV-evQ" id="4Xj-tR-scw"/>
+                <outlet property="showSimilarArtistsOnMusicPlayerCheckbox" destination="0OG-gS-1lE" id="oWr-8j-s2u"/>
             </connections>
         </customObject>
         <customObject id="48D-K4-yYd" customClass="HotkeyController">

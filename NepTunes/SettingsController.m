@@ -32,6 +32,7 @@ static NSString *const kAutomaticallyShareOnFacebook = @"automaticallyShareOnFac
 static NSString *const kAutomaticallyShareOnTwitter = @"automaticallyShareOnTwitter";
 static NSString *const kSpotifyOnly = @"spotifyOnly";
 static NSString *const kiTunesOnly = @"iTunesOnly";
+static NSString *const kScrobbleFromSpotify = @"scrobbleFromSpotify";
 
 static NSString *const kDebugMode = @"debugMode";
 
@@ -55,16 +56,17 @@ static NSString *const kDebugMode = @"debugMode";
 @synthesize hideNotifications = _hideNotifications;
 @synthesize percentForScrobbleTime = _percentForScrobbleTime;
 @synthesize userWasLoggedOut = _userWasLoggedOut;
-@synthesize integrationWithiTunes = _integrationWithiTunes;
+@synthesize integrationWithMusicPlayer = _integrationWithMusicPlayer;
 @synthesize loveTrackOniTunes = _loveTrackOniTunes;
-@synthesize showSimilarArtistsOnAppleMusic = _showSimilarArtistsOnAppleMusic;
-@synthesize showRecentTrackIniTunes = _showRecentTrackIniTunes;
+@synthesize showSimilarArtistsOnMusicPlayer = _showSimilarArtistsOnMusicPlayer;
+@synthesize showRecentTrackOnMusicPlayer = _showRecentTrackOnMusicPlayer;
 @synthesize debugMode = _debugMode;
 @synthesize scrobblePodcastsAndiTunesU = _scrobblePodcastsAndiTunesU;
 @synthesize automaticallyShareOnTwitter = _automaticallyShareOnTwitter;
 @synthesize automaticallyShareOnFacebook = _automaticallyShareOnFacebook;
 @synthesize iTunesOnly = _iTunesOnly;
 @synthesize spotifyOnly = _spotifyOnly;
+@synthesize scrobbleFromSpotify = _scrobbleFromSpotify;
 
 #pragma mark - Initialization
 + (instancetype)sharedSettings
@@ -107,7 +109,8 @@ static NSString *const kDebugMode = @"debugMode";
                                                               kShowRecentTrackIniTunes:             @NO,
                                                               kScrobblePodcastsAndiTunesUButton:    @NO,
                                                               kAutomaticallyShareOnTwitter:         @NO,
-                                                              kAutomaticallyShareOnFacebook:        @NO}];
+                                                              kAutomaticallyShareOnFacebook:        @NO,
+                                                              kScrobbleFromSpotify:                 @NO}];
  
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -140,13 +143,13 @@ static NSString *const kDebugMode = @"debugMode";
         self.percentForScrobbleTimeSlider.integerValue = 50;
     }
     //Menu
-    if (self.integrationWithiTunes) {
-        self.integrationWithiTunesCheckbox.state = NSOnState;
+    if (self.integrationWithMusicPlayer) {
+        self.integrationWithMusicPlayerCheckbox.state = NSOnState;
     } else {
-        self.integrationWithiTunesCheckbox.state = NSOffState;
+        self.integrationWithMusicPlayerCheckbox.state = NSOffState;
         self.loveTrackOniTunesCheckbox.enabled = NO;
-        self.showSimilarArtistsOnAppleMusicCheckbox.enabled = NO;
-        self.showRecentTrackIniTunesCheckbox.enabled = NO;
+        self.showSimilarArtistsOnMusicPlayerCheckbox.enabled = NO;
+        self.showRecentTrackOnMusicPlayerCheckbox.enabled = NO;
     }
     
     if (self.loveTrackOniTunes) {
@@ -154,20 +157,20 @@ static NSString *const kDebugMode = @"debugMode";
     } else {
         self.loveTrackOniTunesCheckbox.state = NSOffState;
     }
-    if (self.showSimilarArtistsOnAppleMusic) {
-        self.showSimilarArtistsOnAppleMusicCheckbox.state = NSOnState;
+    if (self.showSimilarArtistsOnMusicPlayer) {
+        self.showSimilarArtistsOnMusicPlayerCheckbox.state = NSOnState;
     } else {
-        self.showSimilarArtistsOnAppleMusicCheckbox.state = NSOffState;
+        self.showSimilarArtistsOnMusicPlayerCheckbox.state = NSOffState;
     }
-    if (self.showRecentTrackIniTunes) {
-        self.showRecentTrackIniTunesCheckbox.state = NSOnState;
+    if (self.showRecentTrackOnMusicPlayer) {
+        self.showRecentTrackOnMusicPlayerCheckbox.state = NSOnState;
     } else {
-        self.showRecentTrackIniTunesCheckbox.state = NSOffState;
+        self.showRecentTrackOnMusicPlayerCheckbox.state = NSOffState;
     }
     if (self.scrobblePodcastsAndiTunesU) {
-        self.scrobblePodcastsAndiTunesUButton.state = NSOnState;
+        self.scrobblePodcastsAndiTunesUCheckbox.state = NSOnState;
     } else {
-        self.scrobblePodcastsAndiTunesUButton.state = NSOffState;
+        self.scrobblePodcastsAndiTunesUCheckbox.state = NSOffState;
     }
     //Social
     if (self.automaticallyShareOnFacebook) {
@@ -194,6 +197,13 @@ static NSString *const kDebugMode = @"debugMode";
         self.automaticallyShareOnFacebookCheckbox.state = NSOffState;
         self.automaticallyShareOnFacebookCheckbox.enabled = NO;
     }
+    //Spotify
+    if (self.scrobbleFromSpotify) {
+        self.scrobbleFromSpotifyCheckbox.state = NSOnState;
+    } else {
+        self.scrobbleFromSpotifyCheckbox.state = NSOffState;
+    }
+
 }
 
 -(void)updateNumberOfRecentItemsPopUp
@@ -250,9 +260,25 @@ static NSString *const kDebugMode = @"debugMode";
     self.openPreferencesWhenThereIsNoUser = sender.state;
 }
 
--(void)toggleHideNotifications:(NSButton *)sender
+-(IBAction)toggleHideNotifications:(NSButton *)sender
 {
     self.hideNotifications = sender.state;
+}
+
+-(IBAction)toggleScrobbleFromSpotify:(NSButton *)sender
+{
+    self.scrobbleFromSpotify = sender.state;
+    if (sender.state) {
+        __block NSAlert *alert = [[NSAlert alloc] init];
+        alert.window.releasedWhenClosed = YES;
+        alert.messageText = NSLocalizedString(@"Just in case...", nil);
+        alert.informativeText = NSLocalizedString(@"Spotify has built-in scrobbler. Remember to turn it off, otherwise you will have double scrobbles.", nil);
+        alert.alertStyle = NSInformationalAlertStyle;
+        [alert addButtonWithTitle:@"Nice to know"];
+        self.alertWindow = alert.window;
+        [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
+        }];
+    }
 }
 
 -(void)restoreStatusBarIcon
@@ -290,19 +316,19 @@ static NSString *const kDebugMode = @"debugMode";
 
 -(void)toggleShowRecentTracksCheckbox
 {
-    if (self.numberOfTracksInRecent.integerValue == 0 || !self.integrationWithiTunes) {
-        self.showRecentTrackIniTunesCheckbox.enabled = NO;
+    if (self.numberOfTracksInRecent.integerValue == 0 || !self.integrationWithMusicPlayer) {
+        self.showRecentTrackOnMusicPlayerCheckbox.enabled = NO;
     } else {
-        self.showRecentTrackIniTunesCheckbox.enabled = YES;
+        self.showRecentTrackOnMusicPlayerCheckbox.enabled = YES;
     }
 }
 
 -(IBAction)toggleIntegrationWithiTunes:(NSButton *)sender
 {
-    self.integrationWithiTunes = sender.state;
+    self.integrationWithMusicPlayer = sender.state;
     [[MenuController sharedController] updateMenu];
     if (self.numberOfTracksInRecent.integerValue == 0) {
-        self.showRecentTrackIniTunesCheckbox.enabled = NO;
+        self.showRecentTrackOnMusicPlayerCheckbox.enabled = NO;
     }
 }
 -(IBAction)toggleLoveTrackOniTunes:(NSButton *)sender
@@ -324,13 +350,13 @@ static NSString *const kDebugMode = @"debugMode";
 
 -(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender
 {
-    self.showSimilarArtistsOnAppleMusic = sender.state;
+    self.showSimilarArtistsOnMusicPlayer = sender.state;
     [[MenuController sharedController] updateMenu];
     
 }
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender
 {
-    self.showRecentTrackIniTunes = sender.state;
+    self.showRecentTrackOnMusicPlayer = sender.state;
     [[MenuController sharedController] prepareRecentItemsMenu];
     [[MenuController sharedController] updateMenu];
 }
@@ -444,10 +470,10 @@ static NSString *const kDebugMode = @"debugMode";
         [self.userDefaults setObject:numberOfTracksInRecent forKey:kNumberOfTracksInRecent];
         if (numberOfTracksInRecent.integerValue != 0) {
             [[MenuController sharedController] showRecentMenu];
-            self.showRecentTrackIniTunesCheckbox.enabled = YES;
+            self.showRecentTrackOnMusicPlayerCheckbox.enabled = YES;
         } else {
             [[MenuController sharedController] hideRecentMenu];
-            self.showRecentTrackIniTunesCheckbox.enabled = NO;
+            self.showRecentTrackOnMusicPlayerCheckbox.enabled = NO;
         }
     } else {
         [self.userDefaults removeObjectForKey:kNumberOfTracksInRecent];
@@ -553,31 +579,31 @@ static NSString *const kDebugMode = @"debugMode";
 }
 
 //@property (nonatomic) BOOL integrationWithiTunes;
-#pragma mark   integrationWithiTunes
--(void)setIntegrationWithiTunes:(BOOL)integrationWithiTunes
+#pragma mark   integrationWithMusicPlayer
+-(void)setIntegrationWithMusicPlayer:(BOOL)integrationWithMusicPlayer
 {
-    _integrationWithiTunes = integrationWithiTunes;
-    [self.userDefaults setObject:@(integrationWithiTunes) forKey:kIntegrationWithiTunes];
-    if (!integrationWithiTunes) {
+    _integrationWithMusicPlayer = integrationWithMusicPlayer;
+    [self.userDefaults setObject:@(integrationWithMusicPlayer) forKey:kIntegrationWithiTunes];
+    if (!integrationWithMusicPlayer) {
         //wylaczyc pozostale
         self.loveTrackOniTunesCheckbox.enabled = NO;
-        self.showRecentTrackIniTunesCheckbox.enabled = NO;
-        self.showSimilarArtistsOnAppleMusicCheckbox.enabled = NO;
+        self.showRecentTrackOnMusicPlayerCheckbox.enabled = NO;
+        self.showSimilarArtistsOnMusicPlayerCheckbox.enabled = NO;
     } else {
         //wlaczyc pozostale
         self.loveTrackOniTunesCheckbox.enabled = YES;
-        self.showRecentTrackIniTunesCheckbox.enabled = YES;
-        self.showSimilarArtistsOnAppleMusicCheckbox.enabled = YES;
+        self.showRecentTrackOnMusicPlayerCheckbox.enabled = YES;
+        self.showSimilarArtistsOnMusicPlayerCheckbox.enabled = YES;
     }
     [self saveSettings];
 }
 
--(BOOL)integrationWithiTunes
+-(BOOL)integrationWithMusicPlayer
 {
-    if (!_integrationWithiTunes) {
-        _integrationWithiTunes = [[self.userDefaults objectForKey:kIntegrationWithiTunes] boolValue];
+    if (!_integrationWithMusicPlayer) {
+        _integrationWithMusicPlayer = [[self.userDefaults objectForKey:kIntegrationWithiTunes] boolValue];
     }
-    return _integrationWithiTunes;
+    return _integrationWithMusicPlayer;
 }
 
 //@property (nonatomic) BOOL loveTrackOniTunes;
@@ -599,36 +625,36 @@ static NSString *const kDebugMode = @"debugMode";
 
 //@property (nonatomic) BOOL showSimilarArtistsOnAppleMusic;
 #pragma mark   showSimilarArtistsOnAppleMusic
--(void)setShowSimilarArtistsOnAppleMusic:(BOOL)showSimilarArtistsOnAppleMusic
+-(void)setShowSimilarArtistsOnMusicPlayer:(BOOL)showSimilarArtistsOnMusicPlayer
 {
-    _showSimilarArtistsOnAppleMusic = showSimilarArtistsOnAppleMusic;
-    [self.userDefaults setObject:@(showSimilarArtistsOnAppleMusic) forKey:kShowSimilarArtistsOnAppleMusic];
+    _showSimilarArtistsOnMusicPlayer = showSimilarArtistsOnMusicPlayer;
+    [self.userDefaults setObject:@(showSimilarArtistsOnMusicPlayer) forKey:kShowSimilarArtistsOnAppleMusic];
     [self saveSettings];
 }
 
--(BOOL)showSimilarArtistsOnAppleMusic
+-(BOOL)showSimilarArtistsOnMusicPlayer
 {
-    if (!_showSimilarArtistsOnAppleMusic) {
-        _showSimilarArtistsOnAppleMusic = [[self.userDefaults objectForKey:kShowSimilarArtistsOnAppleMusic] boolValue];
+    if (!_showSimilarArtistsOnMusicPlayer) {
+        _showSimilarArtistsOnMusicPlayer = [[self.userDefaults objectForKey:kShowSimilarArtistsOnAppleMusic] boolValue];
     }
-    return _showSimilarArtistsOnAppleMusic;
+    return _showSimilarArtistsOnMusicPlayer;
 }
 
 #pragma mark   showRecentTrackIniTunes
 //@property (nonatomic) BOOL showRecentTrackIniTunes;
--(void)setShowRecentTrackIniTunes:(BOOL)showRecentTrackIniTunes
+-(void)setShowRecentTrackOnMusicPlayer:(BOOL)showRecentTrackOnMusicPlayer
 {
-    _showRecentTrackIniTunes = showRecentTrackIniTunes;
-    [self.userDefaults setObject:@(showRecentTrackIniTunes) forKey:kShowRecentTrackIniTunes];
+    _showRecentTrackOnMusicPlayer = showRecentTrackOnMusicPlayer;
+    [self.userDefaults setObject:@(showRecentTrackOnMusicPlayer) forKey:kShowRecentTrackIniTunes];
     [self saveSettings];
 }
 
--(BOOL)showRecentTrackIniTunes
+-(BOOL)showRecentTrackOnMusicPlayer
 {
-    if (!_showRecentTrackIniTunes) {
-        _showRecentTrackIniTunes = [[self.userDefaults objectForKey:kShowRecentTrackIniTunes] boolValue];
+    if (!_showRecentTrackOnMusicPlayer) {
+        _showRecentTrackOnMusicPlayer = [[self.userDefaults objectForKey:kShowRecentTrackIniTunes] boolValue];
     }
-    return _showRecentTrackIniTunes;
+    return _showRecentTrackOnMusicPlayer;
 }
 
 #pragma mark   debugMode
@@ -693,6 +719,22 @@ static NSString *const kDebugMode = @"debugMode";
         _automaticallyShareOnFacebook = [[self.userDefaults objectForKey:kAutomaticallyShareOnFacebook] boolValue];
     }
     return _automaticallyShareOnFacebook;
+}
+
+#pragma mark   scrobbleFromSpotifyCheckbox
+-(BOOL)scrobbleFromSpotify
+{
+    if (!_scrobbleFromSpotify) {
+        _scrobbleFromSpotify = [[self.userDefaults objectForKey:kScrobbleFromSpotify] boolValue];
+    }
+    return _scrobbleFromSpotify;
+}
+
+-(void)setScrobbleFromSpotify:(BOOL)scrobbleFromSpotify
+{
+    _scrobbleFromSpotify = scrobbleFromSpotify;
+    [self.userDefaults setObject:@(scrobbleFromSpotify) forKey:kScrobbleFromSpotify];
+    [self saveSettings];
 }
 
 #pragma mark - Save

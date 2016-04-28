@@ -29,7 +29,6 @@
     
     
     self.window.level = NSScreenSaverWindowLevel;
-    self.window.alphaValue = 0;
     self.visualEffectView.layer.cornerRadius = 6;
     self.centerImageView.image.template = YES;
     self.bottomImageView.image.template = YES;

@@ -36,20 +36,35 @@
 
 -(void)getCoverWithTrack:(Track *)track withCompletionHandler:(void(^)(NSImage *cover))handler
 {
-    if ([[MusicPlayer sharedPlayer] currentTrackCover]) {
-        handler([[MusicPlayer sharedPlayer] currentTrackCover]);
-        if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
-            [self.delegate trackInfoShouldBeDisplayed];
-        }
-    } else {
-        NSImage *cover = [self cachedCoverImageForTrack:track];
-        if (cover) {
-            handler(cover);
+    id currentArtworkOrURL = [[MusicPlayer sharedPlayer] currentTrackCoverOrURL];
+    if (currentArtworkOrURL) {
+        if ([currentArtworkOrURL isKindOfClass:[NSImage class]]) {
+            handler(currentArtworkOrURL);
             if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
                 [self.delegate trackInfoShouldBeDisplayed];
             }
-            return;
+        } else {
+            [self getCachedImageForTrack:track displayInfo:YES withCompletionHandler:handler];
+            if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
+                [self.delegate trackInfoShouldBeRemoved];
+            }
+            __weak typeof(self) weakSelf = self;
+            if ([FXReachability sharedInstance].isReachable) {
+                
+                [self getCoverForTrack:track fromString:currentArtworkOrURL andCompletionHandler:^(NSImage *cover) {
+                    handler(cover);
+                    if ([weakSelf.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
+                        [weakSelf.delegate trackInfoShouldBeDisplayed];
+                    }
+                }];
+            }
+            else {
+                NSImage *defaultCover = [self defaultSpotifyCover];
+                handler(defaultCover);
+            }
         }
+    } else {
+        [self getCachedImageForTrack:track displayInfo:YES withCompletionHandler:handler];
         if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
             [self.delegate trackInfoShouldBeRemoved];
         }
@@ -65,6 +80,17 @@
         else {
             NSImage *defaultCover = [self defaultCover];
             handler(defaultCover);
+        }
+    }
+}
+
+-(void)getCachedImageForTrack:(Track *)track displayInfo:(BOOL)info withCompletionHandler:(void(^)(NSImage *cover))handler
+{
+    NSImage *cover = [self cachedCoverImageForTrack:track];
+    if (cover) {
+        handler(cover);
+        if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)] && info) {
+            [self.delegate trackInfoShouldBeDisplayed];
         }
     }
 }
@@ -160,6 +186,17 @@
         [self.delegate trackInfoShouldBeDisplayed];
     }
     return [NSImage imageNamed:@"nocover"];
+}
+
+-(NSImage *)defaultSpotifyCover
+{
+    if ([SettingsController sharedSettings].debugMode) {
+        NSLog(@"Using default cover");
+    }
+    if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
+        [self.delegate trackInfoShouldBeDisplayed];
+    }
+    return [NSImage imageNamed:@"nocover spotify"];
 }
 
 #pragma mark - NSURLSession

@@ -106,6 +106,9 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
    
     if ([timer isValid]) {
         [self updateMenu];
+        if (self.musicScrobbler.currentTrack.trackOrigin == TrackFromSpotify && !self.settingsController.scrobbleFromSpotify) {
+            return;
+        }
         if (self.musicPlayer.isPlayerRunning) {
             if (self.settingsController.debugMode) {
                 NSLog(@"Any player is running is running");
@@ -214,7 +217,7 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)loveTrackOniTunes
 {
-    [self.musicPlayer loveCurrentTrack];
+    [self.musicPlayer loveCurrentTrackOniTunes];
 }
 
 -(void)updateMenu
@@ -243,7 +246,7 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             }
         }];
     }
-    if (settings.integrationWithiTunes && settings.loveTrackOniTunes) {
+    if (settings.integrationWithMusicPlayer && settings.loveTrackOniTunes) {
         [self loveTrackOniTunes];
         if (handler && !settings.session) {
             handler();
