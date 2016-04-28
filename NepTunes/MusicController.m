@@ -110,9 +110,6 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
             return;
         }
         if (self.musicPlayer.isPlayerRunning) {
-            if (self.settingsController.debugMode) {
-                NSLog(@"Any player is running is running");
-            }
 
             if (self.musicPlayer.playerState == MusicPlayerStatePlaying && !self.musicScrobbler.currentTrack.itIsNotMusic && self.musicScrobbler.currentTrack) {
                 NSTimeInterval trackLength;

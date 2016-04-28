@@ -89,7 +89,6 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)forwardButtonWasPressed:(NSGestureRecognizer *)gestureRecognizer
 {
-    MusicController *musicController = [MusicController sharedController];
     
     if (gestureRecognizer.state == NSGestureRecognizerStateBegan) {
         [self.forwardButton highlight:YES];

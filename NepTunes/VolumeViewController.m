@@ -44,7 +44,9 @@
 -(void)updateVolumeWithDeltaValue:(NSInteger)delta
 {
     NSInteger newValue = [MusicPlayer sharedPlayer].soundVolume + delta;
-    [self updateVolumeWithValue:newValue];
+    if (newValue <= 100 && newValue >= 0) {
+        [self updateVolumeWithValue:newValue];
+    }
 }
 
 @end

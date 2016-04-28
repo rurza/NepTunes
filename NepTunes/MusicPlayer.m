@@ -52,10 +52,8 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
                                                         selector:@selector(notificationFromSpotify:)
                                                             name:@"com.spotify.client.PlaybackStateChanged"
                                                           object:nil];
+    
     NSNotificationCenter *center = [[NSWorkspace sharedWorkspace] notificationCenter];
-    
-    // Install the notifications.
-    
     [center addObserver:self
                selector:@selector(appLaunched:)
                    name:NSWorkspaceDidLaunchApplicationNotification
@@ -107,15 +105,6 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     if (self.currentPlayer == MusicPlayeriTunes) {
         [self invalidateNoDurationTimerIfNeeded];
         NSDictionary *userInfoFromNotification = notification.userInfo;
-//        NSDictionary *trackInfo = @{ @"Artist"              : userInfoFromNotification[@"Artist"],
-//                                     @"Album Artist"        : userInfoFromNotification[@"Album Artist"],
-//                                     @"Artist"              : userInfoFromNotification[@"Artist"],
-//                                     @"TrackName"           : userInfoFromNotification[@"Name"],
-//                                     @"Player State"        : userInfoFromNotification[@"Player State"],
-//                                     @"Store URL"           : userInfoFromNotification[@"Store URL"],
-//                                     @"Duration"            : userInfoFromNotification[@"Total Time"],
-//                                     @"Player"              : @"iTunes"
-//                                     };
         [self setCurrentTrackFromiTunesOrUserInfo:userInfoFromNotification];
         [self.delegate trackChanged];
     }
@@ -254,6 +243,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 #pragma mark Soundvolume
 -(void)setSoundVolume:(NSInteger)soundVolume
 {
+    NSLog(@"soundVolume = %li", (long)soundVolume);
     if (self.currentPlayer == MusicPlayerSpotify) {
         self._spotifyApp.soundVolume = soundVolume;
     } else if (self.currentPlayer == MusicPlayeriTunes) {
@@ -267,8 +257,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
         return self._spotifyApp.soundVolume;
     } else if (self.currentPlayer == MusicPlayeriTunes) {
         return self._iTunesApp.soundVolume;
-    }
-    return 0;
+    } else return 100;
 }
 
 #pragma mark Playback
