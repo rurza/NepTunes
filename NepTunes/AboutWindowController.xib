@@ -24,7 +24,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="379" height="222"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <visualEffectView appearanceType="vibrantLight" fixedFrame="YES" blendingMode="behindWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="YbV-ub-Fdb">
+                    <visualEffectView appearanceType="vibrantDark" fixedFrame="YES" blendingMode="behindWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="YbV-ub-Fdb">
                         <rect key="frame" x="0.0" y="0.0" width="388" height="222"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h5X-jd-qDa">
@@ -86,6 +86,6 @@
         </window>
     </objects>
     <resources>
-        <image name="icon" width="1024" height="1024"/>
+        <image name="icon" width="341.33334350585938" height="341.33334350585938"/>
     </resources>
 </document>

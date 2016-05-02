@@ -31,7 +31,7 @@
     self.buildLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Version %@ (%@)", nil), [plist objectForKey:@"CFBundleShortVersionString"], [plist objectForKey:@"CFBundleVersion"]];
     self.copyrightLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [plist objectForKey:@"NSHumanReadableCopyright"]];
 
-    NSColor *elementsColor = [NSColor blackColor];//[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1];
+    NSColor *elementsColor = [NSColor whiteColor];//[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1];
     for (NSButton *button in @[self.supportButton, self.followOnTwitterButton]) {
 //        [button.cell setBackgroundColor:backgroundColor];
         button.wantsLayer = YES;

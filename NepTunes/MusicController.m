@@ -20,9 +20,6 @@
 @import Social;
 @import Accounts;
 
-#define FOUR_MINUTES 60 * 4
-#define DELAY_FOR_RADIO 4
-
 NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @interface MusicController ()
@@ -179,7 +176,7 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
         if (self.musicPlayer.playerState == MusicPlayerStatePlaying && self.musicScrobbler.currentTrack) {
             [self.coverWindowController showWindow:self];
-            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack];
+//            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack];
             [self.coverWindowController.window makeKeyAndOrderFront:nil];
             HUDWindowController *window =[[HUDWindowController alloc] initWithWindowNibName:@"HUDWindowController"];
             [window.window makeKeyAndOrderFront:nil];

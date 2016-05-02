@@ -47,10 +47,10 @@ typedef NS_ENUM(NSInteger, SpotifySearchType) {
 
 #pragma mark - PUBLIC
 
--(void)serachForArtistWithName:(NSString *)artistName limit:(NSNumber *)limit successHandler:(SpotifySearchReturnBlockWithArray)successHandler failureHandler:(SpotifySearchReturnBlockWithError)failureHandler
+#pragma mark - Artist methods
+-(void)searchForArtistWithName:(NSString *)artistName limit:(NSNumber *)limit successHandler:(SpotifySearchReturnBlockWithArray)successHandler failureHandler:(SpotifySearchReturnBlockWithError)failureHandler
 {
     NSMutableDictionary *params = [@{} mutableCopy];
-    params[@"type"] = @"artist";
     params[@"q"] = [self forceString:artistName];
     if (limit && limit > 0) {
         params[@"limit"] = limit;
@@ -63,6 +63,43 @@ typedef NS_ENUM(NSInteger, SpotifySearchType) {
                    failureHandler:failureHandler];
 }
 
+#pragma mark - Track methods
+
+-(void)getTrackWithName:(NSString * _Nonnull)trackName
+                 artist:(NSString * _Nonnull)artist
+                  album:(NSString * _Nonnull)album
+                  limit:(NSNumber * _Nullable)limit
+         successHandler:(SpotifySearchReturnBlockWithArray _Nullable)successHandler
+         failureHandler:(SpotifySearchReturnBlockWithError _Nullable)failureHandler
+{
+    NSMutableDictionary *params = [@{} mutableCopy];
+    params[@"q"] = [NSString stringWithFormat:@"track:%@ artist:%@ album:%@", [self forceString:trackName], [self forceString:artist], [self forceString:album]];
+    if (limit && limit > 0) {
+        params[@"limit"] = limit;
+    }
+    [self performApiCallForMethod:@"search"
+                       withParams:params
+                       andFilters:nil
+                    andSearchType:SpotifySearchTrack
+                   successHandler:successHandler
+                   failureHandler:failureHandler];
+
+}
+
+-(void)getTrackWithID:(NSString * _Nonnull)trackID
+       successHandler:(SpotifySearchReturnBlockWithArray _Nullable)successHandler
+       failureHandler:(SpotifySearchReturnBlockWithError _Nullable)failureHandler
+{
+    NSMutableDictionary *params = [@{} mutableCopy];
+    params[@"ids"] = trackID;
+    
+    [self performApiCallForMethod:@"tracks"
+                       withParams:params
+                       andFilters:nil
+                    andSearchType:SpotifySearchTrack
+                   successHandler:successHandler
+                   failureHandler:failureHandler];
+}
 
 #pragma mark - PRIVATE
 
@@ -211,7 +248,13 @@ typedef NS_ENUM(NSInteger, SpotifySearchType) {
         NSArray *filteredResults = nil;
         if (jsonData && [jsonData count] > 0) {
             // Pull out the results object
-            NSArray *results = jsonData[[self pluralStringForType:searchType]][@"items"];
+            NSArray *results;
+            id jsonDataParsed = jsonData[[self pluralStringForType:searchType]];
+            if ([jsonDataParsed isKindOfClass:[NSArray class]]) {
+               results = (NSArray *)jsonDataParsed;
+            } else if ([jsonDataParsed isKindOfClass:[NSDictionary class]]) {
+                results = (NSArray *)jsonDataParsed[@"items"];
+            }
             
             // Sanity check the results
             if (results) {

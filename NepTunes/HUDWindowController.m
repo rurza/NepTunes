@@ -25,6 +25,7 @@
     
     self.window.contentView.wantsLayer = YES;
     self.window.opaque = NO;
+//    self.rel
     [self.window setBackgroundColor:[NSColor clearColor]];
     
     

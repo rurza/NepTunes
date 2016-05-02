@@ -357,7 +357,6 @@
     } else {
         value = [theEvent scrollingDeltaY];
     }
-    NSLog(@"walju = %li", (long)value);
     [self.volumeViewController updateVolumeWithDeltaValue:value];
 }
 

@@ -44,6 +44,7 @@ static NSUInteger const kNumberOfFrames = 10;
     [self updateControlsState:nil];
     self.shareButton.action = @selector(openShareMenu:);
     self.shareButton.target = self;
+    [self.musicPlayer addObserver:self forKeyPath:@"soundVolume" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 -(void)updateControlsState:(NSNotification *)note
@@ -234,9 +235,22 @@ static NSUInteger const kNumberOfFrames = 10;
     return _musicPlayer;
 }
 
+#pragma mark - KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    
+    if ([keyPath isEqual:@"soundVolume"]) {
+        [self updateVolumeIcon];
+    }
+ }
+
+
 -(void)dealloc
 {
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"com.apple.iTunes.playerInfo" object:nil];
+    [self.musicPlayer removeObserver:self forKeyPath:@"soundVolume"];
 }
 
 @end

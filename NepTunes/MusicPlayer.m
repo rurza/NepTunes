@@ -13,6 +13,7 @@
 #import "Track.h"
 #import "MusicController.h"
 #import "SpotifySearch.h"
+#import "ITunesSearch.h"
 
 NSString * const kiTunesBundleIdentifier = @"com.apple.iTunes";
 NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
@@ -117,8 +118,8 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     } else {
         if (self.isiTunesRunning) {
             self.currentTrack = [[Track alloc] initWithTrackName:userInfo[@"Name"] artist:userInfo[@"Artist"] album:userInfo[@"Album"] andDuration:[userInfo[@"Total Time"] doubleValue] / 1000];
-            if ([userInfo[@"Total Time"] isEqualToNumber:@(0)]) {
-                self._noDurationTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(updateTrackDuration:) userInfo:nil repeats:NO];
+            if ([userInfo[@"Total Time"] isEqualToNumber:@(0)] || !userInfo[@"Total Time"]) {
+                self._noDurationTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(updateTrackDuration:) userInfo:nil repeats:NO];
             }
             self.currentTrack.trackOrigin = TrackFromiTunes;
         }
@@ -183,10 +184,12 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 
 -(void)notificationFromSpotify:(NSNotification *)notification
 {
-    self.currentPlayer = MusicPlayerSpotify;
-    if (self.currentPlayer == MusicPlayerSpotify) {
-        [self setCurrentTrackFromSpotify];
-        [self.delegate trackChanged];
+    if (![[notification.userInfo objectForKey:@"Player State"] isEqualToString:@"Stopped"]) {
+        self.currentPlayer = MusicPlayerSpotify;
+        if (self.currentPlayer == MusicPlayerSpotify) {
+            [self setCurrentTrackFromSpotify];
+            [self.delegate trackChanged];
+        }
     }
 }
 
@@ -217,9 +220,215 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     }
 }
 
--(void)openArtistPageForTrack:(Track *)track
+-(void)openArtistPageForArtistName:(NSString *)artistName withFailureHandler:(void(^)(void))failureHandler
 {
-#warning do zrobienia strona artysty w playerze
+    [self openArtistPageInPlayer:self.currentPlayer forArtistName:artistName withFailureHandler:failureHandler];
+
+}
+
+
+-(void)openArtistPageInPlayer:(MusicPlayerApplication)player forArtistName:(NSString *)artistName withFailureHandler:(void(^)(void))failureHandler
+{
+    __weak typeof(self) weakSelf = self;
+    if (player == MusicPlayerSpotify) {
+        [[SpotifySearch sharedInstance] searchForArtistWithName:artistName limit:@1 successHandler:^(NSArray * _Nullable result) {
+            if (result.count) {
+                NSDictionary *firstResult = [result firstObject];
+                NSString *link = [firstResult objectForKey:@"uri"];
+                [weakSelf openLocationWithURL:link];
+            } else {
+                failureHandler();
+            }
+        } failureHandler:^(NSError * _Nonnull error) {
+            failureHandler();
+        }];
+    } else if (player == MusicPlayeriTunes) {
+            [[ItunesSearch sharedInstance] getIdForArtist:artistName successHandler:^(NSArray *result) {
+                if (result.count) {
+                    [weakSelf openLocationWithURL:(NSString *)result.firstObject[@"artistLinkUrl"]];
+                } else {
+                    [[ItunesSearch sharedInstance] getIdForArtist:[self asciiString:artistName] successHandler:^(NSArray *result) {
+                        if (result.count) {
+                            [weakSelf openLocationWithURL:(NSString *)result.firstObject[@"artistLinkUrl"]];
+                        }
+                    } failureHandler:^(NSError *error) {
+                        failureHandler();
+                    }];
+                }
+            } failureHandler:^(NSError *error) {
+                failureHandler();
+            }];
+    }
+}
+
+-(void)openLocationWithURL:(NSString *)url
+{
+    if (self.currentPlayer == MusicPlayeriTunes) {
+        NSString *link = [url stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
+        link = [link stringByAppendingString:@"&ct=neptunes"];
+        [self bringPlayerToFront];
+        if (self.isiTunesRunning) {
+            [self._iTunesApp openLocation:link];
+        } else {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self._iTunesApp openLocation:link];
+            });
+        }
+    } else if (self.currentPlayer == MusicPlayerSpotify) {
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
+    }
+}
+
+-(void)getArtistURLForArtist:(NSString *)artist publicLink:(BOOL)publicLink forCurrentPlayerWithCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+{
+    [self getArtistURLForArtist:artist forPlayer:self.currentPlayer publicLink:publicLink withCompletionHandler:handler failureHandler:failureHandler];
+}
+
+-(void)getArtistURLForArtist:(NSString *)artist forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
+{
+    if (player == MusicPlayerSpotify) {
+        [[SpotifySearch sharedInstance] searchForArtistWithName:artist limit:@1 successHandler:^(NSArray * _Nullable result) {
+            if (result.count) {
+                NSDictionary *firstResult = [result firstObject];
+                NSString *link;
+                if (!publicLink) {
+                    link = [firstResult objectForKey:@"uri"];
+                } else {
+                    link = [[firstResult objectForKey:@"external_urls"] objectForKey:@"spotify"];
+                }
+                handler(link);
+            } else {
+                handler(nil);
+            }
+        } failureHandler:^(NSError * _Nonnull error) {
+            failureHandler(error);
+        }];
+    } else if (player == MusicPlayeriTunes) {
+        [[ItunesSearch sharedInstance] getIdForArtist:artist successHandler:^(NSArray *result) {
+            if (result.count) {
+                NSDictionary *firstResult = [result firstObject];
+                NSString *link = firstResult[@"artistLinkUrl"];
+                handler(link);
+            } else {
+                [[ItunesSearch sharedInstance] getIdForArtist:[self asciiString:artist] successHandler:^(NSArray *result) {
+                    if (result.count) {
+                        NSDictionary *firstResult = [result firstObject];
+                        NSString *link = firstResult[@"artistLinkUrl"];
+                        handler(link);
+                    }
+                } failureHandler:^(NSError *error) {
+                    failureHandler(error);
+                }];
+            }
+        } failureHandler:^(NSError *error) {
+            failureHandler(error);
+        }];
+    }
+}
+
+-(void)openTrackPageForTrack:(Track *)track withFailureHandler:(void(^)(void))failureHandler
+{
+    __weak typeof(self) weakSelf = self;
+    [self getTrackURL:track publicLink:NO forCurrentPlayerWithCompletionHandler:^(NSString *urlString) {
+        if (weakSelf.currentPlayer == MusicPlayeriTunes) {
+            [weakSelf bringPlayerToFront];
+            urlString =  [[urlString stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"] stringByAppendingString:@"&ct=neptunes"];
+            if (weakSelf.isiTunesRunning) {
+                [weakSelf._iTunesApp openLocation:urlString];
+            } else {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakSelf._iTunesApp openLocation:urlString];
+                });
+            }
+        } else if (weakSelf.currentPlayer == MusicPlayerSpotify) {
+//            [weakSelf bringPlayerToFront];
+            if (weakSelf.isSpotifyRunning) {
+                [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+            } else {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+                });
+            }
+        }
+    } failureHandler:^(NSError *error) {
+        failureHandler();
+    }];
+}
+
+-(void)getCurrentTrackURLPublicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+{
+    [self getTrackURL:self.currentTrack publicLink:publicLink withCompletionHandler:handler failureHandler:failureHandler];
+}
+
+-(void)getTrackURL:(Track *)track publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *))failureHandler
+{
+    MusicPlayerApplication player;
+    if (track.trackOrigin == TrackFromSpotify) {
+        player = MusicPlayerSpotify;
+    } else if (track.trackOrigin == TrackFromiTunes) {
+        player = MusicPlayeriTunes;
+    }
+    [self getTrackURL:track forPlayer:player publicLink:publicLink withCompletionHandler:handler failureHandler:failureHandler];
+}
+
+-(void)getTrackURL:(Track *)track publicLink:(BOOL)publicLink forCurrentPlayerWithCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
+{
+    [self getTrackURL:track forPlayer:self.currentPlayer publicLink:publicLink withCompletionHandler:handler failureHandler:failureHandler];
+}
+
+-(void)getTrackURL:(Track *)track forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
+{
+    if (player == MusicPlayeriTunes) {
+        ItunesSearch *iTunesSearch = [ItunesSearch sharedInstance];
+        [iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
+            NSDictionary *firstResult = result.firstObject;
+            NSString *resultString = [firstResult objectForKey:@"collectionViewUrl"];
+            if (resultString && [resultString isKindOfClass:[NSString class]]) {
+                handler(resultString);
+            } else handler(nil);
+        } failureHandler:^(NSError *error) {
+            failureHandler(nil);
+        }];
+    } else if (player == MusicPlayerSpotify) {
+        SpotifySearch *spotifySearch = [SpotifySearch sharedInstance];
+        if (track.spotifyID) {
+            [spotifySearch getTrackWithID:track.spotifyID successHandler:^(NSArray * _Nullable result) {
+                NSDictionary *firstResult = result.firstObject;
+                NSString *resultString;
+                if (!publicLink) {
+                    resultString = [firstResult objectForKey:@"uri"];
+                } else {
+                    resultString = [[firstResult objectForKey:@"external_urls"] objectForKey:@"spotify"];
+                }
+                handler(resultString);
+            } failureHandler:^(NSError * _Nonnull error) {
+                handler(nil);
+            }];
+        } else {
+            [spotifySearch getTrackWithName:track.trackName artist:track.artist album:track.album limit:@1 successHandler:^(NSArray * _Nullable result) {
+                if (result.count) {
+                    NSDictionary *firstResult = result.firstObject;
+                    NSString *resultString = [firstResult objectForKey:@"uri"];
+                    handler(resultString);
+                } else {
+                    handler(nil);
+                }
+            } failureHandler:^(NSError * _Nonnull error) {
+                handler(nil);
+            }];
+        }
+    }
+}
+
+-(NSString *)asciiString:(NSString *)string
+{
+    NSData *asciiEncoded = [string.lowercaseString dataUsingEncoding:NSASCIIStringEncoding
+                                                allowLossyConversion:YES];
+    
+    NSString *stringInAscii = [[NSString alloc] initWithData:asciiEncoded
+                                                    encoding:NSASCIIStringEncoding];
+    return stringInAscii;
+    
 }
 
 -(void)bringPlayerToFront
@@ -244,7 +453,8 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 -(void)setSoundVolume:(NSInteger)soundVolume
 {
     if (self.currentPlayer == MusicPlayerSpotify) {
-        self._spotifyApp.soundVolume = soundVolume;
+        //strange fix for Spotify volume
+        self._spotifyApp.soundVolume = soundVolume == 100 ? soundVolume : ++soundVolume;
     } else if (self.currentPlayer == MusicPlayeriTunes) {
         self._iTunesApp.soundVolume = soundVolume;
     }
@@ -328,12 +538,12 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
             [self.delegate newActivePlayer];
             return;
         }
-        if (_currentPlayer == MusicPlayerSpotify && currentPlayer == MusicPlayeriTunes && !self.isSpotifyRunning) {
+        if (_currentPlayer == MusicPlayerSpotify && currentPlayer == MusicPlayeriTunes && (!self.isSpotifyRunning || self._spotifyApp.playerState != SpotifyEPlSPlaying)) {
             _currentPlayer = currentPlayer;
             [self.delegate newActivePlayer];
             return;
         }
-        if (_currentPlayer == MusicPlayeriTunes && currentPlayer == MusicPlayerSpotify && !self.isiTunesRunning) {
+        if (_currentPlayer == MusicPlayeriTunes && currentPlayer == MusicPlayerSpotify && (!self.isiTunesRunning || self._iTunesApp.playerState != iTunesEPlSPlaying)) {
             _currentPlayer = currentPlayer;
             [self.delegate newActivePlayer];
 
@@ -346,6 +556,11 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 {
     _currentPlayer = source;
     [self.delegate newActivePlayer];
+    if (source == MusicPlayerSpotify) {
+        [self notificationFromSpotify:nil];
+    } else if (source == MusicPlayeriTunes) {
+        [self notificationFromiTunes:nil];
+    }
 }
 
 

@@ -96,11 +96,11 @@ static NSUInteger const kNumberOfFrames = 10;
     self.statusMenu.autoenablesItems = NO;
     [self.loveSongMenuTitle setEnabled:NO];
     
-//    [self updateMenu];
-    //initialize hotkey to update menu
+    NSMenuItem *sourceMenuItem = [self.statusMenu itemWithTag:12];
+    sourceMenuItem.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"SOURCE:", nil) attributes:@{NSFontAttributeName:[NSFont systemFontOfSize:10], NSForegroundColorAttributeName:[NSColor lightGrayColor]}];
+    //initialize hotkey to update menu 
     HotkeyController *hotkey = [[HotkeyController alloc] init];
     hotkey = nil;
-    //
 }
 
 #pragma mark - Reachability
@@ -450,24 +450,9 @@ static NSUInteger const kNumberOfFrames = 10;
             NSString *artist = [obj objectForKey:@"name"];
             
             [self.similarArtistMenuTtitle.submenu addItemWithTitle:artist action:NULL keyEquivalent:@""];
-            [self.iTunesSearch getIdForArtist:artist successHandler:^(NSArray *result) {
-                if (result.count) {
-                    [weakSelf enumerateMenuItemsToFindArtist:(NSString *)result.firstObject[@"artistName"] withAsciiCoding:NO];
-                } else {
-                    [weakSelf.iTunesSearch getIdForArtist:[weakSelf asciiString:artist] successHandler:^(NSArray *result) {
-                        if (result.count) {
-                            [weakSelf enumerateMenuItemsToFindArtist:(NSString *)result.firstObject[@"artistName"] withAsciiCoding:YES];
-                        } else {
-                            [weakSelf.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
-                                if ([menuItem.title.lowercaseString isEqualToString:artist.lowercaseString]) {
-                                    menuItem.enabled = NO;
-                                }
-                            }];
-                        }
-                        
-                    } failureHandler:^(NSError *error) {
-                        
-                    }];
+            [self.musicPlayer getArtistURLForArtist:artist publicLink:NO forCurrentPlayerWithCompletionHandler:^(NSString *urlString) {
+                if (urlString) {
+                    [weakSelf enumerateMenuItemsToFindArtist:artist withAsciiCoding:NO];
                 }
             } failureHandler:^(NSError *error) {
                 [weakSelf.similarArtistMenuTtitle.submenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -475,7 +460,6 @@ static NSUInteger const kNumberOfFrames = 10;
                         menuItem.enabled = NO;
                     }
                 }];
-                
             }];
             if (idx == 9) {
                 *stop = YES;
@@ -504,49 +488,15 @@ static NSUInteger const kNumberOfFrames = 10;
         }
         if ([menuTitle isEqualToString:artist]) {
             menuItem.enabled = YES;
-            menuItem.action = @selector(openiTunesLinkFromMenuItem:);
+            menuItem.action = @selector(openLinkForArtistInMusicPlayerFromMenuItem:);
             menuItem.target = self;
         }
     }];
 }
 
--(void)openiTunesLinkFromMenuItem:(NSMenuItem *)menuItem
+-(void)openLinkForArtistInMusicPlayerFromMenuItem:(NSMenuItem *)menuItem
 {
-    [self openiTunesLinkForArtist:menuItem.title];
-}
-
--(void)openiTunesLinkForArtist:(NSString *)artist
-{
-    __weak typeof(self) weakSelf = self;
-    [self.iTunesSearch getIdForArtist:artist successHandler:^(NSArray *result) {
-        if (result.count) {
-            [weakSelf openLocationWithURL:(NSString *)result.firstObject[@"artistLinkUrl"]];
-        } else {
-            [weakSelf.iTunesSearch getIdForArtist:[self asciiString:artist] successHandler:^(NSArray *result) {
-                if (result.count) {
-                    [weakSelf openLocationWithURL:(NSString *)result.firstObject[@"artistLinkUrl"]];
-                }
-            } failureHandler:nil];
-        }
-    } failureHandler:nil];
-}
-
--(void)openLocationWithURL:(NSString *)url
-{
-    NSString *link = [url stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
-    //Compaign
-    link = [link stringByAppendingString:@"&ct=neptunes"];
-
-    NSLog(@"%@", link);
-    [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-#warning do poprawienia
-//    if (self.musicController.isiTunesRunning) {
-//        [self.musicController.iTunes openLocation:link];
-//    } else {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [self.musicController.iTunes openLocation:link];
-//        });
-//    }
+    [self.musicPlayer openArtistPageForArtistName:menuItem.title withFailureHandler:nil];
 }
 
 -(NSString *)asciiString:(NSString *)string
@@ -636,16 +586,16 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)validateLinkFromMenuItem:(NSMenuItem *)menuItem
 {
-    Track *trackFromMenu = [self returnTrackFromMenuItem:menuItem];
+    Track *trackFromMenu = [self trackFromRecentTracksMenuItem:menuItem];
     //got track
     if (self.settings.integrationWithMusicPlayer && self.settings.showRecentTrackOnMusicPlayer) {
-        [self validateAppleMusicLinkForTrack:trackFromMenu andMenuItem:menuItem];
+        [self validateCurrentMusicPlayerLinkForTrack:trackFromMenu andMenuItem:menuItem];
     } else {
         [self generateLastFmLinkForTrack:trackFromMenu andMenuItem:menuItem];
     }
 }
 
--(Track *)returnTrackFromMenuItem:(NSMenuItem *)menuItem
+-(Track *)trackFromRecentTracksMenuItem:(NSMenuItem *)menuItem
 {
     __block Track *trackFromMenu;
     NSMenu *menu = [menuItem menu];
@@ -659,21 +609,33 @@ static NSUInteger const kNumberOfFrames = 10;
     return trackFromMenu;
 }
 
--(void)validateAppleMusicLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
+-(void)validateCurrentMusicPlayerLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
 {
     if (![FXReachability sharedInstance].isReachable) {
         menuItem.enabled = NO;
         return;
     }
-    [self.iTunesSearch getIdForArtist:track.artist successHandler:^(NSArray *result) {
-        if (result.count) {
-            menuItem.enabled = YES;
-        } else {
+    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+        [self.iTunesSearch getIdForArtist:track.artist successHandler:^(NSArray *result) {
+            if (result.count) {
+                menuItem.enabled = YES;
+            } else {
+                menuItem.enabled = NO;
+            }
+        } failureHandler:^(NSError *error) {
             menuItem.enabled = NO;
-        }
-    } failureHandler:^(NSError *error) {
-        menuItem.enabled = NO;
-    }];
+        }];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        [self.spotifySearch searchForArtistWithName:track.artist limit:@1 successHandler:^(NSArray * _Nullable result) {
+            if (result.count) {
+                menuItem.enabled = YES;
+            } else {
+                menuItem.enabled = NO;
+            }
+        } failureHandler:^(NSError * _Nonnull error) {
+            menuItem.enabled = NO;
+        }];
+    }
 }
 
 -(NSString *)generateLastFmLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
@@ -700,15 +662,15 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)openWebsite:(NSMenuItem *)menuItem
 {
     if (self.settings.integrationWithMusicPlayer && self.settings.showRecentTrackOnMusicPlayer) {
-        Track *track = [self returnTrackFromMenuItem:menuItem];
+        Track *track = [self trackFromRecentTracksMenuItem:menuItem];
         
-        [self openAppleMusicPageForTrack:track andMenuItem:menuItem];
+        [self openMusicPlayerPageForTrack:track andMenuItem:menuItem];
         if (self.settings.debugMode) {
-            NSLog(@"Opening Apple Music page for %@", track);
+            NSLog(@"Opening Music Player page for %@", track);
         }
 
     } else {
-        Track *track = [self returnTrackFromMenuItem:menuItem];
+        Track *track = [self trackFromRecentTracksMenuItem:menuItem];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
         if (self.settings.debugMode) {
             NSLog(@"Opening Last.fm page for %@", track);
@@ -716,31 +678,14 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(void)openAppleMusicPageForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
+-(void)openMusicPlayerPageForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
 {
-#warning do poprawienia
-//    __weak typeof(self) weakSelf = self;
-//    [self.iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
-//        if (result.count) {
-//            NSString *link = [(NSString *)result.firstObject[@"trackViewUrl"] stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
-//            link = [link stringByAppendingString:@"&ct=neptunes"];
-//            [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
-//            if (weakSelf.musicController.isiTunesRunning) {
-//                [self.musicController.iTunes openLocation:link];
-//            } else {
-//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                    [self.musicController.iTunes openLocation:link];
-//                });
-//            }
-//        } else {
-//            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
-//        }
-//        
-//    } failureHandler:^(NSError *error) {
-//        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
-//    }];
-//    
+    [self.musicPlayer openTrackPageForTrack:track withFailureHandler:^{
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
+    }];
+
 }
+
 
 -(void)hideRecentMenu
 {
@@ -789,9 +734,10 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)insertNewSourceWithName:(NSString *)sourceName
 {
     if ([self.statusMenu indexOfItemWithTitle:sourceName] == -1) {
-        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:sourceName action:nil keyEquivalent:@""];
-        menuItem.enabled = NO;
-        [self.statusMenu insertItem:menuItem atIndex:[self.statusMenu indexOfItemWithTitle:@"Source:"]+1];
+        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:sourceName action:@selector(activateNewSource:) keyEquivalent:@""];
+        menuItem.enabled = YES;
+        menuItem.target = self;
+        [self.statusMenu insertItem:menuItem atIndex:[self.statusMenu indexOfItemWithTag:12]+1];
     }
 }
 
@@ -810,13 +756,23 @@ static NSUInteger const kNumberOfFrames = 10;
         [self.statusMenu.itemArray enumerateObjectsUsingBlock:^(NSMenuItem * _Nonnull menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
             if (menuItem.state == 1) {
                 menuItem.state = 0;
+                menuItem.enabled = YES;
             }
         }];
 
         NSMenuItem *item = [self.statusMenu itemAtIndex:index];
         item.state = 1;
+        item.enabled = NO;
     }
-    
+}
+
+-(void)activateNewSource:(NSMenuItem *)menuItem
+{
+    if ([menuItem.title localizedCaseInsensitiveCompare:@"itunes"] == NSOrderedSame) {
+        [self.musicPlayer changeSourceTo:MusicPlayeriTunes];
+    } else if ([menuItem.title localizedCaseInsensitiveCompare:@"spotify"] == NSOrderedSame) {
+        [self.musicPlayer changeSourceTo:MusicPlayerSpotify];
+    }
 }
 
 #pragma mark - Getters
@@ -869,6 +825,8 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if (!_spotifySearch) {
         _spotifySearch = [SpotifySearch sharedInstance];
+    }
+    if (!_spotifySearch.cacheDelegate) {
         _spotifySearch.cacheDelegate = self;
     }
     return _spotifySearch;

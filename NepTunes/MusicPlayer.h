@@ -13,7 +13,8 @@
 @class iTunesTrack;
 @class SpotifyTrack;
 
-
+#define FOUR_MINUTES 60 * 4
+#define DELAY_FOR_RADIO 5
 
 typedef NS_ENUM(NSInteger, MusicPlayerApplication) {
     MusicPlayerUndefined,
@@ -44,8 +45,20 @@ extern NSString *const kSpotifyBundlerIdentifier;
 
 +(instancetype)sharedPlayer;
 
--(void)openArtistPageForTrack:(Track *)track;
+-(void)openArtistPageForArtistName:(NSString *)artistName withFailureHandler:(void(^)(void))failureHandler;
+-(void)openArtistPageInPlayer:(MusicPlayerApplication)player forArtistName:(NSString *)artistName withFailureHandler:(void(^)(void))failureHandler;
+-(void)openTrackPageForTrack:(Track *)track withFailureHandler:(void(^)(void))failureHandler;
+
 -(id)currentTrackCoverOrURL;
+
+-(void)getCurrentTrackURLPublicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+-(void)getTrackURL:(Track *)track publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+-(void)getTrackURL:(Track *)track forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+-(void)getTrackURL:(Track *)track publicLink:(BOOL)publicLink forCurrentPlayerWithCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+
+-(void)getArtistURLForArtist:(NSString *)artist publicLink:(BOOL)publicLink forCurrentPlayerWithCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+-(void)getArtistURLForArtist:(NSString *)artist forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler;
+
 
 //playback
 -(void)playPause;

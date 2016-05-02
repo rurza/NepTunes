@@ -738,7 +738,7 @@
                     </menu>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="Pdx-mI-Ztv"/>
-                <menuItem title="Source:" enabled="NO" id="oJd-wL-n1B">
+                <menuItem title="SOURCE:" tag="12" enabled="NO" id="oJd-wL-n1B">
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="AJU-8I-J3u"/>

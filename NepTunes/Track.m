@@ -61,6 +61,7 @@
     song.trackOrigin = TrackFromiTunes;
     song.kind = track.kind;
     song.rating = track.rating;
+    song.loved = track.loved;
     return song;
 }
 
@@ -72,6 +73,7 @@
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:(double)track.duration/1000];
     song.artworkURL = track.artworkUrl;
     song.trackOrigin = TrackFromSpotify;
+    song.spotifyID = [[track id] stringByReplacingOccurrencesOfString:@"spotify:track:" withString:@""];
     return song;
 }
 

@@ -334,7 +334,7 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)controlTextDidChange:(NSNotification *)obj
 {
     if (obj.object == self.passwordField || obj.object == self.loginField) {
-        if ([self.passwordField.stringValue length] > 3 && [self.loginField.stringValue length] > 2) {
+        if ([self.passwordField.stringValue length] > 3 && [self.loginField.stringValue length] >= 1) {
             [self.loginButton setEnabled:YES];
         }
         else {

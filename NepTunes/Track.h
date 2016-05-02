@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, TrackKind) {
 @property (nonatomic, copy) NSString *album;
 @property (nonatomic, copy) NSString *kind;
 @property (nonatomic, copy) NSString *artworkURL;
+@property (nonatomic, copy) NSString *spotifyID;
 
 @property (nonatomic) double duration;//in seconds
 @property (nonatomic) BOOL itIsNotMusic;

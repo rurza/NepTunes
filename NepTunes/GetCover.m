@@ -39,12 +39,15 @@
     id currentArtworkOrURL = [[MusicPlayer sharedPlayer] currentTrackCoverOrURL];
     if (currentArtworkOrURL) {
         if ([currentArtworkOrURL isKindOfClass:[NSImage class]]) {
-            handler(currentArtworkOrURL);
-            if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
-                [self.delegate trackInfoShouldBeDisplayed];
-            }
+            [self getCoverAndDisplayTrackInfo:YES withArtwork:currentArtworkOrURL andCompletionHandler:handler];
+
         } else {
-            [self getCachedImageForTrack:track displayInfo:YES withCompletionHandler:handler];
+            NSImage *cover = [self cachedCoverImageForTrack:track];
+            if (cover) {
+                [self getCoverAndDisplayTrackInfo:YES withArtwork:cover andCompletionHandler:handler];
+                return;
+            }
+
             if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
                 [self.delegate trackInfoShouldBeRemoved];
             }
@@ -52,10 +55,7 @@
             if ([FXReachability sharedInstance].isReachable) {
                 
                 [self getCoverForTrack:track fromString:currentArtworkOrURL andCompletionHandler:^(NSImage *cover) {
-                    handler(cover);
-                    if ([weakSelf.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
-                        [weakSelf.delegate trackInfoShouldBeDisplayed];
-                    }
+                    [weakSelf getCoverAndDisplayTrackInfo:YES withArtwork:cover andCompletionHandler:handler];
                 }];
             }
             else {
@@ -64,7 +64,13 @@
             }
         }
     } else {
-        [self getCachedImageForTrack:track displayInfo:YES withCompletionHandler:handler];
+
+        NSImage *cover = [self cachedCoverImageForTrack:track];
+        if (cover) {
+            [self getCoverAndDisplayTrackInfo:YES withArtwork:cover andCompletionHandler:handler];
+            return;
+        }
+
         if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
             [self.delegate trackInfoShouldBeRemoved];
         }
@@ -84,12 +90,11 @@
     }
 }
 
--(void)getCachedImageForTrack:(Track *)track displayInfo:(BOOL)info withCompletionHandler:(void(^)(NSImage *cover))handler
+-(void)getCoverAndDisplayTrackInfo:(BOOL)displayTrackInfo withArtwork:(NSImage *)artwork andCompletionHandler:(void(^)(NSImage *cover))handler
 {
-    NSImage *cover = [self cachedCoverImageForTrack:track];
-    if (cover) {
-        handler(cover);
-        if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)] && info) {
+    handler(artwork);
+    if (displayTrackInfo) {
+        if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
             [self.delegate trackInfoShouldBeDisplayed];
         }
     }
