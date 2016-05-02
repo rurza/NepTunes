@@ -408,7 +408,12 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
             [spotifySearch getTrackWithName:track.trackName artist:track.artist album:track.album limit:@1 successHandler:^(NSArray * _Nullable result) {
                 if (result.count) {
                     NSDictionary *firstResult = result.firstObject;
-                    NSString *resultString = [firstResult objectForKey:@"uri"];
+                    NSString *resultString;
+                    if (!publicLink) {
+                        resultString = [firstResult objectForKey:@"uri"];
+                    } else {
+                        resultString = [[firstResult objectForKey:@"external_urls"] objectForKey:@"spotify"];
+                    }
                     handler(resultString);
                 } else {
                     handler(nil);

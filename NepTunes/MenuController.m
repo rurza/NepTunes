@@ -615,27 +615,15 @@ static NSUInteger const kNumberOfFrames = 10;
         menuItem.enabled = NO;
         return;
     }
-    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
-        [self.iTunesSearch getIdForArtist:track.artist successHandler:^(NSArray *result) {
-            if (result.count) {
-                menuItem.enabled = YES;
-            } else {
-                menuItem.enabled = NO;
-            }
-        } failureHandler:^(NSError *error) {
+    [self.musicPlayer getTrackURL:track publicLink:NO forCurrentPlayerWithCompletionHandler:^(NSString *urlString) {
+        if (urlString.length) {
+            menuItem.enabled = YES;
+        } else {
             menuItem.enabled = NO;
-        }];
-    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
-        [self.spotifySearch searchForArtistWithName:track.artist limit:@1 successHandler:^(NSArray * _Nullable result) {
-            if (result.count) {
-                menuItem.enabled = YES;
-            } else {
-                menuItem.enabled = NO;
-            }
-        } failureHandler:^(NSError * _Nonnull error) {
-            menuItem.enabled = NO;
-        }];
-    }
+        }
+    } failureHandler:^(NSError *error) {
+        menuItem.enabled = NO;
+    }];
 }
 
 -(NSString *)generateLastFmLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
@@ -762,15 +750,14 @@ static NSUInteger const kNumberOfFrames = 10;
 
         NSMenuItem *item = [self.statusMenu itemAtIndex:index];
         item.state = 1;
-        item.enabled = NO;
     }
 }
 
 -(void)activateNewSource:(NSMenuItem *)menuItem
 {
-    if ([menuItem.title localizedCaseInsensitiveCompare:@"itunes"] == NSOrderedSame) {
+    if ([menuItem.title localizedCaseInsensitiveContainsString:@"itunes"] && self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
         [self.musicPlayer changeSourceTo:MusicPlayeriTunes];
-    } else if ([menuItem.title localizedCaseInsensitiveCompare:@"spotify"] == NSOrderedSame) {
+    } else if ([menuItem.title localizedCaseInsensitiveContainsString:@"spotify"] && self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
         [self.musicPlayer changeSourceTo:MusicPlayerSpotify];
     }
 }

@@ -176,11 +176,7 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
         if (self.musicPlayer.playerState == MusicPlayerStatePlaying && self.musicScrobbler.currentTrack) {
             [self.coverWindowController showWindow:self];
-//            [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack];
             [self.coverWindowController.window makeKeyAndOrderFront:nil];
-            HUDWindowController *window =[[HUDWindowController alloc] initWithWindowNibName:@"HUDWindowController"];
-            [window.window makeKeyAndOrderFront:nil];
-            
         }
     }
 }

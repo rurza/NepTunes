@@ -48,9 +48,9 @@
                 return;
             }
 
-            if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
-                [self.delegate trackInfoShouldBeRemoved];
-            }
+//            if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
+//                [self.delegate trackInfoShouldBeRemoved];
+//            }
             __weak typeof(self) weakSelf = self;
             if ([FXReachability sharedInstance].isReachable) {
                 
@@ -228,11 +228,12 @@
 -(NSImage *)cachedCoverImageForTrack:(Track *)track
 {
     NSString *key = [self md5sumFromString:[NSString stringWithFormat:@"%@%@", track.artist, track.album]];
-    if ([self.imagesCache objectForKey:key]) {
+    NSImage *cover = (NSImage *)[self.imagesCache objectForKey:key];
+    if (cover) {
         if ([SettingsController sharedSettings].debugMode) {
             NSLog(@"Cover image for key %@", key);
         }
-        return (NSImage *)[self.imagesCache objectForKey:key];
+        return cover;
     }
     if ([SettingsController sharedSettings].debugMode) {
         NSLog(@"There is no cover image for key %@...", key);

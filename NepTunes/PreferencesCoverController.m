@@ -54,7 +54,6 @@
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo andFullInfo:(BOOL)fullInfo
 {
-#warning do poprawy
     if (track) {
         [self updateWithTrack:track];
         if ([MusicPlayer sharedPlayer].isPlayerRunning) {

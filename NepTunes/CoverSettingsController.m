@@ -10,6 +10,7 @@
 #import "MusicController.h"
 #import "CoverWindowController.h"
 #import "CoverWindow.h"
+#import "MusicScrobbler.h"
 
 static NSString *const kCoverPosition = @"CoverPosition";
 static NSString *const kIgnoreMissionControl = @"IgnoreMissionControl";
@@ -143,6 +144,8 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
         [[MusicController sharedController].coverWindowController.window close];
     } else {
         [[MusicController sharedController] setupCover];
+        [[MusicController sharedController].coverWindowController updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack];
+
         self.ignoreMissionControlCheckbox.enabled = YES;
         self.albumCoverPosition.enabled = YES;
         self.bringiTunesToFrontWithDoubleClickCheckbox.enabled = YES;
