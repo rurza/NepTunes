@@ -229,6 +229,8 @@
 		5B1BC24D1C6CE4CA004EB785 /* Cover */ = {
 			isa = PBXGroup;
 			children = (
+				5B1BC2401C6CDE26004EB785 /* CoverWindowController.h */,
+				5B1BC2411C6CDE26004EB785 /* CoverWindowController.m */,
 				5B0734201C6E382D00167934 /* CoverView.h */,
 				5B0734211C6E382D00167934 /* CoverView.m */,
 				5BAEB6881C78AF2700F7B2F4 /* ControlView.h */,
@@ -237,8 +239,6 @@
 				5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */,
 				5B9F073E1C72300200F73566 /* CoverLabel.h */,
 				5B9F073F1C72300200F73566 /* CoverLabel.m */,
-				5B1BC2401C6CDE26004EB785 /* CoverWindowController.h */,
-				5B1BC2411C6CDE26004EB785 /* CoverWindowController.m */,
 				5B1BC2471C6CE337004EB785 /* CoverImageView.h */,
 				5B1BC2481C6CE337004EB785 /* CoverImageView.m */,
 				5B07341D1C6CF74900167934 /* CoverWindow.xib */,

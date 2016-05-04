@@ -48,12 +48,12 @@
                 return;
             }
 
-//            if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
-//                [self.delegate trackInfoShouldBeRemoved];
-//            }
+
             __weak typeof(self) weakSelf = self;
             if ([FXReachability sharedInstance].isReachable) {
-                
+                if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
+                    [self.delegate trackInfoShouldBeRemoved];
+                }
                 [self getCoverForTrack:track fromString:currentArtworkOrURL andCompletionHandler:^(NSImage *cover) {
                     [weakSelf getCoverAndDisplayTrackInfo:YES withArtwork:cover andCompletionHandler:handler];
                 }];

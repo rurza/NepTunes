@@ -190,6 +190,9 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
             [self setCurrentTrackFromSpotify];
             [self.delegate trackChanged];
         }
+    } else {
+        self.currentTrack = nil;
+        [self.delegate trackChanged];
     }
 }
 
