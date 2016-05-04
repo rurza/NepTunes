@@ -258,7 +258,8 @@
 {
     if (!_imagesCache) {
         _imagesCache = [[PINDiskCache alloc] initWithName:@"imageCache"];
-        _imagesCache.byteLimit = 1024 * 1024;
+        _imagesCache.byteLimit = 1024 * 1024 * 300;
+        _imagesCache.ageLimit = 60 * 60 * 2;
     }
     return _imagesCache;
 }
