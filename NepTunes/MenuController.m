@@ -755,9 +755,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)activateNewSource:(NSMenuItem *)menuItem
 {
-    if ([menuItem.title localizedCaseInsensitiveContainsString:@"itunes"] && self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+    if ([menuItem.title localizedCaseInsensitiveContainsString:@"itunes"] && self.musicPlayer.currentPlayer != MusicPlayeriTunes) {
         [self.musicPlayer changeSourceTo:MusicPlayeriTunes];
-    } else if ([menuItem.title localizedCaseInsensitiveContainsString:@"spotify"] && self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+    } else if ([menuItem.title localizedCaseInsensitiveContainsString:@"spotify"] && self.musicPlayer.currentPlayer != MusicPlayerSpotify) {
         [self.musicPlayer changeSourceTo:MusicPlayerSpotify];
     }
 }

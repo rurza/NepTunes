@@ -326,6 +326,8 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
         } failureHandler:^(NSError *error) {
             failureHandler(error);
         }];
+    } else {
+        failureHandler(nil);
     }
 }
 
@@ -425,6 +427,8 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
                 handler(nil);
             }];
         }
+    } else {
+        failureHandler(nil);
     }
 }
 

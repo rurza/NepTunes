@@ -129,10 +129,8 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)loveTrack:(NSButton *)sender
 {
-    __weak typeof(self) weakSelf = self;
-    [[MusicController sharedController] loveTrackWithCompletionHandler:^{
-        [weakSelf animationLoveButton];
-    }];
+    [[MusicController sharedController] loveTrackWithCompletionHandler:nil];
+    [self animationLoveButton];
 }
 
 - (IBAction)changeVolume:(NSButton *)sender
