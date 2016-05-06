@@ -19,29 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NepTunes/CoverWindowController.m"
-            timestampString = "484049584.358593"
+            filePath = "NepTunes/MusicPlayer.m"
+            timestampString = "484241884.607402"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "-updateCoverWithTrack:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NepTunes/CoverWindowController.m"
-            timestampString = "484049585.502385"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "-updateCoverWithTrack:"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "-setCurrentTrackFromiTunesOrUserInfo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

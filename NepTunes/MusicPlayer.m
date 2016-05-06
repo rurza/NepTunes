@@ -113,11 +113,19 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 
 -(void)setCurrentTrackFromiTunesOrUserInfo:(NSDictionary *)userInfo
 {
+    /*
+     self.currentTrack.podcast || self.currentTrack.iTunesU || [userInfo objectForKey:@"Category"] || ([(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"] && (!self.currentTrack.name || !self.currentTrack.artist))
+     */
     if (self._currentiTunesTrack.name.length && self._currentiTunesTrack.duration) {
-        self.currentTrack = [Track trackWithiTunesTrack:self._iTunesApp.currentTrack];
+        self.currentTrack = [Track trackWithiTunesTrack:self._currentiTunesTrack];
     } else {
-        if (self.isiTunesRunning) {
+        if (self.isiTunesRunning && userInfo) {
             self.currentTrack = [[Track alloc] initWithTrackName:userInfo[@"Name"] artist:userInfo[@"Artist"] album:userInfo[@"Album"] andDuration:[userInfo[@"Total Time"] doubleValue] / 1000];
+            if ([[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"] || [userInfo objectForKey:@"Category"]) {
+                self.currentTrack.trackKind = TrackKindUndefined;
+            } else {
+                self.currentTrack.trackKind = TrackKindMusic;
+            }
             if ([userInfo[@"Total Time"] isEqualToNumber:@(0)] || !userInfo[@"Total Time"]) {
                 self._noDurationTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(updateTrackDuration:) userInfo:nil repeats:NO];
             }
@@ -191,8 +199,10 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
             [self.delegate trackChanged];
         }
     } else {
-        self.currentTrack = nil;
-        [self.delegate trackChanged];
+        if (self.currentPlayer == MusicPlayerSpotify) {
+            self.currentTrack = nil;
+            [self.delegate trackChanged];
+        }
     }
 }
 
@@ -678,5 +688,13 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
         __iTunesApp = (iTunesApplication *)[SBApplication applicationWithBundleIdentifier:kiTunesBundleIdentifier];
     }
     return __iTunesApp;
+}
+
+-(BOOL)canObtainCurrentTrackFromiTunes
+{
+    if (self.isiTunesRunning && self._currentiTunesTrack.name.length) {
+        return YES;
+    }
+    return NO;
 }
 @end

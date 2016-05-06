@@ -328,7 +328,7 @@ static NSUInteger const kNumberOfFrames = 10;
     if (self.settings.session && self.musicScrobbler.currentTrack && internetIsReachable && self.musicPlayer.isPlayerRunning) {
         //if user choose to love track also in iTunes  and track listened is available to love in iTunes
         if ([self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) {
-            if (self.musicScrobbler.currentTrack.artist.length && self.musicScrobbler.currentTrack.trackName.length) {
+            if (self.musicPlayer.canObtainCurrentTrackFromiTunes) {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.trackName];
             } else {
                 self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.trackName];

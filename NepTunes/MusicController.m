@@ -58,12 +58,16 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     if (self.settingsController.debugMode) {
         NSLog(@"Notification sent from Music Player");
     }
+    if ([self hideNoMusicIfNeeded]) {
+        return;
+    }
     [self invalidateTimers];
-    self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:nil repeats:NO];
     [self setScrobblerCurrentTrack];
     [self updateCover];
     [self updateMenu];
     [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:nil userInfo:nil];
+
+    self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:nil repeats:NO];
 }
 
 -(void)spotifyIsAvailable
@@ -95,12 +99,23 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     }
 }
 
+-(BOOL)hideNoMusicIfNeeded
+{
+    if (self.musicPlayer.currentTrack.trackKind != TrackKindMusic && !self.settingsController.scrobblePodcastsAndiTunesU) {
+        self.musicScrobbler.currentTrack = nil;
+        [self updateCover];
+        [self updateMenu];
+        return YES;
+    }
+    return NO;
+}
+
 -(void)prepareTrack:(NSTimer *)timer
 {
     if (self.settingsController.debugMode) {
         NSLog(@"prepareTrack called");
     }
-   
+    
     if ([timer isValid]) {
         [self updateMenu];
         if (self.musicScrobbler.currentTrack.trackOrigin == TrackFromSpotify && !self.settingsController.scrobbleFromSpotify) {

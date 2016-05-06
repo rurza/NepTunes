@@ -54,7 +54,16 @@
 
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track
 {
-    if (!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) {
+    TrackKind kind;
+    if (track.podcast) {
+        kind = TrackKindPodcast;
+    } else if (track.iTunesU) {
+        kind = TrackKindiTunesU;
+    } else {
+        kind = TrackKindMusic;
+    }
+    
+    if ((!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) && kind == TrackKindMusic) {
         return nil;
     }
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
@@ -62,6 +71,7 @@
     song.kind = track.kind;
     song.rating = track.rating;
     song.loved = track.loved;
+    song.trackKind = kind;
     return song;
 }
 

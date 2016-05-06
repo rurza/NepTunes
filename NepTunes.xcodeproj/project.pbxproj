@@ -273,6 +273,15 @@
 			name = "Spotify Search";
 			sourceTree = "<group>";
 		};
+		5B3877531CDCDE8800452D24 /* Social Message */ = {
+			isa = PBXGroup;
+			children = (
+				5BD775DC1CA7D421002C8BCF /* SocialMessage.h */,
+				5BD775DD1CA7D421002C8BCF /* SocialMessage.m */,
+			);
+			name = "Social Message";
+			sourceTree = "<group>";
+		};
 		5B427BDD1C52B4B700EA1D4A /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,8 +412,7 @@
 				5B9662711C725A400095AF54 /* Settings and preferences */,
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
 				5B9662701C725A340095AF54 /* User Notifications */,
-				5BD775DC1CA7D421002C8BCF /* SocialMessage.h */,
-				5BD775DD1CA7D421002C8BCF /* SocialMessage.m */,
+				5B3877531CDCDE8800452D24 /* Social Message */,
 			);
 			path = NepTunes;
 			sourceTree = "<group>";

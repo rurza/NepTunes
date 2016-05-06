@@ -38,6 +38,7 @@ extern NSString *const kSpotifyBundlerIdentifier;
 @property (nonatomic, readonly) Track *currentTrack;
 @property (nonatomic, readonly) MusicPlayerState playerState;
 @property (nonatomic, readonly) BOOL isPlayerRunning;
+@property (nonatomic, readonly) BOOL canObtainCurrentTrackFromiTunes;
 @property (nonatomic) BOOL playerIntegration;
 @property (nonatomic) BOOL currentTrackIsLoved;
 @property (nonatomic) NSInteger soundVolume;
