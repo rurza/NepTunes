@@ -82,6 +82,7 @@
     }
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:(double)track.duration/1000];
     song.artworkURL = track.artworkUrl;
+    song.trackKind = TrackKindMusic;
     song.trackOrigin = TrackFromSpotify;
     song.spotifyID = [[track id] stringByReplacingOccurrencesOfString:@"spotify:track:" withString:@""];
     return song;
