@@ -803,6 +803,8 @@ static NSUInteger const kNumberOfFrames = 10;
         _iTunesSearch = [ItunesSearch sharedInstance];
         _iTunesSearch.affiliateToken = @"1010l3j7";
         _iTunesSearch.campaignToken = @"neptunes";
+    }
+    if (!_iTunesSearch.cacheDelegate) {
         _iTunesSearch.cacheDelegate = self;
     }
     return _iTunesSearch;

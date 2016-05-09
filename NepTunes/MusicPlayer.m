@@ -30,6 +30,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 
 @property (nonatomic) iTunesApplication *_iTunesApp;
 @property (nonatomic) SpotifyApplication *_spotifyApp;
+@property (nonatomic) ItunesSearch *iTunesSearch;
 @property (nonatomic, readonly) BOOL isiTunesRunning;
 @property (nonatomic, readonly) BOOL isSpotifyRunning;
 @end
@@ -317,13 +318,14 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
             failureHandler(error);
         }];
     } else if (player == MusicPlayeriTunes) {
-        [[ItunesSearch sharedInstance] getIdForArtist:artist successHandler:^(NSArray *result) {
+        __weak typeof(self) weakSelf = self;
+        [self.iTunesSearch getIdForArtist:artist successHandler:^(NSArray *result) {
             if (result.count) {
                 NSDictionary *firstResult = [result firstObject];
                 NSString *link = firstResult[@"artistLinkUrl"];
                 handler(link);
             } else {
-                [[ItunesSearch sharedInstance] getIdForArtist:[self asciiString:artist] successHandler:^(NSArray *result) {
+                [weakSelf.iTunesSearch getIdForArtist:[weakSelf asciiString:artist] successHandler:^(NSArray *result) {
                     if (result.count) {
                         NSDictionary *firstResult = [result firstObject];
                         NSString *link = firstResult[@"artistLinkUrl"];
@@ -394,8 +396,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 -(void)getTrackURL:(Track *)track forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
 {
     if (player == MusicPlayeriTunes) {
-        ItunesSearch *iTunesSearch = [ItunesSearch sharedInstance];
-        [iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
+        [self.iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
             NSDictionary *firstResult = result.firstObject;
             NSString *resultString = [firstResult objectForKey:@"collectionViewUrl"];
             if (resultString && [resultString isKindOfClass:[NSString class]]) {
@@ -697,4 +698,15 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     }
     return NO;
 }
+
+-(ItunesSearch *)iTunesSearch
+{
+    if (!_iTunesSearch) {
+        _iTunesSearch = [ItunesSearch sharedInstance];
+        _iTunesSearch.affiliateToken = @"1010l3j7";
+        _iTunesSearch.campaignToken = @"neptunes";
+    }
+    return _iTunesSearch;
+}
+
 @end
