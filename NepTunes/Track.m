@@ -123,4 +123,11 @@
     return [self.trackName hash] ^ [self.album hash];
 }
 
+-(void)setRating:(NSUInteger)rating
+{
+    _rating = rating;
+#warning zmiana nazwy powiadomienia
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"trackRatingWasSet" object:self];
+}
+
 @end
