@@ -24,6 +24,9 @@ typedef NS_ENUM(NSInteger, TrackKind) {
     TrackKindAd
 };
 
+extern NSString *const kTrackRatingWasSetNotificationName;
+
+
 @interface Track : NSObject <NSCoding>
 
 @property (nonatomic, copy) NSString *trackName;

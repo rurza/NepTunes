@@ -54,7 +54,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
                                                         selector:@selector(notificationFromSpotify:)
                                                             name:@"com.spotify.client.PlaybackStateChanged"
                                                           object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRating:) name:kTrackRatingWasSetNotificationName object:nil];
     NSNotificationCenter *center = [[NSWorkspace sharedWorkspace] notificationCenter];
     [center addObserver:self
                selector:@selector(appLaunched:)
@@ -470,6 +470,13 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     } else if (self.currentPlayer == MusicPlayerSpotify) {
         return [self currentSpotifyTrackCover];
     } else return nil;
+}
+
+-(void)updateRating:(NSNotification *)note
+{
+    if (self.currentPlayer == MusicPlayeriTunes) {
+        self._currentiTunesTrack.rating = ((Track *)note.object).rating;
+    }
 }
 
 #pragma mark Soundvolume

@@ -11,6 +11,9 @@
 #import "Spotify.h"
 #import "MusicPlayer.h"
 
+NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotificationName";
+
+
 @implementation Track
 @synthesize loved = _loved;
 
@@ -123,11 +126,10 @@
     return [self.trackName hash] ^ [self.album hash];
 }
 
--(void)setRating:(NSUInteger)rating
+-(void)setRating:(NSInteger)rating
 {
     _rating = rating;
-#warning zmiana nazwy powiadomienia
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"trackRatingWasSet" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackRatingWasSetNotificationName object:self];
 }
 
 @end
