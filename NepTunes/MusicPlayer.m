@@ -349,7 +349,6 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     [self getTrackURL:track publicLink:NO forCurrentPlayerWithCompletionHandler:^(NSString *urlString) {
         if (weakSelf.currentPlayer == MusicPlayeriTunes) {
             [weakSelf bringPlayerToFront];
-            urlString =  [[urlString stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"] stringByAppendingString:@"&ct=neptunes"];
             if (weakSelf.isiTunesRunning) {
                 [weakSelf._iTunesApp openLocation:urlString];
             } else {
@@ -396,10 +395,14 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 -(void)getTrackURL:(Track *)track forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
 {
     if (player == MusicPlayeriTunes) {
+        __weak typeof(self) weakSelf = self;
         [self.iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
             NSDictionary *firstResult = result.firstObject;
             NSString *resultString = [firstResult objectForKey:@"collectionViewUrl"];
             if (resultString && [resultString isKindOfClass:[NSString class]]) {
+                if (weakSelf.iTunesSearch.affiliateToken.length && weakSelf.iTunesSearch.campaignToken.length) {
+                    resultString = [resultString stringByAppendingString:[NSString stringWithFormat:@"&at=%@&ct=%@", weakSelf.iTunesSearch.affiliateToken, weakSelf.iTunesSearch.campaignToken]];
+                }
                 handler(resultString);
             } else handler(nil);
         } failureHandler:^(NSError *error) {
