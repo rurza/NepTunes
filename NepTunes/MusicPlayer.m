@@ -349,6 +349,7 @@ NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
     [self getTrackURL:track publicLink:NO forCurrentPlayerWithCompletionHandler:^(NSString *urlString) {
         if (weakSelf.currentPlayer == MusicPlayeriTunes) {
             [weakSelf bringPlayerToFront];
+            urlString = [urlString stringByReplacingOccurrencesOfString:@"https://" withString:@"itmss://"];
             if (weakSelf.isiTunesRunning) {
                 [weakSelf._iTunesApp openLocation:urlString];
             } else {

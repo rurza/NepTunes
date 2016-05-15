@@ -50,6 +50,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) AboutWindowController *aboutWindowController;
 @property (nonatomic) IBOutlet MusicPlayer *musicPlayer;
 @property (nonatomic) MusicController *musicController;
+@property (nonatomic) NSImage *currentMenubarImage;
 @end
 
 @implementation MenuController
@@ -131,9 +132,9 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)installStatusBar
 {
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    NSImage *icon = [NSImage imageNamed:@"statusIcon"];
-    self.statusItem.button.image = icon;
-    [icon setTemplate:YES];
+    self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
+    self.statusItem.button.image = self.currentMenubarImage;
+    [self.currentMenubarImage setTemplate:YES];
     self.statusItem.menu = self.statusMenu;
 }
 
@@ -150,12 +151,19 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)blinkMenuIcon
 {
     if (self.statusItem) {
+        self.animationCurrentStep = 0;
         [self animationStepForward:YES];
     }
 }
 
 -(void)animationStepForward:(BOOL)forward
 {
+    //Safety
+    if (self.animationCurrentStep > kNumberOfFrames) {
+        [self setOriginalIcon];
+        return;
+    }
+    
     dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 1.0 / kFPS * NSEC_PER_SEC);
     
     dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
@@ -179,6 +187,7 @@ static NSUInteger const kNumberOfFrames = 10;
             }
         }
         
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.animationCurrentStep != 0) {
                 self.statusItem.button.image = [self imageForStep:self.animationCurrentStep];
@@ -197,12 +206,14 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(NSImage *)imageForStep:(NSUInteger)step
 {
-    NSImage *image;
     if (step != 0) {
-        image = [NSImage imageNamed:[NSString stringWithFormat:@"statusIcon%lu", (unsigned long)step]];
-    } else image = [NSImage imageNamed:@"statusIcon"];
-    [image setTemplate:YES];
-    return image;
+        self.currentMenubarImage = [NSImage imageNamed:[NSString stringWithFormat:@"statusIcon%lu", (unsigned long)step]];
+    } else self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
+    if (!self.currentMenubarImage) {
+        self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
+    }
+    [self.currentMenubarImage setTemplate:YES];
+    return self.currentMenubarImage;
 }
 
 
@@ -214,9 +225,9 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)setOriginalIcon
 {
-    NSImage *icon = [NSImage imageNamed:@"statusIcon"];
-    [icon setTemplate:YES];
-    self.statusItem.button.image = icon;
+    self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
+    [self.currentMenubarImage setTemplate:YES];
+    self.statusItem.button.image = self.currentMenubarImage;
 }
 
 

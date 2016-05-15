@@ -247,7 +247,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)dealloc
 {
-    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"com.apple.iTunes.playerInfo" object:nil];
+    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kTrackInfoUpdated object:nil];
     [self.musicPlayer removeObserver:self forKeyPath:@"soundVolume"];
 }
 
