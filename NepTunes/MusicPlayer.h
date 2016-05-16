@@ -31,6 +31,8 @@ typedef NS_ENUM(NSInteger, MusicPlayerState) {
 
 extern NSString *const kiTunesBundleIdentifier;
 extern NSString *const kSpotifyBundlerIdentifier;
+extern NSString *const kCannotGetInfoFromSpotify;
+
 
 @interface MusicPlayer : NSObject
 
@@ -43,6 +45,7 @@ extern NSString *const kSpotifyBundlerIdentifier;
 @property (nonatomic) BOOL currentTrackIsLoved;
 @property (nonatomic) NSInteger soundVolume;
 @property (nonatomic) id<MusicPlayerDelegate> delegate;
+@property (nonatomic, readonly) NSUInteger numberOfPlayers;
 
 +(instancetype)sharedPlayer;
 

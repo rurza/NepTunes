@@ -51,6 +51,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) IBOutlet MusicPlayer *musicPlayer;
 @property (nonatomic) MusicController *musicController;
 @property (nonatomic) NSImage *currentMenubarImage;
+@property (nonatomic) UserNotificationsController *userNotificationsController;
 @end
 
 @implementation MenuController
@@ -77,6 +78,7 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)awakeFromNib
 {
     //System status bar icon
+    self.userNotificationsController = [UserNotificationsController sharedNotificationsController];
     if (![SettingsController sharedSettings].hideStatusBarIcon) {
         [self installStatusBar];
     }

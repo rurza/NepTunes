@@ -21,5 +21,6 @@
 -(void)displayNotificationThatTrackWasLoved:(Track *)track withArtwork:(NSImage *)artwork;
 -(void)displayNotificationThatLoveSongFailedWithError:(NSError *)error;
 -(void)displayNotificationThatTrackCanNotBeScrobbledWithError:(NSError *)error;
+-(void)displayNotificationThatICannotGetInfoAboutSpotify:(NSNotification *)note;
 
 @end
