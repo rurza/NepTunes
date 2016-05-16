@@ -163,7 +163,7 @@
     if (!self.doISentANotificationThatICannotGetInfoAboutSpotify) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         notification.title = NSLocalizedString(@"Can't get info from Spotify", nil);
-        notification.informativeText = NSLocalizedString(@"Move Spotify to your Applications folder.", nil);
+        notification.informativeText = NSLocalizedString(@"Please move Spotify to main Applications folder.", nil);
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
         self.doISentANotificationThatICannotGetInfoAboutSpotify = YES;

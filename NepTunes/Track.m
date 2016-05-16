@@ -57,11 +57,16 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
 
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track
 {
+
     TrackKind kind;
-    if (track.podcast) {
-        kind = TrackKindPodcast;
-    } else if (track.iTunesU) {
-        kind = TrackKindiTunesU;
+    if ([track respondsToSelector:NSSelectorFromString(@"mediaKind")]) {
+        if (track.mediaKind == iTunesEMdKPodcast) {
+            kind = TrackKindPodcast;
+        } else if (track.mediaKind == iTunesEMdKITunesU) {
+            kind = TrackKindiTunesU;
+        } else {
+            kind = TrackKindMusic;
+        }
     } else {
         kind = TrackKindMusic;
     }

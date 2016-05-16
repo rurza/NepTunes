@@ -335,17 +335,17 @@ static NSString *const kDebugMode = @"debugMode";
 {
     self.loveTrackOniTunes = sender.state;
     [[MenuController sharedController] updateMenu];
-    if (sender.state) {
-        __block NSAlert *alert = [[NSAlert alloc] init];
-        alert.window.releasedWhenClosed = YES;
-        alert.messageText = NSLocalizedString(@"Some limitations", nil);
-        alert.informativeText = NSLocalizedString(@"Unfortunately, this functionality works only with music in your iTunes Library and with Apple Music radio. Be aware of this.", nil);
-        alert.alertStyle = NSInformationalAlertStyle;
-        [alert addButtonWithTitle:@"I'm aware"];
-        self.alertWindow = alert.window;
-        [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
-        }];
-    }
+//    if (sender.state) {
+//        __block NSAlert *alert = [[NSAlert alloc] init];
+//        alert.window.releasedWhenClosed = YES;
+//        alert.messageText = NSLocalizedString(@"Some limitations", nil);
+//        alert.informativeText = NSLocalizedString(@"Unfortunately, this functionality works only with music in your iTunes Library and with Apple Music radio. Be aware of this.", nil);
+//        alert.alertStyle = NSInformationalAlertStyle;
+//        [alert addButtonWithTitle:@"I'm aware"];
+//        self.alertWindow = alert.window;
+//        [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
+//        }];
+//    }
 }
 
 -(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender

@@ -6,7 +6,7 @@
 #import <ScriptingBridge/ScriptingBridge.h>
 
 
-@class iTunesPrintSettings, iTunesApplication, iTunesItem, iTunesAirPlayDevice, iTunesArtwork, iTunesEncoder, iTunesEQPreset, iTunesPlaylist, iTunesAudioCDPlaylist, iTunesLibraryPlaylist, iTunesRadioTunerPlaylist, iTunesSource, iTunesTrack, iTunesAudioCDTrack, iTunesFileTrack, iTunesSharedTrack, iTunesURLTrack, iTunesUserPlaylist, iTunesFolderPlaylist, iTunesVisual, iTunesWindow, iTunesBrowserWindow, iTunesEQWindow, iTunesPlaylistWindow;
+@class iTunesPrintSettings, iTunesApplication, iTunesItem, iTunesAirPlayDevice, iTunesArtwork, iTunesEncoder, iTunesEQPreset, iTunesPlaylist, iTunesAudioCDPlaylist, iTunesLibraryPlaylist, iTunesRadioTunerPlaylist, iTunesSource, iTunesSubscriptionPlaylist, iTunesTrack, iTunesAudioCDTrack, iTunesFileTrack, iTunesSharedTrack, iTunesURLTrack, iTunesUserPlaylist, iTunesFolderPlaylist, iTunesVisual, iTunesWindow, iTunesBrowserWindow, iTunesEQWindow, iTunesMiniplayerWindow, iTunesPlaylistWindow, iTunesVideoWindow;
 
 enum iTunesEKnd {
 	iTunesEKndTrackListing = 'kTrk' /* a basic listing of tracks within a playlist */,
@@ -37,6 +37,13 @@ enum iTunesERpt {
 };
 typedef enum iTunesERpt iTunesERpt;
 
+enum iTunesEShM {
+	iTunesEShMSongs = 'kShS',
+	iTunesEShMAlbums = 'kShA',
+	iTunesEShMGroupings = 'kShG'
+};
+typedef enum iTunesEShM iTunesEShM;
+
 enum iTunesEVSz {
 	iTunesEVSzSmall = 'kVSS',
 	iTunesEVSzMedium = 'kVSM',
@@ -51,6 +58,7 @@ enum iTunesESrc {
 	iTunesESrcMP3CD = 'kMCD',
 	iTunesESrcRadioTuner = 'kTun',
 	iTunesESrcSharedLibrary = 'kShd',
+	iTunesESrcITunesStore = 'kITS',
 	iTunesESrcUnknown = 'kUnk'
 };
 typedef enum iTunesESrc iTunesESrc;
@@ -80,6 +88,23 @@ enum iTunesESpK {
 };
 typedef enum iTunesESpK iTunesESpK;
 
+enum iTunesEMdK {
+	iTunesEMdKAlertTone = 'kMdL' /* alert tone track */,
+	iTunesEMdKAudiobook = 'kMdA' /* audiobook track */,
+	iTunesEMdKBook = 'kMdB' /* book track */,
+	iTunesEMdKHomeVideo = 'kMdH' /* home video track */,
+	iTunesEMdKITunesU = 'kMdI' /* iTunes U track */,
+	iTunesEMdKMovie = 'kMdM' /* movie track */,
+	iTunesEMdKMusic = 'kMdS' /* music track */,
+	iTunesEMdKMusicVideo = 'kMdV' /* music video track */,
+	iTunesEMdKPodcast = 'kMdP' /* podcast track */,
+	iTunesEMdKRingtone = 'kMdR' /* ringtone track */,
+	iTunesEMdKTVShow = 'kMdT' /* TV show track */,
+	iTunesEMdKVoiceMemo = 'kMdO' /* voice memo track */,
+	iTunesEMdKUnknown = 'kUnk'
+};
+typedef enum iTunesEMdK iTunesEMdK;
+
 enum iTunesEVdK {
 	iTunesEVdKNone = 'kNon' /* not a video or unknown video kind */,
 	iTunesEVdKHomeVideo = 'kVdH' /* home video track */,
@@ -104,6 +129,21 @@ enum iTunesEAPD {
 };
 typedef enum iTunesEAPD iTunesEAPD;
 
+enum iTunesEClS {
+	iTunesEClSUnknown = 'kUnk',
+	iTunesEClSPurchased = 'kPur',
+	iTunesEClSMatched = 'kMat',
+	iTunesEClSUploaded = 'kUpl',
+	iTunesEClSIneligible = 'kRej',
+	iTunesEClSRemoved = 'kRem',
+	iTunesEClSError = 'kErr',
+	iTunesEClSDuplicate = 'kDup',
+	iTunesEClSSubscription = 'kSub',
+	iTunesEClSNoLongerAvailable = 'kRev',
+	iTunesEClSNotUploaded = 'kUpP'
+};
+typedef enum iTunesEClS iTunesEClS;
+
 @protocol iTunesGenericMethods
 
 - (void) printPrintDialog:(BOOL)printDialog withProperties:(iTunesPrintSettings *)withProperties kind:(iTunesEKnd)kind theme:(NSString *)theme;  // Print the specified object(s)
@@ -111,8 +151,10 @@ typedef enum iTunesEAPD iTunesEAPD;
 - (void) delete;  // Delete an element from an object
 - (SBObject *) duplicateTo:(SBObject *)to;  // Duplicate one or more object(s)
 - (BOOL) exists;  // Verify if an object exists
-- (void) open;  // open the specified object(s)
+- (void) open;  // Open the specified object(s)
+- (void) save;  // Save the specified object(s)
 - (void) playOnce:(BOOL)once;  // play the current track or the specified track or file.
+- (void) select;  // select the specified object(s)
 
 @end
 
@@ -153,8 +195,10 @@ typedef enum iTunesEAPD iTunesEAPD;
 - (SBElementArray<iTunesEncoder *> *) encoders;
 - (SBElementArray<iTunesEQPreset *> *) EQPresets;
 - (SBElementArray<iTunesEQWindow *> *) EQWindows;
+- (SBElementArray<iTunesMiniplayerWindow *> *) miniplayerWindows;
 - (SBElementArray<iTunesPlaylistWindow *> *) playlistWindows;
 - (SBElementArray<iTunesSource *> *) sources;
+- (SBElementArray<iTunesVideoWindow *> *) videoWindows;
 - (SBElementArray<iTunesVisual *> *) visuals;
 - (SBElementArray<iTunesWindow *> *) windows;
 
@@ -167,7 +211,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property (copy, readonly) NSString *currentStreamTitle;  // the name of the current song in the playing stream (provided by streaming server)
 @property (copy, readonly) NSString *currentStreamURL;  // the URL of the playing stream or streaming web site (provided by streaming server)
 @property (copy, readonly) iTunesTrack *currentTrack;  // the current targeted track
-@property (copy) iTunesVisual *currentVisual;  //  the currently selected visual plug-in
+@property (copy) iTunesVisual *currentVisual;  // the currently selected visual plug-in
 @property BOOL EQEnabled;  // is the equalizer enabled?
 @property BOOL fixedIndexing;  // true if all AppleScript track indices should be independent of the play order of the owning playlist.
 @property BOOL frontmost;  // is iTunes the frontmost application?
@@ -177,18 +221,21 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property double playerPosition;  // the player’s position within the currently playing track in seconds.
 @property (readonly) iTunesEPlS playerState;  // is iTunes stopped, paused, or playing?
 @property (copy, readonly) SBObject *selection;  // the selection visible to the user
+@property BOOL shuffleEnabled;  // are songs played in random order?
+@property iTunesEShM shuffleMode;  // the playback shuffle mode
+@property iTunesERpt songRepeat;  // the playback repeat mode
 @property NSInteger soundVolume;  // the sound output volume (0 = minimum, 100 = maximum)
 @property (copy, readonly) NSString *version;  // the version of iTunes
 @property BOOL visualsEnabled;  // are visuals currently being displayed?
 @property iTunesEVSz visualSize;  // the size of the displayed visual
-@property (copy, readonly) NSString *iAdIdentifier;  // the iAd identifier
 
 - (void) printPrintDialog:(BOOL)printDialog withProperties:(iTunesPrintSettings *)withProperties kind:(iTunesEKnd)kind theme:(NSString *)theme;  // Print the specified object(s)
-- (void) run;  // run iTunes
-- (void) quit;  // quit iTunes
+- (void) run;  // Run iTunes
+- (void) quit;  // Quit iTunes
 - (iTunesTrack *) add:(NSArray<NSURL *> *)x to:(SBObject *)to;  // add one or more files to a playlist
 - (void) backTrack;  // reposition to beginning of current track or go to previous track if already at start of current track
 - (iTunesTrack *) convert:(NSArray<SBObject *> *)x;  // convert one or more files or tracks
+- (void) eject;  // eject the specified iPod
 - (void) fastForward;  // skip forward in a playing track
 - (void) nextTrack;  // advance to the next track in the current playlist
 - (void) pause;  // pause playback
@@ -198,9 +245,8 @@ typedef enum iTunesEAPD iTunesEAPD;
 - (void) resume;  // disable fast forward/rewind and resume playback, if playing.
 - (void) rewind;  // skip backwards in a playing track
 - (void) stop;  // stop playback
-- (void) update;  // update the specified iPod
-- (void) eject;  // eject the specified iPod
 - (void) subscribe:(NSString *)x;  // subscribe to a podcast feed
+- (void) update;  // update the specified iPod
 - (void) updateAllPodcasts;  // update all subscribed podcast feeds
 - (void) updatePodcast;  // update podcast feed
 - (void) openLocation:(NSString *)x;  // Opens a Music Store or audio stream URL
@@ -217,6 +263,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property (copy, readonly) NSString *persistentID;  // the id of the item as a hexadecimal string. This id does not change over time.
 @property (copy) NSDictionary *properties;  // every property of the item
 
+- (void) download;  // download a cloud track or playlist, or a podcast episode
 - (void) reveal;  // reveal and select a track or playlist
 
 @end
@@ -237,7 +284,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 
 @end
 
-// a piece of art within a track
+// a piece of art within a track or playlist
 @interface iTunesArtwork : iTunesItem
 
 @property (copy) NSImage *data;  // data for this artwork, in the form of a picture
@@ -282,14 +329,14 @@ typedef enum iTunesEAPD iTunesEAPD;
 @interface iTunesPlaylist : iTunesItem
 
 - (SBElementArray<iTunesTrack *> *) tracks;
+- (SBElementArray<iTunesArtwork *> *) artworks;
 
+@property (copy) NSString *objectDescription;  // the description of the playlist
 @property (readonly) NSInteger duration;  // the total length of all songs (in seconds)
 @property (copy) NSString *name;  // the name of the playlist
 @property BOOL loved;  // is this playlist loved?
 @property (copy, readonly) iTunesPlaylist *parent;  // folder which contains this playlist (if any)
-@property BOOL shuffle;  // play the songs in this playlist in random order?
 @property (readonly) NSInteger size;  // the total size of all songs (in bytes)
-@property iTunesERpt songRepeat;  // playback repeat mode
 @property (readonly) iTunesESpK specialKind;  // special playlist kind
 @property (copy, readonly) NSString *time;  // the length of all songs in MM:SS format
 @property (readonly) BOOL visible;  // is this playlist visible in the Source list?
@@ -340,14 +387,24 @@ typedef enum iTunesEAPD iTunesEAPD;
 - (SBElementArray<iTunesLibraryPlaylist *> *) libraryPlaylists;
 - (SBElementArray<iTunesPlaylist *> *) playlists;
 - (SBElementArray<iTunesRadioTunerPlaylist *> *) radioTunerPlaylists;
+- (SBElementArray<iTunesSubscriptionPlaylist *> *) subscriptionPlaylists;
 - (SBElementArray<iTunesUserPlaylist *> *) userPlaylists;
 
 @property (readonly) long long capacity;  // the total size of the source if it has a fixed size
 @property (readonly) long long freeSpace;  // the free space on the source if it has a fixed size
 @property (readonly) iTunesESrc kind;
 
-- (void) update;  // update the specified iPod
 - (void) eject;  // eject the specified iPod
+- (void) update;  // update the specified iPod
+
+@end
+
+// a subscription playlist from Apple Music
+@interface iTunesSubscriptionPlaylist : iTunesPlaylist
+
+- (SBElementArray<iTunesFileTrack *> *) fileTracks;
+- (SBElementArray<iTunesURLTrack *> *) URLTracks;
+
 
 @end
 
@@ -367,6 +424,7 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property BOOL bookmarkable;  // is the playback position for this track remembered?
 @property NSInteger bpm;  // the tempo of this track in beats per minute
 @property (copy) NSString *category;  // the category of the track
+@property (readonly) iTunesEClS cloudStatus;  // the iCloud status of the track
 @property (copy) NSString *comment;  // freeform notes about the track
 @property BOOL compilation;  // is this track from a compilation album?
 @property (copy) NSString *composer;  // the composer of the track
@@ -375,6 +433,8 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property (copy) NSString *objectDescription;  // the description of the track
 @property NSInteger discCount;  // the total number of discs in the source album
 @property NSInteger discNumber;  // the index of the disc containing this track on the source album
+@property (copy, readonly) NSString *downloaderAppleID;  // the Apple ID of the person who downloaded this track
+@property (copy, readonly) NSString *downloaderName;  // the name of the person who downloaded this track
 @property (readonly) double duration;  // the length of the track in seconds
 @property BOOL enabled;  // is this track checked for playback?
 @property (copy) NSString *episodeID;  // the episode ID of the track
@@ -384,15 +444,16 @@ typedef enum iTunesEAPD iTunesEAPD;
 @property BOOL gapless;  // is this track from a gapless album?
 @property (copy) NSString *genre;  // the music/audio genre (category) of the track
 @property (copy) NSString *grouping;  // the grouping (piece) of the track. Generally used to denote movements within a classical work.
-@property (readonly) BOOL iTunesU;  // is this track an iTunes U episode?
 @property (copy, readonly) NSString *kind;  // a text description of the track
 @property (copy) NSString *longDescription;
 @property BOOL loved;  // is this track loved?
 @property (copy) NSString *lyrics;  // the lyrics of the track
+@property iTunesEMdK mediaKind;  // the media kind of the track
 @property (copy, readonly) NSDate *modificationDate;  // the modification date of the content of this track
 @property NSInteger playedCount;  // number of times this track has been played
 @property (copy) NSDate *playedDate;  // the date and time this track was last played
-@property (readonly) BOOL podcast;  // is this track a podcast episode?
+@property (copy, readonly) NSString *purchaserAppleID;  // the Apple ID of the person who purchased this track
+@property (copy, readonly) NSString *purchaserName;  // the name of the person who purchased this track
 @property NSInteger rating;  // the rating of this track (0 to 100)
 @property (readonly) iTunesERtK ratingKind;  // the rating kind of this track
 @property (copy, readonly) NSDate *releaseDate;  // the release date of this track
@@ -449,7 +510,6 @@ typedef enum iTunesEAPD iTunesEAPD;
 
 @property (copy) NSString *address;  // the URL for this track
 
-- (void) download;  // download podcast episode
 
 @end
 
@@ -483,9 +543,10 @@ typedef enum iTunesEAPD iTunesEAPD;
 @interface iTunesWindow : iTunesItem
 
 @property NSRect bounds;  // the boundary rectangle for the window
-@property (readonly) BOOL closeable;  // does the window have a close box?
-@property (readonly) BOOL collapseable;  // does the window have a collapse (windowshade) box?
+@property (readonly) BOOL closeable;  // does the window have a close button?
+@property (readonly) BOOL collapseable;  // does the window have a collapse button?
 @property BOOL collapsed;  // is the window collapsed?
+@property BOOL fullScreen;  // is the window full screen?
 @property NSPoint position;  // the upper left position of the window
 @property (readonly) BOOL resizable;  // is the window resizable?
 @property BOOL visible;  // is the window visible?
@@ -498,7 +559,6 @@ typedef enum iTunesEAPD iTunesEAPD;
 // the main iTunes window
 @interface iTunesBrowserWindow : iTunesWindow
 
-@property BOOL minimized;  // is the small player visible?
 @property (copy, readonly) SBObject *selection;  // the selected songs
 @property (copy) iTunesPlaylist *view;  // the playlist currently displayed in the window
 
@@ -508,7 +568,11 @@ typedef enum iTunesEAPD iTunesEAPD;
 // the iTunes equalizer window
 @interface iTunesEQWindow : iTunesWindow
 
-@property BOOL minimized;  // is the small EQ window visible?
+
+@end
+
+// the miniplayer window
+@interface iTunesMiniplayerWindow : iTunesWindow
 
 
 @end
@@ -518,6 +582,12 @@ typedef enum iTunesEAPD iTunesEAPD;
 
 @property (copy, readonly) SBObject *selection;  // the selected songs
 @property (copy, readonly) iTunesPlaylist *view;  // the playlist displayed in the window
+
+
+@end
+
+// the video window
+@interface iTunesVideoWindow : iTunesWindow
 
 
 @end
