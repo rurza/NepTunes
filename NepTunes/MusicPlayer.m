@@ -35,7 +35,7 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 @property (nonatomic) ItunesSearch *iTunesSearch;
 @property (nonatomic, readonly) BOOL isiTunesRunning;
 @property (nonatomic, readonly) BOOL isSpotifyRunning;
-@property (nonatomic) NSMutableSet *runningPlayers;
+//@property (nonatomic) NSMutableSet *runningPlayers;
 @end
 
 @implementation MusicPlayer
@@ -77,15 +77,15 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)awakeFromNib
 {
     NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
-    self.runningPlayers = [NSMutableSet new];
+//    self.runningPlayers = [NSMutableSet new];
     for (NSRunningApplication *app in runningApps) {
         if ([app.bundleIdentifier isEqualToString:kiTunesBundleIdentifier]) {
-            [self.runningPlayers addObject:app];
+//            [self.runningPlayers addObject:app];
             if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
                 [self.delegate iTunesIsAvailable];
             }
         } else if ([app.bundleIdentifier isEqualToString:kSpotifyBundlerIdentifier]) {
-            [self.runningPlayers addObject:app];
+//            [self.runningPlayers addObject:app];
             if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
                 [self.delegate spotifyIsAvailable];
             }
@@ -233,10 +233,12 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
         self.currentPlayer = MusicPlayerSpotify;
         [self setCurrentTrackFromSpotify];
         [self.delegate trackChanged];
+        [self.delegate newActivePlayer];
     } else if (self.isiTunesRunning && self._iTunesApp.playerState == iTunesEPlSPlaying) {
         self.currentPlayer = MusicPlayeriTunes;
         [self setCurrentTrackFromiTunesOrUserInfo:nil];
         [self.delegate trackChanged];
+        [self.delegate newActivePlayer];
     }
 }
 
@@ -539,43 +541,27 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 #pragma mark - iTunes and Spotify Lifecycle
 -(void)appLaunched:(NSNotification *)note
 {
-    NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
-    for (NSRunningApplication *app in runningApps) {
-        if ([app.bundleIdentifier isEqualToString:kiTunesBundleIdentifier]) {
-            [self.runningPlayers addObject:app];
-            if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
-                [self.delegate iTunesIsAvailable];
-            }
-        } else if ([app.bundleIdentifier isEqualToString:kSpotifyBundlerIdentifier]) {
-            [self.runningPlayers addObject:app];
-            if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
-                [self.delegate spotifyIsAvailable];
-            }
+    if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
+        if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
+            [self.delegate spotifyIsAvailable];
+        }
+        if (self.currentPlayer == MusicPlayerUndefined) {
+            self.currentPlayer = MusicPlayerSpotify;
+        }
+
+    } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
+        if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
+            [self.delegate iTunesIsAvailable];
+        }
+        if (self.currentPlayer == MusicPlayerUndefined) {
+            self.currentPlayer = MusicPlayeriTunes;
         }
     }
-
-//    if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
-//        if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
-//            [self.delegate spotifyIsAvailable];
-//        }
-//    } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
-//        if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
-//            [self.delegate iTunesIsAvailable];
-//        }
-//    }
+    [self.delegate newActivePlayer];
 }
 
 -(void)appTerminated:(NSNotification *)note
 {
-    NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
-    [self.runningPlayers removeAllObjects];
-    for (NSRunningApplication *app in runningApps) {
-        if ([app.bundleIdentifier isEqualToString:kiTunesBundleIdentifier]) {
-            [self.runningPlayers addObject:app];
-        } else if ([app.bundleIdentifier isEqualToString:kSpotifyBundlerIdentifier]) {
-            [self.runningPlayers addObject:app];
-        }
-    }
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
         if ([self.delegate respondsToSelector:@selector(spotifyWasTerminated)]) {
             [self.delegate spotifyWasTerminated];
@@ -740,8 +726,19 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 
 -(iTunesApplication *)_iTunesApp
 {
+    NSRunningApplication *iTunes;
     if (!__iTunesApp) {
-        __iTunesApp = (iTunesApplication *)[SBApplication applicationWithBundleIdentifier:kiTunesBundleIdentifier];
+        NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
+        for (NSRunningApplication *app in runningApps) {
+            if ([app.bundleIdentifier isEqualToString:kiTunesBundleIdentifier]) {
+                iTunes = app;
+            }
+        }
+        if (iTunes) {
+            __iTunesApp = (iTunesApplication *)[SBApplication applicationWithBundleIdentifier:kiTunesBundleIdentifier];
+        } else {
+            __iTunesApp = nil;
+        }
     }
     return __iTunesApp;
 }
@@ -764,9 +761,9 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
     return _iTunesSearch;
 }
 
--(NSUInteger)numberOfPlayers
-{
-    return self.runningPlayers.count;
-}
+//-(NSUInteger)numberOfPlayers
+//{
+//    return self.runningPlayers.count;
+//}
 
 @end
