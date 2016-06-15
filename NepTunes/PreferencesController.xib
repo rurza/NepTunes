@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
@@ -385,17 +384,17 @@ DQ
             <point key="canvasLocation" x="-300" y="800"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
-            <rect key="frame" x="0.0" y="0.0" width="512" height="325"/>
+            <rect key="frame" x="0.0" y="0.0" width="512" height="439"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wMx-L5-uoG" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="286" width="126" height="19"/>
+                    <rect key="frame" x="361" y="400" width="126" height="19"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QDR-cs-IyV" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="212" width="126" height="19"/>
+                    <rect key="frame" x="361" y="326" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Yc-Xi-EgP">
-                    <rect key="frame" x="128" y="248" width="166" height="17"/>
+                    <rect key="frame" x="128" y="362" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Go to your Last.fm profile:" id="1KL-F9-vNA">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -403,7 +402,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i3p-bb-WTK">
-                    <rect key="frame" x="128" y="211" width="132" height="17"/>
+                    <rect key="frame" x="128" y="325" width="132" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similar artists:" id="GgS-0c-UWx">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -411,10 +410,10 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0qu-6x-kgo" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="249" width="126" height="19"/>
+                    <rect key="frame" x="361" y="363" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rtb-Ld-FxH">
-                    <rect key="frame" x="128" y="285" width="72" height="17"/>
+                    <rect key="frame" x="128" y="399" width="72" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love track:" id="ST0-W5-Cjg">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -422,7 +421,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PcT-Vm-MrB">
-                    <rect key="frame" x="23" y="285" width="99" height="17"/>
+                    <rect key="frame" x="23" y="399" width="99" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Last.fm:" id="CbD-z3-WEH">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -430,13 +429,13 @@ DQ
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="22L-50-mgG">
-                    <rect key="frame" x="0.0" y="198" width="512" height="5"/>
+                    <rect key="frame" x="0.0" y="312" width="512" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="15X-rk-div">
-                    <rect key="frame" x="23" y="172" width="99" height="17"/>
+                    <rect key="frame" x="23" y="286" width="99" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Volume:" id="2ca-YF-sRQ">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -444,7 +443,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LGD-ID-Lec">
-                    <rect key="frame" x="128" y="171" width="166" height="17"/>
+                    <rect key="frame" x="128" y="285" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Increase player volume:" id="3ew-1J-4aM">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -452,7 +451,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jcl-d0-pmO">
-                    <rect key="frame" x="128" y="134" width="166" height="17"/>
+                    <rect key="frame" x="128" y="248" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Decrease player volume:" id="ac3-Zj-gZK">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -460,13 +459,13 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUn-Xm-UV7" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="171" width="126" height="19"/>
+                    <rect key="frame" x="361" y="285" width="126" height="19"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D1d-sA-gc1" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="134" width="126" height="19"/>
+                    <rect key="frame" x="361" y="248" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NbZ-91-hTJ">
-                    <rect key="frame" x="128" y="97" width="166" height="17"/>
+                    <rect key="frame" x="128" y="211" width="166" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Mute player:" id="umH-Th-amN">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -474,7 +473,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dsM-wL-mrq" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="97" width="126" height="19"/>
+                    <rect key="frame" x="361" y="211" width="126" height="19"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vi3-Yw-rtR">
                     <rect key="frame" x="23" y="57" width="99" height="17"/>
@@ -507,13 +506,60 @@ DQ
                     <rect key="frame" x="361" y="20" width="126" height="19"/>
                 </customView>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="DWe-kE-vxn">
-                    <rect key="frame" x="0.0" y="84" width="512" height="5"/>
+                    <rect key="frame" x="0.0" y="198" width="512" height="5"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ndr-eW-PKq">
+                    <rect key="frame" x="22" y="172" width="99" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Playback:" id="QUt-vG-xKh">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ISz-in-Dwf">
+                    <rect key="frame" x="127" y="171" width="166" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Play/Pause:" id="i8J-Xk-vxj">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZT-fj-CAF">
+                    <rect key="frame" x="127" y="134" width="166" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Next track:" id="0LB-3m-0aY">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5d3-AU-mpe" customClass="MASShortcutView">
+                    <rect key="frame" x="360" y="171" width="126" height="19"/>
+                </customView>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="14l-b6-Yks" customClass="MASShortcutView">
+                    <rect key="frame" x="360" y="134" width="126" height="19"/>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fcb-sl-SrM">
+                    <rect key="frame" x="127" y="97" width="166" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Previous track:" id="cdj-5N-HSF">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jrr-LW-7FW" customClass="MASShortcutView">
+                    <rect key="frame" x="360" y="97" width="126" height="19"/>
+                </customView>
+                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="QOm-lO-UmN">
+                    <rect key="frame" x="-1" y="84" width="512" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
             </subviews>
-            <point key="canvasLocation" x="836" y="125.5"/>
+            <point key="canvasLocation" x="836" y="182.5"/>
         </customView>
         <customObject id="meH-td-39k" customClass="CoverSettingsController">
             <connections>
@@ -551,6 +597,9 @@ DQ
                 <outlet property="increaseVolumeView" destination="pUn-Xm-UV7" id="ZaO-XF-Yxq"/>
                 <outlet property="loveSongView" destination="wMx-L5-uoG" id="b9N-O2-rmz"/>
                 <outlet property="muteVolumeView" destination="dsM-wL-mrq" id="Mbv-RJ-XJC"/>
+                <outlet property="nextTrackView" destination="14l-b6-Yks" id="E0Z-Pw-FkJ"/>
+                <outlet property="playPauseView" destination="5d3-AU-mpe" id="kj6-Yb-42c"/>
+                <outlet property="previousTrackView" destination="jrr-LW-7FW" id="zMD-Qg-l9v"/>
                 <outlet property="showSimilarArtistsView" destination="QDR-cs-IyV" id="ZvM-fA-YnP"/>
                 <outlet property="showYourProfileView" destination="0qu-6x-kgo" id="QQr-xY-VJ3"/>
             </connections>

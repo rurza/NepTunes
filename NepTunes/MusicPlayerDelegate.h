@@ -11,10 +11,7 @@
 @protocol MusicPlayerDelegate <NSObject>
 
 -(void)trackChanged;
--(void)spotifyIsAvailable;
--(void)iTunesIsAvailable;
--(void)spotifyWasTerminated;
--(void)iTunesWasTerminated;
 -(void)newActivePlayer;
-
+-(void)bothPlayersAreAvailable;
+-(void)onePlayerIsAvailable;
 @end

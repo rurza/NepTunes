@@ -25,6 +25,11 @@ static NSString *const kMuteVolumeShortcut = @"muteVolumeShortcut";
 static NSString *const kIncreaseRatingShortcut = @"increaseRatingShortcut";
 static NSString *const kDecreaseRatingShortcut = @"decreaseRatingShortcut";
 
+static NSString *const kPlayPauseShortcut = @"playPauseShortcut";
+static NSString *const kNextTrackShortcut = @"nextTrackShortcut";
+static NSString *const kPreviousTrackShortcut = @"previousTrackShortcut";
+
+
 static NSString *const kHUDXibName = @"HUDWindowController";
 
 
@@ -44,6 +49,10 @@ static void *MASObservingContext = &MASObservingContext;
 @property (weak, nonatomic) IBOutlet MASShortcutView *increaseRatingView;
 @property (weak, nonatomic) IBOutlet MASShortcutView *decreaseRatingView;
 
+@property (weak, nonatomic) IBOutlet MASShortcutView *playPauseView;
+@property (weak, nonatomic) IBOutlet MASShortcutView *nextTrackView;
+@property (weak, nonatomic) IBOutlet MASShortcutView *previousTrackView;
+
 @property (nonatomic) HUDWindowController *hudWindowController;
 
 @end
@@ -62,6 +71,11 @@ static void *MASObservingContext = &MASObservingContext;
     
     self.increaseRatingView.associatedUserDefaultsKey = kIncreaseRatingShortcut;
     self.decreaseRatingView.associatedUserDefaultsKey = kDecreaseRatingShortcut;
+    
+    self.playPauseView.associatedUserDefaultsKey = kPlayPauseShortcut;
+    self.nextTrackView.associatedUserDefaultsKey = kNextTrackShortcut;
+    self.previousTrackView.associatedUserDefaultsKey = kPreviousTrackShortcut;
+
     
     [self bindShortcutsToAction];
     [self setUpObservers];
@@ -399,7 +413,18 @@ static void *MASObservingContext = &MASObservingContext;
          self.hudWindowController.centerImageView.image.template = YES;
      }];
 
-
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kPlayPauseShortcut toAction:^{
+        MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+        [musicPlayer playPause];
+    }];
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kNextTrackShortcut toAction:^{
+        MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+        [musicPlayer nextTrack];
+    }];
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kPreviousTrackShortcut toAction:^{
+        MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+        [musicPlayer backTrack];
+    }];
 }
 
 -(void)updateMenu
@@ -468,6 +493,18 @@ static void *MASObservingContext = &MASObservingContext;
     [defaults addObserver:self forKeyPath:kDecreaseRatingShortcut
                   options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
                   context:MASObservingContext];
+    
+    //Playback
+    [defaults addObserver:self forKeyPath:kPlayPauseShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+    [defaults addObserver:self forKeyPath:kNextTrackShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+    [defaults addObserver:self forKeyPath:kPreviousTrackShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+
 
 }
 
@@ -526,6 +563,10 @@ static void *MASObservingContext = &MASObservingContext;
         [defaults removeObserver:self forKeyPath:kMuteVolumeShortcut];
         [defaults removeObserver:self forKeyPath:kIncreaseRatingShortcut];
         [defaults removeObserver:self forKeyPath:kDecreaseRatingShortcut];
+        [defaults removeObserver:self forKeyPath:kPlayPauseShortcut];
+        [defaults removeObserver:self forKeyPath:kNextTrackShortcut];
+        [defaults removeObserver:self forKeyPath:kPreviousTrackShortcut];
+
     }
     @catch (NSException * __unused exception) {}
 }

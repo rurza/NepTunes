@@ -35,7 +35,8 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 @property (nonatomic) ItunesSearch *iTunesSearch;
 @property (nonatomic, readonly) BOOL isiTunesRunning;
 @property (nonatomic, readonly) BOOL isSpotifyRunning;
-//@property (nonatomic) NSMutableSet *runningPlayers;
+@property (nonatomic, readwrite) NSUInteger numberOfPlayers;
+
 @end
 
 @implementation MusicPlayer
@@ -77,21 +78,20 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)awakeFromNib
 {
     NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
-//    self.runningPlayers = [NSMutableSet new];
     for (NSRunningApplication *app in runningApps) {
         if ([app.bundleIdentifier isEqualToString:kiTunesBundleIdentifier]) {
-//            [self.runningPlayers addObject:app];
-            if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
-                [self.delegate iTunesIsAvailable];
-            }
+            self.numberOfPlayers++;
         } else if ([app.bundleIdentifier isEqualToString:kSpotifyBundlerIdentifier]) {
-//            [self.runningPlayers addObject:app];
-            if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
-                [self.delegate spotifyIsAvailable];
-            }
+            self.numberOfPlayers++;
         }
     }
+
     [self detectCurrentPlayer];
+    if (self.numberOfPlayers == 2) {
+        if ([self.delegate respondsToSelector:@selector(bothPlayersAreAvailable)]) {
+            [self.delegate bothPlayersAreAvailable];
+        }
+    }
 }
 
 +(instancetype)sharedPlayer
@@ -366,7 +366,6 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                 });
             }
         } else if (weakSelf.currentPlayer == MusicPlayerSpotify) {
-//            [weakSelf bringPlayerToFront];
             if (weakSelf.isSpotifyRunning) {
                 [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
             } else {
@@ -542,19 +541,19 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)appLaunched:(NSNotification *)note
 {
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
-        if ([self.delegate respondsToSelector:@selector(spotifyIsAvailable)]) {
-            [self.delegate spotifyIsAvailable];
-        }
         if (self.currentPlayer == MusicPlayerUndefined) {
             self.currentPlayer = MusicPlayerSpotify;
         }
 
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
-        if ([self.delegate respondsToSelector:@selector(iTunesIsAvailable)]) {
-            [self.delegate iTunesIsAvailable];
-        }
         if (self.currentPlayer == MusicPlayerUndefined) {
             self.currentPlayer = MusicPlayeriTunes;
+        }
+    }
+    self.numberOfPlayers++;
+    if (self.numberOfPlayers == 2) {
+        if ([self.delegate respondsToSelector:@selector(bothPlayersAreAvailable)]) {
+            [self.delegate bothPlayersAreAvailable];
         }
     }
     [self.delegate newActivePlayer];
@@ -563,21 +562,20 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)appTerminated:(NSNotification *)note
 {
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
-        if ([self.delegate respondsToSelector:@selector(spotifyWasTerminated)]) {
-            [self.delegate spotifyWasTerminated];
-            if (self.isiTunesRunning) {
-                self.currentPlayer = MusicPlayeriTunes;
-            }
+        if (self.isiTunesRunning) {
+            self.currentPlayer = MusicPlayeriTunes;
         }
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
-        if ([self.delegate respondsToSelector:@selector(iTunesWasTerminated)]) {
-            [self.delegate iTunesWasTerminated];
-            if (self.isSpotifyRunning) {
-                self.currentPlayer = MusicPlayerSpotify;
-            }
+        if (self.isSpotifyRunning) {
+            self.currentPlayer = MusicPlayerSpotify;
         }
     }
-
+    self.numberOfPlayers--;
+    if (self.numberOfPlayers < 2) {
+        if ([self.delegate respondsToSelector:@selector(onePlayerIsAvailable)]) {
+            [self.delegate onePlayerIsAvailable];
+        }
+    }
 }
 
 #pragma mark - Source

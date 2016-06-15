@@ -13,7 +13,6 @@
 
 NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotificationName";
 
-
 @implementation Track
 @synthesize loved = _loved;
 
@@ -135,6 +134,32 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
 {
     _rating = rating;
     [[NSNotificationCenter defaultCenter] postNotificationName:kTrackRatingWasSetNotificationName object:self];
+}
+
+-(NSString *)truncatedTrackName
+{
+    if (self.trackName.length > 30) {
+        if ([[self.trackName substringWithRange:NSMakeRange(19, 1)] isEqualToString:@""]) {
+            return [NSString stringWithFormat:@"%@...", [self.trackName substringWithRange:NSMakeRange(0, 19)]];
+        } else {
+            return [NSString stringWithFormat:@"%@...", [self.trackName substringWithRange:NSMakeRange(0, 20)]];
+        }
+    } else {
+        return self.trackName;
+    }
+}
+
+-(NSString *)truncatedArtist
+{
+    if (self.artist.length > 30) {
+        if ([[self.artist substringWithRange:NSMakeRange(19, 1)] isEqualToString:@""]) {
+            return [NSString stringWithFormat:@"%@...", [self.artist substringWithRange:NSMakeRange(0, 19)]];
+        } else {
+            return [NSString stringWithFormat:@"%@...", [self.artist substringWithRange:NSMakeRange(0, 20)]];
+        }
+    } else {
+        return self.artist;
+    }
 }
 
 @end

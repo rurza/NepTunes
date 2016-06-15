@@ -70,24 +70,34 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:nil repeats:NO];
 }
 
--(void)spotifyIsAvailable
+//-(void)spotifyIsAvailable
+//{
+//    [self.menuController insertNewSourceWithName:@"Spotify"];
+//}
+//
+//-(void)iTunesIsAvailable
+//{
+//    [self.menuController insertNewSourceWithName:@"iTunes"];
+//}
+//
+//-(void)spotifyWasTerminated
+//{
+//    [self.menuController removeSourceWithName:@"Spotify"];
+//}
+//
+//-(void)iTunesWasTerminated
+//{
+//    [self.menuController removeSourceWithName:@"iTunes"];
+//}
+
+-(void)bothPlayersAreAvailable
 {
-    [self.menuController insertNewSourceWithName:@"Spotify"];
+    [self.menuController insertBothSources];
 }
 
--(void)iTunesIsAvailable
+-(void)onePlayerIsAvailable
 {
-    [self.menuController insertNewSourceWithName:@"iTunes"];
-}
-
--(void)spotifyWasTerminated
-{
-    [self.menuController removeSourceWithName:@"Spotify"];
-}
-
--(void)iTunesWasTerminated
-{
-    [self.menuController removeSourceWithName:@"iTunes"];
+    [self.menuController removeBothSources];
 }
 
 -(void)newActivePlayer

@@ -29,6 +29,9 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 
 @interface Track : NSObject <NSCoding>
 
+@property (nonatomic, readonly) NSString *truncatedTrackName;
+@property (nonatomic, readonly) NSString *truncatedArtist;
+
 @property (nonatomic, copy) NSString *trackName;
 @property (nonatomic, copy) NSString *artist;
 @property (nonatomic, copy) NSString *album;
