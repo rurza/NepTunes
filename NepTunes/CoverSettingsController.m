@@ -16,6 +16,7 @@ static NSString *const kCoverPosition = @"CoverPosition";
 static NSString *const kIgnoreMissionControl = @"IgnoreMissionControl";
 static NSString *const kShowCover = @"ShowCover";
 static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFrontWithDoubleClick";
+static NSString *const kCoverSize = @"CoverSize";
 
 
 
@@ -25,12 +26,14 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
 - (IBAction)ignoreMissionControl:(NSButton *)sender;
 - (IBAction)changeAlbumCoverPosition:(NSPopUpButton *)sender;
 - (IBAction)showAlbumCover:(NSButton *)sender;
+- (IBAction)changeCoverSize:(NSPopUpButton *)sender;
+
 
 @end
 
 @implementation CoverSettingsController
 
-@synthesize showCover = _showCover, coverPosition = _coverPosition, ignoreMissionControl = _ignoreMissionControl, bringiTunesToFrontWithDoubleClick = _bringiTunesToFrontWithDoubleClick;
+@synthesize showCover = _showCover, coverPosition = _coverPosition, ignoreMissionControl = _ignoreMissionControl, bringiTunesToFrontWithDoubleClick = _bringiTunesToFrontWithDoubleClick, coverSize = _coverSize;
 
 
 #pragma mark - Initialization
@@ -54,6 +57,7 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kIgnoreMissionControl: @YES}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kCoverPosition: @1}];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kBringiTunesToFrontWithDoubleClick: @YES}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kCoverSize: @1}];
 
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -65,14 +69,17 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
         self.ignoreMissionControlCheckbox.enabled = NO;
         self.albumCoverPosition.enabled = NO;
         self.bringiTunesToFrontWithDoubleClickCheckbox.enabled = NO;
+        self.coverSizePopUp.enabled = NO;
     } else {
         self.ignoreMissionControlCheckbox.enabled = YES;
         self.albumCoverPosition.enabled = YES;
         self.bringiTunesToFrontWithDoubleClickCheckbox.enabled = YES;
+        self.coverSizePopUp.enabled = YES;
     }
     self.ignoreMissionControlCheckbox.state = self.ignoreMissionControl;
     self.bringiTunesToFrontWithDoubleClickCheckbox.state = self.bringiTunesToFrontWithDoubleClick;
     [self.albumCoverPosition selectItemWithTag:self.coverPosition];
+    [self.coverSizePopUp selectItemWithTag:self.coverSize];
 }
 
 #pragma mark - Target Action
@@ -134,6 +141,14 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
     [window makeKeyAndOrderFront:nil];
 }
 
+- (IBAction)changeCoverSize:(NSPopUpButton *)sender
+{
+    CoverWindow *window = (CoverWindow *)[MusicController sharedController].coverWindowController.window;
+    self.coverSize = sender.selectedTag;
+    [[MusicController sharedController].coverWindowController resizeCoverToSize:self.coverSize animated:YES];
+    [window makeKeyAndOrderFront:nil];
+}
+
 -(IBAction)showAlbumCover:(NSButton *)sender
 {
     self.showCover = sender.state;
@@ -186,6 +201,22 @@ static NSString *const kBringiTunesToFrontWithDoubleClick = @"BringiTunesToFront
 {
     _coverPosition = coverPosition;
     [self.userDefaults setObject:@(coverPosition) forKey:kCoverPosition];
+    [self saveSettings];
+}
+
+#pragma mark Size
+-(CoverSize)coverSize
+{
+    if (!_coverSize) {
+        _coverSize = ![[self.userDefaults objectForKey:kCoverSize] integerValue] ? CoverSizeSmall : [[self.userDefaults objectForKey:kCoverSize] integerValue];
+    }
+    return _coverSize;
+}
+
+-(void)setCoverSize:(CoverSize)coverSize
+{
+    _coverSize = coverSize;
+    [self.userDefaults setObject:@(coverSize) forKey:kCoverSize];
     [self saveSettings];
 }
 

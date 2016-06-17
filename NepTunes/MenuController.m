@@ -730,23 +730,6 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 #pragma mark - update available sources
-//-(void)insertNewSourceWithName:(NSString *)sourceName
-//{
-//    if ([self.statusMenu indexOfItemWithTitle:sourceName] == -1) {
-//        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:sourceName action:@selector(activateNewSource:) keyEquivalent:@""];
-//        menuItem.enabled = YES;
-//        menuItem.target = self;
-//        [self.statusMenu insertItem:menuItem atIndex:[self.statusMenu indexOfItemWithTag:12]+1];
-//    }
-//}
-//
-//-(void)removeSourceWithName:(NSString *)sourceName
-//{
-//    NSInteger index = [self.statusMenu indexOfItemWithTitle:sourceName];
-//    if (index != -1) {
-//        [self.statusMenu removeItemAtIndex:index];
-//    }
-//}
 
 -(void)addCheckmarkToSourceWithName:(NSString *)sourceName
 {
@@ -778,28 +761,26 @@ static NSUInteger const kNumberOfFrames = 10;
     iTunesMenuItem.target = self;
     spotifyMenuItem.target = self;
     
-    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
-        iTunesMenuItem.enabled = NO;
-        iTunesMenuItem.state = 1;
-    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
-        spotifyMenuItem.enabled = NO;
-        iTunesMenuItem.state = 1;
-    } else {
-        spotifyMenuItem.enabled = NO;
-        iTunesMenuItem.enabled = NO;
-        spotifyMenuItem.state = 0;
-        iTunesMenuItem.state = 0;
-    }
-    
     [self.statusMenu insertItem:separatorMenuItem atIndex:[self.statusMenu indexOfItemWithTag:12]];
     [self.statusMenu insertItem:sourceLabelMenuItem atIndex:[self.statusMenu indexOfItem:separatorMenuItem]+1];
     [self.statusMenu insertItem:iTunesMenuItem atIndex:[self.statusMenu indexOfItem:sourceLabelMenuItem]+1];
     [self.statusMenu insertItem:spotifyMenuItem atIndex:[self.statusMenu indexOfItem:iTunesMenuItem]+1];
+    
+    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+        [self addCheckmarkToSourceWithName:@"iTunes"];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        [self addCheckmarkToSourceWithName:NSLocalizedString(@"Spotify", nil)];
+    } else {
+        spotifyMenuItem.enabled = YES;
+        iTunesMenuItem.enabled = YES;
+        spotifyMenuItem.state = 0;
+        iTunesMenuItem.state = 0;
+    }
 }
 
 -(void)removeBothSources
 {
-    [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTag:12]+1];
+    [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]-1];
     [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]];
     [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"iTunes", nil)]];
     [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"Spotify", nil)]];

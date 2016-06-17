@@ -125,6 +125,9 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
      */
     if (self._currentiTunesTrack.name.length && self._currentiTunesTrack.duration) {
         self.currentTrack = [Track trackWithiTunesTrack:self._currentiTunesTrack];
+        if ([userInfo objectForKey:@"Category"] || [(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"]) {
+            self.currentTrack.trackKind = TrackKindUndefined;
+        }
     } else {
         if (self.isiTunesRunning && userInfo) {
             self.currentTrack = [[Track alloc] initWithTrackName:userInfo[@"Name"] artist:userInfo[@"Artist"] album:userInfo[@"Album"] andDuration:[userInfo[@"Total Time"] doubleValue] / 1000];
@@ -541,16 +544,17 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)appLaunched:(NSNotification *)note
 {
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
+        self.numberOfPlayers++;
         if (self.currentPlayer == MusicPlayerUndefined) {
             self.currentPlayer = MusicPlayerSpotify;
         }
 
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
+        self.numberOfPlayers++;
         if (self.currentPlayer == MusicPlayerUndefined) {
             self.currentPlayer = MusicPlayeriTunes;
         }
     }
-    self.numberOfPlayers++;
     if (self.numberOfPlayers == 2) {
         if ([self.delegate respondsToSelector:@selector(bothPlayersAreAvailable)]) {
             [self.delegate bothPlayersAreAvailable];
@@ -561,17 +565,19 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 
 -(void)appTerminated:(NSNotification *)note
 {
+    NSUInteger numberOfPlayers = self.numberOfPlayers;
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
+        self.numberOfPlayers--;
         if (self.isiTunesRunning) {
             self.currentPlayer = MusicPlayeriTunes;
         }
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
+        self.numberOfPlayers--;
         if (self.isSpotifyRunning) {
             self.currentPlayer = MusicPlayerSpotify;
         }
     }
-    self.numberOfPlayers--;
-    if (self.numberOfPlayers < 2) {
+    if (self.numberOfPlayers < 2 && numberOfPlayers == 2) {
         if ([self.delegate respondsToSelector:@selector(onePlayerIsAvailable)]) {
             [self.delegate onePlayerIsAvailable];
         }

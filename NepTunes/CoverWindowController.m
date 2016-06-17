@@ -17,7 +17,6 @@
 #import "CoverLabel.h"
 #import "ControlViewController.h"
 #import <pop/POP.h>
-#import "CoverSettingsController.h"
 #import "ControlView.h"
 #import "MenuController.h"
 #import "VolumeViewController.h"
@@ -33,6 +32,7 @@
 @property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
 @property (nonatomic) GetCover *getCover;
 @property (nonatomic) NSClickGestureRecognizer *doubleClickRecognizer;
+@property (nonatomic) CGRect artistViewOriginalRect;
 @end
 
 @implementation CoverWindowController
@@ -138,6 +138,7 @@
         [self updateOriginsOfLabels];
         return;
     }
+    self.artistViewOriginalRect = self.window.coverView.artistView.frame;
     self.changeTrackAnimation = YES;
     CALayer *layer = self.window.coverView.titleLabel.layer;
     layer.opacity = 0;
@@ -183,7 +184,7 @@
          };
         hideFullInfoAnimation.springBounciness = 14;
 
-        hideFullInfoAnimation.toValue = [NSValue valueWithRect:NSMakeRect(0, 0, 160, 26)];
+        hideFullInfoAnimation.toValue = [NSValue valueWithRect:self.artistViewOriginalRect];
         [weakSelf.window.coverView.artistView pop_addAnimation:hideFullInfoAnimation forKey:@"frame"];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -206,7 +207,7 @@
 -(CoverLabel *)artistLabel
 {
     if (!_artistLabel) {
-        _artistLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 80, 140, 60)];
+        _artistLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 80, self.window.frame.size.width-20, 60)];
         _artistLabel.font = [NSFont systemFontOfSize:15];
          [self.window.coverView.artistView addSubview:_artistLabel];
     }
@@ -216,7 +217,7 @@
 -(CoverLabel *)trackLabel
 {
     if (!_trackLabel) {
-        _trackLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 20, 140, 60)];
+        _trackLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 20, self.window.frame.size.width-20, 60)];
         _trackLabel.font = [NSFont systemFontOfSize:13];
         [self.window.coverView.artistView addSubview:_trackLabel];
     }
@@ -247,8 +248,9 @@
         labelsHeight = self.artistLabel.frame.size.height + self.trackLabel.frame.size.height;
 
     }
-    self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2-5, 140, self.trackLabel.frame.size.height);
-    self.artistLabel.frame = NSMakeRect(10, (160-labelsHeight)/2+5 + self.trackLabel.frame.size.height, 140, self.artistLabel.frame.size.height);
+    
+    self.trackLabel.frame = NSMakeRect(10, (self.window.frame.size.height-labelsHeight)/2-5, self.window.frame.size.width-20, self.trackLabel.frame.size.height);
+    self.artistLabel.frame = NSMakeRect(10, (self.window.frame.size.height-labelsHeight)/2+5 + self.trackLabel.frame.size.height, self.window.frame.size.width-20, self.artistLabel.frame.size.height);
 }
 
 -(void)mouseEntered:(NSEvent *)event
@@ -340,7 +342,26 @@
         default:
             break;
     }
+    CoverSize coverSize = coverSettingsController.coverSize;
+    [self resizeCoverToSize:coverSize animated:NO];
     [self.window makeKeyAndOrderFront:nil];
+}
+
+-(void)resizeCoverToSize:(CoverSize)coverSize animated:(BOOL)animated
+{
+    switch (coverSize) {
+        case 1:
+            [self.window setFrame:NSRectFromCGRect(CGRectMake(self.window.frame.origin.x, self.window.frame.origin.y, 160, 160)) display:YES animate:animated];
+            break;
+        case 2:
+            [self.window setFrame:NSRectFromCGRect(CGRectMake(self.window.frame.origin.x, self.window.frame.origin.y, 200, 200)) display:YES animate:animated];
+            break;
+        case 3:
+            [self.window setFrame:NSRectFromCGRect(CGRectMake(self.window.frame.origin.x, self.window.frame.origin.y, 240, 240)) display:YES animate:animated];
+            break;
+        default:
+            break;
+    }
 }
 
 

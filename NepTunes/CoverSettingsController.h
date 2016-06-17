@@ -14,10 +14,17 @@ typedef NS_ENUM(NSInteger, CoverPosition) {
     CoverPositionMixedInWithOtherWindows
 };
 
+typedef NS_ENUM(NSInteger, CoverSize) {
+    CoverSizeSmall = 1,
+    CoverSizeMedium,
+    CoverSizeLarge
+};
+
 @interface CoverSettingsController : NSObject
 
 @property (nonatomic) BOOL showCover;
 @property (nonatomic) CoverPosition coverPosition;
+@property (nonatomic) CoverSize coverSize;
 @property (nonatomic) BOOL ignoreMissionControl;
 @property (nonatomic) BOOL bringiTunesToFrontWithDoubleClick;
 
@@ -25,5 +32,6 @@ typedef NS_ENUM(NSInteger, CoverPosition) {
 @property (nonatomic) IBOutlet NSPopUpButton *albumCoverPosition;
 @property (nonatomic) IBOutlet NSButton *ignoreMissionControlCheckbox;
 @property (nonatomic) IBOutlet NSButton *bringiTunesToFrontWithDoubleClickCheckbox;
+@property (nonatomic) IBOutlet NSPopUpButton *coverSizePopUp;
 
 @end

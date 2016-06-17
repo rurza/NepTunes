@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CoverSettingsController.h"
 @class Track;
 @class ControlViewController;
 
@@ -18,5 +19,5 @@
 -(void)fadeCover:(BOOL)direction;
 -(void)showControls;
 -(void)hideControls;
-
+-(void)resizeCoverToSize:(CoverSize)coverSize animated:(BOOL)animated;
 @end
