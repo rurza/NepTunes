@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22EF649A136B5A13D9820D52 /* libPods-NepTunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F40412F08368D791BCDE48 /* libPods-NepTunes.a */; };
 		5B07341E1C6CF74900167934 /* CoverWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B07341D1C6CF74900167934 /* CoverWindow.xib */; };
 		5B0734221C6E382D00167934 /* CoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0734211C6E382D00167934 /* CoverView.m */; };
 		5B0734251C6E495B00167934 /* GetCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0734241C6E495B00167934 /* GetCover.m */; };
@@ -52,7 +53,6 @@
 		5BF5AA0E1C4EB02B00C4FBA3 /* NepTunesHelperApp.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5BF5AA0C1C4EAFC500C4FBA3 /* NepTunesHelperApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5BF5AA101C4EB06600C4FBA3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */; };
 		5BFB29E91A1D800900EA87AA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5BFB29E81A1D800900EA87AA /* dsa_pub.pem */; };
-		D8C4A752E2C96037C9D41386 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0526E64B1C1E28D1C451319F /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,9 +95,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0526E64B1C1E28D1C451319F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		10263035E2E364638E5DACEA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		5B07341D1C6CF74900167934 /* CoverWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoverWindow.xib; sourceTree = "<group>"; };
 		5B0734201C6E382D00167934 /* CoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverView.h; sourceTree = "<group>"; };
 		5B0734211C6E382D00167934 /* CoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverView.m; sourceTree = "<group>"; };
@@ -158,6 +155,7 @@
 		5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesCoverController.m; sourceTree = "<group>"; };
 		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		5BBD4C4F1C34562000AFA182 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
+		5BC62D801D1471EE00144239 /* ReceiptValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptValidation.h; sourceTree = "<group>"; };
 		5BC6A8DF1C610C83009C3E9F /* MusicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicController.h; sourceTree = "<group>"; };
 		5BC6A8E01C610C83009C3E9F /* MusicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicController.m; sourceTree = "<group>"; };
 		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
@@ -184,6 +182,9 @@
 		5BF5AA071C4EAFC400C4FBA3 /* NepTunesHelperApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NepTunesHelperApp.xcodeproj; path = NepTunesHelperApp/NepTunesHelperApp.xcodeproj; sourceTree = "<group>"; };
 		5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		5BFB29E81A1D800900EA87AA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		8505187C6FF750AD072AEE30 /* Pods-NepTunes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NepTunes.release.xcconfig"; path = "Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes.release.xcconfig"; sourceTree = "<group>"; };
+		96ADFC0882B2178583C4A26F /* Pods-NepTunes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NepTunes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes.debug.xcconfig"; sourceTree = "<group>"; };
+		E3F40412F08368D791BCDE48 /* libPods-NepTunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NepTunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,7 +194,7 @@
 			files = (
 				5BAE70F91C50030C00779081 /* SystemConfiguration.framework in Frameworks */,
 				5BF5AA101C4EB06600C4FBA3 /* ServiceManagement.framework in Frameworks */,
-				D8C4A752E2C96037C9D41386 /* libPods.a in Frameworks */,
+				22EF649A136B5A13D9820D52 /* libPods-NepTunes.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,21 +208,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2D4E72722E193F7BAEB5AA5E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				10263035E2E364638E5DACEA /* Pods.debug.xcconfig */,
-				55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		3FADD2DEFA1DD8585146D47F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				5BAE70F81C50030C00779081 /* SystemConfiguration.framework */,
 				5BF5AA0F1C4EB06600C4FBA3 /* ServiceManagement.framework */,
-				0526E64B1C1E28D1C451319F /* libPods.a */,
+				E3F40412F08368D791BCDE48 /* libPods-NepTunes.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -381,9 +373,9 @@
 				5BDD6B0F1A1D0C95001D87D6 /* NepTunes */,
 				5BDD6B231A1D0C95001D87D6 /* NepTunesTests */,
 				5BDD6B0E1A1D0C95001D87D6 /* Products */,
-				2D4E72722E193F7BAEB5AA5E /* Pods */,
 				3FADD2DEFA1DD8585146D47F /* Frameworks */,
 				5BF5AA071C4EAFC400C4FBA3 /* NepTunesHelperApp.xcodeproj */,
+				8561704ABA57BC84DA1BC765 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -420,6 +412,7 @@
 		5BDD6B101A1D0C95001D87D6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5BC62D801D1471EE00144239 /* ReceiptValidation.h */,
 				5B9F073B1C722C5B00F73566 /* NepTunes-Bridging-Header.h */,
 				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,
 				5BFB29E81A1D800900EA87AA /* dsa_pub.pem */,
@@ -454,6 +447,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8561704ABA57BC84DA1BC765 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				96ADFC0882B2178583C4A26F /* Pods-NepTunes.debug.xcconfig */,
+				8505187C6FF750AD072AEE30 /* Pods-NepTunes.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -461,15 +463,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5BDD6B2A1A1D0C95001D87D6 /* Build configuration list for PBXNativeTarget "NepTunes" */;
 			buildPhases = (
-				F9463E67AFCE13783806692B /* Check Pods Manifest.lock */,
+				1AA37BA465A03F20F13218D9 /* [CP] Check Pods Manifest.lock */,
 				5BDD6B091A1D0C95001D87D6 /* Sources */,
 				5BDD6B0A1A1D0C95001D87D6 /* Frameworks */,
 				5BDD6B0B1A1D0C95001D87D6 /* Resources */,
-				7D3738EEEB75323A52629190 /* Copy Pods Resources */,
 				5B3751291A1D38DC007106D7 /* CopyFiles */,
 				5BE3C9B31B7BD5F70095DA69 /* ShellScript */,
 				5BF5AA0D1C4EB00B00C4FBA3 /* CopyFiles */,
-				924D442E5E3752D8B9FB2B01 /* Embed Pods Frameworks */,
+				DF1243A01C47FEC2F8B4E9EC /* [CP] Embed Pods Frameworks */,
+				6332649122EE30E5D0B9D258 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -587,6 +589,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1AA37BA465A03F20F13218D9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		5BE3C9B31B7BD5F70095DA69 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -600,49 +617,34 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
-		7D3738EEEB75323A52629190 /* Copy Pods Resources */ = {
+		6332649122EE30E5D0B9D258 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		924D442E5E3752D8B9FB2B01 /* Embed Pods Frameworks */ = {
+		DF1243A01C47FEC2F8B4E9EC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F9463E67AFCE13783806692B /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -797,7 +799,7 @@
 		};
 		5BDD6B2B1A1D0C95001D87D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10263035E2E364638E5DACEA /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 96ADFC0882B2178583C4A26F /* Pods-NepTunes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -845,7 +847,7 @@
 		};
 		5BDD6B2C1A1D0C95001D87D6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55E2F3B3C68C8C85EC24CD44 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 8505187C6FF750AD072AEE30 /* Pods-NepTunes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

@@ -34,7 +34,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods.xcscheme</key>
+		<key>Pods-NepTunes.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -52,6 +52,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1B88A6606BF9D0FAB7829A0E4B896BC0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>560ABDDE1168AE16EFF9F5E4DF011F5C</key>
 		<dict>
 			<key>primary</key>
@@ -67,6 +72,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>AAAFBC36CE11334E5C685CF24E2270FA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>ABAF7B8ACBF1EFEA5312E2690CDAA658</key>
 		<dict>
 			<key>primary</key>
@@ -77,22 +87,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B6D174A8D6F8A3588007D47D83F73039</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>D7CE8B15DBC37B6857815D253088A25E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>E1CD368B83CE2370B066D5F5A8DCD811</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F8D13750E8C210E7C2323EB6E0C7FBFA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
