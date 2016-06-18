@@ -156,6 +156,7 @@
 		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		5BBD4C4F1C34562000AFA182 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
 		5BC62D801D1471EE00144239 /* ReceiptValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptValidation.h; sourceTree = "<group>"; };
+		5BC62D861D149E0A00144239 /* Troll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Troll.h; sourceTree = "<group>"; };
 		5BC6A8DF1C610C83009C3E9F /* MusicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicController.h; sourceTree = "<group>"; };
 		5BC6A8E01C610C83009C3E9F /* MusicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicController.m; sourceTree = "<group>"; };
 		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
@@ -412,6 +413,7 @@
 		5BDD6B101A1D0C95001D87D6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5BC62D861D149E0A00144239 /* Troll.h */,
 				5BC62D801D1471EE00144239 /* ReceiptValidation.h */,
 				5B9F073B1C722C5B00F73566 /* NepTunes-Bridging-Header.h */,
 				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,

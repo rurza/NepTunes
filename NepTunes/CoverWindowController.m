@@ -253,9 +253,11 @@
     self.artistLabel.frame = NSMakeRect(10, (self.window.frame.size.height-labelsHeight)/2+5 + self.trackLabel.frame.size.height, self.window.frame.size.width-20, self.artistLabel.frame.size.height);
 }
 
+#pragma mark - Hover area
+
 -(void)mouseEntered:(NSEvent *)event
 {
-    self.controlsTimer = [NSTimer scheduledTimerWithTimeInterval:.1f target:self selector:@selector(showControlsWithDelay:) userInfo:nil repeats:NO];
+    self.controlsTimer = [NSTimer scheduledTimerWithTimeInterval:.05f target:self selector:@selector(showControlsWithDelay:) userInfo:nil repeats:NO];
 }
 
 -(void)mouseExited:(NSEvent *)theEvent
@@ -270,14 +272,15 @@
 
 -(void)showControls
 {
+    MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
     if (!self.popoverIsShown) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(1);
-        controlOpacity.duration = 0.3;
+        controlOpacity.duration = 0.2;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
         [self.controlViewController updateVolumeIcon];
-        if ((![MusicPlayer sharedPlayer].currentTrack.artist.length &&
-            ![MusicPlayer sharedPlayer].currentTrack.trackName.length &&
+        if ((!musicPlayer.currentTrack.artist.length &&
+            !musicPlayer.currentTrack.trackName.length &&
             ![SettingsController sharedSettings].session) || (![SettingsController sharedSettings].session && ![SettingsController sharedSettings].integrationWithMusicPlayer)) {
             self.controlViewController.loveButton.alphaValue = 0.5;
             self.controlViewController.loveButton.enabled = NO;
@@ -286,8 +289,64 @@
             self.controlViewController.loveButton.enabled = YES;
         }
      }
+    
+    if (musicPlayer.currentPlayer == MusicPlayeriTunes) {
+        [self updateUIbasedOnCurrentTrackRating];
+    } else {
+        self.controlViewController.ratingView.hidden = YES;
+    }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
+}
+
+-(void)updateUIbasedOnCurrentTrackRating
+{
+    MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+
+    NSInteger rating = musicPlayer.currentTrack.rating;
+    
+    NSImage *fullStarImage = [NSImage imageNamed:@"star-full"];
+    fullStarImage.template = YES;
+    NSImage *emptyStarImage = [NSImage imageNamed:@"star-empty"];
+    emptyStarImage.template = YES;
+    
+    [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+        starButton.image = emptyStarImage;
+    }];
+    
+    if (rating > 80) {
+        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+            starButton.image = fullStarImage;
+        }];
+    } else if (rating > 60) {
+        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx == 4) {
+                *stop = YES;
+            } else {
+                starButton.image = fullStarImage;
+            }
+        }];
+    } else if (rating > 40) {
+        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx == 3) {
+                *stop = YES;
+            } else {
+                starButton.image = fullStarImage;
+            }
+        }];
+    } else if (rating > 20) {
+        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx == 2) {
+                *stop = YES;
+            } else {
+                starButton.image = fullStarImage;
+            }
+        }];
+    } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+        if (rating != 0) {
+            self.controlViewController.star01Button.image = fullStarImage;
+        }
+    }
 }
 
 -(void)hideControls
@@ -295,6 +354,7 @@
     if (!self.popoverIsShown && !self.controlsTimer) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(0);
+        controlOpacity.duration = 0.2;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
     }
     [self.controlsTimer invalidate];
@@ -347,6 +407,8 @@
     [self.window makeKeyAndOrderFront:nil];
 }
 
+#pragma mark - Resizing
+
 -(void)resizeCoverToSize:(CoverSize)coverSize animated:(BOOL)animated
 {
     switch (coverSize) {
@@ -362,6 +424,13 @@
         default:
             break;
     }
+    [self.window.contentView removeTrackingArea:self.hoverArea];
+    self.hoverArea = nil;
+    
+    self.hoverArea = [[NSTrackingArea alloc] initWithRect:self.window.contentView.frame
+                                                  options:NSTrackingMouseEnteredAndExited | NSTrackingAssumeInside | NSTrackingActiveAlways
+                                                    owner:self userInfo:nil];
+    [self.window.contentView addTrackingArea:self.hoverArea];
 }
 
 

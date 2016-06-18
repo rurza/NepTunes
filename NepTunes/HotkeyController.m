@@ -94,6 +94,7 @@ static void *MASObservingContext = &MASObservingContext;
 
 -(void)bindShortcutsToAction
 {
+//    __weak typeof(self) weakSelf = self;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
@@ -379,38 +380,40 @@ static void *MASObservingContext = &MASObservingContext;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kDecreaseRatingShortcut
      toAction:^{
-         if (self.hudWindowController.isVisible) {
-             [self.hudWindowController updateCurrentHUD];
-         } else {
-             self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             [self.hudWindowController presentHUD];
-         }
-         self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
-         NSInteger rating = musicPlayer.currentTrack.rating;
-         if (rating > 80) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
-             musicPlayer.currentTrack.rating = 80;
-         } else if (rating > 60) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
-             musicPlayer.currentTrack.rating = 60;
-         } else if (rating > 40) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
-             musicPlayer.currentTrack.rating = 40;
-         } else if (rating > 20) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
-             musicPlayer.currentTrack.rating = 20;
-         } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
-             musicPlayer.currentTrack.rating = 00;
-         } else {
-             self.hudWindowController.starsImageView.hidden = YES;
-             self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
-             self.hudWindowController.bottomLabel.hidden = NO;
-         }
-         self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
-         self.hudWindowController.starsImageView.image.template = YES;
-         self.hudWindowController.centerImageView.image.template = YES;
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (self.hudWindowController.isVisible) {
+                 [self.hudWindowController updateCurrentHUD];
+             } else {
+                 self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+                 [self.hudWindowController presentHUD];
+             }
+             self.hudWindowController.bottomVisualEffectView.hidden = YES;
+             MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+             NSInteger rating = musicPlayer.currentTrack.rating;
+             if (rating > 80) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
+                 musicPlayer.currentTrack.rating = 80;
+             } else if (rating > 60) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
+                 musicPlayer.currentTrack.rating = 60;
+             } else if (rating > 40) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
+                 musicPlayer.currentTrack.rating = 40;
+             } else if (rating > 20) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
+                 musicPlayer.currentTrack.rating = 20;
+             } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
+                 musicPlayer.currentTrack.rating = 00;
+             } else {
+                 self.hudWindowController.starsImageView.hidden = YES;
+                 self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
+                 self.hudWindowController.bottomLabel.hidden = NO;
+             }
+             self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
+             self.hudWindowController.starsImageView.image.template = YES;
+             self.hudWindowController.centerImageView.image.template = YES;
+         });
      }];
 
     [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kPlayPauseShortcut toAction:^{

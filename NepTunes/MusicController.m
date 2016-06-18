@@ -65,7 +65,7 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     [self setScrobblerCurrentTrack];
     [self updateCover];
     [self updateMenu];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:self userInfo:nil];
 
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:nil repeats:NO];
 }

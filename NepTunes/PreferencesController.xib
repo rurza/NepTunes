@@ -255,7 +255,7 @@ DQ
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="310" width="512" height="369"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
                 <rect key="frame" x="0.0" y="0.0" width="512" height="369"/>
                 <autoresizingMask key="autoresizingMask"/>
