@@ -138,6 +138,8 @@
         [self updateOriginsOfLabels];
         return;
     }
+//    [self.window.contentView setNeedsDisplay:YES];
+//    [self.window.contentView setNeedsLayout:YES];
     self.artistViewOriginalRect = self.window.coverView.artistView.frame;
     self.changeTrackAnimation = YES;
     CALayer *layer = self.window.coverView.titleLabel.layer;
@@ -192,7 +194,7 @@
             titleLabelOpacity.toValue = @(1);
             titleLabelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
                 weakSelf.changeTrackAnimation = NO;
-                [weakSelf.window.contentView setNeedsDisplay:YES];
+//                [weakSelf.window.contentView setNeedsDisplay:YES];
             };
             [layer pop_addAnimation:titleLabelOpacity forKey:@"titlelabel opacity"];
         });

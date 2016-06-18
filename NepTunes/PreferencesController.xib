@@ -388,7 +388,7 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button toolTip="Tags like &quot;(Live)&quot;, &quot;[demo]&quot; will be removed." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K83-dG-ved">
+                <button toolTip="Tags like &quot;(Live)&quot;, &quot;[demo]&quot; etc. will be removed from track titles for scrobbler." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K83-dG-ved">
                     <rect key="frame" x="276" y="158" width="181" height="18"/>
                     <buttonCell key="cell" type="check" title="Cut extra tags in titles" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="TAj-hw-ezC">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -400,7 +400,7 @@ DQ
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="Oj8-m3-exb">
                     <rect key="frame" x="276" y="126" width="218" height="34"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Tags like &quot;(Live)&quot;, &quot;[demo]&quot; will be removed." id="ZIO-gY-U3q">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Tags like &quot;(Live)&quot;, &quot;[demo]&quot; etc. will be removed from track titles." id="ZIO-gY-U3q">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
