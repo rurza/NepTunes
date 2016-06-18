@@ -126,7 +126,7 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
      */
     if (self._currentiTunesTrack.name.length && self._currentiTunesTrack.duration) {
         self.currentTrack = [Track trackWithiTunesTrack:self._currentiTunesTrack];
-        if ([userInfo objectForKey:@"Category"] || [(NSString *)[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"]) {
+        if ([userInfo objectForKey:@"Category"]) {
             self.currentTrack.trackKind = TrackKindUndefined;
         }
     } else {

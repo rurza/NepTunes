@@ -77,7 +77,16 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     if ((self.musicPlayer.playerState == MusicPlayerStatePlaying || self.delegate.tracks.count) && [SettingsController sharedSettings].username) {
         __weak typeof(self) weakSelf = self;
-        [self.scrobbler sendScrobbledTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
+        NSString *filteredName = [track.trackName copy];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            AppDelegate *appDelegate = [NSApplication sharedApplication].delegate;
+            for (NSString *tag in appDelegate.tagsToCut) {
+                if ([filteredName containsString:tag]) {
+                    filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@""];
+                }
+            }
+        }
+        [self.scrobbler sendScrobbledTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
                 [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
             }
@@ -136,7 +145,16 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     if (self.musicPlayer.isPlayerRunning) {
         if (self.scrobbler.session && self.musicPlayer.playerState == MusicPlayerStatePlaying) {
             __weak typeof(self) weakSelf = self;
-            [self.scrobbler sendNowPlayingTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
+            NSString *filteredName = [track.trackName copy];
+            if ([SettingsController sharedSettings].cutExtraTags) {
+                AppDelegate *appDelegate = [NSApplication sharedApplication].delegate;
+                for (NSString *tag in appDelegate.tagsToCut) {
+                    if ([filteredName containsString:tag]) {
+                        filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@""];
+                    }
+                }
+            }
+            [self.scrobbler sendNowPlayingTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
                 
             } failureHandler:^(NSError *error) {
                 if ([OfflineScrobbler sharedInstance].areWeOffline) {
@@ -163,7 +181,16 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     if (self.scrobbler.session && self.musicPlayer.isPlayerRunning) {
         __weak typeof(self) weakSelf = self;
-        [self.scrobbler loveTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
+        NSString *filteredName = [track.trackName copy];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            AppDelegate *appDelegate = [NSApplication sharedApplication].delegate;
+            for (NSString *tag in appDelegate.tagsToCut) {
+                if ([filteredName containsString:tag]) {
+                    filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@""];
+                }
+            }
+        }
+        [self.scrobbler loveTrack:filteredName artist:track.artist successHandler:^(NSDictionary *result) {
             if ([SettingsController sharedSettings].debugMode) {
                 NSLog(@"%@ loved!", track);
             }

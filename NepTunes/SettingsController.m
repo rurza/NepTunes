@@ -33,6 +33,7 @@ static NSString *const kAutomaticallyShareOnTwitter = @"automaticallyShareOnTwit
 static NSString *const kSpotifyOnly = @"spotifyOnly";
 static NSString *const kiTunesOnly = @"iTunesOnly";
 static NSString *const kScrobbleFromSpotify = @"scrobbleFromSpotify";
+static NSString *const kCutExtraTags = @"cutExtraTags";
 
 static NSString *const kDebugMode = @"debugMode";
 
@@ -67,6 +68,7 @@ static NSString *const kDebugMode = @"debugMode";
 @synthesize iTunesOnly = _iTunesOnly;
 @synthesize spotifyOnly = _spotifyOnly;
 @synthesize scrobbleFromSpotify = _scrobbleFromSpotify;
+@synthesize cutExtraTags = _cutExtraTags;
 
 #pragma mark - Initialization
 + (instancetype)sharedSettings
@@ -110,7 +112,8 @@ static NSString *const kDebugMode = @"debugMode";
                                                               kScrobblePodcastsAndiTunesUButton:    @NO,
                                                               kAutomaticallyShareOnTwitter:         @NO,
                                                               kAutomaticallyShareOnFacebook:        @NO,
-                                                              kScrobbleFromSpotify:                 @NO}];
+                                                              kScrobbleFromSpotify:                 @NO,
+                                                              kCutExtraTags:@NO}];
  
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -203,8 +206,9 @@ static NSString *const kDebugMode = @"debugMode";
     } else {
         self.scrobbleFromSpotifyCheckbox.state = NSOffState;
     }
-
-}
+    //Tags
+    self.cutExtraTagsCheckbox.state = self.cutExtraTags ? NSOnState : NSOffState;
+    }
 
 -(void)updateNumberOfRecentItemsPopUp
 {
@@ -335,17 +339,6 @@ static NSString *const kDebugMode = @"debugMode";
 {
     self.loveTrackOniTunes = sender.state;
     [[MenuController sharedController] updateMenu];
-//    if (sender.state) {
-//        __block NSAlert *alert = [[NSAlert alloc] init];
-//        alert.window.releasedWhenClosed = YES;
-//        alert.messageText = NSLocalizedString(@"Some limitations", nil);
-//        alert.informativeText = NSLocalizedString(@"Unfortunately, this functionality works only with music in your iTunes Library and with Apple Music radio. Be aware of this.", nil);
-//        alert.alertStyle = NSInformationalAlertStyle;
-//        [alert addButtonWithTitle:@"I'm aware"];
-//        self.alertWindow = alert.window;
-//        [alert beginSheetModalForWindow:self.preferencesController.window completionHandler:^(NSModalResponse returnCode) {
-//        }];
-//    }
 }
 
 -(IBAction)toggleShowSimilarArtistsOnAppleMusic:(NSButton *)sender
@@ -374,6 +367,12 @@ static NSString *const kDebugMode = @"debugMode";
 -(IBAction)toggleAutomaticallyShareOnTwitter:(NSButton *)sender;
 {
     self.automaticallyShareOnTwitter = sender.state;
+}
+
+//Tags
+-(void)toggleCutExtraTags:(NSButton *)sender
+{
+    self.cutExtraTags = sender.state;
 }
 
 
@@ -734,6 +733,22 @@ static NSString *const kDebugMode = @"debugMode";
 {
     _scrobbleFromSpotify = scrobbleFromSpotify;
     [self.userDefaults setObject:@(scrobbleFromSpotify) forKey:kScrobbleFromSpotify];
+    [self saveSettings];
+}
+
+#pragma mark  cutExtraTags
+-(BOOL)cutExtraTags
+{
+    if (!_cutExtraTags) {
+        _cutExtraTags = [[self.userDefaults objectForKey:kCutExtraTags] boolValue];
+    }
+    return _cutExtraTags;
+}
+
+-(void)setCutExtraTags:(BOOL)cutExtraTags
+{
+    _cutExtraTags = cutExtraTags;
+    [self.userDefaults setObject:@(cutExtraTags) forKey:kCutExtraTags];
     [self saveSettings];
 }
 

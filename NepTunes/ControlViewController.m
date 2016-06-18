@@ -38,12 +38,12 @@ static NSUInteger const kNumberOfFrames = 10;
     self.volumeButton.image.template = YES;
     self.shareButton.image.template = YES;
     
-    self.star01Button.image.template = YES;
-    self.star02Button.image.template = YES;
-    self.star03Button.image.template = YES;
-    self.star04Button.image.template = YES;
-    self.star05Button.image.template = YES;
-    self.ratingButtons = @[self.star01Button,self.star02Button,self.star03Button,self.star04Button,self.star05Button];
+//    self.star01Button.image.template = YES;
+//    self.star02Button.image.template = YES;
+//    self.star03Button.image.template = YES;
+//    self.star04Button.image.template = YES;
+//    self.star05Button.image.template = YES;
+//    self.ratingButtons = @[self.star01Button,self.star02Button,self.star03Button,self.star04Button,self.star05Button];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateControlsState:) name:kTrackInfoUpdated object:nil];
     [self.forwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(forwardButtonWasPressed:)]];
     [self.backwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(backwardButtonWasPressed:)]];
@@ -190,40 +190,40 @@ static NSUInteger const kNumberOfFrames = 10;
     [NSMenu popUpContextMenu:[MenuController sharedController].shareMenu withEvent:event forView:button];
 }
 
-- (IBAction)rateTrack:(NSButton *)sender
-{
-    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
-        
-        __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            Track *currentTrack = weakSelf.musicPlayer.currentTrack;
-            switch (sender.tag) {
-                case 1:
-                    if (currentTrack.rating > 0 && currentTrack.rating < 21) {
-                        currentTrack.rating = 0;
-                    } else {
-                        currentTrack.rating = 20;
-                    }
-                    break;
-                case 2:
-                    currentTrack.rating = 40;
-                    break;
-                case 3:
-                    currentTrack.rating = 60;
-                    break;
-                case 4:
-                    currentTrack.rating = 80;
-                    break;
-                case 5:
-                    currentTrack.rating = 100;
-                    break;
-                default:
-                    break;
-            }
-            [weakSelf.delegate updateUIbasedOnCurrentTrackRating];
-        });
-    }
-}
+//- (IBAction)rateTrack:(NSButton *)sender
+//{
+//    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+//        
+//        __weak typeof(self) weakSelf = self;
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            Track *currentTrack = weakSelf.musicPlayer.currentTrack;
+//            switch (sender.tag) {
+//                case 1:
+//                    if (currentTrack.rating > 0 && currentTrack.rating < 21) {
+//                        currentTrack.rating = 0;
+//                    } else {
+//                        currentTrack.rating = 20;
+//                    }
+//                    break;
+//                case 2:
+//                    currentTrack.rating = 40;
+//                    break;
+//                case 3:
+//                    currentTrack.rating = 60;
+//                    break;
+//                case 4:
+//                    currentTrack.rating = 80;
+//                    break;
+//                case 5:
+//                    currentTrack.rating = 100;
+//                    break;
+//                default:
+//                    break;
+//            }
+//            [weakSelf.delegate updateUIbasedOnCurrentTrackRating];
+//        });
+//    }
+//}
 
 
 

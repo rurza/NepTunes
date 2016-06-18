@@ -8,8 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 @interface AppDelegate : NSObject <NSApplicationDelegate>
+
+@property (nonatomic) NSArray *tagsToCut;
+
+
+-(void)downloadNewTagsLibraryAndStoreIt;
 
 @end
 

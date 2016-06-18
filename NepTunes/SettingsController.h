@@ -36,6 +36,7 @@
 @property (nonatomic) NSNumber *percentForScrobbleTime;
 @property (nonatomic) BOOL scrobblePodcastsAndiTunesU;
 @property (nonatomic) BOOL scrobbleFromSpotify;
+@property (nonatomic) BOOL cutExtraTags;
 
 @property (nonatomic,weak) IBOutlet NSPopUpButton *numberOfRecentItems;
 @property (nonatomic,weak) IBOutlet NSButton *launchAtLoginCheckbox;
@@ -45,6 +46,7 @@
 @property (nonatomic,weak) IBOutlet NSSlider *percentForScrobbleTimeSlider;
 @property (nonatomic,weak) IBOutlet NSButton *scrobblePodcastsAndiTunesUCheckbox;
 @property (nonatomic,weak) IBOutlet NSButton *scrobbleFromSpotifyCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *cutExtraTagsCheckbox;
 
 //Menu
 @property (nonatomic,weak) IBOutlet NSButton *integrationWithMusicPlayerCheckbox;
@@ -72,6 +74,8 @@
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender;
 
 - (IBAction)toggleScrobblePodcastsAndiTunesU:(NSButton *)sender;
+- (IBAction)toggleCutExtraTags:(NSButton *)sender;
+
 //Social
 -(IBAction)toggleAutomaticallyShareOnFacebook:(NSButton *)sender;
 -(IBAction)toggleAutomaticallyShareOnTwitter:(NSButton *)sender;

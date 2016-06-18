@@ -70,95 +70,8 @@
                     <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" horizontalHuggingPriority="251" verticalHuggingPriority="251" alphaValue="0.0" blendingMode="withinWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="eEN-fB-qSK" customClass="ControlView">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                         <subviews>
-                            <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dOj-Pt-XFk">
-                                <rect key="frame" x="8" y="68" width="144" height="24"/>
-                                <subviews>
-                                    <button verticalHuggingPriority="750" misplaced="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="Dm7-Nt-crx">
-                                        <rect key="frame" x="7" y="-1" width="25" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="Dm7-Nt-crx" secondAttribute="height" multiplier="1:1" id="Gew-tv-e9f"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="star-empty" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="PjC-RN-2iK">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="rateTrack:" target="wPK-FC-1hR" id="rR0-Eb-KoQ"/>
-                                        </connections>
-                                    </button>
-                                    <button verticalHuggingPriority="750" misplaced="YES" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="jQe-dZ-kJT">
-                                        <rect key="frame" x="33" y="-1" width="25" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="jQe-dZ-kJT" secondAttribute="height" multiplier="1:1" id="5cy-dd-mEE"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="star-empty" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="WdR-bC-N3j">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="rateTrack:" target="wPK-FC-1hR" id="uZp-oh-Kqh"/>
-                                        </connections>
-                                    </button>
-                                    <button verticalHuggingPriority="750" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="w88-AR-6s8">
-                                        <rect key="frame" x="60" y="0.0" width="24" height="24"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="w88-AR-6s8" secondAttribute="height" multiplier="1:1" id="6cw-zl-9Wf"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="star-empty" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="01P-Ff-RJd">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="rateTrack:" target="wPK-FC-1hR" id="ZbN-Bs-BKL"/>
-                                        </connections>
-                                    </button>
-                                    <button verticalHuggingPriority="750" misplaced="YES" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="w9d-le-QyB">
-                                        <rect key="frame" x="87" y="-1" width="25" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="w9d-le-QyB" secondAttribute="height" multiplier="1:1" id="g7e-wq-RZc"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="star-empty" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="pJL-YE-0Zd">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="rateTrack:" target="wPK-FC-1hR" id="vF8-ne-Cbb"/>
-                                        </connections>
-                                    </button>
-                                    <button verticalHuggingPriority="750" misplaced="YES" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="3zg-7f-iCO">
-                                        <rect key="frame" x="114" y="-1" width="25" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="3zg-7f-iCO" secondAttribute="height" multiplier="1:1" id="Zlc-8k-3sv"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="star-empty" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="1Cz-FE-Qms">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="rateTrack:" target="wPK-FC-1hR" id="h83-DT-7xR"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="w88-AR-6s8" firstAttribute="leading" secondItem="jQe-dZ-kJT" secondAttribute="trailing" constant="2" id="B04-0B-MGa"/>
-                                    <constraint firstItem="w88-AR-6s8" firstAttribute="height" secondItem="dOj-Pt-XFk" secondAttribute="height" id="Bdr-S8-fMQ"/>
-                                    <constraint firstItem="jQe-dZ-kJT" firstAttribute="height" secondItem="dOj-Pt-XFk" secondAttribute="height" id="Dbw-iq-A3a"/>
-                                    <constraint firstItem="jQe-dZ-kJT" firstAttribute="leading" secondItem="Dm7-Nt-crx" secondAttribute="trailing" constant="2" id="JJP-l6-lWH"/>
-                                    <constraint firstItem="w9d-le-QyB" firstAttribute="centerY" secondItem="dOj-Pt-XFk" secondAttribute="centerY" id="Nbr-FZ-7Sl"/>
-                                    <constraint firstItem="3zg-7f-iCO" firstAttribute="leading" secondItem="w9d-le-QyB" secondAttribute="trailing" constant="2" id="W0T-MY-5Vz"/>
-                                    <constraint firstItem="Dm7-Nt-crx" firstAttribute="height" secondItem="dOj-Pt-XFk" secondAttribute="height" id="W0l-Ui-ygq"/>
-                                    <constraint firstItem="w88-AR-6s8" firstAttribute="centerY" secondItem="dOj-Pt-XFk" secondAttribute="centerY" id="XPU-fF-FiZ"/>
-                                    <constraint firstItem="Dm7-Nt-crx" firstAttribute="centerY" secondItem="dOj-Pt-XFk" secondAttribute="centerY" id="bhh-wR-5h9"/>
-                                    <constraint firstItem="3zg-7f-iCO" firstAttribute="centerY" secondItem="dOj-Pt-XFk" secondAttribute="centerY" id="c9J-Kw-Uql"/>
-                                    <constraint firstItem="3zg-7f-iCO" firstAttribute="height" secondItem="dOj-Pt-XFk" secondAttribute="height" id="jkB-Fy-tGU"/>
-                                    <constraint firstItem="w9d-le-QyB" firstAttribute="height" secondItem="dOj-Pt-XFk" secondAttribute="height" id="qFn-Vu-64x"/>
-                                    <constraint firstItem="w9d-le-QyB" firstAttribute="leading" secondItem="w88-AR-6s8" secondAttribute="trailing" constant="2" id="u8K-m5-Y7f"/>
-                                    <constraint firstItem="w88-AR-6s8" firstAttribute="centerX" secondItem="dOj-Pt-XFk" secondAttribute="centerX" id="wFt-5j-QTf"/>
-                                    <constraint firstItem="jQe-dZ-kJT" firstAttribute="centerY" secondItem="dOj-Pt-XFk" secondAttribute="centerY" id="xyh-TV-3Yi"/>
-                                </constraints>
-                            </customView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gZi-jA-PJl">
-                                <rect key="frame" x="116" y="111" width="24" height="24"/>
+                                <rect key="frame" x="116" y="101" width="24" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="volume-max" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="3Rg-nk-D6a">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -168,7 +81,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wqb-zi-jZx">
-                                <rect key="frame" x="116" y="25" width="24" height="24"/>
+                                <rect key="frame" x="116" y="35" width="24" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="next track" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="Nen-L2-yEg">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -178,7 +91,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ECV-yR-0XE">
-                                <rect key="frame" x="20" y="25" width="24" height="24"/>
+                                <rect key="frame" x="20" y="35" width="24" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="previous track" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="Iry-jC-8Ve">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -188,7 +101,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aHP-v2-BEZ">
-                                <rect key="frame" x="68" y="111" width="24" height="24"/>
+                                <rect key="frame" x="68" y="101" width="24" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="heart" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="otH-Xw-vlu">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -198,14 +111,14 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gec-cC-nWn">
-                                <rect key="frame" x="20" y="111" width="24" height="24"/>
+                                <rect key="frame" x="20" y="101" width="24" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="share" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="LM7-zx-IEb">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CbF-XY-3cq">
-                                <rect key="frame" x="68" y="25" width="24" height="24"/>
+                                <rect key="frame" x="68" y="35" width="24" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="play" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="0kb-bQ-bKi">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -216,33 +129,29 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="wqb-zi-jZx" secondAttribute="bottom" constant="25" id="2aN-le-MgW"/>
+                            <constraint firstAttribute="bottom" secondItem="wqb-zi-jZx" secondAttribute="bottom" constant="35" id="2aN-le-MgW"/>
                             <constraint firstItem="aHP-v2-BEZ" firstAttribute="centerX" secondItem="eEN-fB-qSK" secondAttribute="centerX" id="4lJ-gV-z0K"/>
                             <constraint firstItem="wqb-zi-jZx" firstAttribute="height" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="0.15" id="6dB-Sk-3Wj"/>
                             <constraint firstItem="gZi-jA-PJl" firstAttribute="height" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="0.15" id="8qw-tk-XlL"/>
                             <constraint firstItem="CbF-XY-3cq" firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="width" multiplier="0.15" id="Akj-xm-Nez"/>
-                            <constraint firstItem="dOj-Pt-XFk" firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="width" multiplier="0.9" id="B5Z-wV-ynw"/>
                             <constraint firstAttribute="trailing" secondItem="gZi-jA-PJl" secondAttribute="trailing" constant="20" id="Buh-St-BDj"/>
                             <constraint firstItem="ECV-yR-0XE" firstAttribute="height" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="0.15" id="MS0-lR-kuw"/>
                             <constraint firstItem="ECV-yR-0XE" firstAttribute="leading" secondItem="eEN-fB-qSK" secondAttribute="leading" constant="20" id="OpO-kt-8fN"/>
                             <constraint firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="1:1" id="Q9C-4Y-HqI"/>
                             <constraint firstItem="aHP-v2-BEZ" firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="width" multiplier="0.15" id="RiN-GS-EGf"/>
-                            <constraint firstItem="aHP-v2-BEZ" firstAttribute="top" secondItem="eEN-fB-qSK" secondAttribute="top" constant="25" id="RvR-oZ-k9w"/>
+                            <constraint firstItem="aHP-v2-BEZ" firstAttribute="top" secondItem="eEN-fB-qSK" secondAttribute="top" constant="35" id="RvR-oZ-k9w"/>
                             <constraint firstItem="CbF-XY-3cq" firstAttribute="centerX" secondItem="eEN-fB-qSK" secondAttribute="centerX" id="SUL-kL-J3F"/>
-                            <constraint firstItem="dOj-Pt-XFk" firstAttribute="centerY" secondItem="eEN-fB-qSK" secondAttribute="centerY" id="TxE-hJ-IEN"/>
-                            <constraint firstAttribute="bottom" secondItem="ECV-yR-0XE" secondAttribute="bottom" constant="25" id="Ux9-KA-Pgl"/>
+                            <constraint firstAttribute="bottom" secondItem="ECV-yR-0XE" secondAttribute="bottom" constant="35" id="Ux9-KA-Pgl"/>
                             <constraint firstItem="ECV-yR-0XE" firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="width" multiplier="0.15" id="XNi-rP-7E6"/>
                             <constraint firstItem="CbF-XY-3cq" firstAttribute="height" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="0.15" id="YB0-4N-bDO"/>
                             <constraint firstItem="Gec-cC-nWn" firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="width" multiplier="0.15" id="Zvg-Pb-PLx"/>
                             <constraint firstItem="wqb-zi-jZx" firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="width" multiplier="0.15" id="aZz-ql-8Oc"/>
-                            <constraint firstAttribute="bottom" secondItem="CbF-XY-3cq" secondAttribute="bottom" constant="25" id="ePX-g5-dAy"/>
-                            <constraint firstItem="dOj-Pt-XFk" firstAttribute="centerX" secondItem="eEN-fB-qSK" secondAttribute="centerX" id="fjz-9Q-jdi"/>
-                            <constraint firstItem="gZi-jA-PJl" firstAttribute="top" secondItem="eEN-fB-qSK" secondAttribute="top" constant="25" id="nNN-tV-Kpe"/>
+                            <constraint firstAttribute="bottom" secondItem="CbF-XY-3cq" secondAttribute="bottom" constant="35" id="ePX-g5-dAy"/>
+                            <constraint firstItem="gZi-jA-PJl" firstAttribute="top" secondItem="eEN-fB-qSK" secondAttribute="top" constant="35" id="nNN-tV-Kpe"/>
                             <constraint firstItem="Gec-cC-nWn" firstAttribute="leading" secondItem="eEN-fB-qSK" secondAttribute="leading" constant="20" id="pQM-TT-7I6"/>
-                            <constraint firstItem="dOj-Pt-XFk" firstAttribute="height" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="0.15" id="pYt-Jm-qY2"/>
                             <constraint firstItem="aHP-v2-BEZ" firstAttribute="height" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="0.15" id="q0F-xm-Fsc"/>
                             <constraint firstItem="gZi-jA-PJl" firstAttribute="width" secondItem="eEN-fB-qSK" secondAttribute="width" multiplier="0.15" id="qYm-eZ-Szh"/>
-                            <constraint firstItem="Gec-cC-nWn" firstAttribute="top" secondItem="eEN-fB-qSK" secondAttribute="top" constant="25" id="rZ1-v7-Kld"/>
+                            <constraint firstItem="Gec-cC-nWn" firstAttribute="top" secondItem="eEN-fB-qSK" secondAttribute="top" constant="35" id="rZ1-v7-Kld"/>
                             <constraint firstAttribute="trailing" secondItem="wqb-zi-jZx" secondAttribute="trailing" constant="20" id="rxx-Q5-bME"/>
                             <constraint firstItem="Gec-cC-nWn" firstAttribute="height" secondItem="eEN-fB-qSK" secondAttribute="height" multiplier="0.15" id="zDM-ff-vp7"/>
                         </constraints>
@@ -271,13 +180,7 @@
                 <outlet property="forwardButton" destination="wqb-zi-jZx" id="3qK-Oa-kAG"/>
                 <outlet property="loveButton" destination="aHP-v2-BEZ" id="HNC-tc-9yU"/>
                 <outlet property="playButton" destination="CbF-XY-3cq" id="GT2-Ym-xAg"/>
-                <outlet property="ratingView" destination="dOj-Pt-XFk" id="c8k-aF-6xx"/>
                 <outlet property="shareButton" destination="Gec-cC-nWn" id="JO3-XP-LRA"/>
-                <outlet property="star01Button" destination="Dm7-Nt-crx" id="gR2-H5-eWz"/>
-                <outlet property="star02Button" destination="jQe-dZ-kJT" id="uGo-tF-xXE"/>
-                <outlet property="star03Button" destination="w88-AR-6s8" id="aan-nn-m6a"/>
-                <outlet property="star04Button" destination="w9d-le-QyB" id="xkO-Rj-vol"/>
-                <outlet property="star05Button" destination="3zg-7f-iCO" id="0GA-p5-MJH"/>
                 <outlet property="volumeButton" destination="gZi-jA-PJl" id="bjn-sH-MV8"/>
                 <outlet property="volumePopover" destination="KhR-FA-QIG" id="gac-dJ-3RZ"/>
             </connections>
@@ -315,7 +218,6 @@
         <image name="play" width="24" height="24"/>
         <image name="previous track" width="24" height="24"/>
         <image name="share" width="24" height="24"/>
-        <image name="star-empty" width="24" height="24"/>
         <image name="volume-max" width="24" height="24"/>
     </resources>
 </document>

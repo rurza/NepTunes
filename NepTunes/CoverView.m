@@ -14,11 +14,13 @@
 {
     self.wantsLayer = YES;
     self.layer.cornerRadius = 6;
-    [self.layer setBackgroundColor:CGColorCreateGenericRGB(0.0, 0.0, 0.0, 1)];
+    CGColorRef background = CGColorCreateGenericRGB(0.0, 0.0, 0.0, 1);
+    [self.layer setBackgroundColor:background];
 
     [self setupArtistView];
     [self setupTitleLabel];
     self.layer.masksToBounds = YES;
+    CGColorRelease(background);
 }
 
 -(void)setupTitleLabel

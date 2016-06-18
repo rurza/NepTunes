@@ -45,6 +45,7 @@
 {
     [self.shadowView.layer setBackgroundColor:CGColorCreateGenericRGB(0.0, 0.0, 0.0, 1)];
     [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil andFullInfo:NO];
+    CGColorRelease(self.shadowView.layer.backgroundColor);
 }
 
 -(void)updateCover:(NSNotification *)note
@@ -293,6 +294,5 @@
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kTrackInfoUpdated object:nil];
-    CGColorRelease(self.shadowView.layer.backgroundColor);
 }
 @end

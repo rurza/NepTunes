@@ -192,6 +192,7 @@
             titleLabelOpacity.toValue = @(1);
             titleLabelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
                 weakSelf.changeTrackAnimation = NO;
+                [weakSelf.window.contentView setNeedsDisplay:YES];
             };
             [layer pop_addAnimation:titleLabelOpacity forKey:@"titlelabel opacity"];
         });
@@ -290,64 +291,65 @@
         }
      }
     
-    if (musicPlayer.currentPlayer == MusicPlayeriTunes) {
-        [self updateUIbasedOnCurrentTrackRating];
-    } else {
-        self.controlViewController.ratingView.hidden = YES;
-    }
+    
+//    if (musicPlayer.currentPlayer == MusicPlayeriTunes) {
+//        [self updateUIbasedOnCurrentTrackRating];
+//    } else {
+//        self.controlViewController.ratingView.hidden = YES;
+//    }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
 }
 
--(void)updateUIbasedOnCurrentTrackRating
-{
-    MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
-
-    NSInteger rating = musicPlayer.currentTrack.rating;
-    
-    NSImage *fullStarImage = [NSImage imageNamed:@"star-full"];
-    fullStarImage.template = YES;
-    NSImage *emptyStarImage = [NSImage imageNamed:@"star-empty"];
-    emptyStarImage.template = YES;
-    
-    [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-        starButton.image = emptyStarImage;
-    }];
-    
-    if (rating > 80) {
-        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-            starButton.image = fullStarImage;
-        }];
-    } else if (rating > 60) {
-        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx == 4) {
-                *stop = YES;
-            } else {
-                starButton.image = fullStarImage;
-            }
-        }];
-    } else if (rating > 40) {
-        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx == 3) {
-                *stop = YES;
-            } else {
-                starButton.image = fullStarImage;
-            }
-        }];
-    } else if (rating > 20) {
-        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx == 2) {
-                *stop = YES;
-            } else {
-                starButton.image = fullStarImage;
-            }
-        }];
-    } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
-        if (rating != 0) {
-            self.controlViewController.star01Button.image = fullStarImage;
-        }
-    }
-}
+//-(void)updateUIbasedOnCurrentTrackRating
+//{
+//    MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+//
+//    NSInteger rating = musicPlayer.currentTrack.rating;
+//    
+//    NSImage *fullStarImage = [NSImage imageNamed:@"star-full"];
+//    fullStarImage.template = YES;
+//    NSImage *emptyStarImage = [NSImage imageNamed:@"star-empty"];
+//    emptyStarImage.template = YES;
+//    
+//    [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//        starButton.image = emptyStarImage;
+//    }];
+//    
+//    if (rating > 80) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            starButton.image = fullStarImage;
+//        }];
+//    } else if (rating > 60) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (idx == 4) {
+//                *stop = YES;
+//            } else {
+//                starButton.image = fullStarImage;
+//            }
+//        }];
+//    } else if (rating > 40) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (idx == 3) {
+//                *stop = YES;
+//            } else {
+//                starButton.image = fullStarImage;
+//            }
+//        }];
+//    } else if (rating > 20) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (idx == 2) {
+//                *stop = YES;
+//            } else {
+//                starButton.image = fullStarImage;
+//            }
+//        }];
+//    } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+//        if (rating != 0) {
+//            self.controlViewController.star01Button.image = fullStarImage;
+//        }
+//    }
+//}
 
 -(void)hideControls
 {
