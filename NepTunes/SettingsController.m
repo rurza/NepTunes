@@ -10,7 +10,7 @@
 #import <ServiceManagement/ServiceManagement.h>
 #import "MenuController.h"
 #import "PreferencesController.h"
-
+#import "MusicScrobbler.h"
 
 static NSString *const kUserAvatar = @"userAvatar";
 static NSString *const kLaunchAtLogin = @"launchAtLogin";
@@ -748,6 +748,9 @@ static NSString *const kDebugMode = @"debugMode";
 -(void)setCutExtraTags:(BOOL)cutExtraTags
 {
     _cutExtraTags = cutExtraTags;
+    if (cutExtraTags) {
+        [[MusicScrobbler sharedScrobbler] downloadNewTagsLibraryAndStoreIt];
+    }
     [self.userDefaults setObject:@(cutExtraTags) forKey:kCutExtraTags];
     [self saveSettings];
 }

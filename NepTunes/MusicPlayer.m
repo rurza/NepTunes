@@ -143,16 +143,17 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
             self.currentTrack.trackOrigin = TrackFromiTunes;
         }
     }
-#if RELEASE
-    if (self.currentTrack.artist.length > 15 || self.currentTrack.trackName.length > 20) {
-        Troll_CheckReceipt(^(NSDictionary *receipt_dict, BOOL validationResult) {
-            if (!validationResult) {
-                self.currentTrack = [[Track alloc] initWithTrackName:@"I'm using cracked version" artist:@"Great app - NepTunes" album:@"Only $4" andDuration:32];
-                self.currentTrack.trackKind = TrackKindMusic;
-            }
-        });
-    }
-#endif
+#warning do odkomentowania
+//#if RELEASE
+//    if (self.currentTrack.artist.length > 15 || self.currentTrack.trackName.length > 20) {
+//        Troll_CheckReceipt(^(NSDictionary *receipt_dict, BOOL validationResult) {
+//            if (!validationResult) {
+//                self.currentTrack = [[Track alloc] initWithTrackName:@"I'm using cracked version" artist:@"Great app - NepTunes" album:@"Only $4" andDuration:32];
+//                self.currentTrack.trackKind = TrackKindMusic;
+//            }
+//        });
+//    }
+//#endif
 }
 
 -(void)updateTrackDuration:(NSTimer *)timer

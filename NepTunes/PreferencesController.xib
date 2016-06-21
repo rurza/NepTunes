@@ -298,11 +298,11 @@ DQ
             <point key="canvasLocation" x="-360.5" y="96.5"/>
         </window>
         <customView identifier="AccountLogged" id="FtI-IT-OHd">
-            <rect key="frame" x="0.0" y="0.0" width="512" height="216"/>
+            <rect key="frame" x="0.0" y="0.0" width="512" height="229"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="FVe-0m-KWf">
-                    <rect key="frame" x="24" y="84" width="234" height="32"/>
+                    <rect key="frame" x="24" y="97" width="234" height="32"/>
                     <buttonCell key="cell" type="push" title="Log out :(" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d5V-8o-JAG">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -315,7 +315,7 @@ DQ
                     </connections>
                 </button>
                 <textField toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x4L-IT-Z51">
-                    <rect key="frame" x="28" y="59" width="226" height="17"/>
+                    <rect key="frame" x="28" y="53" width="226" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="When to scrobble?" id="lES-J9-ixW">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -323,14 +323,14 @@ DQ
                     </textFieldCell>
                 </textField>
                 <slider toolTip="Track will be scrobbled after percentage of length of the track chosen by you or after 4 minutes (whichever comes first)." verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="smd-WT-3o0">
-                    <rect key="frame" x="28" y="24" width="226" height="25"/>
+                    <rect key="frame" x="28" y="18" width="226" height="25"/>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="50" maxValue="100" doubleValue="50" tickMarkPosition="above" numberOfTickMarks="6" allowsTickMarkValuesOnly="YES" sliderType="linear" id="psK-Sb-1hv"/>
                     <connections>
                         <binding destination="RtU-Wd-pY6" name="value" keyPath="self.percentForScrobbleTime" id="SaE-Dx-yyf"/>
                     </connections>
                 </slider>
                 <button toolTip="Check this to scrobble music, podcasts and iTunes U." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZjP-mB-emy">
-                    <rect key="frame" x="276" y="81" width="218" height="18"/>
+                    <rect key="frame" x="276" y="86" width="218" height="18"/>
                     <buttonCell key="cell" type="check" title="Scrobble Podcasts and iTunes U" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6GH-U5-vnG">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -340,10 +340,10 @@ DQ
                     </connections>
                 </button>
                 <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="i5g-xn-58g">
-                    <rect key="frame" x="123" y="156" width="16" height="16"/>
+                    <rect key="frame" x="123" y="170" width="16" height="16"/>
                 </progressIndicator>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="Brc-0J-WVL">
-                    <rect key="frame" x="276" y="66" width="205" height="17"/>
+                    <rect key="frame" x="276" y="71" width="205" height="17"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Music is scrobbled by default." id="40L-kf-WiB">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -351,7 +351,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="chi-mY-riq">
-                    <rect key="frame" x="276" y="102" width="71" height="17"/>
+                    <rect key="frame" x="276" y="107" width="71" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="iTunes:" id="bTU-MT-zNo">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -377,11 +377,11 @@ DQ
                     </textFieldCell>
                 </textField>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ohM-zy-ZuK">
-                    <rect key="frame" x="99" y="132" width="64" height="64"/>
+                    <rect key="frame" x="99" y="145" width="64" height="64"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="y1V-2b-6IK"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MJE-sQ-skZ">
-                    <rect key="frame" x="276" y="179" width="55" height="17"/>
+                    <rect key="frame" x="276" y="192" width="55" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="General:" id="Fag-MV-WNu">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -389,7 +389,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <button toolTip="Tags like &quot;(Live)&quot;, &quot;[demo]&quot; etc. will be removed from track titles for scrobbler." fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K83-dG-ved">
-                    <rect key="frame" x="276" y="158" width="181" height="18"/>
+                    <rect key="frame" x="276" y="171" width="181" height="18"/>
                     <buttonCell key="cell" type="check" title="Cut extra tags in titles" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="TAj-hw-ezC">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -399,7 +399,7 @@ DQ
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="Oj8-m3-exb">
-                    <rect key="frame" x="276" y="126" width="218" height="34"/>
+                    <rect key="frame" x="276" y="139" width="218" height="34"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Tags like &quot;(Live)&quot;, &quot;[demo]&quot; etc. will be removed from track titles." id="ZIO-gY-U3q">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -407,7 +407,7 @@ DQ
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="-300" y="803"/>
+            <point key="canvasLocation" x="-300" y="810.5"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
             <rect key="frame" x="0.0" y="0.0" width="512" height="439"/>

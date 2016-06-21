@@ -561,7 +561,7 @@ static NSUInteger const kNumberOfFrames = 10;
         if (idx == numberOfItemsFromSettings-1) {
             *stop =  YES;
         }
-        NSMenuItem *menuItem = [weakSelf.recentTracksMenu addItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil), track.artist, track.trackName] action:@selector(openWebsite:) keyEquivalent:@""];
+        NSMenuItem *menuItem = [weakSelf.recentTracksMenu addItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil), track.truncatedArtist, track.truncatedTrackName] action:@selector(openWebsite:) keyEquivalent:@""];
         menuItem.target = self;
     }];
 }
@@ -577,12 +577,12 @@ static NSUInteger const kNumberOfFrames = 10;
         self.recentTracksMenuItem.enabled = YES;
         
         if (self.recentTracksMenu.numberOfItems < [SettingsController sharedSettings].numberOfTracksInRecent.intValue) {
-            NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil), track.artist, track.trackName] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
+            NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil), track.truncatedArtist, track.truncatedTrackName] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
             [self validateLinkFromMenuItem:menuItem];
             menuItem.target = self;
         } else {
             [self.recentTracksMenu removeItemAtIndex:self.recentTracksMenu.numberOfItems-1];
-            NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil),track.artist, track.trackName] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
+            NSMenuItem *menuItem = [self.recentTracksMenu insertItemWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ – %@", nil),track.truncatedArtist, track.truncatedTrackName] action:@selector(openWebsite:) keyEquivalent:@"" atIndex:0];
             [self validateLinkFromMenuItem:menuItem];
             menuItem.target = self;
         }
@@ -700,7 +700,7 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)showRecentMenu
 {
     if (![self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
-        [self.statusMenu insertItem:self.recentTracksMenuItem atIndex:2];
+        [self.statusMenu insertItem:self.recentTracksMenuItem atIndex:4];
         [self prepareRecentItemsMenu];
         if (self.settings.debugMode) {
             NSLog(@"Adding Recent Tracks menu");

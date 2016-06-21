@@ -10,10 +10,7 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (nonatomic) NSArray *tagsToCut;
 
-
--(void)downloadNewTagsLibraryAndStoreIt;
 
 @end
 

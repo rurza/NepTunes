@@ -22,7 +22,6 @@
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-    [self downloadNewTagsLibraryAndStoreIt];
 }
 
 -(void)applicationDidBecomeActive:(NSNotification *)notification
@@ -40,34 +39,5 @@
     return _settingsController;
 }
 
--(void)downloadNewTagsLibraryAndStoreIt
-{
-    NSURLSession *session = [NSURLSession sharedSession];
-    __weak typeof(self) weakSelf = self;
-    [[session dataTaskWithURL:[NSURL URLWithString:@"http://micropixels.pl/neptunes/tags.json"] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"error downloading tags = %@", [error localizedDescription]);
-        }
-        if (data.length) {
-            NSError *error;
-            id tags = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-            if ([tags isKindOfClass:[NSDictionary class]]) {
-                NSArray *tagsStrings = [tags objectForKey:@"tags"];
-                if (tagsStrings.count) {
-                    weakSelf.tagsToCut = tagsStrings;
-                    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                    NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesTagsToCut.plist"];
-                    BOOL fileSaved = [tagsStrings writeToFile:plistPath atomically:YES];
-                    if (fileSaved) {
-                        if (weakSelf.settingsController.debugMode) {
-                            NSLog(@"Cut list saved");
-                        }
-                    }
-                }
-            }
-        }
-        
-    }] resume];
-}
 
 @end

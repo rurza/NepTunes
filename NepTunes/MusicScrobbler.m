@@ -47,6 +47,11 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         self.lastfmCache = [[LastFmCache alloc] init];
         self.username = [SettingsController sharedSettings].username;
         [OfflineScrobbler sharedInstance];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesTagsToCut.plist"];
+            self.tagsToCut = [NSArray arrayWithContentsOfFile:plistPath];
+        }
     }
     return self;
 }
@@ -76,16 +81,11 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)scrobbleTrack:(Track *)track atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter withSuccessHandler:(void(^)(void))successHandler
 {
     if ((self.musicPlayer.playerState == MusicPlayerStatePlaying || self.delegate.tracks.count) && [SettingsController sharedSettings].username) {
-        __weak typeof(self) weakSelf = self;
         NSString *filteredName = [track.trackName copy];
         if ([SettingsController sharedSettings].cutExtraTags) {
-            AppDelegate *appDelegate = [NSApplication sharedApplication].delegate;
-            for (NSString *tag in appDelegate.tagsToCut) {
-                if ([filteredName containsString:tag]) {
-                    filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@""];
-                }
-            }
+            filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
         }
+        __weak typeof(self) weakSelf = self;
         [self.scrobbler sendScrobbledTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
                 [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
@@ -144,16 +144,11 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     if (self.musicPlayer.isPlayerRunning) {
         if (self.scrobbler.session && self.musicPlayer.playerState == MusicPlayerStatePlaying) {
-            __weak typeof(self) weakSelf = self;
             NSString *filteredName = [track.trackName copy];
             if ([SettingsController sharedSettings].cutExtraTags) {
-                AppDelegate *appDelegate = [NSApplication sharedApplication].delegate;
-                for (NSString *tag in appDelegate.tagsToCut) {
-                    if ([filteredName containsString:tag]) {
-                        filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@""];
-                    }
-                }
+                filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
             }
+            __weak typeof(self) weakSelf = self;
             [self.scrobbler sendNowPlayingTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
                 
             } failureHandler:^(NSError *error) {
@@ -180,16 +175,11 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)loveTrack:(Track *)track withTryCounter:(NSUInteger)tryCounter withCompletionHandler:(void(^)(Track *track, NSImage *artwork))completion
 {
     if (self.scrobbler.session && self.musicPlayer.isPlayerRunning) {
-        __weak typeof(self) weakSelf = self;
         NSString *filteredName = [track.trackName copy];
         if ([SettingsController sharedSettings].cutExtraTags) {
-            AppDelegate *appDelegate = [NSApplication sharedApplication].delegate;
-            for (NSString *tag in appDelegate.tagsToCut) {
-                if ([filteredName containsString:tag]) {
-                    filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@""];
-                }
-            }
+            filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
         }
+        __weak typeof(self) weakSelf = self;
         [self.scrobbler loveTrack:filteredName artist:track.artist successHandler:^(NSDictionary *result) {
             if ([SettingsController sharedSettings].debugMode) {
                 NSLog(@"%@ loved!", track);
@@ -228,6 +218,57 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 -(void)logOut
 {
     [self.scrobbler logout];
+}
+
+#pragma mark - Removing unwanted tags
+-(NSString *)stringWithRemovedUnwantedTagsFromTrack:(Track *)track
+{
+    NSString *filteredName = [track.trackName copy];
+    for (NSString *tag in self.tagsToCut) {
+        NSError *error;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:tag options:NSRegularExpressionCaseInsensitive error:&error];
+        NSArray *matches = [regex matchesInString:filteredName options:0 range:NSMakeRange(0, filteredName.length)];
+        if (matches.count) {
+            filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, filteredName.length)];
+            NSLog(@"filteredName = %@", filteredName);
+            return filteredName;
+        }
+    }
+    return filteredName;
+}
+
+-(void)downloadNewTagsLibraryAndStoreIt
+{
+    NSURLSession *session = [NSURLSession sharedSession];
+    __weak typeof(self) weakSelf = self;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://raw.githubusercontent.com/rurza/Tags-to-cut/master/tags.json"] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:5];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error downloading tags = %@", [error localizedDescription]);
+        }
+        if (data.length) {
+            NSError *error;
+            id tags = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            if (error) {
+                NSLog(@"Failed parsing JSON file. %@", error.localizedDescription);
+            }
+            if ([tags isKindOfClass:[NSDictionary class]]) {
+                NSArray *tagsStrings = [tags objectForKey:@"tags"];
+                if (tagsStrings.count) {
+                    weakSelf.tagsToCut = tagsStrings;
+                    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                    NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesTagsToCut.plist"];
+                    BOOL fileSaved = [tagsStrings writeToFile:plistPath atomically:YES];
+                    if (fileSaved) {
+                        if ([SettingsController sharedSettings].debugMode) {
+                            NSLog(@"Cut list saved");
+                        }
+                    }
+                }
+            }
+        }
+    }] resume];
+
 }
 
 #pragma mark - Overrided Methods

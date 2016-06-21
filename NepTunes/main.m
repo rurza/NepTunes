@@ -10,9 +10,10 @@
 #import "ReceiptValidation.h"
 
 int main(int argc, const char * argv[]) {
-#if DEBUG
+#warning do odkomentowania
+//#if DEBUG
     return NSApplicationMain(argc, argv);
-#else
-    return CheckReceiptAndRun(argc, argv);
-#endif
+//#else
+//    return CheckReceiptAndRun(argc, argv);
+//#endif
 }
