@@ -230,7 +230,6 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         NSArray *matches = [regex matchesInString:filteredName options:0 range:NSMakeRange(0, filteredName.length)];
         if (matches.count) {
             filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, filteredName.length)];
-            NSLog(@"filteredName = %@", filteredName);
             return filteredName;
         }
     }

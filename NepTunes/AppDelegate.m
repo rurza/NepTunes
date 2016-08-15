@@ -14,6 +14,7 @@
 @interface AppDelegate ()
 @property (nonatomic) SettingsController *settingsController;
 @property (nonatomic) IBOutlet MenuController *menuController;
+@property (nonatomic) BOOL appWasLaunched;
 @end
 
 
@@ -22,11 +23,13 @@
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    self.appWasLaunched = YES;
 }
 
 -(void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    if (self.settingsController.hideStatusBarIcon) {
+    NSLog(@"applicationDidBecomeActive, %@", notification.userInfo);
+    if (self.settingsController.hideStatusBarIcon && self.appWasLaunched) {
         [self.menuController openPreferences:nil];
     }
 }

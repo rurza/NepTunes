@@ -451,6 +451,7 @@
     } else {
         value = [theEvent scrollingDeltaY];
     }
+    value /= 2.0f;
     [self.volumeViewController updateVolumeWithDeltaValue:value];
 }
 

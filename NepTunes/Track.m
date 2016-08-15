@@ -13,6 +13,9 @@
 
 NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotificationName";
 
+@interface Track () 
+@end
+
 @implementation Track
 @synthesize loved = _loved;
 
@@ -76,7 +79,7 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
     song.trackOrigin = TrackFromiTunes;
     song.kind = track.kind;
-    song.rating = track.rating;
+    song->_rating = track.rating;
     song.loved = track.loved;
     song.trackKind = kind;
     return song;
@@ -134,6 +137,11 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
 {
     _rating = rating;
     [[NSNotificationCenter defaultCenter] postNotificationName:kTrackRatingWasSetNotificationName object:self];
+}
+
+-(NSInteger)rating
+{
+    return _rating;
 }
 
 -(NSString *)truncatedTrackName

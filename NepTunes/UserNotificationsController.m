@@ -84,7 +84,11 @@
     if (self.displayNotifications) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         [notification setTitle:[NSString stringWithFormat:@"%@", track.artist]];
-        [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", track.trackName]];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            [notification setInformativeText:[NSString stringWithFormat:@"%@ ♥️ at Last.fm", [[MusicScrobbler sharedScrobbler] stringWithRemovedUnwantedTagsFromTrack:track]]];
+        } else {
+            [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", track.trackName]];
+        }
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         if (artwork) {
             notification.contentImage = artwork;

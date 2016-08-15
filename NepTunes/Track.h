@@ -27,7 +27,9 @@ typedef NS_ENUM(NSInteger, TrackKind) {
 extern NSString *const kTrackRatingWasSetNotificationName;
 
 
-@interface Track : NSObject <NSCoding>
+@interface Track : NSObject <NSCoding> {
+    NSInteger _rating;
+}
 
 @property (nonatomic, readonly) NSString *truncatedTrackName;
 @property (nonatomic, readonly) NSString *truncatedArtist;
@@ -52,5 +54,7 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track;
 +(Track *)trackWithSpotifyTrack:(SpotifyTrack *)track;
 -(BOOL)isEqualToTrack:(Track *)track;
+-(void)setRating:(NSInteger)rating;
+-(NSInteger)rating;
 
 @end

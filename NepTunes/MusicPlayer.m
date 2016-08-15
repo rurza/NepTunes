@@ -14,7 +14,7 @@
 #import "MusicController.h"
 #import "SpotifySearch.h"
 #import "ITunesSearch.h"
-#import "Troll.h"
+#import "troll.h"
 
 NSString * const kiTunesBundleIdentifier = @"com.apple.iTunes";
 NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
@@ -143,17 +143,14 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
             self.currentTrack.trackOrigin = TrackFromiTunes;
         }
     }
-#warning do odkomentowania
-//#if RELEASE
-//    if (self.currentTrack.artist.length > 15 || self.currentTrack.trackName.length > 20) {
-//        Troll_CheckReceipt(^(NSDictionary *receipt_dict, BOOL validationResult) {
-//            if (!validationResult) {
-//                self.currentTrack = [[Track alloc] initWithTrackName:@"I'm using cracked version" artist:@"Great app - NepTunes" album:@"Only $4" andDuration:32];
-//                self.currentTrack.trackKind = TrackKindMusic;
-//            }
-//        });
-//    }
-//#endif
+    if (self.currentTrack.artist.length > 15 || self.currentTrack.trackName.length > 20) {
+        Troll_CheckReceipt(^(NSDictionary *receipt_dict, BOOL validationResult) {
+            if (!validationResult) {
+                self.currentTrack = [[Track alloc] initWithTrackName:@"I'm using cracked version" artist:@"Great app - NepTunes" album:@"Only $5" andDuration:32];
+                self.currentTrack.trackKind = TrackKindMusic;
+            }
+        });
+    }
 }
 
 -(void)updateTrackDuration:(NSTimer *)timer
@@ -423,9 +420,9 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
             NSDictionary *firstResult = result.firstObject;
             NSString *resultString = [firstResult objectForKey:@"collectionViewUrl"];
             if (resultString && [resultString isKindOfClass:[NSString class]]) {
-                if (weakSelf.iTunesSearch.affiliateToken.length && weakSelf.iTunesSearch.campaignToken.length) {
-                    resultString = [resultString stringByAppendingString:[NSString stringWithFormat:@"&at=%@&ct=%@", weakSelf.iTunesSearch.affiliateToken, weakSelf.iTunesSearch.campaignToken]];
-                }
+//                if (weakSelf.iTunesSearch.affiliateToken.length && weakSelf.iTunesSearch.campaignToken.length) {
+//                    resultString = [resultString stringByAppendingString:[NSString stringWithFormat:@"&at=%@&ct=%@", weakSelf.iTunesSearch.affiliateToken, weakSelf.iTunesSearch.campaignToken]];
+//                }
                 handler(resultString);
             } else handler(nil);
         } failureHandler:^(NSError *error) {
@@ -500,9 +497,14 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 
 -(void)updateRating:(NSNotification *)note
 {
-    if (self.currentPlayer == MusicPlayeriTunes) {
-        self._currentiTunesTrack.rating = ((Track *)note.object).rating;
-    }
+    CFTimeInterval begin = CACurrentMediaTime();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.currentPlayer == MusicPlayeriTunes) {
+            self._currentiTunesTrack.rating = ((Track *)note.object).rating;
+        }
+    });
+
+    NSLog(@"updateRating in MusicPlayer took %f", CACurrentMediaTime() - begin);
 }
 
 #pragma mark Soundvolume
@@ -557,17 +559,20 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 {
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
         self.numberOfPlayers++;
+        NSLog(@"spotify launched");
         if (self.currentPlayer == MusicPlayerUndefined) {
             self.currentPlayer = MusicPlayerSpotify;
         }
 
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
         self.numberOfPlayers++;
+        NSLog(@"iTunes launched");
         if (self.currentPlayer == MusicPlayerUndefined) {
             self.currentPlayer = MusicPlayeriTunes;
         }
     }
     if (self.numberOfPlayers == 2) {
+        NSLog(@"both players launched");
         if ([self.delegate respondsToSelector:@selector(bothPlayersAreAvailable)]) {
             [self.delegate bothPlayersAreAvailable];
         }
@@ -580,16 +585,21 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
     NSUInteger numberOfPlayers = self.numberOfPlayers;
     if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kSpotifyBundlerIdentifier]) {
         self.numberOfPlayers--;
+        NSLog(@"spotify turned off");
         if (self.isiTunesRunning) {
             self.currentPlayer = MusicPlayeriTunes;
         }
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
         self.numberOfPlayers--;
+        NSLog(@"itunes turned off");
+
         if (self.isSpotifyRunning) {
             self.currentPlayer = MusicPlayerSpotify;
         }
     }
     if (self.numberOfPlayers < 2 && numberOfPlayers == 2) {
+        NSLog(@"one player available");
+
         if ([self.delegate respondsToSelector:@selector(onePlayerIsAvailable)]) {
             [self.delegate onePlayerIsAvailable];
         }

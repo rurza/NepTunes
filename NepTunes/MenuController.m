@@ -52,6 +52,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) MusicController *musicController;
 @property (nonatomic) NSImage *currentMenubarImage;
 @property (nonatomic) UserNotificationsController *userNotificationsController;
+@property (nonatomic) BOOL bothPlayerAreAvailable;
 @end
 
 @implementation MenuController
@@ -165,39 +166,39 @@ static NSUInteger const kNumberOfFrames = 10;
     }
     
     dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 1.0 / kFPS * NSEC_PER_SEC);
-    
+    __weak typeof(self) weakSelf = self;
     dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         if (forward) {
-            self.animationCurrentStep++;
+            weakSelf.animationCurrentStep++;
         } else {
-            self.animationCurrentStep--;
+            weakSelf.animationCurrentStep--;
         }
         
         if (forward) {
-            if (self.animationCurrentStep <= kNumberOfFrames) {
-                [self animationStepForward:YES];
+            if (weakSelf.animationCurrentStep <= kNumberOfFrames) {
+                [weakSelf animationStepForward:YES];
             } else {
-                self.animationCurrentStep = 0;
+                weakSelf.animationCurrentStep = 0;
             }
         } else {
-            if (self.animationCurrentStep > 0) {
-                [self animationStepForward:NO];
+            if (weakSelf.animationCurrentStep > 0) {
+                [weakSelf animationStepForward:NO];
             } else {
-                self.animationCurrentStep = 0;
+                weakSelf.animationCurrentStep = 0;
             }
         }
         
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.animationCurrentStep != 0) {
-                self.statusItem.button.image = [self imageForStep:self.animationCurrentStep];
+            if (weakSelf.animationCurrentStep != 0) {
+                weakSelf.statusItem.button.image = [weakSelf imageForStep:weakSelf.animationCurrentStep];
             } else {
                 if (forward) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [self backwardAnimation];
+                        [weakSelf backwardAnimation];
                     });
                 } else {
-                    [self setOriginalIcon];
+                    [weakSelf setOriginalIcon];
                 }
             }
         });
@@ -340,30 +341,30 @@ static NSUInteger const kNumberOfFrames = 10;
         //if user choose to love track also in iTunes  and track listened is available to love in iTunes
         if ([self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) {
             if (self.musicPlayer.canObtainCurrentTrackFromiTunes) {
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ on Last.fm & iTunes", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
             } else {
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ on Last.fm", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
             }
             //love on Last.fm and in iTunes
         } else {
             //love track only on Last.fm
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On Last.fm", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ on Last.fm", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
         }
         //if user ISN'T logged in, we have a track
     } else if (!self.settings.session && self.musicScrobbler.currentTrack) {
         //if user choose to love track also in iTunes and track listened is available to love in iTunes
         if ([self userHasTurnedOnIntegrationAndLovingMusicOniTunes]) {
             if (self.musicScrobbler.currentTrack.artist.length && self.musicScrobbler.currentTrack.trackName.length) {
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ on iTunes", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
             } else {
-                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
+                self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log in)", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
             }
         } else {
-            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log In)", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
+            self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ (Log in)", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
         }
         //if Internet connection ISN'T reachable BUT user choose to love track also in iTunes and we have a track
     } else if (!internetIsReachable && [self userHasTurnedOnIntegrationAndLovingMusicOniTunes] && self.musicScrobbler.currentTrack  && self.musicPlayer.isPlayerRunning) {
-        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ On iTunes", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
+        self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love %@ on iTunes", nil), self.musicScrobbler.currentTrack.truncatedTrackName];
     }   //if user is logged in but we don't have a track
     else if (!self.musicPlayer.isPlayerRunning || self.settings.session || !self.musicScrobbler.currentTrack ) {
         self.loveSongMenuTitle.title = [NSString stringWithFormat:NSLocalizedString(@"Love Track", nil)];
@@ -394,7 +395,7 @@ static NSUInteger const kNumberOfFrames = 10;
     if (self.musicPlayer.isPlayerRunning) {
         if (self.musicScrobbler.currentTrack) {
             self.similarArtistMenuTtitle.enabled = YES;
-            self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Similar Artists To %@", nil), self.musicScrobbler.currentTrack.truncatedArtist];
+            self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Similar Artists to %@", nil), self.musicScrobbler.currentTrack.truncatedArtist];
             if (!internetIsReachable) {
                 self.similarArtistMenuTtitle.enabled = NO;
             }
@@ -749,41 +750,47 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)insertBothSources
 {
-    NSMenuItem *separatorMenuItem = [NSMenuItem separatorItem];
-    NSMenuItem * sourceLabelMenuItem= [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"SOURCE:", nil) action:nil keyEquivalent:@""];
-    sourceLabelMenuItem.enabled = NO;
-    
-    sourceLabelMenuItem.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"SOURCE:", nil) attributes:@{NSFontAttributeName:[NSFont systemFontOfSize:10], NSForegroundColorAttributeName:[NSColor lightGrayColor]}];
-    
-    NSMenuItem *iTunesMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"iTunes", nil) action:@selector(activateNewSource:) keyEquivalent:@""];
-    NSMenuItem *spotifyMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Spotify", nil) action:@selector(activateNewSource:) keyEquivalent:@""];
-
-    iTunesMenuItem.target = self;
-    spotifyMenuItem.target = self;
-    
-    [self.statusMenu insertItem:separatorMenuItem atIndex:[self.statusMenu indexOfItemWithTag:12]];
-    [self.statusMenu insertItem:sourceLabelMenuItem atIndex:[self.statusMenu indexOfItem:separatorMenuItem]+1];
-    [self.statusMenu insertItem:iTunesMenuItem atIndex:[self.statusMenu indexOfItem:sourceLabelMenuItem]+1];
-    [self.statusMenu insertItem:spotifyMenuItem atIndex:[self.statusMenu indexOfItem:iTunesMenuItem]+1];
-    
-    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
-        [self addCheckmarkToSourceWithName:@"iTunes"];
-    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
-        [self addCheckmarkToSourceWithName:NSLocalizedString(@"Spotify", nil)];
-    } else {
-        spotifyMenuItem.enabled = YES;
-        iTunesMenuItem.enabled = YES;
-        spotifyMenuItem.state = 0;
-        iTunesMenuItem.state = 0;
+    if (!self.bothPlayerAreAvailable) {
+        NSMenuItem *separatorMenuItem = [NSMenuItem separatorItem];
+        NSMenuItem * sourceLabelMenuItem= [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"SOURCE:", nil) action:nil keyEquivalent:@""];
+        sourceLabelMenuItem.enabled = NO;
+        
+        sourceLabelMenuItem.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"SOURCE:", nil) attributes:@{NSFontAttributeName:[NSFont systemFontOfSize:10], NSForegroundColorAttributeName:[NSColor lightGrayColor]}];
+        
+        NSMenuItem *iTunesMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"iTunes", nil) action:@selector(activateNewSource:) keyEquivalent:@""];
+        NSMenuItem *spotifyMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Spotify", nil) action:@selector(activateNewSource:) keyEquivalent:@""];
+        
+        iTunesMenuItem.target = self;
+        spotifyMenuItem.target = self;
+        
+        [self.statusMenu insertItem:separatorMenuItem atIndex:[self.statusMenu indexOfItemWithTag:12]];
+        [self.statusMenu insertItem:sourceLabelMenuItem atIndex:[self.statusMenu indexOfItem:separatorMenuItem]+1];
+        [self.statusMenu insertItem:iTunesMenuItem atIndex:[self.statusMenu indexOfItem:sourceLabelMenuItem]+1];
+        [self.statusMenu insertItem:spotifyMenuItem atIndex:[self.statusMenu indexOfItem:iTunesMenuItem]+1];
+        
+        if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+            [self addCheckmarkToSourceWithName:@"iTunes"];
+        } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+            [self addCheckmarkToSourceWithName:NSLocalizedString(@"Spotify", nil)];
+        } else {
+            spotifyMenuItem.enabled = YES;
+            iTunesMenuItem.enabled = YES;
+            spotifyMenuItem.state = 0;
+            iTunesMenuItem.state = 0;
+        }
+        self.bothPlayerAreAvailable = YES;
     }
 }
 
 -(void)removeBothSources
 {
-    [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]-1];
-    [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]];
-    [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"iTunes", nil)]];
-    [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"Spotify", nil)]];
+    if (self.bothPlayerAreAvailable) {
+        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]-1];
+        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]];
+        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"iTunes", nil)]];
+        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"Spotify", nil)]];
+        self.bothPlayerAreAvailable = NO;
+    }
 }
 
 -(void)activateNewSource:(NSMenuItem *)menuItem

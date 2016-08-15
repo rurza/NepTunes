@@ -155,8 +155,6 @@
 		5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesCoverController.m; sourceTree = "<group>"; };
 		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		5BBD4C4F1C34562000AFA182 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
-		5BC62D801D1471EE00144239 /* ReceiptValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiptValidation.h; sourceTree = "<group>"; };
-		5BC62D861D149E0A00144239 /* Troll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Troll.h; sourceTree = "<group>"; };
 		5BC6A8DF1C610C83009C3E9F /* MusicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicController.h; sourceTree = "<group>"; };
 		5BC6A8E01C610C83009C3E9F /* MusicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicController.m; sourceTree = "<group>"; };
 		5BD6E5D31B6BF87300631537 /* HotkeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotkeyController.h; sourceTree = "<group>"; };
@@ -413,8 +411,6 @@
 		5BDD6B101A1D0C95001D87D6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5BC62D861D149E0A00144239 /* Troll.h */,
-				5BC62D801D1471EE00144239 /* ReceiptValidation.h */,
 				5B9F073B1C722C5B00F73566 /* NepTunes-Bridging-Header.h */,
 				5B0D60271B2F3EE4000DA26B /* NepTunes.entitlements */,
 				5BFB29E81A1D800900EA87AA /* dsa_pub.pem */,
@@ -466,6 +462,8 @@
 			buildConfigurationList = 5BDD6B2A1A1D0C95001D87D6 /* Build configuration list for PBXNativeTarget "NepTunes" */;
 			buildPhases = (
 				1AA37BA465A03F20F13218D9 /* [CP] Check Pods Manifest.lock */,
+				5BC941891D5F2B5A0012234B /* ShellScript */,
+				5BC9418A1D5F2CAA0012234B /* ShellScript */,
 				5BDD6B091A1D0C95001D87D6 /* Sources */,
 				5BDD6B0A1A1D0C95001D87D6 /* Frameworks */,
 				5BDD6B0B1A1D0C95001D87D6 /* Resources */,
@@ -606,6 +604,34 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		5BC941891D5F2B5A0012234B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILES_DIR)/receipt.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Receigen binary\nRECEIGEN=\"/Applications/Receigen.app/Contents/MacOS/Receigen\"\n\n# Extract Info.plist information\nINPUT=\"$INFOPLIST_FILE\"\nBUNDLE_ID=\"$PRODUCT_BUNDLE_IDENTIFIER\"\n# On OS X, use CFBundleShortVersionString\nBUNDLE_VERSION=`/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INPUT\"`\n# Expand information if needed\nEXPANDED_BUNDLE_ID=`eval \"echo $BUNDLE_ID\"`\nEXPANDED_BUNDLE_VERSION=`eval \"echo $BUNDLE_VERSION\"`\n\n# Make sure the destination directory exists\nmkdir -p \"$DERIVED_FILES_DIR\"\nHEADER=\"$DERIVED_FILES_DIR/receipt.h\"\n\n# Check if the generation is needed\nif [ -e \"$HEADER\" ]; then\n# On OS X, check CFBundleIdentifier and CFBundleShortVersionString\nSKIP=`egrep -q \"CFBundleIdentifier.+:.+$EXPANDED_BUNDLE_ID\" \"$HEADER\" && egrep -q \"CFBundleShortVersionString.+:.+$EXPANDED_BUNDLE_VERSION\" \"$HEADER\" && echo \"YES\"`\nfi\n\n# Generate the header file if needed\nif [ \"x$SKIP\" = \"x\" ]; then\n# On OS X, call Receigen with options\n\"$RECEIGEN\" --identifier \"$EXPANDED_BUNDLE_ID\" --failure \"exitwith173\" --prefix \"\" --version \"$EXPANDED_BUNDLE_VERSION\" --os osx > \"$HEADER\"\nfi\n\n";
+		};
+		5BC9418A1D5F2CAA0012234B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILES_DIR)/troll.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Receigen binary\nRECEIGEN=\"/Applications/Receigen.app/Contents/MacOS/Receigen\"\n\n# Extract Info.plist information\nINPUT=\"$INFOPLIST_FILE\"\nBUNDLE_ID=\"$PRODUCT_BUNDLE_IDENTIFIER\"\n# On OS X, use CFBundleShortVersionString\nBUNDLE_VERSION=`/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INPUT\"`\n# Expand information if needed\nEXPANDED_BUNDLE_ID=`eval \"echo $BUNDLE_ID\"`\nEXPANDED_BUNDLE_VERSION=`eval \"echo $BUNDLE_VERSION\"`\n\n# Make sure the destination directory exists\nmkdir -p \"$DERIVED_FILES_DIR\"\nHEADER=\"$DERIVED_FILES_DIR/troll.h\"\n\n# Check if the generation is needed\nif [ -e \"$HEADER\" ]; then\n# On OS X, check CFBundleIdentifier and CFBundleShortVersionString\nSKIP=`egrep -q \"CFBundleIdentifier.+:.+$EXPANDED_BUNDLE_ID\" \"$HEADER\" && egrep -q \"CFBundleShortVersionString.+:.+$EXPANDED_BUNDLE_VERSION\" \"$HEADER\" && echo \"YES\"`\nfi\n\n# Generate the header file if needed\nif [ \"x$SKIP\" = \"x\" ]; then\n# On OS X, call Receigen with options\n\"$RECEIGEN\" --identifier \"$EXPANDED_BUNDLE_ID\" --success \"donothing\" --failure \"callblock\" --prefix \"Troll\" --version \"$EXPANDED_BUNDLE_VERSION\" --os osx > \"$HEADER\"\nfi\n";
+		};
 		5BE3C9B31B7BD5F70095DA69 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -617,7 +643,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n\n\n";
 		};
 		6332649122EE30E5D0B9D258 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

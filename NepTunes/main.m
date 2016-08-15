@@ -7,13 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "ReceiptValidation.h"
+#import "receipt.h"
 
 int main(int argc, const char * argv[]) {
-#warning do odkomentowania
-//#if DEBUG
+#warning to comment
     return NSApplicationMain(argc, argv);
-//#else
 //    return CheckReceiptAndRun(argc, argv);
-//#endif
 }

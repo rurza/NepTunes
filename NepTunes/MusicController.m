@@ -74,11 +74,13 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)bothPlayersAreAvailable
 {
     [self.menuController insertBothSources];
+    NSLog(@"bothPlayersAreAvailable called");
 }
 
 -(void)onePlayerIsAvailable
 {
     [self.menuController removeBothSources];
+    NSLog(@"onePlayerIsAvailable called");
 }
 
 -(void)newActivePlayer
