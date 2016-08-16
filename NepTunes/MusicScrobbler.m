@@ -148,6 +148,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             if ([SettingsController sharedSettings].cutExtraTags) {
                 filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
             }
+            NSLog(@"filtered name = %@", filteredName);
             __weak typeof(self) weakSelf = self;
             [self.scrobbler sendNowPlayingTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
                 
@@ -229,7 +230,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:tag options:NSRegularExpressionCaseInsensitive error:&error];
         NSArray *matches = [regex matchesInString:filteredName options:0 range:NSMakeRange(0, filteredName.length)];
         if (matches.count) {
-            filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, filteredName.length)];
+            filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@"" options:NSCaseInsensitiveSearch|NSRegularExpressionSearch range:NSMakeRange(0, filteredName.length)];
             return filteredName;
         }
     }

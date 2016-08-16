@@ -415,7 +415,7 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)getTrackURL:(Track *)track forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
 {
     if (player == MusicPlayeriTunes) {
-        __weak typeof(self) weakSelf = self;
+//        __weak typeof(self) weakSelf = self;
         [self.iTunesSearch getTrackWithName:track.trackName artist:track.artist album:track.album limitOrNil:nil successHandler:^(NSArray *result) {
             NSDictionary *firstResult = result.firstObject;
             NSString *resultString = [firstResult objectForKey:@"collectionViewUrl"];

@@ -10,7 +10,7 @@
 #import "receipt.h"
 
 int main(int argc, const char * argv[]) {
-#warning to comment
-    return NSApplicationMain(argc, argv);
-//    return CheckReceiptAndRun(argc, argv);
+//#warning to comment
+//    return NSApplicationMain(argc, argv);
+    return CheckReceiptAndRun(argc, argv);
 }

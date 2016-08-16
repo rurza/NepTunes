@@ -9,11 +9,12 @@
 #import "AboutWindowController.h"
 
 @interface AboutWindowController ()
-@property (strong) IBOutlet NSTextField *buildLabel;
-@property (strong) IBOutlet NSTextField *copyrightLabel;
-@property (strong) IBOutlet NSButton *followOnTwitterButton;
-@property (strong) IBOutlet NSButton *supportButton;
-@property (strong) IBOutlet NSButton *micropixelsButton;
+@property (nonatomic) IBOutlet NSTextField *buildLabel;
+@property (nonatomic) IBOutlet NSTextField *copyrightLabel;
+@property (nonatomic) IBOutlet NSButton *followOnTwitterButton;
+@property (nonatomic) IBOutlet NSButton *supportButton;
+@property (nonatomic) IBOutlet NSButton *micropixelsButton;
+@property (nonatomic) IBOutlet NSButton *rateInMASButton;
 
 
 @end
@@ -34,7 +35,7 @@
     self.copyrightLabel.stringValue = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [plist objectForKey:@"NSHumanReadableCopyright"]];
 //    self.micropixelsButton.image.template = YES;
     NSColor *elementsColor = [NSColor whiteColor];//[NSColor colorWithRed:0.941 green:0.968 blue:1 alpha:1];
-    for (NSButton *button in @[self.supportButton, self.followOnTwitterButton]) {
+    for (NSButton *button in @[self.supportButton, self.followOnTwitterButton, self.rateInMASButton]) {
         button.wantsLayer = YES;
         button.layer.borderColor = elementsColor.CGColor;
         button.layer.borderWidth = 1;
@@ -50,6 +51,9 @@
     self.followOnTwitterButton.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Follow on Twitter", nil)
                                                                                  attributes:@{NSForegroundColorAttributeName : elementsColor,
                                                                                               NSParagraphStyleAttributeName: centredStyle}];
+    self.rateInMASButton.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Rate on App Store", nil)
+                                                                         attributes:@{NSForegroundColorAttributeName : elementsColor,
+                                                                                      NSParagraphStyleAttributeName: centredStyle}];
 
 }
 
@@ -65,6 +69,10 @@
 
 - (IBAction)openWebsite:(NSButton *)sender {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://micropixels.pl"]];
+}
+
+- (IBAction)rateInMAS:(NSButton *)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"macappstore://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=1006739057&type=Purple+Software"]];
 }
 
 @end
