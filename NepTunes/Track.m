@@ -1,5 +1,5 @@
 //
-//  Song.m
+//  Track.m
 //  NepTunes
 //
 //  Created by rurza on 30/12/15.
@@ -8,8 +8,16 @@
 
 #import "Track.h"
 #import "iTunes.h"
+#import "Spotify.h"
+#import "MusicPlayer.h"
+
+NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotificationName";
+
+@interface Track () 
+@end
 
 @implementation Track
+@synthesize loved = _loved;
 
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d
 {
@@ -51,16 +59,49 @@
 
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track
 {
-    if (!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) {
+
+    TrackKind kind;
+    if ([track respondsToSelector:NSSelectorFromString(@"mediaKind")]) {
+        if (track.mediaKind == iTunesEMdKPodcast) {
+            kind = TrackKindPodcast;
+        } else if (track.mediaKind == iTunesEMdKITunesU) {
+            kind = TrackKindiTunesU;
+        } else {
+            kind = TrackKindMusic;
+        }
+    } else {
+        kind = TrackKindMusic;
+    }
+    
+    if ((!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) && kind == TrackKindMusic) {
         return nil;
     }
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    song.trackOrigin = TrackFromiTunes;
+    song.kind = track.kind;
+    song->_rating = track.rating;
+    song.loved = track.loved;
+    song.trackKind = kind;
     return song;
 }
 
++(Track *)trackWithSpotifyTrack:(SpotifyTrack *)track
+{
+    if (!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) {
+        return nil;
+    }
+    Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:(double)track.duration/1000];
+    song.artworkURL = track.artworkUrl;
+    song.trackKind = TrackKindMusic;
+    song.trackOrigin = TrackFromSpotify;
+    song.spotifyID = [[track id] stringByReplacingOccurrencesOfString:@"spotify:track:" withString:@""];
+    return song;
+}
+
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ by %@ [%fs]", self.trackName, self.artist, self.duration];
+    return [NSString stringWithFormat:@"%@ by %@ with duration of [%fs]", self.trackName, self.artist, self.duration];
 }
 
 #pragma mark Equality
@@ -90,6 +131,43 @@
 -(NSUInteger)hash
 {
     return [self.trackName hash] ^ [self.album hash];
+}
+
+-(void)setRating:(NSInteger)rating
+{
+    _rating = rating;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackRatingWasSetNotificationName object:self];
+}
+
+-(NSInteger)rating
+{
+    return _rating;
+}
+
+-(NSString *)truncatedTrackName
+{
+    if (self.trackName.length > 30) {
+        if ([[self.trackName substringWithRange:NSMakeRange(19, 1)] isEqualToString:@""]) {
+            return [NSString stringWithFormat:@"%@...", [self.trackName substringWithRange:NSMakeRange(0, 19)]];
+        } else {
+            return [NSString stringWithFormat:@"%@...", [self.trackName substringWithRange:NSMakeRange(0, 20)]];
+        }
+    } else {
+        return self.trackName;
+    }
+}
+
+-(NSString *)truncatedArtist
+{
+    if (self.artist.length > 30) {
+        if ([[self.artist substringWithRange:NSMakeRange(19, 1)] isEqualToString:@""]) {
+            return [NSString stringWithFormat:@"%@...", [self.artist substringWithRange:NSMakeRange(0, 19)]];
+        } else {
+            return [NSString stringWithFormat:@"%@...", [self.artist substringWithRange:NSMakeRange(0, 20)]];
+        }
+    } else {
+        return self.artist;
+    }
 }
 
 @end

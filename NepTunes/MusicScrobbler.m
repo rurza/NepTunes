@@ -17,6 +17,7 @@
 #import "CoverWindowController.h"
 #import "GetCover.h"
 #import "PreferencesController.h"
+#import "MusicPlayer.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -24,6 +25,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 @interface MusicScrobbler ()
 @property (nonatomic) MusicController *musicController;
 @property (nonatomic) NSUInteger loveSongTryCounter;
+@property (nonatomic) MusicPlayer *musicPlayer;
 
 @end
 
@@ -45,6 +47,11 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
         self.lastfmCache = [[LastFmCache alloc] init];
         self.username = [SettingsController sharedSettings].username;
         [OfflineScrobbler sharedInstance];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesTagsToCut.plist"];
+            self.tagsToCut = [NSArray arrayWithContentsOfFile:plistPath];
+        }
     }
     return self;
 }
@@ -64,7 +71,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 #pragma mark - Scrobble online
 -(void)scrobbleCurrentTrack
 {
-    if (self.musicController.isiTunesRunning) {
+    if (self.musicPlayer.isPlayerRunning) {
         [self scrobbleTrack:self.currentTrack atTimestamp:[[NSDate date] timeIntervalSince1970] withTryCounter:1 withSuccessHandler:^{
             [[MenuController sharedController] blinkMenuIcon];
         }];
@@ -73,9 +80,13 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)scrobbleTrack:(Track *)track atTimestamp:(NSTimeInterval)timestamp withTryCounter:(NSUInteger)tryCounter withSuccessHandler:(void(^)(void))successHandler
 {
-    if ((self.musicController.playerState == iTunesEPlSPlaying || self.delegate.tracks.count) && [SettingsController sharedSettings].username) {
+    if ((self.musicPlayer.playerState == MusicPlayerStatePlaying || self.delegate.tracks.count) && [SettingsController sharedSettings].username) {
+        NSString *filteredName = [track.trackName copy];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
+        }
         __weak typeof(self) weakSelf = self;
-        [self.scrobbler sendScrobbledTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
+        [self.scrobbler sendScrobbledTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
                 [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
             }
@@ -131,10 +142,15 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)nowPLayingTrack:(Track *)track withTryCounter:(NSUInteger)tryCounter
 {
-    if (self.musicController.isiTunesRunning) {
-        if (self.scrobbler.session && self.musicController.playerState == iTunesEPlSPlaying) {
+    if (self.musicPlayer.isPlayerRunning) {
+        if (self.scrobbler.session && self.musicPlayer.playerState == MusicPlayerStatePlaying) {
+            NSString *filteredName = [track.trackName copy];
+            if ([SettingsController sharedSettings].cutExtraTags) {
+                filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
+            }
+            NSLog(@"filtered name = %@", filteredName);
             __weak typeof(self) weakSelf = self;
-            [self.scrobbler sendNowPlayingTrack:track.trackName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
+            [self.scrobbler sendNowPlayingTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
                 
             } failureHandler:^(NSError *error) {
                 if ([OfflineScrobbler sharedInstance].areWeOffline) {
@@ -159,9 +175,13 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 
 -(void)loveTrack:(Track *)track withTryCounter:(NSUInteger)tryCounter withCompletionHandler:(void(^)(Track *track, NSImage *artwork))completion
 {
-    if (self.scrobbler.session && self.musicController.isiTunesRunning) {
+    if (self.scrobbler.session && self.musicPlayer.isPlayerRunning) {
+        NSString *filteredName = [track.trackName copy];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
+        }
         __weak typeof(self) weakSelf = self;
-        [self.scrobbler loveTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
+        [self.scrobbler loveTrack:filteredName artist:track.artist successHandler:^(NSDictionary *result) {
             if ([SettingsController sharedSettings].debugMode) {
                 NSLog(@"%@ loved!", track);
             }
@@ -201,11 +221,61 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     [self.scrobbler logout];
 }
 
+#pragma mark - Removing unwanted tags
+-(NSString *)stringWithRemovedUnwantedTagsFromTrack:(Track *)track
+{
+    NSString *filteredName = [track.trackName copy];
+    for (NSString *tag in self.tagsToCut) {
+        NSError *error;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:tag options:NSRegularExpressionCaseInsensitive error:&error];
+        NSArray *matches = [regex matchesInString:filteredName options:0 range:NSMakeRange(0, filteredName.length)];
+        if (matches.count) {
+            filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@"" options:NSCaseInsensitiveSearch|NSRegularExpressionSearch range:NSMakeRange(0, filteredName.length)];
+            return filteredName;
+        }
+    }
+    return filteredName;
+}
+
+-(void)downloadNewTagsLibraryAndStoreIt
+{
+    NSURLSession *session = [NSURLSession sharedSession];
+    __weak typeof(self) weakSelf = self;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://raw.githubusercontent.com/rurza/Tags-to-cut/master/tags.json"] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:5];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error downloading tags = %@", [error localizedDescription]);
+        }
+        if (data.length) {
+            NSError *error;
+            id tags = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            if (error) {
+                NSLog(@"Failed parsing JSON file. %@", error.localizedDescription);
+            }
+            if ([tags isKindOfClass:[NSDictionary class]]) {
+                NSArray *tagsStrings = [tags objectForKey:@"tags"];
+                if (tagsStrings.count) {
+                    weakSelf.tagsToCut = tagsStrings;
+                    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                    NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesTagsToCut.plist"];
+                    BOOL fileSaved = [tagsStrings writeToFile:plistPath atomically:YES];
+                    if (fileSaved) {
+                        if ([SettingsController sharedSettings].debugMode) {
+                            NSLog(@"Cut list saved");
+                        }
+                    }
+                }
+            }
+        }
+    }] resume];
+
+}
+
 #pragma mark - Overrided Methods
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"scrobbler: username = %@, iTunes: currentTrack = %@, duration = %f", self.scrobbler.username, self.musicController.iTunes.currentTrack.name, self.musicController.iTunes.currentTrack.duration];
+    return [NSString stringWithFormat:@"scrobbler: username = %@, iTunes: currentTrack = %@, duration = %f", self.scrobbler.username, self.musicPlayer.currentTrack.trackName, self.musicPlayer.currentTrack.duration];
 }
 
 #pragma mark - Getters
@@ -248,5 +318,13 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     return _musicController;
 }
 
+#pragma mark - Music Player
+-(MusicPlayer *)musicPlayer
+{
+    if (!_musicPlayer) {
+        _musicPlayer = [MusicPlayer sharedPlayer];
+    }
+    return _musicPlayer;
+}
 
 @end

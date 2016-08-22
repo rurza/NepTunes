@@ -17,10 +17,10 @@
 #import "CoverLabel.h"
 #import "ControlViewController.h"
 #import <pop/POP.h>
-#import "CoverSettingsController.h"
 #import "ControlView.h"
 #import "MenuController.h"
 #import "VolumeViewController.h"
+#import "MusicPlayer.h"
 
 @interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
 @property (nonatomic) CoverWindow *window;
@@ -32,6 +32,7 @@
 @property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
 @property (nonatomic) GetCover *getCover;
 @property (nonatomic) NSClickGestureRecognizer *doubleClickRecognizer;
+@property (nonatomic) CGRect artistViewOriginalRect;
 @end
 
 @implementation CoverWindowController
@@ -43,7 +44,7 @@
     [super windowDidLoad];
 
     self.hoverArea = [[NSTrackingArea alloc] initWithRect:self.window.contentView.frame
-                                                  options:NSTrackingMouseEnteredAndExited |NSTrackingAssumeInside | NSTrackingActiveAlways
+                                                  options:NSTrackingMouseEnteredAndExited | NSTrackingAssumeInside | NSTrackingActiveAlways
                                                     owner:self userInfo:nil];
     [self.window.contentView addTrackingArea:self.hoverArea];
     self.window.contentView.acceptsTouchEvents = YES;
@@ -58,12 +59,12 @@
     self.shouldCascadeWindows = NO;
 }
 
--(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo
+-(void)updateCoverWithTrack:(Track *)track
 {
     if (track) {
         [self updateWithTrack:track];
-        if (self.window && [MusicController sharedController].isiTunesRunning) {
-            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+        if (self.window && [MusicPlayer sharedPlayer].isPlayerRunning) {
+            if ([MusicPlayer sharedPlayer].playerState == MusicPlayerStatePlaying) {
                 [self displayFullInfoForTrack:track];
             }
             __weak typeof(self) weakSelf = self;
@@ -137,6 +138,9 @@
         [self updateOriginsOfLabels];
         return;
     }
+//    [self.window.contentView setNeedsDisplay:YES];
+//    [self.window.contentView setNeedsLayout:YES];
+    self.artistViewOriginalRect = self.window.coverView.artistView.frame;
     self.changeTrackAnimation = YES;
     CALayer *layer = self.window.coverView.titleLabel.layer;
     layer.opacity = 0;
@@ -182,7 +186,7 @@
          };
         hideFullInfoAnimation.springBounciness = 14;
 
-        hideFullInfoAnimation.toValue = [NSValue valueWithRect:NSMakeRect(0, 0, 160, 26)];
+        hideFullInfoAnimation.toValue = [NSValue valueWithRect:self.artistViewOriginalRect];
         [weakSelf.window.coverView.artistView pop_addAnimation:hideFullInfoAnimation forKey:@"frame"];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -190,6 +194,7 @@
             titleLabelOpacity.toValue = @(1);
             titleLabelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
                 weakSelf.changeTrackAnimation = NO;
+//                [weakSelf.window.contentView setNeedsDisplay:YES];
             };
             [layer pop_addAnimation:titleLabelOpacity forKey:@"titlelabel opacity"];
         });
@@ -205,7 +210,7 @@
 -(CoverLabel *)artistLabel
 {
     if (!_artistLabel) {
-        _artistLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 80, 140, 60)];
+        _artistLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 80, self.window.frame.size.width-20, 60)];
         _artistLabel.font = [NSFont systemFontOfSize:15];
          [self.window.coverView.artistView addSubview:_artistLabel];
     }
@@ -215,7 +220,7 @@
 -(CoverLabel *)trackLabel
 {
     if (!_trackLabel) {
-        _trackLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 20, 140, 60)];
+        _trackLabel  = [[CoverLabel alloc] initWithFrame:NSMakeRect(10, 20, self.window.frame.size.width-20, 60)];
         _trackLabel.font = [NSFont systemFontOfSize:13];
         [self.window.coverView.artistView addSubview:_trackLabel];
     }
@@ -246,13 +251,16 @@
         labelsHeight = self.artistLabel.frame.size.height + self.trackLabel.frame.size.height;
 
     }
-    self.trackLabel.frame = NSMakeRect(10, (160-labelsHeight)/2-5, 140, self.trackLabel.frame.size.height);
-    self.artistLabel.frame = NSMakeRect(10, (160-labelsHeight)/2+5 + self.trackLabel.frame.size.height, 140, self.artistLabel.frame.size.height);
+    
+    self.trackLabel.frame = NSMakeRect(10, (self.window.frame.size.height-labelsHeight)/2-5, self.window.frame.size.width-20, self.trackLabel.frame.size.height);
+    self.artistLabel.frame = NSMakeRect(10, (self.window.frame.size.height-labelsHeight)/2+5 + self.trackLabel.frame.size.height, self.window.frame.size.width-20, self.artistLabel.frame.size.height);
 }
+
+#pragma mark - Hover area
 
 -(void)mouseEntered:(NSEvent *)event
 {
-    self.controlsTimer = [NSTimer scheduledTimerWithTimeInterval:.1f target:self selector:@selector(showControlsWithDelay:) userInfo:nil repeats:NO];
+    self.controlsTimer = [NSTimer scheduledTimerWithTimeInterval:.05f target:self selector:@selector(showControlsWithDelay:) userInfo:nil repeats:NO];
 }
 
 -(void)mouseExited:(NSEvent *)theEvent
@@ -267,15 +275,16 @@
 
 -(void)showControls
 {
+    MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
     if (!self.popoverIsShown) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(1);
-        controlOpacity.duration = 0.3;
+        controlOpacity.duration = 0.2;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
         [self.controlViewController updateVolumeIcon];
-        if ((![MusicController sharedController].currentTrack.artist.length &&
-            ![MusicController sharedController].currentTrack.name.length &&
-            ![SettingsController sharedSettings].session) || (![SettingsController sharedSettings].session && ![SettingsController sharedSettings].integrationWithiTunes)) {
+        if ((!musicPlayer.currentTrack.artist.length &&
+            !musicPlayer.currentTrack.trackName.length &&
+            ![SettingsController sharedSettings].session) || (![SettingsController sharedSettings].session && ![SettingsController sharedSettings].integrationWithMusicPlayer)) {
             self.controlViewController.loveButton.alphaValue = 0.5;
             self.controlViewController.loveButton.enabled = NO;
         } else {
@@ -283,15 +292,73 @@
             self.controlViewController.loveButton.enabled = YES;
         }
      }
+    
+    
+//    if (musicPlayer.currentPlayer == MusicPlayeriTunes) {
+//        [self updateUIbasedOnCurrentTrackRating];
+//    } else {
+//        self.controlViewController.ratingView.hidden = YES;
+//    }
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
 }
+
+//-(void)updateUIbasedOnCurrentTrackRating
+//{
+//    MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+//
+//    NSInteger rating = musicPlayer.currentTrack.rating;
+//    
+//    NSImage *fullStarImage = [NSImage imageNamed:@"star-full"];
+//    fullStarImage.template = YES;
+//    NSImage *emptyStarImage = [NSImage imageNamed:@"star-empty"];
+//    emptyStarImage.template = YES;
+//    
+//    [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//        starButton.image = emptyStarImage;
+//    }];
+//    
+//    if (rating > 80) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            starButton.image = fullStarImage;
+//        }];
+//    } else if (rating > 60) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (idx == 4) {
+//                *stop = YES;
+//            } else {
+//                starButton.image = fullStarImage;
+//            }
+//        }];
+//    } else if (rating > 40) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (idx == 3) {
+//                *stop = YES;
+//            } else {
+//                starButton.image = fullStarImage;
+//            }
+//        }];
+//    } else if (rating > 20) {
+//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (idx == 2) {
+//                *stop = YES;
+//            } else {
+//                starButton.image = fullStarImage;
+//            }
+//        }];
+//    } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+//        if (rating != 0) {
+//            self.controlViewController.star01Button.image = fullStarImage;
+//        }
+//    }
+//}
 
 -(void)hideControls
 {
     if (!self.popoverIsShown && !self.controlsTimer) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(0);
+        controlOpacity.duration = 0.2;
         [self.window.controlView.layer pop_addAnimation:controlOpacity forKey:@"fade"];
     }
     [self.controlsTimer invalidate];
@@ -303,7 +370,7 @@
     CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
     
     if (coverSettingsController.bringiTunesToFrontWithDoubleClick) {
-        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.iTunes" options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:NULL];
+        [[MusicPlayer sharedPlayer] bringPlayerToFront];
     }
 }
 
@@ -339,7 +406,35 @@
         default:
             break;
     }
+    CoverSize coverSize = coverSettingsController.coverSize;
+    [self resizeCoverToSize:coverSize animated:NO];
     [self.window makeKeyAndOrderFront:nil];
+}
+
+#pragma mark - Resizing
+
+-(void)resizeCoverToSize:(CoverSize)coverSize animated:(BOOL)animated
+{
+    switch (coverSize) {
+        case 1:
+            [self.window setFrame:NSRectFromCGRect(CGRectMake(self.window.frame.origin.x, self.window.frame.origin.y, 160, 160)) display:YES animate:animated];
+            break;
+        case 2:
+            [self.window setFrame:NSRectFromCGRect(CGRectMake(self.window.frame.origin.x, self.window.frame.origin.y, 200, 200)) display:YES animate:animated];
+            break;
+        case 3:
+            [self.window setFrame:NSRectFromCGRect(CGRectMake(self.window.frame.origin.x, self.window.frame.origin.y, 240, 240)) display:YES animate:animated];
+            break;
+        default:
+            break;
+    }
+    [self.window.contentView removeTrackingArea:self.hoverArea];
+    self.hoverArea = nil;
+    
+    self.hoverArea = [[NSTrackingArea alloc] initWithRect:self.window.contentView.frame
+                                                  options:NSTrackingMouseEnteredAndExited | NSTrackingAssumeInside | NSTrackingActiveAlways
+                                                    owner:self userInfo:nil];
+    [self.window.contentView addTrackingArea:self.hoverArea];
 }
 
 
@@ -356,6 +451,7 @@
     } else {
         value = [theEvent scrollingDeltaY];
     }
+    value /= 2.0f;
     [self.volumeViewController updateVolumeWithDeltaValue:value];
 }
 

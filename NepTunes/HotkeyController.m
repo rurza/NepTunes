@@ -11,7 +11,8 @@
 #import <MASShortcut/Shortcut.h>
 #import "HUDWindowController.h"
 #import "MASShortcut+UserDefaults.h"
-#import "MusicController.h"
+//#import "MusicController.h"
+#import "MusicPlayer.h"
 
 static NSString *const kloveSongShortcut = @"loveSongShortcut";
 static NSString *const kshowYourProfileShortcut = @"showYourProfileShortcut";
@@ -23,6 +24,11 @@ static NSString *const kMuteVolumeShortcut = @"muteVolumeShortcut";
 
 static NSString *const kIncreaseRatingShortcut = @"increaseRatingShortcut";
 static NSString *const kDecreaseRatingShortcut = @"decreaseRatingShortcut";
+
+static NSString *const kPlayPauseShortcut = @"playPauseShortcut";
+static NSString *const kNextTrackShortcut = @"nextTrackShortcut";
+static NSString *const kPreviousTrackShortcut = @"previousTrackShortcut";
+
 
 static NSString *const kHUDXibName = @"HUDWindowController";
 
@@ -43,6 +49,10 @@ static void *MASObservingContext = &MASObservingContext;
 @property (weak, nonatomic) IBOutlet MASShortcutView *increaseRatingView;
 @property (weak, nonatomic) IBOutlet MASShortcutView *decreaseRatingView;
 
+@property (weak, nonatomic) IBOutlet MASShortcutView *playPauseView;
+@property (weak, nonatomic) IBOutlet MASShortcutView *nextTrackView;
+@property (weak, nonatomic) IBOutlet MASShortcutView *previousTrackView;
+
 @property (nonatomic) HUDWindowController *hudWindowController;
 
 @end
@@ -62,6 +72,11 @@ static void *MASObservingContext = &MASObservingContext;
     self.increaseRatingView.associatedUserDefaultsKey = kIncreaseRatingShortcut;
     self.decreaseRatingView.associatedUserDefaultsKey = kDecreaseRatingShortcut;
     
+    self.playPauseView.associatedUserDefaultsKey = kPlayPauseShortcut;
+    self.nextTrackView.associatedUserDefaultsKey = kNextTrackShortcut;
+    self.previousTrackView.associatedUserDefaultsKey = kPreviousTrackShortcut;
+
+    
     [self bindShortcutsToAction];
     [self setUpObservers];
 }
@@ -79,6 +94,7 @@ static void *MASObservingContext = &MASObservingContext;
 
 -(void)bindShortcutsToAction
 {
+//    __weak typeof(self) weakSelf = self;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kloveSongShortcut
      toAction:^{
@@ -148,52 +164,52 @@ static void *MASObservingContext = &MASObservingContext;
              [self.hudWindowController presentHUD];
          }
 
-         MusicController *musicController = [MusicController sharedController];
-         NSInteger volume = musicController.iTunes.soundVolume;
+         MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+         NSInteger volume = musicPlayer.soundVolume;
          if (volume >= 90 && volume <= 100) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-10"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-max"];
-             musicController.iTunes.soundVolume = 100;
+             musicPlayer.soundVolume = 100;
          } else if (volume >= 80) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-9"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-max"];
-             musicController.iTunes.soundVolume = 90;
+             musicPlayer.soundVolume = 90;
          } else if (volume >= 70) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-8"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-max"];
-             musicController.iTunes.soundVolume = 80;
+             musicPlayer.soundVolume = 80;
          } else if (volume >= 60) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-7"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-max"];
-             musicController.iTunes.soundVolume = 70;
+             musicPlayer.soundVolume = 70;
          } else if (volume >= 50) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-6"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mid"];
-             musicController.iTunes.soundVolume = 60;
+             musicPlayer.soundVolume = 60;
          } else if (volume >= 40) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-5"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mid"];
-             musicController.iTunes.soundVolume = 50;
+             musicPlayer.soundVolume = 50;
          } else if (volume >= 30) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-4"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mid"];
-             musicController.iTunes.soundVolume = 40;
+             musicPlayer.soundVolume = 40;
          } else if (volume >= 20) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-3"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
-             musicController.iTunes.soundVolume = 30;
+             musicPlayer.soundVolume = 30;
          } else if (volume >= 10) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-2"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
-             musicController.iTunes.soundVolume = 20;
+             musicPlayer.soundVolume = 20;
          } else if (volume > 0) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-1"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
-             musicController.iTunes.soundVolume = 10;
+             musicPlayer.soundVolume = 10;
          } else {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-1"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
-             musicController.iTunes.soundVolume = 10;
+             musicPlayer.soundVolume = 10;
          }
          self.hudWindowController.bottomImageView.image.template = YES;
          self.hudWindowController.centerImageView.image.template = YES;
@@ -210,52 +226,52 @@ static void *MASObservingContext = &MASObservingContext;
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
              [self.hudWindowController presentHUD];
          }
-         MusicController *musicController = [MusicController sharedController];
-         NSInteger volume = musicController.iTunes.soundVolume;
+         MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+         NSInteger volume = musicPlayer.soundVolume;
          if (volume > 90 && volume <= 100) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-9"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-max"];
-             musicController.iTunes.soundVolume = 90;
+             musicPlayer.soundVolume = 90;
          } else if (volume > 80) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-8"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-max"];
-             musicController.iTunes.soundVolume = 80;
+             musicPlayer.soundVolume = 80;
          } else if (volume > 70) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-7"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-max"];
-             musicController.iTunes.soundVolume = 70;
+             musicPlayer.soundVolume = 70;
          } else if (volume > 60) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-6"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mid"];
-             musicController.iTunes.soundVolume = 60;
+             musicPlayer.soundVolume = 60;
          } else if (volume > 50) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-5"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mid"];
-             musicController.iTunes.soundVolume = 50;
+             musicPlayer.soundVolume = 50;
          } else if (volume > 40) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-4"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mid"];
-             musicController.iTunes.soundVolume = 40;
+             musicPlayer.soundVolume = 40;
          } else if (volume > 30) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-3"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
-             musicController.iTunes.soundVolume = 30;
+             musicPlayer.soundVolume = 30;
          } else if (volume > 20) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-2"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
-             musicController.iTunes.soundVolume = 20;
+             musicPlayer.soundVolume = 20;
          } else if (volume > 10) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-1"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
-             musicController.iTunes.soundVolume = 10;
+             musicPlayer.soundVolume = 10;
          } else if (volume > 0) {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-bar-mute"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mute"];
-             musicController.iTunes.soundVolume = 0;
+             musicPlayer.soundVolume = 0;
          } else {
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-bar-mute"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mute"];
-             musicController.iTunes.soundVolume = 0;
+             musicPlayer.soundVolume = 0;
          }
          self.hudWindowController.bottomImageView.image.template = YES;
          self.hudWindowController.centerImageView.image.template = YES;
@@ -272,13 +288,13 @@ static void *MASObservingContext = &MASObservingContext;
              self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
              [self.hudWindowController presentHUD];
          }
-         MusicController *musicController = [MusicController sharedController];
-         NSInteger volume = musicController.iTunes.soundVolume;
+         MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+         NSInteger volume = musicPlayer.soundVolume;
          if (volume > 0) {
              self.oldVolume = volume;
              self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-bar-mute"];
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-mute"];
-             musicController.iTunes.soundVolume = 0;
+             musicPlayer.soundVolume = 0;
          } else {
              NSInteger volume = self.oldVolume;
              if (volume >= 90 && volume <= 100) {
@@ -315,7 +331,7 @@ static void *MASObservingContext = &MASObservingContext;
                  self.hudWindowController.bottomImageView.image = [NSImage imageNamed:@"volume-1"];
                  self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"volume-min"];
              }
-             musicController.iTunes.soundVolume = self.oldVolume;
+             musicPlayer.soundVolume = self.oldVolume;
          }
  
          self.hudWindowController.bottomImageView.image.template = YES;
@@ -326,79 +342,97 @@ static void *MASObservingContext = &MASObservingContext;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kIncreaseRatingShortcut
      toAction:^{
-         MusicController *musicController = [MusicController sharedController];
-         NSInteger rating = musicController.iTunes.currentTrack.rating;
-
-         if (self.hudWindowController.isVisible) {
-             [self.hudWindowController updateCurrentHUD];
-         } else {
-             self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             [self.hudWindowController presentHUD];
-         }
-         self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         if (rating >= 80) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-5"];
-             musicController.iTunes.currentTrack.rating = 100;
-         } else if (rating >= 60) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
-             musicController.iTunes.currentTrack.rating = 80;
-         } else if (rating >= 40) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
-             musicController.iTunes.currentTrack.rating = 60;
-         } else if (rating >= 20) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
-             musicController.iTunes.currentTrack.rating = 40;
-         } else if (rating >= 0 && musicController.currentTrack.name.length && musicController.currentTrack.artist.length && musicController.currentTrack.kind.length) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
-             musicController.iTunes.currentTrack.rating = 20;
-         } else {
-             self.hudWindowController.starsImageView.hidden = YES;
-             self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
-             self.hudWindowController.bottomLabel.hidden = NO;
-         }
-         self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
-         self.hudWindowController.starsImageView.image.template = YES;
-         self.hudWindowController.centerImageView.image.template = YES;
+         dispatch_async(dispatch_get_main_queue(), ^{
+             CFTimeInterval begin = CACurrentMediaTime();
+             MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+             NSInteger rating = musicPlayer.currentTrack.rating;
+             NSLog(@"%li", rating);
+             if (self.hudWindowController.isVisible) {
+                 [self.hudWindowController updateCurrentHUD];
+             } else {
+                 self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+                 [self.hudWindowController presentHUD];
+             }
+             self.hudWindowController.bottomVisualEffectView.hidden = YES;
+             if (rating >= 80) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-5"];
+                 musicPlayer.currentTrack.rating = 100;
+             } else if (rating >= 60) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
+                 musicPlayer.currentTrack.rating = 80;
+             } else if (rating >= 40) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
+                 musicPlayer.currentTrack.rating = 60;
+             } else if (rating >= 20) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
+                 musicPlayer.currentTrack.rating = 40;
+             } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
+                 musicPlayer.currentTrack.rating = 20;
+             } else {
+                 self.hudWindowController.starsImageView.hidden = YES;
+                 self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
+                 self.hudWindowController.bottomLabel.hidden = NO;
+             }
+             self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
+             self.hudWindowController.starsImageView.image.template = YES;
+             self.hudWindowController.centerImageView.image.template = YES;
+             NSLog(@"rating took %f", CACurrentMediaTime() -begin);
+         });
+         
      }];
     
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kDecreaseRatingShortcut
      toAction:^{
-         if (self.hudWindowController.isVisible) {
-             [self.hudWindowController updateCurrentHUD];
-         } else {
-             self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-             [self.hudWindowController presentHUD];
-         }
-         self.hudWindowController.bottomVisualEffectView.hidden = YES;
-         MusicController *musicController = [MusicController sharedController];
-         NSInteger rating = musicController.iTunes.currentTrack.rating;
-         if (rating > 80) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
-             musicController.iTunes.currentTrack.rating = 80;
-         } else if (rating > 60) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
-             musicController.iTunes.currentTrack.rating = 60;
-         } else if (rating > 40) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
-             musicController.iTunes.currentTrack.rating = 40;
-         } else if (rating > 20) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
-             musicController.iTunes.currentTrack.rating = 20;
-         } else if (rating >= 0 && musicController.currentTrack.name.length && musicController.currentTrack.artist.length && musicController.currentTrack.kind.length) {
-             self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
-             musicController.iTunes.currentTrack.rating = 00;
-         } else {
-             self.hudWindowController.starsImageView.hidden = YES;
-             self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
-             self.hudWindowController.bottomLabel.hidden = NO;
-         }
-         self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
-         self.hudWindowController.starsImageView.image.template = YES;
-         self.hudWindowController.centerImageView.image.template = YES;
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (self.hudWindowController.isVisible) {
+                 [self.hudWindowController updateCurrentHUD];
+             } else {
+                 self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+                 [self.hudWindowController presentHUD];
+             }
+             self.hudWindowController.bottomVisualEffectView.hidden = YES;
+             MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+             NSInteger rating = musicPlayer.currentTrack.rating;
+             if (rating > 80) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-4"];
+                 musicPlayer.currentTrack.rating = 80;
+             } else if (rating > 60) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-3"];
+                 musicPlayer.currentTrack.rating = 60;
+             } else if (rating > 40) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
+                 musicPlayer.currentTrack.rating = 40;
+             } else if (rating > 20) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
+                 musicPlayer.currentTrack.rating = 20;
+             } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+                 self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
+                 musicPlayer.currentTrack.rating = 00;
+             } else {
+                 self.hudWindowController.starsImageView.hidden = YES;
+                 self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Can't rate this track", nil);
+                 self.hudWindowController.bottomLabel.hidden = NO;
+             }
+             self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
+             self.hudWindowController.starsImageView.image.template = YES;
+             self.hudWindowController.centerImageView.image.template = YES;
+         });
      }];
 
-
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kPlayPauseShortcut toAction:^{
+        MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+        [musicPlayer playPause];
+    }];
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kNextTrackShortcut toAction:^{
+        MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+        [musicPlayer nextTrack];
+    }];
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kPreviousTrackShortcut toAction:^{
+        MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
+        [musicPlayer backTrack];
+    }];
 }
 
 -(void)updateMenu
@@ -467,6 +501,18 @@ static void *MASObservingContext = &MASObservingContext;
     [defaults addObserver:self forKeyPath:kDecreaseRatingShortcut
                   options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
                   context:MASObservingContext];
+    
+    //Playback
+    [defaults addObserver:self forKeyPath:kPlayPauseShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+    [defaults addObserver:self forKeyPath:kNextTrackShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+    [defaults addObserver:self forKeyPath:kPreviousTrackShortcut
+                  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                  context:MASObservingContext];
+
 
 }
 
@@ -525,6 +571,10 @@ static void *MASObservingContext = &MASObservingContext;
         [defaults removeObserver:self forKeyPath:kMuteVolumeShortcut];
         [defaults removeObserver:self forKeyPath:kIncreaseRatingShortcut];
         [defaults removeObserver:self forKeyPath:kDecreaseRatingShortcut];
+        [defaults removeObserver:self forKeyPath:kPlayPauseShortcut];
+        [defaults removeObserver:self forKeyPath:kNextTrackShortcut];
+        [defaults removeObserver:self forKeyPath:kPreviousTrackShortcut];
+
     }
     @catch (NSException * __unused exception) {}
 }

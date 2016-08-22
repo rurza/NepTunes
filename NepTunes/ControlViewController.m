@@ -14,6 +14,7 @@
 #import "CoverSettingsController.h"
 #import <POP.h>
 #import "MenuController.h"
+#import "MusicPlayer.h"
 
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;
@@ -23,6 +24,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) NSImage *pauseImage;
 @property (nonatomic) NSImage *emptyHeartImage;
 @property (nonatomic) NSUInteger animationCurrentStep;
+@property (nonatomic) MusicPlayer *musicPlayer;
 @end
 
 @implementation ControlViewController
@@ -35,23 +37,28 @@ static NSUInteger const kNumberOfFrames = 10;
     self.backwardButton.image.template = YES;
     self.volumeButton.image.template = YES;
     self.shareButton.image.template = YES;
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(updateControlsState:)
-                                                            name:@"com.apple.iTunes.playerInfo"
-                                                          object:nil];
+    
+//    self.star01Button.image.template = YES;
+//    self.star02Button.image.template = YES;
+//    self.star03Button.image.template = YES;
+//    self.star04Button.image.template = YES;
+//    self.star05Button.image.template = YES;
+//    self.ratingButtons = @[self.star01Button,self.star02Button,self.star03Button,self.star04Button,self.star05Button];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateControlsState:) name:kTrackInfoUpdated object:nil];
     [self.forwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(forwardButtonWasPressed:)]];
     [self.backwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(backwardButtonWasPressed:)]];
     self.volumePopover.delegate = self;
     [self updateControlsState:nil];
     self.shareButton.action = @selector(openShareMenu:);
     self.shareButton.target = self;
+    [self.musicPlayer addObserver:self forKeyPath:@"soundVolume" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 -(void)updateControlsState:(NSNotification *)note
 {
-    if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+    if (self.musicPlayer.playerState == MusicPlayerStatePlaying) {
         self.playButton.image = self.pauseImage;
-        if ([SettingsController sharedSettings].integrationWithiTunes && [MusicController sharedController].currentTrack.loved) {
+        if ([SettingsController sharedSettings].integrationWithMusicPlayer && self.musicPlayer.currentTrack.loved) {
             self.loveButton.image = [NSImage imageNamed:@"fullheart"];
             self.loveButton.image.template = YES;
         } else {
@@ -68,46 +75,44 @@ static NSUInteger const kNumberOfFrames = 10;
         self.backwardButton.enabled = YES;
         self.backwardButton.alphaValue = 1;
     }
+
 }
 
 - (IBAction)playOrPauseTrack:(NSButton *)sender
 {
-    [[MusicController sharedController].iTunes playpause];
+    [self.musicPlayer playPause];
 }
 
 -(void)backwardButtonWasPressed:(NSGestureRecognizer *)gestureRecognizer
 {
-    MusicController *musicController = [MusicController sharedController];
-
     if (gestureRecognizer.state == NSGestureRecognizerStateBegan) {
         [self.backwardButton highlight:YES];
-        [musicController.iTunes rewind];
+        [self.musicPlayer rewind];
     }
     if (gestureRecognizer.state == NSGestureRecognizerStateEnded || gestureRecognizer.state == NSGestureRecognizerStateCancelled || gestureRecognizer.state == NSGestureRecognizerStateFailed) {
         [self.backwardButton highlight:NO];
-        [musicController.iTunes resume];
+        [self.musicPlayer resume];
     }
     
 }
 
 -(void)forwardButtonWasPressed:(NSGestureRecognizer *)gestureRecognizer
 {
-    MusicController *musicController = [MusicController sharedController];
     
     if (gestureRecognizer.state == NSGestureRecognizerStateBegan) {
         [self.forwardButton highlight:YES];
-        [musicController.iTunes fastForward];
+        [self.musicPlayer fastForward];
     }
     if (gestureRecognizer.state == NSGestureRecognizerStateEnded || gestureRecognizer.state == NSGestureRecognizerStateCancelled || gestureRecognizer.state == NSGestureRecognizerStateFailed) {
         [self.forwardButton highlight:NO];
-        [musicController.iTunes resume];
+        [self.musicPlayer resume];
         
     }
 }
 
 -(void)updateVolumeIcon
 {
-    NSInteger soundVolume = [MusicController sharedController].iTunes.soundVolume;
+    NSInteger soundVolume = self.musicPlayer.soundVolume;
     if (soundVolume > 66) {
         self.volumeButton.image = [NSImage imageNamed:@"volume-max"];
     } else if (soundVolume > 33) {
@@ -122,20 +127,18 @@ static NSUInteger const kNumberOfFrames = 10;
 
 - (IBAction)backTrack:(NSButton *)sender
 {
-    [[MusicController sharedController].iTunes backTrack];
+    [self.musicPlayer backTrack];
 }
 
 - (IBAction)nextTrack:(NSButton *)sender
 {
-    [[MusicController sharedController].iTunes nextTrack];
+    [self.musicPlayer nextTrack];
 }
 
 - (IBAction)loveTrack:(NSButton *)sender
 {
-    __weak typeof(self) weakSelf = self;
-    [[MusicController sharedController] loveTrackWithCompletionHandler:^{
-        [weakSelf animationLoveButton];
-    }];
+    [[MusicController sharedController] loveTrackWithCompletionHandler:nil];
+    [self animationLoveButton];
 }
 
 - (IBAction)changeVolume:(NSButton *)sender
@@ -187,6 +190,41 @@ static NSUInteger const kNumberOfFrames = 10;
     [NSMenu popUpContextMenu:[MenuController sharedController].shareMenu withEvent:event forView:button];
 }
 
+//- (IBAction)rateTrack:(NSButton *)sender
+//{
+//    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+//        
+//        __weak typeof(self) weakSelf = self;
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            Track *currentTrack = weakSelf.musicPlayer.currentTrack;
+//            switch (sender.tag) {
+//                case 1:
+//                    if (currentTrack.rating > 0 && currentTrack.rating < 21) {
+//                        currentTrack.rating = 0;
+//                    } else {
+//                        currentTrack.rating = 20;
+//                    }
+//                    break;
+//                case 2:
+//                    currentTrack.rating = 40;
+//                    break;
+//                case 3:
+//                    currentTrack.rating = 60;
+//                    break;
+//                case 4:
+//                    currentTrack.rating = 80;
+//                    break;
+//                case 5:
+//                    currentTrack.rating = 100;
+//                    break;
+//                default:
+//                    break;
+//            }
+//            [weakSelf.delegate updateUIbasedOnCurrentTrackRating];
+//        });
+//    }
+//}
+
 
 
 #pragma mark - Getters
@@ -230,9 +268,30 @@ static NSUInteger const kNumberOfFrames = 10;
     return _emptyHeartImage;
 }
 
+-(MusicPlayer *)musicPlayer
+{
+    if (!_musicPlayer) {
+        _musicPlayer = [MusicPlayer sharedPlayer];
+    }
+    return _musicPlayer;
+}
+
+#pragma mark - KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    
+    if ([keyPath isEqual:@"soundVolume"]) {
+        [self updateVolumeIcon];
+    }
+ }
+
+
 -(void)dealloc
 {
-    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"com.apple.iTunes.playerInfo" object:nil];
+    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kTrackInfoUpdated object:nil];
+    [self.musicPlayer removeObserver:self forKeyPath:@"soundVolume"];
 }
 
 @end

@@ -28,6 +28,8 @@
 @property (nonatomic) NSString *username;
 @property (nonatomic) Track *currentTrack;
 @property (nonatomic, weak) id<MusicScrobblerDelegate>delegate;
+@property (nonatomic) NSArray *tagsToCut;
+
 
 +(MusicScrobbler *)sharedScrobbler;
 -(void)updateCurrentTrackWithUserInfo:(NSDictionary *)userInfo;
@@ -42,5 +44,7 @@
 
 -(void)logInWithCredentials:(NSDictionary *)info;
 -(void)logOut;
+-(void)downloadNewTagsLibraryAndStoreIt;
+-(NSString *)stringWithRemovedUnwantedTagsFromTrack:(Track *)track;
 
 @end

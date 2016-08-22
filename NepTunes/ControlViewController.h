@@ -12,6 +12,9 @@
 @property (nonatomic) BOOL popoverIsShown;
 -(void)hideControls;
 -(NSWindow *)window;
+@optional
+-(void)updateUIbasedOnCurrentTrackRating;
+
 @end
 
 @interface ControlViewController : NSObject
@@ -24,6 +27,15 @@
 @property (nonatomic, weak) IBOutlet NSButton *volumeButton;
 @property (nonatomic, weak) IBOutlet NSPopover *volumePopover;
 
+//@property (weak) IBOutlet NSView *ratingView;
+//@property (weak) IBOutlet NSButton *star01Button;
+//@property (weak) IBOutlet NSButton *star02Button;
+//@property (weak) IBOutlet NSButton *star03Button;
+//@property (weak) IBOutlet NSButton *star04Button;
+//@property (weak) IBOutlet NSButton *star05Button;
+//@property (nonatomic) NSArray *ratingButtons;
+
+
 @property (nonatomic, weak) id<ControlViewDelegate>delegate;
 
 - (IBAction)playOrPauseTrack:(NSButton *)sender;
@@ -32,6 +44,8 @@
 - (IBAction)loveTrack:(NSButton *)sender;
 - (IBAction)changeVolume:(NSButton *)sender;
 - (IBAction)openShareMenu:(NSButton *)sender;
+
+//- (IBAction)rateTrack:(NSButton *)sender;
 
 -(void)animationLoveButton;
 -(void)updateVolumeIcon;

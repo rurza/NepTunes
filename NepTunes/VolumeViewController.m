@@ -7,9 +7,9 @@
 //
 
 #import "VolumeViewController.h"
-#import "MusicController.h"
 #import "CoverWindowController.h"
 #import "ControlViewController.h"
+#import "MusicPlayer.h"
 
 @interface VolumeViewController ()
 @property (weak) IBOutlet CoverWindowController *coverWindowController;
@@ -24,7 +24,7 @@
 
 -(void)viewWillAppear
 {
-    self.slider.integerValue = [MusicController sharedController].iTunes.soundVolume;
+    self.slider.integerValue = [MusicPlayer sharedPlayer].soundVolume;
 }
 
 - (IBAction)changeVolume:(NSSlider *)sender
@@ -34,17 +34,21 @@
 
 -(void)updateVolumeWithValue:(NSInteger)value
 {
-    [MusicController sharedController].iTunes.soundVolume = value;
+    [MusicPlayer sharedPlayer].soundVolume = value;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.coverWindowController.controlViewController updateVolumeIcon];
     });
-    self.slider.integerValue = [MusicController sharedController].iTunes.soundVolume;
+    self.slider.integerValue = [MusicPlayer sharedPlayer].soundVolume;
 }
 
 -(void)updateVolumeWithDeltaValue:(NSInteger)delta
 {
-    NSInteger newValue = [MusicController sharedController].iTunes.soundVolume + delta;
-    [self updateVolumeWithValue:newValue];
+    NSInteger newValue = [MusicPlayer sharedPlayer].soundVolume + delta;
+    if (newValue <= 100 && newValue >= 0) {
+        [self updateVolumeWithValue:newValue];
+    }
 }
+
+
 
 @end

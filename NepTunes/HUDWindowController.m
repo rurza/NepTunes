@@ -27,15 +27,12 @@
     self.window.opaque = NO;
     [self.window setBackgroundColor:[NSColor clearColor]];
     
-    
     self.window.level = NSScreenSaverWindowLevel;
-    self.window.alphaValue = 0;
     self.visualEffectView.layer.cornerRadius = 6;
     self.centerImageView.image.template = YES;
     self.bottomImageView.image.template = YES;
     self.starsImageView.image.template = YES;
     self.bottomLabel.hidden = YES;
-    [self.window makeKeyAndOrderFront:nil];
 }
 
 
@@ -61,10 +58,12 @@
 -(void)fadeoutWindow
 {
     [self animateWindowOpacity:0];
+    
 }
 
 -(void)presentHUD
 {
+    [self.window makeKeyAndOrderFront:nil];
     [self animateWindowOpacity:1];
     self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:self.visibilityTime target:self selector:@selector(fadeoutWindow) userInfo:nil repeats:NO];
 }

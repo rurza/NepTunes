@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AboutWindowController">
@@ -9,6 +9,8 @@
                 <outlet property="buildLabel" destination="h5X-jd-qDa" id="h1V-Lu-ZUE"/>
                 <outlet property="copyrightLabel" destination="LNp-qb-hRo" id="4f1-0j-DuI"/>
                 <outlet property="followOnTwitterButton" destination="wJa-wt-nRY" id="ol2-dV-GBS"/>
+                <outlet property="micropixelsButton" destination="nl2-W2-2Gs" id="XrF-YA-QEy"/>
+                <outlet property="rateInMASButton" destination="YHu-Av-kne" id="3oK-Ut-hLw"/>
                 <outlet property="supportButton" destination="PAl-Z3-vod" id="Hrn-uH-sVC"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
@@ -18,33 +20,25 @@
         <window title="About NepTunes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" showsToolbarButton="NO" animationBehavior="documentWindow" frameAutosaveName="" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="410" width="379" height="222"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="contentRect" x="196" y="410" width="236" height="345"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="379" height="222"/>
+                <rect key="frame" x="0.0" y="0.0" width="236" height="345"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <visualEffectView appearanceType="vibrantLight" fixedFrame="YES" blendingMode="behindWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="YbV-ub-Fdb">
-                        <rect key="frame" x="0.0" y="0.0" width="388" height="222"/>
+                    <visualEffectView appearanceType="vibrantDark" fixedFrame="YES" blendingMode="behindWindow" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="YbV-ub-Fdb">
+                        <rect key="frame" x="0.0" y="0.0" width="236" height="345"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h5X-jd-qDa">
-                                <rect key="frame" x="176" y="117" width="160" height="18"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="version xx (build xx)" id="c4s-dQ-8Y5">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="175" translatesAutoresizingMaskIntoConstraints="NO" id="LNp-qb-hRo">
-                                <rect key="frame" x="6" y="0.0" width="373" height="16"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Copyright © 2014-2015 Adam Rozynski" id="oMo-56-wVT">
+                                <rect key="frame" x="18" y="10" width="200" height="16"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Copyright © 2014-2016 Adam Rozynski" id="oMo-56-wVT">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PAl-Z3-vod">
-                                <rect key="frame" x="196" y="77" width="120" height="24"/>
+                                <rect key="frame" x="58" y="109" width="120" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" title="Support" bezelStyle="smallSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="4bi-QA-vtk">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -53,8 +47,30 @@
                                     <action selector="support:" target="-2" id="tOn-ml-e6D"/>
                                 </connections>
                             </button>
+                            <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YHu-Av-kne">
+                                <rect key="frame" x="58" y="75" width="120" height="24"/>
+                                <buttonCell key="cell" type="smallSquare" title="Rate on App Store" bezelStyle="smallSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="Ifg-a6-3S4">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="rateInMAS:" target="-2" id="u0C-7x-da7"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h5X-jd-qDa">
+                                <rect key="frame" x="38" y="187" width="160" height="18"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="version xx (build xx)" id="c4s-dQ-8Y5">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hMI-DF-gvm">
+                                <rect key="frame" x="68" y="215" width="100" height="100"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="aNb-Hh-MkZ"/>
+                            </imageView>
                             <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJa-wt-nRY">
-                                <rect key="frame" x="196" y="43" width="120" height="24"/>
+                                <rect key="frame" x="58" y="143" width="120" height="24"/>
                                 <buttonCell key="cell" type="smallSquare" title="Follow on Twitter" bezelStyle="smallSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="6h0-nc-ovz">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -63,18 +79,16 @@
                                     <action selector="followOnTwitter:" target="-2" id="AW8-3m-zdu"/>
                                 </connections>
                             </button>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hMI-DF-gvm">
-                                <rect key="frame" x="15" y="44" width="128" height="128"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="aNb-Hh-MkZ"/>
-                            </imageView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Sz-JR-eag">
-                                <rect key="frame" x="161" y="131" width="200" height="49"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="NepTunes" id="H57-Na-QI3">
-                                    <font key="font" size="40" name="HelveticaNeue-Thin"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nl2-W2-2Gs">
+                                <rect key="frame" x="58" y="36" width="120" height="19"/>
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="micropixels" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="MgR-qJ-4Q5">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="openWebsite:" target="-2" id="a32-8I-NAH"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </visualEffectView>
                 </subviews>
@@ -82,10 +96,11 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="253.5" y="255"/>
+            <point key="canvasLocation" x="248" y="314.5"/>
         </window>
     </objects>
     <resources>
-        <image name="icon" width="1024" height="1024"/>
+        <image name="icon" width="341.33334350585938" height="341.33334350585938"/>
+        <image name="micropixels" width="597" height="125"/>
     </resources>
 </document>

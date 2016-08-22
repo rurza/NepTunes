@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -737,7 +737,7 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="Pdx-mI-Ztv"/>
+                <menuItem isSeparatorItem="YES" tag="12" id="AJU-8I-J3u"/>
                 <menuItem title="About NepTunes" id="4aB-li-Gnw">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -761,7 +761,7 @@
         <customObject id="aMi-64-iJ4" customClass="MenuController">
             <connections>
                 <outlet property="loveSongMenuTitle" destination="84S-sz-3Q2" id="H6f-JO-J2t"/>
-                <outlet property="musicController" destination="6fc-J7-ZFv" id="0sO-SX-MMd"/>
+                <outlet property="musicPlayer" destination="dBe-OB-hd5" id="Ie1-jA-zVJ"/>
                 <outlet property="profileMenuTitle" destination="f29-yU-Mdy" id="wW7-Da-pNi"/>
                 <outlet property="recentTracksMenu" destination="VA4-FS-C7L" id="IGV-4e-hNZ"/>
                 <outlet property="recentTracksMenuItem" destination="ezK-Lj-iX4" id="eN0-Wg-BvW"/>
@@ -770,10 +770,6 @@
                 <outlet property="statusMenu" destination="XPD-Mx-1cp" id="gTn-At-Fw2"/>
             </connections>
         </customObject>
-        <customObject id="6fc-J7-ZFv" customClass="MusicController">
-            <connections>
-                <outlet property="menuController" destination="aMi-64-iJ4" id="jbw-s9-MIb"/>
-            </connections>
-        </customObject>
+        <customObject id="dBe-OB-hd5" customClass="MusicPlayer"/>
     </objects>
 </document>

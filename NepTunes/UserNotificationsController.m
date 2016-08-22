@@ -15,10 +15,12 @@
 #import "OfflineScrobbler.h"
 #import "Track.h"
 #import "PreferencesController.h"
+#import "MusicPlayer.h"
 
 @interface UserNotificationsController () <NSUserNotificationCenterDelegate>
 @property (nonatomic) BOOL doISentANotificationThatLastFmIsDown;
 @property (nonatomic) BOOL doISentANotificationThatUserWasLoggedOut;
+@property (nonatomic) BOOL doISentANotificationThatICannotGetInfoAboutSpotify;
 @end
 @implementation UserNotificationsController
 
@@ -31,6 +33,14 @@
         [NSUserNotificationCenter defaultUserNotificationCenter].delegate = notificationsController;
     });
     return notificationsController;
+}
+
+-(instancetype)init
+{
+    if (self = [super init]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationThatICannotGetInfoAboutSpotify:) name:kCannotGetInfoFromSpotify object:nil];
+    }
+    return self;
 }
 
 #pragma mark - That can be hidden
@@ -74,7 +84,11 @@
     if (self.displayNotifications) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         [notification setTitle:[NSString stringWithFormat:@"%@", track.artist]];
-        [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", track.trackName]];
+        if ([SettingsController sharedSettings].cutExtraTags) {
+            [notification setInformativeText:[NSString stringWithFormat:@"%@ ♥️ at Last.fm", [[MusicScrobbler sharedScrobbler] stringWithRemovedUnwantedTagsFromTrack:track]]];
+        } else {
+            [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", track.trackName]];
+        }
         [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
         if (artwork) {
             notification.contentImage = artwork;
@@ -148,6 +162,18 @@
 
 }
 
+-(void)displayNotificationThatICannotGetInfoAboutSpotify:(NSNotification *)note
+{
+    if (!self.doISentANotificationThatICannotGetInfoAboutSpotify) {
+        NSUserNotification *notification = [[NSUserNotification alloc] init];
+        notification.title = NSLocalizedString(@"Can't get info from Spotify", nil);
+        notification.informativeText = NSLocalizedString(@"Please move Spotify to main Applications folder.", nil);
+        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+        self.doISentANotificationThatICannotGetInfoAboutSpotify = YES;
+    }
+}
+
 #pragma mark - Getters
 -(BOOL)displayNotifications
 {
@@ -171,4 +197,8 @@
 {
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end

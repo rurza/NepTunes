@@ -7,20 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "iTunes.h"
-@class CoverWindowController;
+#import "MusicPlayerDelegate.h"
 
-@interface MusicController : NSObject
-@property (nonatomic) iTunesApplication *iTunes;
-@property (nonatomic, readonly) BOOL isiTunesRunning;
-@property (nonatomic, readonly) iTunesEPlS playerState;
-@property (nonatomic) iTunesTrack *currentTrack;
+@class CoverWindowController;
+@class MusicPlayer;
+
+extern NSString * const kTrackInfoUpdated;
+
+@interface MusicController : NSObject <MusicPlayerDelegate>
+
 @property (nonatomic) CoverWindowController *coverWindowController ;
+@property (nonatomic) MusicPlayer *musicPlayer;
 
 +(instancetype)sharedController;
 -(void)loveTrackWithCompletionHandler:(void(^)(void))handler;
+///wyłącza wszystkie timery, np. po zmianie utworu
 -(void)invalidateTimers;
--(void)updateTrackInfo:(NSNotification *)note;
--(NSImage *)currentTrackCover;
+///konfiguruje okładkę
 -(void)setupCover;
+
 @end

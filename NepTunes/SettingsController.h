@@ -20,10 +20,14 @@
 @property (nonatomic) BOOL debugMode;
 
 //Menu
-@property (nonatomic) BOOL integrationWithiTunes;
+@property (nonatomic) BOOL integrationWithMusicPlayer;
 @property (nonatomic) BOOL loveTrackOniTunes;
-@property (nonatomic) BOOL showSimilarArtistsOnAppleMusic;
-@property (nonatomic) BOOL showRecentTrackIniTunes;
+@property (nonatomic) BOOL showSimilarArtistsOnMusicPlayer;
+@property (nonatomic) BOOL showRecentTrackOnMusicPlayer;
+
+//Player
+@property (nonatomic) BOOL spotifyOnly;
+@property (nonatomic) BOOL iTunesOnly;
 
 //Scrobbler And General
 @property (nonatomic) NSString *session;
@@ -31,6 +35,8 @@
 @property (nonatomic) NSNumber *numberOfTracksInRecent;
 @property (nonatomic) NSNumber *percentForScrobbleTime;
 @property (nonatomic) BOOL scrobblePodcastsAndiTunesU;
+@property (nonatomic) BOOL scrobbleFromSpotify;
+@property (nonatomic) BOOL cutExtraTags;
 
 @property (nonatomic,weak) IBOutlet NSPopUpButton *numberOfRecentItems;
 @property (nonatomic,weak) IBOutlet NSButton *launchAtLoginCheckbox;
@@ -38,13 +44,15 @@
 @property (nonatomic,weak) IBOutlet NSButton *openPreferencesWhenThereIsNoUserCheckbox;
 @property (nonatomic,weak) IBOutlet NSButton *hideNotificationsCheckbox;
 @property (nonatomic,weak) IBOutlet NSSlider *percentForScrobbleTimeSlider;
-@property (weak) IBOutlet NSButton *scrobblePodcastsAndiTunesUButton;
+@property (nonatomic,weak) IBOutlet NSButton *scrobblePodcastsAndiTunesUCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *scrobbleFromSpotifyCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *cutExtraTagsCheckbox;
 
 //Menu
-@property (nonatomic,weak) IBOutlet NSButton *integrationWithiTunesCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *integrationWithMusicPlayerCheckbox;
 @property (nonatomic,weak) IBOutlet NSButton *loveTrackOniTunesCheckbox;
-@property (nonatomic,weak) IBOutlet NSButton *showSimilarArtistsOnAppleMusicCheckbox;
-@property (nonatomic,weak) IBOutlet NSButton *showRecentTrackIniTunesCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *showSimilarArtistsOnMusicPlayerCheckbox;
+@property (nonatomic,weak) IBOutlet NSButton *showRecentTrackOnMusicPlayerCheckbox;
 
 //Social
 @property (nonatomic) BOOL automaticallyShareOnFacebook;
@@ -66,8 +74,12 @@
 -(IBAction)toggleShowRecentTrackIniTunes:(NSButton *)sender;
 
 - (IBAction)toggleScrobblePodcastsAndiTunesU:(NSButton *)sender;
+- (IBAction)toggleCutExtraTags:(NSButton *)sender;
+
 //Social
 -(IBAction)toggleAutomaticallyShareOnFacebook:(NSButton *)sender;
 -(IBAction)toggleAutomaticallyShareOnTwitter:(NSButton *)sender;
+//Spotify
+-(IBAction)toggleScrobbleFromSpotify:(NSButton *)sender;
 
 @end

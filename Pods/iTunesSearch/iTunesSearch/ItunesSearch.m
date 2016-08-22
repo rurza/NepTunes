@@ -9,7 +9,7 @@
 #include <CommonCrypto/CommonDigest.h>
 #import "ItunesSearch.h"
 
-#define API_URL @"https://geo.itunes.apple.com/"
+#define API_URL @"https://itunes.apple.com/"
 
 @interface ItunesSearch ()
 @property (nonatomic, strong) NSOperationQueue *queue;

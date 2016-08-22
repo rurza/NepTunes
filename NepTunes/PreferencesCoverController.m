@@ -15,9 +15,8 @@
 #import "Track.h"
 #import "MusicScrobbler.h"
 #import "MusicController.h"
-#import "iTunes.h"
+#import "MusicPlayer.h"
 
-static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @interface PreferencesCoverController () <CoverGetterDelegate>
 @property (strong, nonatomic) IBOutlet CoverView *coverView;
@@ -46,20 +45,21 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 {
     [self.shadowView.layer setBackgroundColor:CGColorCreateGenericRGB(0.0, 0.0, 0.0, 1)];
     [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil andFullInfo:NO];
+    CGColorRelease(self.shadowView.layer.backgroundColor);
 }
 
 -(void)updateCover:(NSNotification *)note
 {
-    [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:note.userInfo andFullInfo:YES];
+    [self updateCoverWithTrack:[MusicScrobbler sharedScrobbler].currentTrack andUserInfo:nil andFullInfo:YES];
 }
 
 -(void)updateCoverWithTrack:(Track *)track andUserInfo:(NSDictionary *)userInfo andFullInfo:(BOOL)fullInfo
 {
     if (track) {
         [self updateWithTrack:track];
-        if ([MusicController sharedController].isiTunesRunning) {
+        if ([MusicPlayer sharedPlayer].isPlayerRunning) {
             __weak typeof(self) weakSelf = self;
-            if ([MusicController sharedController].playerState == iTunesEPlSPlaying) {
+            if ([MusicPlayer sharedPlayer].playerState == MusicPlayerStatePlaying) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (fullInfo) {
                         [weakSelf displayFullInfoForTrack:track];
@@ -72,7 +72,7 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         }
     } else {
         Track *noTrack;
-        if (![MusicController sharedController].isiTunesRunning) {
+        if (![MusicPlayer sharedPlayer].isPlayerRunning) {
             noTrack = [[Track alloc] initWithTrackName:@"Play track to refresh" artist:@"" album:@"" andDuration:0];
         } else {
             noTrack = [[Track alloc] initWithTrackName:@"Pause/play track to refresh" artist:@"" album:@"" andDuration:0];
@@ -294,6 +294,5 @@ static NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kTrackInfoUpdated object:nil];
-    CGColorRelease(self.shadowView.layer.backgroundColor);
 }
 @end

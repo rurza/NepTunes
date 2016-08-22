@@ -15,6 +15,7 @@
 #import "SettingsController.h"
 #import <PINCache.h>
 #include <CommonCrypto/CommonDigest.h>
+#import "MusicPlayer.h"
 
 @interface GetCover () <NSURLSessionDelegate>
 @property (nonatomic) PINDiskCache *imagesCache;
@@ -35,20 +36,41 @@
 
 -(void)getCoverWithTrack:(Track *)track withCompletionHandler:(void(^)(NSImage *cover))handler
 {
-    if ([[MusicController sharedController] currentTrackCover]) {
-        handler([[MusicController sharedController] currentTrackCover]);
-        if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
-            [self.delegate trackInfoShouldBeDisplayed];
+    id currentArtworkOrURL = [[MusicPlayer sharedPlayer] currentTrackCoverOrURL];
+    if (currentArtworkOrURL) {
+        if ([currentArtworkOrURL isKindOfClass:[NSImage class]]) {
+            [self getCoverAndDisplayTrackInfo:YES withArtwork:currentArtworkOrURL andCompletionHandler:handler];
+
+        } else {
+            NSImage *cover = [self cachedCoverImageForTrack:track];
+            if (cover) {
+                [self getCoverAndDisplayTrackInfo:YES withArtwork:cover andCompletionHandler:handler];
+                return;
+            }
+
+
+            __weak typeof(self) weakSelf = self;
+            if ([FXReachability sharedInstance].isReachable) {
+                if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
+                    [self.delegate trackInfoShouldBeRemoved];
+                }
+                [self getCoverForTrack:track fromString:currentArtworkOrURL andCompletionHandler:^(NSImage *cover) {
+                    [weakSelf getCoverAndDisplayTrackInfo:YES withArtwork:cover andCompletionHandler:handler];
+                }];
+            }
+            else {
+                NSImage *defaultCover = [self defaultSpotifyCover];
+                handler(defaultCover);
+            }
         }
     } else {
+
         NSImage *cover = [self cachedCoverImageForTrack:track];
         if (cover) {
-            handler(cover);
-            if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
-                [self.delegate trackInfoShouldBeDisplayed];
-            }
+            [self getCoverAndDisplayTrackInfo:YES withArtwork:cover andCompletionHandler:handler];
             return;
         }
+
         if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeRemoved)]) {
             [self.delegate trackInfoShouldBeRemoved];
         }
@@ -64,6 +86,16 @@
         else {
             NSImage *defaultCover = [self defaultCover];
             handler(defaultCover);
+        }
+    }
+}
+
+-(void)getCoverAndDisplayTrackInfo:(BOOL)displayTrackInfo withArtwork:(NSImage *)artwork andCompletionHandler:(void(^)(NSImage *cover))handler
+{
+    handler(artwork);
+    if (displayTrackInfo) {
+        if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
+            [self.delegate trackInfoShouldBeDisplayed];
         }
     }
 }
@@ -161,6 +193,17 @@
     return [NSImage imageNamed:@"nocover"];
 }
 
+-(NSImage *)defaultSpotifyCover
+{
+    if ([SettingsController sharedSettings].debugMode) {
+        NSLog(@"Using default cover");
+    }
+    if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
+        [self.delegate trackInfoShouldBeDisplayed];
+    }
+    return [NSImage imageNamed:@"nocover spotify"];
+}
+
 #pragma mark - NSURLSession
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(nullable NSError *)error
 {
@@ -185,11 +228,12 @@
 -(NSImage *)cachedCoverImageForTrack:(Track *)track
 {
     NSString *key = [self md5sumFromString:[NSString stringWithFormat:@"%@%@", track.artist, track.album]];
-    if ([self.imagesCache objectForKey:key]) {
+    NSImage *cover = (NSImage *)[self.imagesCache objectForKey:key];
+    if (cover) {
         if ([SettingsController sharedSettings].debugMode) {
             NSLog(@"Cover image for key %@", key);
         }
-        return (NSImage *)[self.imagesCache objectForKey:key];
+        return cover;
     }
     if ([SettingsController sharedSettings].debugMode) {
         NSLog(@"There is no cover image for key %@...", key);
@@ -214,7 +258,8 @@
 {
     if (!_imagesCache) {
         _imagesCache = [[PINDiskCache alloc] initWithName:@"imageCache"];
-        _imagesCache.byteLimit = 1024 * 1024;
+        _imagesCache.byteLimit = 1024 * 1024 * 300;
+        _imagesCache.ageLimit = 60 * 60 * 2;
     }
     return _imagesCache;
 }

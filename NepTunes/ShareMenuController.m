@@ -16,6 +16,7 @@
 #import "ItunesSearch.h"
 #import "HUDWindowController.h"
 #import "SocialMessage.h"
+#import "MusicPlayer.h"
 
 static NSString *const kHUDXibName = @"HUDWindowController";
 
@@ -41,29 +42,24 @@ static NSString *const kHUDXibName = @"HUDWindowController";
 }
 
 -(IBAction)copyTrackLink:(NSMenuItem *)sender
-{
-    Track *currentTrack = [MusicScrobbler sharedScrobbler].currentTrack;
-    [[MenuController sharedController].iTunesSearch getTrackWithName:currentTrack.trackName artist:currentTrack.artist album:currentTrack.album limitOrNil:nil successHandler:^(NSArray *result) {
-        if (result.count) {
-            NSDictionary *firstResult = result.firstObject;
-            NSPasteboard *clipboard = [NSPasteboard generalPasteboard];
-            [clipboard clearContents];
-            NSArray *copiedObjects = @[[firstResult objectForKey:@"collectionViewUrl"]];
-            [clipboard writeObjects:copiedObjects];
-            if (self.hudWindowController.isVisible) {
-                [self.hudWindowController updateCurrentHUD];
-            } else {
-                self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-                [self.hudWindowController presentHUD];
-            }
-            self.hudWindowController.bottomVisualEffectView.hidden = YES;
-            self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"copied link"];
-            self.hudWindowController.centerImageView.image.template = YES;
-            self.hudWindowController.bottomLabel.hidden = NO;
-            self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Link copied", nil);
+{   
+    [[MusicPlayer sharedPlayer] getCurrentTrackURLPublicLink:YES withCompletionHandler:^(NSString *urlString) {
+        NSPasteboard *clipboard = [NSPasteboard generalPasteboard];
+        [clipboard clearContents];
+        NSArray *copiedObjects = @[urlString];
+        [clipboard writeObjects:copiedObjects];
+        if (self.hudWindowController.isVisible) {
+            [self.hudWindowController updateCurrentHUD];
         } else {
-            [self displayInfoThatLinkCannotBeCopied];
+            self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+            [self.hudWindowController presentHUD];
         }
+        self.hudWindowController.bottomVisualEffectView.hidden = YES;
+        self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"copied link"];
+        self.hudWindowController.centerImageView.image.template = YES;
+        self.hudWindowController.bottomLabel.hidden = NO;
+        self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Link copied", nil);
+
     } failureHandler:^(NSError *error) {
         [self displayInfoThatLinkCannotBeCopied];
     }];

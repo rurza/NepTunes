@@ -7,6 +7,7 @@
 //
 @import Cocoa;
 @class ItunesSearch;
+@class SpotifySearch;
 
 @interface MenuController : NSObject
 
@@ -17,7 +18,7 @@
 @property (nonatomic, weak) IBOutlet NSMenu *shareMenu;
 
 @property (nonatomic) ItunesSearch *iTunesSearch;
-
+@property (nonatomic) SpotifySearch *spotifySearch;
 
 +(instancetype)sharedController;
 -(IBAction)loveSong:(id)sender;
@@ -33,6 +34,13 @@
 -(void)hideRecentMenu;
 -(void)showRecentMenu;
 -(void)blinkMenuIcon;
+
+//-(void)insertNewSourceWithName:(NSString *)sourceName;
+//-(void)removeSourceWithName:(NSString *)sourceName;
+-(void)addCheckmarkToSourceWithName:(NSString *)sourceName;
+-(void)insertBothSources;
+-(void)removeBothSources;
+
 -(NSString *)asciiString:(NSString *)string;
 
 
