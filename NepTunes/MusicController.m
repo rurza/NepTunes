@@ -17,12 +17,15 @@
 #import "HUDWindowController.h"
 #import "SocialMessage.h"
 #import "MusicPlayer.h"
+#import "NSWindow+Spaces.h"
+#import "DebugMode.h"
 @import Social;
 @import Accounts;
 
 NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
+NSString *const kCoverWindowName = @"CoverWindow";
 
-@interface MusicController ()
+@interface MusicController () <NSWindowDelegate>
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settingsController;
 @property (nonatomic) MenuController *menuController;
@@ -34,7 +37,7 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 @implementation MusicController
 
-#pragma mark - Responding to notifications
+#pragma mark - Initialization
 
 + (instancetype)sharedController
 {
@@ -55,9 +58,8 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 #pragma mark Music Player Delegate
 -(void)trackChanged
 {
-    if (self.settingsController.debugMode) {
-        NSLog(@"Notification sent from Music Player");
-    }
+    DebugMode(@"Notification sent from Music Player")
+    
     if ([self hideNoMusicIfNeeded]) {
         return;
     }
@@ -74,13 +76,13 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 -(void)bothPlayersAreAvailable
 {
     [self.menuController insertBothSources];
-    NSLog(@"bothPlayersAreAvailable called");
+    DebugMode(@"bothPlayersAreAvailable called")
 }
 
 -(void)onePlayerIsAvailable
 {
     [self.menuController removeBothSources];
-    NSLog(@"onePlayerIsAvailable called");
+    DebugMode(@"onePlayerIsAvailable called")
 }
 
 -(void)newActivePlayer
@@ -105,10 +107,6 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
 
 -(void)prepareTrack:(NSTimer *)timer
 {
-    if (self.settingsController.debugMode) {
-        NSLog(@"prepareTrack called");
-    }
-    
     if ([timer isValid]) {
         [self updateMenu];
         if (self.musicScrobbler.currentTrack.trackOrigin == TrackFromSpotify && !self.settingsController.scrobbleFromSpotify) {
@@ -132,9 +130,8 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
                 if ((self.settingsController.percentForScrobbleTime.floatValue / 100) > 0.95) {
                     scrobbleTime -= 2;
                 }
-                if (self.settingsController.debugMode) {
-                    NSLog(@"Scrobble time for track %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime); 
-                }
+                NSString *debugMessage = [NSString stringWithFormat:@"Scrobble time for track %@ is %f", self.musicScrobbler.currentTrack, scrobbleTime];
+                DebugMode(@"%@", debugMessage)
                 
                 scrobbleTime -=DELAY_FOR_RADIO;
                 
@@ -172,22 +169,33 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
     } else {
         [self.coverWindowController updateCoverWithTrack:self.musicScrobbler.currentTrack];
         [self.coverWindowController.window close];
-
+        [self.coverWindowController.window saveWindowStateUsingKeyword:kCoverWindowName];
+       
         self.coverWindowController = nil;
     }
 }
 
 -(void)setupCover
 {
-    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
+    CoverSettingsController *coverSettingsController = [CoverSettingsController sharedCoverSettings];
     if (coverSettingsController.showCover) {
-        self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:@"CoverWindow"];
+        self.coverWindowController = [[CoverWindowController alloc] initWithWindowNibName:kCoverWindowName];
+        [self.coverWindowController.window restoreWindowStateUsingKeyword:kCoverWindowName];
         if (self.musicPlayer.playerState == MusicPlayerStatePlaying && self.musicScrobbler.currentTrack) {
+            self.coverWindowController.window.delegate = self;
             [self.coverWindowController showWindow:self];
             [self.coverWindowController.window makeKeyAndOrderFront:nil];
         }
     }
 }
+
+#pragma mark - NSWindow delegate
+
+- (void)windowDidMove:(NSNotification *)notification
+{
+    [self.coverWindowController.window saveWindowStateUsingKeyword:kCoverWindowName];
+}
+
 
 -(void)invalidateTimers
 {
@@ -203,9 +211,7 @@ NSString *const kTrackInfoUpdated = @"trackInfoUpdated";
         [self.nowPlayingTimer invalidate];
         self.nowPlayingTimer = nil;
     }
-    if (self.settingsController.debugMode) {
-        NSLog(@"Timers invalidated");
-    }
+    DebugMode(@"Timers invalidated")
 }
 
 -(void)setScrobblerCurrentTrack

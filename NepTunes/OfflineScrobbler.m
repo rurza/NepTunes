@@ -12,6 +12,7 @@
 #import "SavedTrack.h"
 #import "SettingsController.h"
 #import "UserNotificationsController.h"
+#import "DebugMode.h"
 
 @interface OfflineScrobbler ()
 @property (nonatomic, readwrite) NSMutableArray *tracks;

@@ -20,6 +20,7 @@
 -(void)showControls;
 -(void)hideControls;
 -(void)resizeCoverToSize:(CoverSize)coverSize animated:(BOOL)animated;
-//-(void)updateUIbasedOnCurrentTrackRating;
+-(void)toggleSimpleMode;
+-(void)updateVolumeOnOverlayHUDIfVisible;
 
 @end

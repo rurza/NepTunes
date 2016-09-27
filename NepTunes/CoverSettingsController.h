@@ -28,10 +28,22 @@ typedef NS_ENUM(NSInteger, CoverSize) {
 @property (nonatomic) BOOL ignoreMissionControl;
 @property (nonatomic) BOOL bringiTunesToFrontWithDoubleClick;
 
+@property (nonatomic) BOOL simpleMode;
+@property (nonatomic) BOOL notificationMode;
+
+
 @property (nonatomic) IBOutlet NSButton *albumCoverCheckbox;
 @property (nonatomic) IBOutlet NSPopUpButton *albumCoverPosition;
 @property (nonatomic) IBOutlet NSButton *ignoreMissionControlCheckbox;
 @property (nonatomic) IBOutlet NSButton *bringiTunesToFrontWithDoubleClickCheckbox;
 @property (nonatomic) IBOutlet NSPopUpButton *coverSizePopUp;
+
+@property (nonatomic) IBOutlet NSButton *simpleModeCheckbox;
+@property (nonatomic) IBOutlet NSButton *notificationModeCheckbox;
+
++ (instancetype)sharedCoverSettings;
+- (void)updateAlbumPosition:(CoverPosition)position;
+
+
 
 @end

@@ -25,6 +25,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) NSImage *emptyHeartImage;
 @property (nonatomic) NSUInteger animationCurrentStep;
 @property (nonatomic) MusicPlayer *musicPlayer;
+@property (nonatomic) NSCache *volumeIconCache;;
 @end
 
 @implementation ControlViewController
@@ -38,12 +39,6 @@ static NSUInteger const kNumberOfFrames = 10;
     self.volumeButton.image.template = YES;
     self.shareButton.image.template = YES;
     
-//    self.star01Button.image.template = YES;
-//    self.star02Button.image.template = YES;
-//    self.star03Button.image.template = YES;
-//    self.star04Button.image.template = YES;
-//    self.star05Button.image.template = YES;
-//    self.ratingButtons = @[self.star01Button,self.star02Button,self.star03Button,self.star04Button,self.star05Button];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateControlsState:) name:kTrackInfoUpdated object:nil];
     [self.forwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(forwardButtonWasPressed:)]];
     [self.backwardButton addGestureRecognizer:[[NSPressGestureRecognizer alloc] initWithTarget:self action:@selector(backwardButtonWasPressed:)]];
@@ -75,7 +70,6 @@ static NSUInteger const kNumberOfFrames = 10;
         self.backwardButton.enabled = YES;
         self.backwardButton.alphaValue = 1;
     }
-
 }
 
 - (IBAction)playOrPauseTrack:(NSButton *)sender
@@ -113,16 +107,43 @@ static NSUInteger const kNumberOfFrames = 10;
 -(void)updateVolumeIcon
 {
     NSInteger soundVolume = self.musicPlayer.soundVolume;
-    if (soundVolume > 66) {
-        self.volumeButton.image = [NSImage imageNamed:@"volume-max"];
-    } else if (soundVolume > 33) {
-        self.volumeButton.image = [NSImage imageNamed:@"volume-mid"];
-    } else if (soundVolume > 0) {
-        self.volumeButton.image = [NSImage imageNamed:@"volume-min"];
-    } else {
-        self.volumeButton.image = [NSImage imageNamed:@"volume-mute"];
-    }
+    self.volumeButton.image = [self volumeIconForVolume:soundVolume];
     self.volumeButton.image.template = YES;
+}
+
+-(NSImage *)volumeIconForVolume:(NSUInteger)volume
+{
+    NSImage *volumeIcon;
+    if (volume > 66) {
+        if ([self.volumeIconCache objectForKey:@66]) {
+            volumeIcon = [self.volumeIconCache objectForKey:@66];
+        } else {
+            volumeIcon = [NSImage imageNamed:@"volume-max"];
+            [self.volumeIconCache setObject:volumeIcon forKey:@(66)];
+        }
+    } else if (volume > 33) {
+        if ([self.volumeIconCache objectForKey:@33]) {
+            volumeIcon = [self.volumeIconCache objectForKey:@33];
+        } else {
+            volumeIcon = [NSImage imageNamed:@"volume-mid"];
+            [self.volumeIconCache setObject:volumeIcon forKey:@(33)];
+        }
+    } else if (volume > 0) {
+        if ([self.volumeIconCache objectForKey:@1]) {
+            volumeIcon = [self.volumeIconCache objectForKey:@1];
+        } else {
+            volumeIcon = [NSImage imageNamed:@"volume-min"];
+            [self.volumeIconCache setObject:volumeIcon forKey:@(1)];
+        }
+    } else {
+        if ([self.volumeIconCache objectForKey:@0]) {
+            volumeIcon = [self.volumeIconCache objectForKey:@0];
+        } else {
+            volumeIcon = [NSImage imageNamed:@"volume-mute"];
+            [self.volumeIconCache setObject:volumeIcon forKey:@(0)];
+        }
+    }
+    return volumeIcon;
 }
 
 - (IBAction)backTrack:(NSButton *)sender
@@ -285,12 +306,19 @@ static NSUInteger const kNumberOfFrames = 10;
     if ([keyPath isEqual:@"soundVolume"]) {
         [self updateVolumeIcon];
     }
- }
+}
 
+-(NSCache *)volumeIconCache
+{
+    if (!_volumeIconCache) {
+        _volumeIconCache = [[NSCache alloc] init];
+    }
+    return _volumeIconCache;
+}
 
 -(void)dealloc
 {
-    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kTrackInfoUpdated object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kTrackInfoUpdated object:nil];
     [self.musicPlayer removeObserver:self forKeyPath:@"soundVolume"];
 }
 

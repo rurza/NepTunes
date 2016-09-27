@@ -16,6 +16,8 @@
 #import <PINCache.h>
 #include <CommonCrypto/CommonDigest.h>
 #import "MusicPlayer.h"
+#import "DebugMode.h"
+
 
 @interface GetCover () <NSURLSessionDelegate>
 @property (nonatomic) PINDiskCache *imagesCache;
@@ -135,9 +137,7 @@
                 handler(cover);
             }];
         }
-        if ([SettingsController sharedSettings].debugMode) {
-            NSLog(@"coverURL from iTunes = %@", coverURL);
-        }
+        DebugMode(@"coverURL from iTunes = %@", coverURL)
     } failureHandler:^(NSError *error) {
         [weakSelf getCoverURLFromLastFmAndSetItAsCoverForTrack:track inCompletionHandler:^(NSImage *cover) {
             handler(cover);
@@ -150,9 +150,6 @@
 {
     [[MusicScrobbler sharedScrobbler].scrobbler getInfoForTrack:track.trackName artist:track.artist successHandler:^(NSDictionary *result) {
         NSString *artworkURLString = [(NSURL *)result[@"image"] absoluteString];
-        if ([SettingsController sharedSettings].debugMode) {
-            NSLog(@"artworkURLString from Last.fm = %@", artworkURLString);
-        }
         if (artworkURLString) {
             handler(artworkURLString);
         } else {
@@ -184,9 +181,7 @@
 
 -(NSImage *)defaultCover
 {
-    if ([SettingsController sharedSettings].debugMode) {
-        NSLog(@"Using default cover");
-    }
+    DebugMode(@"Using default cover")
     if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
         [self.delegate trackInfoShouldBeDisplayed];
     }
@@ -195,9 +190,7 @@
 
 -(NSImage *)defaultSpotifyCover
 {
-    if ([SettingsController sharedSettings].debugMode) {
-        NSLog(@"Using default cover");
-    }
+    DebugMode(@"Using default cover")
     if ([self.delegate respondsToSelector:@selector(trackInfoShouldBeDisplayed)]) {
         [self.delegate trackInfoShouldBeDisplayed];
     }
@@ -207,8 +200,8 @@
 #pragma mark - NSURLSession
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(nullable NSError *)error
 {
-    if (error && [SettingsController sharedSettings].debugMode) {
-        NSLog(@"Session invalid: %@", error.localizedDescription);
+    if (error) {
+        DebugMode(@"Session invalid: %@", error.localizedDescription)
     }
     [session invalidateAndCancel];
     session = nil;
@@ -220,9 +213,7 @@
 {
     NSString *key = [self md5sumFromString: [NSString stringWithFormat:@"%@%@", track.artist, track.album]];
     [self.imagesCache setObject:image forKey:key];
-    if ([SettingsController sharedSettings].debugMode) {
-        NSLog(@"saving image to cache for key %@", key);
-    }
+    DebugMode(@"saving image to cache for key %@", key)
 }
 
 -(NSImage *)cachedCoverImageForTrack:(Track *)track
@@ -230,14 +221,10 @@
     NSString *key = [self md5sumFromString:[NSString stringWithFormat:@"%@%@", track.artist, track.album]];
     NSImage *cover = (NSImage *)[self.imagesCache objectForKey:key];
     if (cover) {
-        if ([SettingsController sharedSettings].debugMode) {
-            NSLog(@"Cover image for key %@", key);
-        }
+        DebugMode(@"Cover image for key %@", key)
         return cover;
     }
-    if ([SettingsController sharedSettings].debugMode) {
-        NSLog(@"There is no cover image for key %@...", key);
-    }
+    DebugMode(@"There is no cover image for key %@...", key)
     return nil;
 }
 

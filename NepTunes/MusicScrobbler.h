@@ -45,6 +45,6 @@
 -(void)logInWithCredentials:(NSDictionary *)info;
 -(void)logOut;
 -(void)downloadNewTagsLibraryAndStoreIt;
--(NSString *)stringWithRemovedUnwantedTagsFromTrack:(Track *)track;
+-(NSArray *)stringsWithRemovedUnwantedTagsFromTrack:(Track *)track;
 
 @end

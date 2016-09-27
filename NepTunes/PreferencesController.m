@@ -49,6 +49,10 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 @property (nonatomic) IBOutlet NSToolbarItem *albumCoverToolbarItem;
 @property (nonatomic) IBOutlet NSToolbarItem *socialToolbarItem;
 
+@property (nonatomic) IBOutlet NSLayoutConstraint *avatarHeightConstraint;
+@property (nonatomic) IBOutlet NSLayoutConstraint *avatarWidthConstraint;
+
+
 @property (nonatomic) IBOutlet HotkeyController *hotkeyController;
 @property (nonatomic) IBOutlet PreferencesCoverController *preferencesCoverController;
 
@@ -82,8 +86,8 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
     [super windowDidLoad];
     self.passwordField.delegate = self;
     self.loginField.delegate = self;
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
- }
+    self.userAvatar.animates = YES;
+}
 
 
 -(void)awakeFromNib {
@@ -411,31 +415,26 @@ static NSString *const kAccountItemToolbarIdentifier = @"Account";
 -(void)setUserAvatarRoundedBorder
 {
     [self.userAvatar setWantsLayer: YES];
-    self.userAvatar.frame = NSMakeRect(self.userAvatar.frame.origin.x+32.0, self.userAvatar.frame.origin.y+32.0, 0, 0);
+    self.avatarWidthConstraint.constant = 0;
+    self.avatarHeightConstraint.constant = 0;
     self.userAvatar.layer.cornerRadius = 0.0f;
-    self.userAvatar.layer.borderColor = [[NSColor whiteColor] CGColor];
     self.userAvatar.layer.borderWidth = 0.0f;
 }
 
 -(void)animateAvatar
 {
-    POPSpringAnimation *avatarSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
-//    avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(self.window.contentView.bounds.size.width/2-32, self.window.contentView.bounds.size.height-20-64, 64, 64)];
-    avatarSpringAnimation.toValue = [NSValue valueWithRect:NSMakeRect(self.userAvatar.frame.origin.x-32, self.userAvatar.frame.origin.y-32, 64, 64)];
+    POPSpringAnimation *avatarSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayoutConstraintConstant];
+
+    avatarSpringAnimation.toValue = @64;
     avatarSpringAnimation.springBounciness = 16;
     
     POPSpringAnimation *avatarCornerRadiusSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerCornerRadius];
     avatarCornerRadiusSpringAnimation.toValue = @(32);
     avatarCornerRadiusSpringAnimation.springBounciness = 16;
-    
-    
-//    POPSpringAnimation *avatarBorderSpringAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerBorderWidth];
-//    avatarBorderSpringAnimation.toValue = @(2);
-//    avatarBorderSpringAnimation.springBounciness = 12;
 
-    [self.userAvatar pop_addAnimation:avatarSpringAnimation forKey:nil];
+    [self.avatarHeightConstraint pop_addAnimation:avatarSpringAnimation forKey:nil];
+    [self.avatarWidthConstraint pop_addAnimation:avatarSpringAnimation forKey:nil];
     [self.userAvatar.layer pop_addAnimation:avatarCornerRadiusSpringAnimation forKey:nil];
-//    [self.userAvatar.layer pop_addAnimation:avatarBorderSpringAnimation forKey:nil];
 }
 
 #pragma mark - Getters

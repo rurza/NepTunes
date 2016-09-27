@@ -18,6 +18,7 @@
 #import "GetCover.h"
 #import "PreferencesController.h"
 #import "MusicPlayer.h"
+#import "DebugMode.h"
 
 static NSString *const kAPIKey = @"3a26162db61a3c47204396401baf2bf7";
 static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
@@ -82,17 +83,17 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 {
     if ((self.musicPlayer.playerState == MusicPlayerStatePlaying || self.delegate.tracks.count) && [SettingsController sharedSettings].username) {
         NSString *filteredName = [track.trackName copy];
+        NSString *filteredAlbum = [track.album copy];
         if ([SettingsController sharedSettings].cutExtraTags) {
-            filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
+            filteredName = [[self stringsWithRemovedUnwantedTagsFromTrack:track] firstObject];
+            filteredAlbum = [[self stringsWithRemovedUnwantedTagsFromTrack:track] lastObject];
         }
         __weak typeof(self) weakSelf = self;
-        [self.scrobbler sendScrobbledTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
+        [self.scrobbler sendScrobbledTrack:filteredName byArtist:track.artist onAlbum:filteredAlbum withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
                 [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
             }
-            if ([SettingsController sharedSettings].debugMode) {
-                NSLog(@"%@ scrobbled!", track);
-            }
+            DebugMode(@"%@ scrobbled!", track)
             if (successHandler) {
                 successHandler();
             }
@@ -103,9 +104,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (tryCounter <= 3) {
                         [weakSelf scrobbleTrack:track atTimestamp:timestamp withTryCounter:(tryCounter + 1) withSuccessHandler:successHandler];
-                        if ([SettingsController sharedSettings].debugMode) {
-                            NSLog(@"Cannot scrobble. %@. Trying again", error.localizedDescription);
-                        }
+                        DebugMode(@"Cannot scrobble. %@. Trying again", error.localizedDescription)
                         
                     }
                 });
@@ -118,14 +117,12 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                 if (error.code == kLastFmErrorCodeServiceOffline && ![OfflineScrobbler sharedInstance].userWasLoggedOut) {
                     [OfflineScrobbler sharedInstance].lastFmIsDown = YES;
                     [[OfflineScrobbler sharedInstance] saveTrack:track];
-                    NSLog(@"Some issues with Last.fm service.");
+                    DebugMode(@"Some issues with Last.fm service.")
                     
                 }
                 if ([OfflineScrobbler sharedInstance].areWeOffline || [SettingsController sharedSettings].userWasLoggedOut) {
                     [[OfflineScrobbler sharedInstance] saveTrack:track];
-                    if ([SettingsController sharedSettings].debugMode) {
-                        NSLog(@"Saving track for offline scrobbling.");
-                    }
+                    DebugMode(@"Saving track for offline scrobbling.")
                 }
             }
         }];
@@ -145,12 +142,13 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     if (self.musicPlayer.isPlayerRunning) {
         if (self.scrobbler.session && self.musicPlayer.playerState == MusicPlayerStatePlaying) {
             NSString *filteredName = [track.trackName copy];
+            NSString *filteredAlbum = [track.album copy];
             if ([SettingsController sharedSettings].cutExtraTags) {
-                filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
+                filteredName = [[self stringsWithRemovedUnwantedTagsFromTrack:track] firstObject];
+                filteredAlbum = [[self stringsWithRemovedUnwantedTagsFromTrack:track] lastObject];
             }
-            NSLog(@"filtered name = %@", filteredName);
             __weak typeof(self) weakSelf = self;
-            [self.scrobbler sendNowPlayingTrack:filteredName byArtist:track.artist onAlbum:track.album withDuration:track.duration successHandler:^(NSDictionary *result) {
+            [self.scrobbler sendNowPlayingTrack:filteredName byArtist:track.artist onAlbum:filteredAlbum withDuration:track.duration successHandler:^(NSDictionary *result) {
                 
             } failureHandler:^(NSError *error) {
                 if ([OfflineScrobbler sharedInstance].areWeOffline) {
@@ -178,13 +176,12 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
     if (self.scrobbler.session && self.musicPlayer.isPlayerRunning) {
         NSString *filteredName = [track.trackName copy];
         if ([SettingsController sharedSettings].cutExtraTags) {
-            filteredName = [self stringWithRemovedUnwantedTagsFromTrack:track];
+            filteredName = [[self stringsWithRemovedUnwantedTagsFromTrack:track] firstObject];
+
         }
         __weak typeof(self) weakSelf = self;
         [self.scrobbler loveTrack:filteredName artist:track.artist successHandler:^(NSDictionary *result) {
-            if ([SettingsController sharedSettings].debugMode) {
-                NSLog(@"%@ loved!", track);
-            }
+            DebugMode(@"%@ loved!", track)
             [[GetCover sharedInstance] getCoverWithTrack:track withCompletionHandler:^(NSImage *cover) {
                 completion(track, cover);
             }];
@@ -222,19 +219,24 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
 }
 
 #pragma mark - Removing unwanted tags
--(NSString *)stringWithRemovedUnwantedTagsFromTrack:(Track *)track
+-(NSArray *)stringsWithRemovedUnwantedTagsFromTrack:(Track *)track
 {
     NSString *filteredName = [track.trackName copy];
+    NSString *filteredAlbum = [track.album copy];
+
     for (NSString *tag in self.tagsToCut) {
         NSError *error;
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:tag options:NSRegularExpressionCaseInsensitive error:&error];
-        NSArray *matches = [regex matchesInString:filteredName options:0 range:NSMakeRange(0, filteredName.length)];
-        if (matches.count) {
+        NSArray *trackNameMatches = [regex matchesInString:filteredName options:0 range:NSMakeRange(0, filteredName.length)];
+        if (trackNameMatches.count) {
             filteredName = [filteredName stringByReplacingOccurrencesOfString:tag withString:@"" options:NSCaseInsensitiveSearch|NSRegularExpressionSearch range:NSMakeRange(0, filteredName.length)];
-            return filteredName;
+        }
+        NSArray *albumNameMatches = [regex matchesInString:filteredAlbum options:0 range:NSMakeRange(0, filteredAlbum.length)];
+        if (albumNameMatches.count) {
+            filteredAlbum = [filteredAlbum stringByReplacingOccurrencesOfString:tag withString:@"" options:NSCaseInsensitiveSearch|NSRegularExpressionSearch range:NSMakeRange(0, filteredAlbum.length)];
         }
     }
-    return filteredName;
+    return @[filteredName, filteredAlbum];
 }
 
 -(void)downloadNewTagsLibraryAndStoreIt
@@ -260,9 +262,7 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
                     NSString *plistPath = [rootPath stringByAppendingPathComponent:@"NepTunesTagsToCut.plist"];
                     BOOL fileSaved = [tagsStrings writeToFile:plistPath atomically:YES];
                     if (fileSaved) {
-                        if ([SettingsController sharedSettings].debugMode) {
-                            NSLog(@"Cut list saved");
-                        }
+                        DebugMode(@"Cut list saved")
                     }
                 }
             }

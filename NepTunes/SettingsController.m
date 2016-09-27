@@ -35,6 +35,8 @@ static NSString *const kiTunesOnly = @"iTunesOnly";
 static NSString *const kScrobbleFromSpotify = @"scrobbleFromSpotify";
 static NSString *const kCutExtraTags = @"cutExtraTags";
 
+static NSString * const kRememberFrame = @"NSWindowAutosaveFrameMovesToActiveDisplay";
+
 static NSString *const kDebugMode = @"debugMode";
 
 @interface SettingsController ()
@@ -113,7 +115,8 @@ static NSString *const kDebugMode = @"debugMode";
                                                               kAutomaticallyShareOnTwitter:         @NO,
                                                               kAutomaticallyShareOnFacebook:        @NO,
                                                               kScrobbleFromSpotify:                 @NO,
-                                                              kCutExtraTags:@NO}];
+                                                              kCutExtraTags:                        @NO,
+                                                              kRememberFrame:                       @NO}];
  
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

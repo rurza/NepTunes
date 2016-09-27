@@ -21,17 +21,13 @@
 
 @implementation AppDelegate
 
--(void)applicationDidFinishLaunching:(NSNotification *)notification
-{
-    self.appWasLaunched = YES;
-}
 
--(void)applicationDidBecomeActive:(NSNotification *)notification
+-(BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
-    NSLog(@"applicationDidBecomeActive, %@", notification.userInfo);
-    if (self.settingsController.hideStatusBarIcon && self.appWasLaunched) {
+    if (self.settingsController.hideStatusBarIcon) {
         [self.menuController openPreferences:nil];
     }
+    return NO;
 }
 
 -(SettingsController *)settingsController

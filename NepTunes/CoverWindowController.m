@@ -21,18 +21,27 @@
 #import "MenuController.h"
 #import "VolumeViewController.h"
 #import "MusicPlayer.h"
+#import "CoverSettingsController.h"
+#import "OverlayHUD.h"
 
-@interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate>
+
+@interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate> {
+    BOOL *_swipeAnimationCancelled;
+}
 @property (nonatomic) CoverWindow *window;
 @property (nonatomic) BOOL changeTrackAnimation;
 @property (nonatomic) CoverLabel *artistLabel;
 @property (nonatomic) CoverLabel *trackLabel;
 @property (nonatomic) NSTrackingArea *hoverArea;
 @property (nonatomic) NSTimer *controlsTimer;
-@property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
+@property (nonatomic) NSTimer *notificationModeTimer;
+@property (nonatomic) NSTimer *overlayTimer;
 @property (nonatomic) GetCover *getCover;
 @property (nonatomic) NSClickGestureRecognizer *doubleClickRecognizer;
-@property (nonatomic) CGRect artistViewOriginalRect;
+@property (nonatomic) CoverSettingsController *coverSettingsController;
+@property (nonatomic) IBOutlet NSLayoutConstraint *artistViewHeightConstraint;
+@property (nonatomic) IBOutlet VolumeViewController *volumeViewController;
+@property (nonatomic) BOOL overlayAnimation;
 @end
 
 @implementation CoverWindowController
@@ -65,6 +74,7 @@
         [self updateWithTrack:track];
         if (self.window && [MusicPlayer sharedPlayer].isPlayerRunning) {
             if ([MusicPlayer sharedPlayer].playerState == MusicPlayerStatePlaying) {
+                [self updateCoverWhenNotificationsMode];
                 [self displayFullInfoForTrack:track];
             }
             __weak typeof(self) weakSelf = self;
@@ -76,6 +86,35 @@
         }
     } else {
         self.window.alphaValue = 0;
+    }
+}
+
+-(void)updateCoverWhenNotificationsMode
+{
+    if (self.notificationModeTimer) {
+        [self.notificationModeTimer invalidate];
+    }
+    if (self.coverSettingsController.notificationMode) {
+        CoverPosition oldPosition = self.coverSettingsController.coverPosition;
+        [self.coverSettingsController updateAlbumPosition:CoverPositionAboveAllOtherWindows];
+        if (self.coverSettingsController.simpleMode) {
+            self.window.coverView.artistView.hidden = NO;
+        }
+        self.notificationModeTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:[NSBlockOperation blockOperationWithBlock:^{
+            if (oldPosition != CoverPositionAboveAllOtherWindows) {
+//                [self animateWindowOpacity:0];
+            }
+            if (self.coverSettingsController.simpleMode) {
+                self.window.coverView.artistView.hidden = YES;
+            }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (oldPosition != CoverPositionAboveAllOtherWindows) {
+                    [self.coverSettingsController updateAlbumPosition:oldPosition];
+//                    [self animateWindowOpacity:1.0];
+                }
+            });
+
+        }] selector:@selector(main) userInfo:nil repeats:NO];
     }
 }
 
@@ -138,25 +177,27 @@
         [self updateOriginsOfLabels];
         return;
     }
-//    [self.window.contentView setNeedsDisplay:YES];
-//    [self.window.contentView setNeedsLayout:YES];
-    self.artistViewOriginalRect = self.window.coverView.artistView.frame;
+
     self.changeTrackAnimation = YES;
     CALayer *layer = self.window.coverView.titleLabel.layer;
     layer.opacity = 0;
 
     __weak typeof(self) weakSelf = self;
-    POPBasicAnimation *showFullInfoAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPViewFrame];
-    showFullInfoAnimation.toValue = [NSValue valueWithRect:self.window.coverView.frame];
+    
+    
+    POPBasicAnimation *showFullInfoAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayoutConstraintConstant];
+    showFullInfoAnimation.toValue = @(self.window.coverView.frame.size.height);
     showFullInfoAnimation.completionBlock = ^(POPAnimation *animation, BOOL completion) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf hideFullTrackInfo];
         });
         [self.window.coverView.artistView pop_removeAllAnimations];
     };
-    [self.window.coverView.artistView pop_addAnimation:showFullInfoAnimation forKey:@"frame"];
-    weakSelf.artistLabel.stringValue = [NSString stringWithFormat:@"%@", track.artist];
-    weakSelf.trackLabel.stringValue = [NSString stringWithFormat:@"%@", track.trackName];
+    [self.artistViewHeightConstraint pop_addAnimation:showFullInfoAnimation forKey:@"height"];
+    
+
+    self.artistLabel.stringValue = [NSString stringWithFormat:@"%@", track.artist];
+    self.trackLabel.stringValue = [NSString stringWithFormat:@"%@", track.trackName];
     [self updateHeightForLabels];
     [self updateOriginsOfLabels];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -181,20 +222,24 @@
     POPBasicAnimation *labelOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
     labelOpacity.toValue = @(0);
     labelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
-        POPSpringAnimation *hideFullInfoAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewFrame];
+        POPSpringAnimation *hideFullInfoAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayoutConstraintConstant];
         hideFullInfoAnimation.completionBlock = ^(POPAnimation *animation, BOOL completion) {
          };
-        hideFullInfoAnimation.springBounciness = 14;
 
-        hideFullInfoAnimation.toValue = [NSValue valueWithRect:self.artistViewOriginalRect];
-        [weakSelf.window.coverView.artistView pop_addAnimation:hideFullInfoAnimation forKey:@"frame"];
+        if (self.coverSettingsController.simpleMode) {
+            hideFullInfoAnimation.toValue = @(0);
+            hideFullInfoAnimation.springBounciness = 5;
+        } else {
+            hideFullInfoAnimation.toValue = @(26);
+            hideFullInfoAnimation.springBounciness = 14;
+        }
+        [weakSelf.artistViewHeightConstraint pop_addAnimation:hideFullInfoAnimation forKey:@"height"];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             POPBasicAnimation *titleLabelOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
             titleLabelOpacity.toValue = @(1);
             titleLabelOpacity.completionBlock = ^(POPAnimation *animation, BOOL completion) {
                 weakSelf.changeTrackAnimation = NO;
-//                [weakSelf.window.contentView setNeedsDisplay:YES];
             };
             [layer pop_addAnimation:titleLabelOpacity forKey:@"titlelabel opacity"];
         });
@@ -256,6 +301,28 @@
     self.artistLabel.frame = NSMakeRect(10, (self.window.frame.size.height-labelsHeight)/2+5 + self.trackLabel.frame.size.height, self.window.frame.size.width-20, self.artistLabel.frame.size.height);
 }
 
+- (void)toggleSimpleMode
+{
+    POPSpringAnimation *hideArtistViewAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayoutConstraintConstant];
+
+    hideArtistViewAnimation.completionBlock = ^(POPAnimation *animation, BOOL completion) {
+        if (completion) {
+            if (self.coverSettingsController.simpleMode) {
+                self.window.coverView.artistView.hidden = YES;
+            } 
+        }
+    };
+    if (self.coverSettingsController.simpleMode) {
+        hideArtistViewAnimation.toValue = @(0);
+        hideArtistViewAnimation.springBounciness = 5;
+    } else {
+        self.window.coverView.artistView.hidden = NO;
+        hideArtistViewAnimation.toValue = @(26);
+        hideArtistViewAnimation.springBounciness = 14;
+    }
+    [self.artistViewHeightConstraint pop_addAnimation:hideArtistViewAnimation forKey:@"height"];
+}
+
 #pragma mark - Hover area
 
 -(void)mouseEntered:(NSEvent *)event
@@ -275,6 +342,9 @@
 
 -(void)showControls
 {
+    if (self.coverSettingsController.simpleMode) {
+        return;
+    }
     MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
     if (!self.popoverIsShown) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
@@ -292,69 +362,16 @@
             self.controlViewController.loveButton.enabled = YES;
         }
      }
-    
-    
-//    if (musicPlayer.currentPlayer == MusicPlayeriTunes) {
-//        [self updateUIbasedOnCurrentTrackRating];
-//    } else {
-//        self.controlViewController.ratingView.hidden = YES;
-//    }
+
     [self.controlsTimer invalidate];
     self.controlsTimer = nil;
 }
 
-//-(void)updateUIbasedOnCurrentTrackRating
-//{
-//    MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
-//
-//    NSInteger rating = musicPlayer.currentTrack.rating;
-//    
-//    NSImage *fullStarImage = [NSImage imageNamed:@"star-full"];
-//    fullStarImage.template = YES;
-//    NSImage *emptyStarImage = [NSImage imageNamed:@"star-empty"];
-//    emptyStarImage.template = YES;
-//    
-//    [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-//        starButton.image = emptyStarImage;
-//    }];
-//    
-//    if (rating > 80) {
-//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-//            starButton.image = fullStarImage;
-//        }];
-//    } else if (rating > 60) {
-//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-//            if (idx == 4) {
-//                *stop = YES;
-//            } else {
-//                starButton.image = fullStarImage;
-//            }
-//        }];
-//    } else if (rating > 40) {
-//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-//            if (idx == 3) {
-//                *stop = YES;
-//            } else {
-//                starButton.image = fullStarImage;
-//            }
-//        }];
-//    } else if (rating > 20) {
-//        [self.controlViewController.ratingButtons enumerateObjectsUsingBlock:^(NSButton *  _Nonnull starButton, NSUInteger idx, BOOL * _Nonnull stop) {
-//            if (idx == 2) {
-//                *stop = YES;
-//            } else {
-//                starButton.image = fullStarImage;
-//            }
-//        }];
-//    } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
-//        if (rating != 0) {
-//            self.controlViewController.star01Button.image = fullStarImage;
-//        }
-//    }
-//}
-
 -(void)hideControls
 {
+    if (self.coverSettingsController.simpleMode) {
+        return;
+    }
     if (!self.popoverIsShown && !self.controlsTimer) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(0);
@@ -367,7 +384,7 @@
 
 - (void)bringiTunesToFront:(NSGestureRecognizer *)gestureRecognizer
 {
-    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
+    CoverSettingsController *coverSettingsController = [CoverSettingsController sharedCoverSettings];
     
     if (coverSettingsController.bringiTunesToFrontWithDoubleClick) {
         [[MusicPlayer sharedPlayer] bringPlayerToFront];
@@ -376,12 +393,12 @@
 
 -(void)readSettings
 {
-    CoverSettingsController *coverSettingsController = [[CoverSettingsController alloc] init];
-    CoverPosition coverPosition = coverSettingsController.coverPosition;
+    [self toggleSimpleMode];
+    CoverPosition coverPosition = self.coverSettingsController.coverPosition;
     switch (coverPosition) {
         case CoverPositionStuckToTheDesktop:
             [self.window setLevel:kCGDesktopIconWindowLevel+1];
-            if (coverSettingsController.ignoreMissionControl) {
+            if (self.coverSettingsController.ignoreMissionControl) {
                 self.window.collectionBehavior = NSWindowCollectionBehaviorStationary | NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle;
             } else {
                 self.window.collectionBehavior = NSWindowCollectionBehaviorManaged | NSWindowCollectionBehaviorIgnoresCycle | NSWindowCollectionBehaviorCanJoinAllSpaces;
@@ -389,7 +406,7 @@
             break;
         case CoverPositionAboveAllOtherWindows:
             [self.window setLevel:NSScreenSaverWindowLevel];
-            if (coverSettingsController.ignoreMissionControl) {
+            if (self.coverSettingsController.ignoreMissionControl) {
                 self.window.collectionBehavior = NSWindowCollectionBehaviorStationary | NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle;
             } else {
                 self.window.collectionBehavior = NSWindowCollectionBehaviorManaged | NSWindowCollectionBehaviorIgnoresCycle | NSWindowCollectionBehaviorCanJoinAllSpaces;
@@ -397,7 +414,7 @@
             break;
         case CoverPositionMixedInWithOtherWindows:
             [self.window setLevel:NSNormalWindowLevel];
-            if (coverSettingsController.ignoreMissionControl) {
+            if (self.coverSettingsController.ignoreMissionControl) {
                 self.window.collectionBehavior = NSWindowCollectionBehaviorStationary | NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorParticipatesInCycle;
             } else {
                 self.window.collectionBehavior = NSWindowCollectionBehaviorManaged | NSWindowCollectionBehaviorParticipatesInCycle | NSWindowCollectionBehaviorCanJoinAllSpaces;
@@ -406,7 +423,7 @@
         default:
             break;
     }
-    CoverSize coverSize = coverSettingsController.coverSize;
+    CoverSize coverSize = self.coverSettingsController.coverSize;
     [self resizeCoverToSize:coverSize animated:NO];
     [self.window makeKeyAndOrderFront:nil];
 }
@@ -443,26 +460,137 @@
     [NSMenu popUpContextMenu:[MenuController sharedController].statusMenu withEvent:theEvent forView:self.window.controlView];
 }
 
-- (void)scrollWheel:(NSEvent *)theEvent
+
+-(BOOL)wantsScrollEventsForSwipeTrackingOnAxis:(NSEventGestureAxis)axis
 {
-    CGFloat value;
-    if (theEvent.isDirectionInvertedFromDevice) {
-        value = -[theEvent scrollingDeltaY];
-    } else {
-        value = [theEvent scrollingDeltaY];
+    if (axis == NSEventGestureAxisHorizontal) {
+        return YES;
     }
-    value /= 2.0f;
-    [self.volumeViewController updateVolumeWithDeltaValue:value];
+    return NO;
 }
 
+- (void)scrollWheel:(NSEvent *)theEvent
+{
+    if ([theEvent phase] == NSEventPhaseNone || [theEvent phase] == NSEventPhaseMayBegin || [theEvent phase] == NSEventPhaseCancelled) return;
+    if (fabs([theEvent scrollingDeltaX]) <= fabs([theEvent scrollingDeltaY])) {
+        //stary kod
+        CGFloat value;
+        if (theEvent.isDirectionInvertedFromDevice) {
+            value = -[theEvent scrollingDeltaY];
+        } else {
+            value = [theEvent scrollingDeltaY];
+        }
+        value /= 2.0f;
+        [self.volumeViewController updateVolumeWithDeltaValue:value];
+        
+    } else {
+        [self swipeTrackWithEvent:theEvent];
+    }
+}
+
+-(void)swipeTrackWithEvent:(NSEvent *)theEvent
+{
+    if (![NSEvent isSwipeTrackingFromScrollEventsEnabled]) return;
+    
+    if (_swipeAnimationCancelled && *_swipeAnimationCancelled == NO) {
+        *_swipeAnimationCancelled = YES;
+        _swipeAnimationCancelled = NULL;
+    }
+    
+    __block BOOL animationCancelled = NO;
+    
+    [theEvent trackSwipeEventWithOptions:0 dampenAmountThresholdMin:-1 max:1 usingHandler:^(CGFloat gestureAmount, NSEventPhase phase, BOOL isComplete, BOOL * _Nonnull stop) {
+        
+        if (phase == NSEventPhaseEnded) {
+            if (gestureAmount > 0) {
+                [[MusicPlayer sharedPlayer] nextTrack];
+            } else {
+                [[MusicPlayer sharedPlayer] backTrack];
+            }
+            if (self.coverSettingsController.simpleMode) {
+                if (self.overlayTimer) {
+                    [self.overlayTimer invalidate];
+                }
+                self.window.controlOverlayHUD.hidden = NO;
+                if (gestureAmount > 0) {
+                    self.window.controlOverlayHUD.controlOverlayImageView.image = [NSImage imageNamed:@"next track"];
+                } else {
+                    self.window.controlOverlayHUD.controlOverlayImageView.image = [NSImage imageNamed:@"previous track"];
+                }
+                self.overlayAnimation = YES;
+                [self animateLayer:self.window.controlOverlayHUD.layer toOpacity:1 withCompletionHandler:nil];
+            }
+            
+            
+        }
+        if (isComplete) {
+            if (self.coverSettingsController.simpleMode) {
+                self.overlayTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:[NSBlockOperation blockOperationWithBlock:^{
+                    [self animateLayer:self.window.controlOverlayHUD.layer toOpacity:0 withCompletionHandler:^(POPAnimation *animation, BOOL completed) {
+                        if (completed) {
+                            self.window.controlOverlayHUD.hidden = YES;
+                            self.overlayAnimation = NO;
+                        }
+                    }];
+                }] selector:@selector(main) userInfo:nil repeats:NO];
+            }
+            self->_swipeAnimationCancelled = NULL;
+        }
+    }];
+    self->_swipeAnimationCancelled = &animationCancelled;
+
+}
+
+-(void)updateVolumeOnOverlayHUDIfVisible
+{
+    if (self.coverSettingsController.simpleMode) {
+        if (self.overlayAnimation) {
+            return;
+        }
+        if (self.overlayTimer) {
+            [self.overlayTimer invalidate];
+            self.overlayTimer = nil;
+        }
+        NSUInteger volume = [MusicPlayer sharedPlayer].soundVolume;
+        self.window.controlOverlayHUD.hidden = NO;
+        self.window.controlOverlayHUD.controlOverlayImageView.image = [self.controlViewController volumeIconForVolume:volume];
+        [self animateLayer:self.window.controlOverlayHUD.layer toOpacity:1 withCompletionHandler:nil];
+        self.overlayTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:[NSBlockOperation blockOperationWithBlock:^{
+            [self animateLayer:self.window.controlOverlayHUD.layer toOpacity:0 withCompletionHandler:^(POPAnimation *animation, BOOL completed) {
+                if (completed) {
+                    self.window.controlOverlayHUD.hidden = YES;
+                }
+            }];
+        }] selector:@selector(main) userInfo:nil repeats:NO];
+    }
+}
+
+-(void)animateLayer:(CALayer *)layer toOpacity:(CGFloat)opacity withCompletionHandler:(void (^)(POPAnimation *animation, BOOL completed))completionHandler
+{
+    POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    opacityAnimation.toValue = @(opacity);
+    opacityAnimation.completionBlock = completionHandler;
+    [layer pop_addAnimation:opacityAnimation forKey:@"opacity"];
+}
 
 -(BOOL)acceptsFirstResponder
 {
     return YES;
 }
 
+-(CoverSettingsController *)coverSettingsController
+{
+    if (!_coverSettingsController) {
+        _coverSettingsController = [CoverSettingsController sharedCoverSettings];
+    }
+    return _coverSettingsController;
+}
+
 -(void)dealloc
 {
+    [self.window.controlView removeGestureRecognizer:self.doubleClickRecognizer];
+    self.doubleClickRecognizer.target = nil;
+    self.doubleClickRecognizer = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end

@@ -16,6 +16,7 @@
 #import "Track.h"
 #import "PreferencesController.h"
 #import "MusicPlayer.h"
+#import "DebugMode.h"
 
 @interface UserNotificationsController () <NSUserNotificationCenterDelegate>
 @property (nonatomic) BOOL doISentANotificationThatLastFmIsDown;
@@ -85,7 +86,7 @@
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         [notification setTitle:[NSString stringWithFormat:@"%@", track.artist]];
         if ([SettingsController sharedSettings].cutExtraTags) {
-            [notification setInformativeText:[NSString stringWithFormat:@"%@ ♥️ at Last.fm", [[MusicScrobbler sharedScrobbler] stringWithRemovedUnwantedTagsFromTrack:track]]];
+            [notification setInformativeText:[NSString stringWithFormat:@"%@ ♥️ at Last.fm", [[[MusicScrobbler sharedScrobbler] stringsWithRemovedUnwantedTagsFromTrack:track] firstObject]]];
         } else {
             [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", track.trackName]];
         }
@@ -156,10 +157,7 @@
     [[MenuController sharedController] forceLogOut];
     [OfflineScrobbler sharedInstance].userWasLoggedOut = YES;
     [SettingsController sharedSettings].openPreferencesWhenThereIsNoUser = YES;
-    if ([SettingsController sharedSettings].debugMode) {
-        NSLog(@"User %@ was logged out", [SettingsController sharedSettings].username);
-    }
-
+    DebugMode(@"User %@ was logged out", [SettingsController sharedSettings].username)
 }
 
 -(void)displayNotificationThatICannotGetInfoAboutSpotify:(NSNotification *)note

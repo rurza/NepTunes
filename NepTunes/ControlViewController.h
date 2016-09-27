@@ -49,5 +49,6 @@
 
 -(void)animationLoveButton;
 -(void)updateVolumeIcon;
+-(NSImage *)volumeIconForVolume:(NSUInteger)volume;
 
 @end

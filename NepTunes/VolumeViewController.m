@@ -35,9 +35,8 @@
 -(void)updateVolumeWithValue:(NSInteger)value
 {
     [MusicPlayer sharedPlayer].soundVolume = value;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.coverWindowController.controlViewController updateVolumeIcon];
-    });
+    [self.coverWindowController.controlViewController updateVolumeIcon];
+    [self.coverWindowController updateVolumeOnOverlayHUDIfVisible];
     self.slider.integerValue = [MusicPlayer sharedPlayer].soundVolume;
 }
 

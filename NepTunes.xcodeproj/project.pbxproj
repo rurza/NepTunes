@@ -19,7 +19,9 @@
 		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */; };
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
+		5B49F4A41D807421005943D3 /* NSWindow+Spaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B49F4A31D807421005943D3 /* NSWindow+Spaces.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
+		5B70F4181D99A02600A6E294 /* alt icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5B70F4171D99A02600A6E294 /* alt icon.icns */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
 		5B8534811CA6987100C26129 /* ShareMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8534801CA6987100C26129 /* ShareMenuController.m */; };
 		5B881D9A1C7B64F9004AF260 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B881D981C7B64F9004AF260 /* AboutWindowController.m */; };
@@ -36,6 +38,7 @@
 		5BAE71031C50199700779081 /* SavedTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71021C50199700779081 /* SavedTrack.m */; };
 		5BAE71081C528D1000779081 /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71071C528D1000779081 /* SettingsController.m */; };
 		5BAEB68A1C78AF2700F7B2F4 /* ControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAEB6891C78AF2700F7B2F4 /* ControlView.m */; };
+		5BB0A6EE1D86D97400C143B6 /* OverlayHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB0A6ED1D86D97400C143B6 /* OverlayHUD.m */; };
 		5BB9965F1C7621CF0088B46B /* PreferencesCoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */; };
 		5BBD4C501C34562000AFA182 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD4C4F1C34562000AFA182 /* Track.m */; };
 		5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A8E01C610C83009C3E9F /* MusicController.m */; };
@@ -119,8 +122,12 @@
 		5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTracksController.m; sourceTree = "<group>"; };
 		5B48B28F1C5FB9B10041175B /* UserNotificationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNotificationsController.h; sourceTree = "<group>"; };
 		5B48B2901C5FB9B10041175B /* UserNotificationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNotificationsController.m; sourceTree = "<group>"; };
+		5B49F4A21D807421005943D3 /* NSWindow+Spaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+Spaces.h"; sourceTree = "<group>"; };
+		5B49F4A31D807421005943D3 /* NSWindow+Spaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+Spaces.m"; sourceTree = "<group>"; };
 		5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicScrobbler.h; sourceTree = "<group>"; };
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		5B70F4151D998EFC00A6E294 /* DebugMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugMode.h; sourceTree = "<group>"; };
+		5B70F4171D99A02600A6E294 /* alt icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "alt icon.icns"; sourceTree = "<group>"; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
 		5B85347F1CA6987100C26129 /* ShareMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareMenuController.h; sourceTree = "<group>"; };
@@ -151,6 +158,8 @@
 		5BAE71071C528D1000779081 /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
 		5BAEB6881C78AF2700F7B2F4 /* ControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlView.h; sourceTree = "<group>"; };
 		5BAEB6891C78AF2700F7B2F4 /* ControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlView.m; sourceTree = "<group>"; };
+		5BB0A6EC1D86D97400C143B6 /* OverlayHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayHUD.h; sourceTree = "<group>"; };
+		5BB0A6ED1D86D97400C143B6 /* OverlayHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayHUD.m; sourceTree = "<group>"; };
 		5BB9965D1C7621CF0088B46B /* PreferencesCoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesCoverController.h; sourceTree = "<group>"; };
 		5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesCoverController.m; sourceTree = "<group>"; };
 		5BBD4C4E1C34562000AFA182 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
@@ -220,12 +229,16 @@
 		5B1BC24D1C6CE4CA004EB785 /* Cover */ = {
 			isa = PBXGroup;
 			children = (
+				5B49F4A21D807421005943D3 /* NSWindow+Spaces.h */,
+				5B49F4A31D807421005943D3 /* NSWindow+Spaces.m */,
 				5B1BC2401C6CDE26004EB785 /* CoverWindowController.h */,
 				5B1BC2411C6CDE26004EB785 /* CoverWindowController.m */,
 				5B0734201C6E382D00167934 /* CoverView.h */,
 				5B0734211C6E382D00167934 /* CoverView.m */,
 				5BAEB6881C78AF2700F7B2F4 /* ControlView.h */,
 				5BAEB6891C78AF2700F7B2F4 /* ControlView.m */,
+				5BB0A6EC1D86D97400C143B6 /* OverlayHUD.h */,
+				5BB0A6ED1D86D97400C143B6 /* OverlayHUD.m */,
 				5B1BC24A1C6CE4BF004EB785 /* CoverWindow.h */,
 				5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */,
 				5B9F073E1C72300200F73566 /* CoverLabel.h */,
@@ -368,6 +381,7 @@
 		5BDD6B041A1D0C95001D87D6 = {
 			isa = PBXGroup;
 			children = (
+				5B70F4171D99A02600A6E294 /* alt icon.icns */,
 				5BDD6B301A1D0CA2001D87D6 /* Podfile */,
 				5BDD6B0F1A1D0C95001D87D6 /* NepTunes */,
 				5BDD6B231A1D0C95001D87D6 /* NepTunesTests */,
@@ -404,6 +418,7 @@
 				5BDD6B101A1D0C95001D87D6 /* Supporting Files */,
 				5B9662701C725A340095AF54 /* User Notifications */,
 				5B3877531CDCDE8800452D24 /* Social Message */,
+				5B70F4151D998EFC00A6E294 /* DebugMode.h */,
 			);
 			path = NepTunes;
 			sourceTree = "<group>";
@@ -462,8 +477,6 @@
 			buildConfigurationList = 5BDD6B2A1A1D0C95001D87D6 /* Build configuration list for PBXNativeTarget "NepTunes" */;
 			buildPhases = (
 				1AA37BA465A03F20F13218D9 /* [CP] Check Pods Manifest.lock */,
-				5BC941891D5F2B5A0012234B /* ShellScript */,
-				5BC9418A1D5F2CAA0012234B /* ShellScript */,
 				5BDD6B091A1D0C95001D87D6 /* Sources */,
 				5BDD6B0A1A1D0C95001D87D6 /* Frameworks */,
 				5BDD6B0B1A1D0C95001D87D6 /* Resources */,
@@ -507,7 +520,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = "";
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = micropixels;
 				TargetAttributes = {
 					5BDD6B0C1A1D0C95001D87D6 = {
@@ -568,6 +581,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B70F4181D99A02600A6E294 /* alt icon.icns in Resources */,
 				5BF402E81C73A156004FD0FA /* PreferencesController.xib in Resources */,
 				5BDD6B311A1D0CA2001D87D6 /* Podfile in Resources */,
 				5B881D9B1C7B64F9004AF260 /* AboutWindowController.xib in Resources */,
@@ -603,34 +617,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		5BC941891D5F2B5A0012234B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILES_DIR)/receipt.h",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Receigen binary\nRECEIGEN=\"/Applications/Receigen.app/Contents/MacOS/Receigen\"\n\n# Extract Info.plist information\nINPUT=\"$INFOPLIST_FILE\"\nBUNDLE_ID=\"$PRODUCT_BUNDLE_IDENTIFIER\"\n# On OS X, use CFBundleShortVersionString\nBUNDLE_VERSION=`/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INPUT\"`\n# Expand information if needed\nEXPANDED_BUNDLE_ID=`eval \"echo $BUNDLE_ID\"`\nEXPANDED_BUNDLE_VERSION=`eval \"echo $BUNDLE_VERSION\"`\n\n# Make sure the destination directory exists\nmkdir -p \"$DERIVED_FILES_DIR\"\nHEADER=\"$DERIVED_FILES_DIR/receipt.h\"\n\n# Check if the generation is needed\nif [ -e \"$HEADER\" ]; then\n# On OS X, check CFBundleIdentifier and CFBundleShortVersionString\nSKIP=`egrep -q \"CFBundleIdentifier.+:.+$EXPANDED_BUNDLE_ID\" \"$HEADER\" && egrep -q \"CFBundleShortVersionString.+:.+$EXPANDED_BUNDLE_VERSION\" \"$HEADER\" && echo \"YES\"`\nfi\n\n# Generate the header file if needed\nif [ \"x$SKIP\" = \"x\" ]; then\n# On OS X, call Receigen with options\n\"$RECEIGEN\" --identifier \"$EXPANDED_BUNDLE_ID\" --failure \"exitwith173\" --prefix \"\" --version \"$EXPANDED_BUNDLE_VERSION\" --os osx > \"$HEADER\"\nfi\n\n";
-		};
-		5BC9418A1D5F2CAA0012234B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILES_DIR)/troll.h",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Receigen binary\nRECEIGEN=\"/Applications/Receigen.app/Contents/MacOS/Receigen\"\n\n# Extract Info.plist information\nINPUT=\"$INFOPLIST_FILE\"\nBUNDLE_ID=\"$PRODUCT_BUNDLE_IDENTIFIER\"\n# On OS X, use CFBundleShortVersionString\nBUNDLE_VERSION=`/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INPUT\"`\n# Expand information if needed\nEXPANDED_BUNDLE_ID=`eval \"echo $BUNDLE_ID\"`\nEXPANDED_BUNDLE_VERSION=`eval \"echo $BUNDLE_VERSION\"`\n\n# Make sure the destination directory exists\nmkdir -p \"$DERIVED_FILES_DIR\"\nHEADER=\"$DERIVED_FILES_DIR/troll.h\"\n\n# Check if the generation is needed\nif [ -e \"$HEADER\" ]; then\n# On OS X, check CFBundleIdentifier and CFBundleShortVersionString\nSKIP=`egrep -q \"CFBundleIdentifier.+:.+$EXPANDED_BUNDLE_ID\" \"$HEADER\" && egrep -q \"CFBundleShortVersionString.+:.+$EXPANDED_BUNDLE_VERSION\" \"$HEADER\" && echo \"YES\"`\nfi\n\n# Generate the header file if needed\nif [ \"x$SKIP\" = \"x\" ]; then\n# On OS X, call Receigen with options\n\"$RECEIGEN\" --identifier \"$EXPANDED_BUNDLE_ID\" --success \"donothing\" --failure \"callblock\" --prefix \"Troll\" --version \"$EXPANDED_BUNDLE_VERSION\" --os osx > \"$HEADER\"\nfi\n";
 		};
 		5BE3C9B31B7BD5F70095DA69 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -684,6 +670,7 @@
 			files = (
 				5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */,
 				5BE3FBCE1C7646F900F95E9A /* CoverSettingsController.m in Sources */,
+				5B49F4A41D807421005943D3 /* NSWindow+Spaces.m in Sources */,
 				5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */,
 				5BBD4C501C34562000AFA182 /* Track.m in Sources */,
 				5BADDDD71C97219E00F0BFAB /* MASShortcut+UserDefaults.m in Sources */,
@@ -696,6 +683,7 @@
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
 				5BF402E71C73A156004FD0FA /* PreferencesController.m in Sources */,
 				5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */,
+				5BB0A6EE1D86D97400C143B6 /* OverlayHUD.m in Sources */,
 				5B1E16B61CD11D0400AB572A /* SpotifySearch.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
@@ -761,8 +749,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -771,6 +761,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -783,7 +774,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -803,8 +794,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -813,13 +806,14 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};

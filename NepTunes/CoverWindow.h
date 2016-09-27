@@ -10,9 +10,11 @@
 @class CoverImageView;
 @class CoverView;
 @class ControlView;
+@class OverlayHUD;
 
 @interface CoverWindow : NSWindow
-@property (strong) IBOutlet CoverView *coverView;
-@property (strong) IBOutlet ControlView *controlView;
+@property (nonatomic) IBOutlet CoverView *coverView;
+@property (nonatomic) IBOutlet ControlView *controlView;
+@property (nonatomic) IBOutlet OverlayHUD *controlOverlayHUD;
 
 @end

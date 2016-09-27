@@ -26,6 +26,7 @@
 #import "AboutWindowController.h"
 #import "HotkeyController.h"
 #import "MusicPlayer.h"
+#import "DebugMode.h"
 
 @import QuartzCore;
 
@@ -53,6 +54,7 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) NSImage *currentMenubarImage;
 @property (nonatomic) UserNotificationsController *userNotificationsController;
 @property (nonatomic) BOOL bothPlayerAreAvailable;
+@property (nonatomic) NSCache *menubarIconsCache;
 @end
 
 @implementation MenuController
@@ -207,11 +209,27 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(NSImage *)imageForStep:(NSUInteger)step
 {
-    if (step != 0) {
-        self.currentMenubarImage = [NSImage imageNamed:[NSString stringWithFormat:@"statusIcon%lu", (unsigned long)step]];
-    } else self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
-    if (!self.currentMenubarImage) {
-        self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
+    NSImage *cachedImage = [self.menubarIconsCache objectForKey:@(step)];
+    if (cachedImage) {
+        self.currentMenubarImage = cachedImage;
+    } else {
+        if (step != 0) {
+            NSImage *icon = [NSImage imageNamed:[NSString stringWithFormat:@"statusIcon%lu", (unsigned long)step]];
+            [self.menubarIconsCache setObject:icon forKey:@(step)];
+            self.currentMenubarImage = icon;
+        } else {
+            NSImage *genericIcon = [self.menubarIconsCache objectForKey:@"generic"];
+            if (genericIcon) {
+                self.currentMenubarImage = genericIcon;
+            } else {
+                genericIcon = [NSImage imageNamed:@"statusIcon"];
+                [self.menubarIconsCache setObject:genericIcon forKey:@"generic"];
+            }
+        }
+        if (!self.currentMenubarImage) {
+            self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
+            [self.menubarIconsCache setObject:self.currentMenubarImage forKey:@"generic"];
+        }
     }
     [self.currentMenubarImage setTemplate:YES];
     return self.currentMenubarImage;
@@ -543,9 +561,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)prepareRecentItemsMenu
 {
-    if (self.settings.debugMode) {
-        NSLog(@"Preparing Recent Tracks menu");
-    }
+    DebugMode(@"Preparing Recent Tracks menu")
     if (self.recentTracksController.tracks.count == 0) {
         self.recentTracksMenuItem.enabled = NO;
         return;
@@ -570,9 +586,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 -(void)updateRecentMenu
 {
-    if (self.settings.debugMode) {
-        NSLog(@"Updating Recent Tracks menu");
-    }
+    DebugMode(@"Updating Recent Tracks menu")
     Track *track = self.musicScrobbler.currentTrack;
     if ([self.recentTracksController addTrackToRecentMenu:track]) {
         self.recentTracksMenuItem.enabled = YES;
@@ -665,16 +679,12 @@ static NSUInteger const kNumberOfFrames = 10;
         Track *track = [self trackFromRecentTracksMenuItem:menuItem];
         
         [self openMusicPlayerPageForTrack:track andMenuItem:menuItem];
-        if (self.settings.debugMode) {
-            NSLog(@"Opening Music Player page for %@", track);
-        }
+        DebugMode(@"Opening Music Player page for %@", track)
 
     } else {
         Track *track = [self trackFromRecentTracksMenuItem:menuItem];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
-        if (self.settings.debugMode) {
-            NSLog(@"Opening Last.fm page for %@", track);
-        }
+        DebugMode(@"Opening Last.fm page for %@", track)
     }
 }
 
@@ -691,9 +701,7 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     if ([self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
         [self.statusMenu removeItem:self.recentTracksMenuItem];
-        if (self.settings.debugMode) {
-            NSLog(@"Hiding Recent Tracks menu");
-        }
+        DebugMode(@"Hiding Recent Tracks menu")
     }
     
 }
@@ -703,9 +711,7 @@ static NSUInteger const kNumberOfFrames = 10;
     if (![self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
         [self.statusMenu insertItem:self.recentTracksMenuItem atIndex:4];
         [self prepareRecentItemsMenu];
-        if (self.settings.debugMode) {
-            NSLog(@"Adding Recent Tracks menu");
-        }
+        DebugMode(@"Adding Recent Tracks menu")
     }
 }
 
@@ -895,6 +901,14 @@ static NSUInteger const kNumberOfFrames = 10;
         _musicPlayer = [MusicPlayer sharedPlayer];
     }
     return _musicPlayer;
+}
+
+-(NSCache *)menubarIconsCache
+{
+    if (!_menubarIconsCache) {
+        _menubarIconsCache = [NSCache new];
+    }
+    return _menubarIconsCache;
 }
 
 @end

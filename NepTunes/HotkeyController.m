@@ -343,10 +343,8 @@ static void *MASObservingContext = &MASObservingContext;
      bindShortcutWithDefaultsKey:kIncreaseRatingShortcut
      toAction:^{
          dispatch_async(dispatch_get_main_queue(), ^{
-             CFTimeInterval begin = CACurrentMediaTime();
              MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
              NSInteger rating = musicPlayer.currentTrack.rating;
-             NSLog(@"%li", rating);
              if (self.hudWindowController.isVisible) {
                  [self.hudWindowController updateCurrentHUD];
              } else {
@@ -377,7 +375,6 @@ static void *MASObservingContext = &MASObservingContext;
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
              self.hudWindowController.starsImageView.image.template = YES;
              self.hudWindowController.centerImageView.image.template = YES;
-             NSLog(@"rating took %f", CACurrentMediaTime() -begin);
          });
          
      }];
