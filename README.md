@@ -14,7 +14,6 @@ Standard price is $3.99 - think of it as buying me a good beer 🍻 😊
 ![Hotkeys](http://micropixels.pl/neptunes/screenshots/newhotkeys.png)
 
 ## License
-========
 Copyright (c) 2014-2016, Adam Różyński.
 
 All rights reserved.
