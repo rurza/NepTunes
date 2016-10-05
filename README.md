@@ -9,7 +9,7 @@ Standard price is $3.99 - think of it as buying me a good beer 🍻 😊
 
 ## Issues  
 
-  [Repo for new ideas and issues](https://github.com/rurza/NepTunes-Issues)
+  [Repo for contributing new ideas and reporting issues](https://github.com/rurza/NepTunes-Issues)
 
 ## Screenshots
 
