@@ -1,14 +1,19 @@
 NepTunes
 ========
 
-Simple Last.fm scrobbler for iTunes, that works with Apple Music streaming and can integrate results from Last.fm with Apple Music Library.  
+<strong>Simple</strong> to use, yet <strong>powerful</strong> iTunes and Spotify controller with Last.fm scrobbler that is <strong>light</strong>, super <strong>reliable</strong> and fully works with Spotify and Apple Music and can help you with <strong>discovering</strong> new music. 
 You can buy it [here](https://itunes.apple.com/us/app/neptunes-music-scrobbler/id1006739057?mt=12&at=1010l3j7).
 Standard price is $3.99 - think of it as buying me a good beer 🍻 😊
 
 ## Official [website](http://micropixels.pl/neptunes/).
 
+![Controller](http://micropixels.pl/neptunes/screenshots/musiccontroller.png)
+![Share](http://micropixels.pl/neptunes/screenshots/share.png)
+![Recent menu](http://micropixels.pl/neptunes/screenshots/recent.png)
+![Offline](http://micropixels.pl/neptunes/screenshots/offline.png)
+![Hotkeys](http://micropixels.pl/neptunes/screenshots/newhotkeys.png)
 
-License
+## License
 ========
 Copyright (c) 2014-2016, Adam Różyński.
 
