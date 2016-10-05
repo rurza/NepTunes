@@ -3,7 +3,7 @@ NepTunes
 
 <strong>Simple</strong> to use, yet <strong>powerful</strong> iTunes and Spotify controller with Last.fm scrobbler that is <strong>light</strong>, super <strong>reliable</strong> and fully works with Spotify and Apple Music and can help you with <strong>discovering</strong> new music.   
 You can buy it [here](https://itunes.apple.com/us/app/neptunes-music-scrobbler/id1006739057?mt=12&at=1010l3j7).  
-Standard price is $3.99 - think of it as buying me a good beer 🍻 😊
+Standard price is $3.99 - think of it as buying me a good beer 🍻 😊  
 OS X 10.10+ (works with macOS Sierra too)
 
 ## Official [website](http://micropixels.pl/neptunes/).
