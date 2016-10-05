@@ -10,7 +10,7 @@ Standard price is $3.99 - think of it as buying me a good beer 🍻 😊
 
 License
 ========
-Copyright (c) 2014, Adam Różyński.
+Copyright (c) 2014-2016, Adam Różyński.
 
 All rights reserved.
 
