@@ -7,6 +7,12 @@ Standard price is $3.99 - think of it as buying me a good beer 🍻 😊
 
 ## Official [website](http://micropixels.pl/neptunes/).
 
+## Issues  
+
+  [Repo for new ideas and issues](https://github.com/rurza/NepTunes-Issues)
+
+## Screenshots
+
 ![Controller](http://micropixels.pl/neptunes/screenshots/musiccontroller.png)
 ![Share](http://micropixels.pl/neptunes/screenshots/share.png)
 ![Recent menu](http://micropixels.pl/neptunes/screenshots/recent.png)
