@@ -10,6 +10,9 @@
 #import "SettingsController.h"
 #import "PreferencesController.h"
 #import "MenuController.h"
+#import "PINCache.h"
+#import "EGOCache.h"
+#import "DebugMode.h"
 
 @interface AppDelegate ()
 @property (nonatomic) SettingsController *settingsController;
@@ -21,6 +24,15 @@
 
 @implementation AppDelegate
 
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
+{
+    [self.settingsController updateLaunchCounter];
+    if (self.settingsController.launchCounter.integerValue % 50 == 0) {
+        DebugMode(@"Clearing caches...");
+        [[[PINCache alloc] initWithName:@"imageCache"] removeAllObjects];
+        [[EGOCache globalCache] clearCache];
+    }
+}
 
 -(BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {

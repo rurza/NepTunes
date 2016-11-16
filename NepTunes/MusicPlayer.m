@@ -261,10 +261,14 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                 NSString *link = [firstResult objectForKey:@"uri"];
                 [weakSelf openLocationWithURL:link];
             } else {
-                failureHandler();
+                if (failureHandler) {
+                    failureHandler();
+                }
             }
         } failureHandler:^(NSError * _Nonnull error) {
-            failureHandler();
+            if (failureHandler) {
+                failureHandler();
+            }
         }];
     } else if (player == MusicPlayeriTunes) {
         [[ItunesSearch sharedInstance] getIdForArtist:artistName successHandler:^(NSArray *result) {
@@ -276,11 +280,15 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                         [weakSelf openLocationWithURL:(NSString *)result.firstObject[@"artistLinkUrl"]];
                     }
                 } failureHandler:^(NSError *error) {
-                    failureHandler();
+                    if (failureHandler) {
+                        failureHandler();
+                    }
                 }];
             }
         } failureHandler:^(NSError *error) {
-            failureHandler();
+            if (failureHandler) {
+                failureHandler();
+            }
         }];
     }
 }
@@ -325,7 +333,9 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                 handler(nil);
             }
         } failureHandler:^(NSError * _Nonnull error) {
-            failureHandler(error);
+            if (failureHandler) {
+                failureHandler(error);
+            }
         }];
     } else if (player == MusicPlayeriTunes) {
         __weak typeof(self) weakSelf = self;
@@ -342,14 +352,20 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                         handler(link);
                     }
                 } failureHandler:^(NSError *error) {
-                    failureHandler(error);
+                    if (failureHandler) {
+                        failureHandler(error);
+                    }
                 }];
             }
         } failureHandler:^(NSError *error) {
-            failureHandler(error);
+            if (failureHandler) {
+                failureHandler(error);
+            }
         }];
     } else {
-        failureHandler(nil);
+        if (failureHandler) {
+            failureHandler(nil);
+        }
     }
 }
 

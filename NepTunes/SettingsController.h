@@ -34,6 +34,8 @@
 @property (nonatomic) NSString *username;
 @property (nonatomic) NSNumber *numberOfTracksInRecent;
 @property (nonatomic) NSNumber *percentForScrobbleTime;
+@property (nonatomic) NSNumber *launchCounter;
+
 @property (nonatomic) BOOL scrobblePodcastsAndiTunesU;
 @property (nonatomic) BOOL scrobbleFromSpotify;
 @property (nonatomic) BOOL cutExtraTags;
@@ -81,5 +83,7 @@
 -(IBAction)toggleAutomaticallyShareOnTwitter:(NSButton *)sender;
 //Spotify
 -(IBAction)toggleScrobbleFromSpotify:(NSButton *)sender;
+
+- (void)updateLaunchCounter;
 
 @end

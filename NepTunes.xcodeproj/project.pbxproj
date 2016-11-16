@@ -365,9 +365,9 @@
 		5BC6A8E31C611C3A009C3E9F /* Music */ = {
 			isa = PBXGroup;
 			children = (
+				5BAE71041C5019A200779081 /* Track */,
 				5BC6A8DF1C610C83009C3E9F /* MusicController.h */,
 				5BC6A8E01C610C83009C3E9F /* MusicController.m */,
-				5BAE71041C5019A200779081 /* Track */,
 				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
 				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
