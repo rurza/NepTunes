@@ -15,14 +15,17 @@
 		5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC2481C6CE337004EB785 /* CoverImageView.m */; };
 		5B1BC24C1C6CE4BF004EB785 /* CoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BC24B1C6CE4BF004EB785 /* CoverWindow.m */; };
 		5B1E16AA1CC5418600AB572A /* MusicPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1E16A91CC5418600AB572A /* MusicPlayer.m */; };
-		5B1E16B61CD11D0400AB572A /* SpotifySearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1E16B41CD11D0400AB572A /* SpotifySearch.m */; };
 		5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F4CE61B763C16009F0C53 /* MenuController.m */; };
 		5B427BDB1C52B4A300EA1D4A /* RecentTracksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */; };
+		5B479B031F92264700DA362F /* MPISpotifyToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B479B021F92264700DA362F /* MPISpotifyToken.m */; };
+		5B479B081F93894000DA362F /* GVUserDefaults+Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B479B071F93894000DA362F /* GVUserDefaults+Settings.m */; };
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
 		5B49F4A41D807421005943D3 /* NSWindow+Spaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B49F4A31D807421005943D3 /* NSWindow+Spaces.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B70F4181D99A02600A6E294 /* alt icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5B70F4171D99A02600A6E294 /* alt icon.icns */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
+		5B7A52CF1F8D56950017AEB0 /* MPISpotifySearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A52CE1F8D56950017AEB0 /* MPISpotifySearch.m */; };
+		5B7A52D21F8E77F20017AEB0 /* MPISpotifyRequestsFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A52D11F8E77F20017AEB0 /* MPISpotifyRequestsFactory.m */; };
 		5B8534811CA6987100C26129 /* ShareMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B8534801CA6987100C26129 /* ShareMenuController.m */; };
 		5B881D9A1C7B64F9004AF260 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B881D981C7B64F9004AF260 /* AboutWindowController.m */; };
 		5B881D9B1C7B64F9004AF260 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B881D991C7B64F9004AF260 /* AboutWindowController.xib */; };
@@ -114,12 +117,14 @@
 		5B1E16A81CC5418600AB572A /* MusicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayer.h; sourceTree = "<group>"; };
 		5B1E16A91CC5418600AB572A /* MusicPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPlayer.m; sourceTree = "<group>"; };
 		5B1E16AF1CCCEB1900AB572A /* MusicPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayerDelegate.h; sourceTree = "<group>"; };
-		5B1E16B41CD11D0400AB572A /* SpotifySearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifySearch.m; sourceTree = "<group>"; };
-		5B1E16B51CD11D0400AB572A /* SpotifySearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifySearch.h; sourceTree = "<group>"; };
 		5B2F4CE51B763C16009F0C53 /* MenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuController.h; sourceTree = "<group>"; };
 		5B2F4CE61B763C16009F0C53 /* MenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuController.m; sourceTree = "<group>"; };
 		5B427BD91C52B4A300EA1D4A /* RecentTracksController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTracksController.h; sourceTree = "<group>"; };
 		5B427BDA1C52B4A300EA1D4A /* RecentTracksController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTracksController.m; sourceTree = "<group>"; };
+		5B479B011F92264700DA362F /* MPISpotifyToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPISpotifyToken.h; sourceTree = "<group>"; };
+		5B479B021F92264700DA362F /* MPISpotifyToken.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MPISpotifyToken.m; sourceTree = "<group>"; };
+		5B479B061F93894000DA362F /* GVUserDefaults+Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GVUserDefaults+Settings.h"; sourceTree = "<group>"; };
+		5B479B071F93894000DA362F /* GVUserDefaults+Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "GVUserDefaults+Settings.m"; sourceTree = "<group>"; };
 		5B48B28F1C5FB9B10041175B /* UserNotificationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNotificationsController.h; sourceTree = "<group>"; };
 		5B48B2901C5FB9B10041175B /* UserNotificationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNotificationsController.m; sourceTree = "<group>"; };
 		5B49F4A21D807421005943D3 /* NSWindow+Spaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+Spaces.h"; sourceTree = "<group>"; };
@@ -130,6 +135,10 @@
 		5B70F4171D99A02600A6E294 /* alt icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "alt icon.icns"; sourceTree = "<group>"; };
 		5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmCache.h; sourceTree = "<group>"; };
 		5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastFmCache.m; sourceTree = "<group>"; };
+		5B7A52CD1F8D56950017AEB0 /* MPISpotifySearch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPISpotifySearch.h; sourceTree = "<group>"; };
+		5B7A52CE1F8D56950017AEB0 /* MPISpotifySearch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MPISpotifySearch.m; sourceTree = "<group>"; };
+		5B7A52D01F8E77F20017AEB0 /* MPISpotifyRequestsFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPISpotifyRequestsFactory.h; sourceTree = "<group>"; };
+		5B7A52D11F8E77F20017AEB0 /* MPISpotifyRequestsFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MPISpotifyRequestsFactory.m; sourceTree = "<group>"; };
 		5B85347F1CA6987100C26129 /* ShareMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareMenuController.h; sourceTree = "<group>"; };
 		5B8534801CA6987100C26129 /* ShareMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareMenuController.m; sourceTree = "<group>"; };
 		5B881D971C7B64F9004AF260 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
@@ -271,8 +280,12 @@
 		5B1E16B71CD11E9400AB572A /* Spotify Search */ = {
 			isa = PBXGroup;
 			children = (
-				5B1E16B51CD11D0400AB572A /* SpotifySearch.h */,
-				5B1E16B41CD11D0400AB572A /* SpotifySearch.m */,
+				5B7A52CD1F8D56950017AEB0 /* MPISpotifySearch.h */,
+				5B7A52CE1F8D56950017AEB0 /* MPISpotifySearch.m */,
+				5B7A52D01F8E77F20017AEB0 /* MPISpotifyRequestsFactory.h */,
+				5B7A52D11F8E77F20017AEB0 /* MPISpotifyRequestsFactory.m */,
+				5B479B011F92264700DA362F /* MPISpotifyToken.h */,
+				5B479B021F92264700DA362F /* MPISpotifyToken.m */,
 			);
 			name = "Spotify Search";
 			sourceTree = "<group>";
@@ -324,6 +337,8 @@
 				5BF402E61C73A156004FD0FA /* PreferencesController.xib */,
 				5BB9965D1C7621CF0088B46B /* PreferencesCoverController.h */,
 				5BB9965E1C7621CF0088B46B /* PreferencesCoverController.m */,
+				5B479B061F93894000DA362F /* GVUserDefaults+Settings.h */,
+				5B479B071F93894000DA362F /* GVUserDefaults+Settings.m */,
 			);
 			name = "Settings and preferences";
 			sourceTree = "<group>";
@@ -520,7 +535,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = "";
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = micropixels;
 				TargetAttributes = {
 					5BDD6B0C1A1D0C95001D87D6 = {
@@ -609,13 +624,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NepTunes-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5BE3C9B31B7BD5F70095DA69 /* ShellScript */ = {
@@ -637,9 +655,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes-resources.sh",
+				$PODS_CONFIGURATION_BUILD_DIR/MASShortcut/MASShortcut.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -675,8 +696,10 @@
 				5BBD4C501C34562000AFA182 /* Track.m in Sources */,
 				5BADDDD71C97219E00F0BFAB /* MASShortcut+UserDefaults.m in Sources */,
 				5BAE71001C5005CE00779081 /* OfflineScrobbler.m in Sources */,
+				5B479B031F92264700DA362F /* MPISpotifyToken.m in Sources */,
 				5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */,
 				5BAE70F71C50023500779081 /* FXReachability.m in Sources */,
+				5B7A52D21F8E77F20017AEB0 /* MPISpotifyRequestsFactory.m in Sources */,
 				5B0734251C6E495B00167934 /* GetCover.m in Sources */,
 				5B1BC24C1C6CE4BF004EB785 /* CoverWindow.m in Sources */,
 				5B1BC2421C6CDE26004EB785 /* CoverWindowController.m in Sources */,
@@ -684,11 +707,11 @@
 				5BF402E71C73A156004FD0FA /* PreferencesController.m in Sources */,
 				5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */,
 				5BB0A6EE1D86D97400C143B6 /* OverlayHUD.m in Sources */,
-				5B1E16B61CD11D0400AB572A /* SpotifySearch.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,
 				5BD6E5D51B6BF87300631537 /* HotkeyController.m in Sources */,
 				5BC6A8E11C610C83009C3E9F /* MusicController.m in Sources */,
 				5B9662741C725A640095AF54 /* VolumeViewController.m in Sources */,
+				5B479B081F93894000DA362F /* GVUserDefaults+Settings.m in Sources */,
 				5B881D9A1C7B64F9004AF260 /* AboutWindowController.m in Sources */,
 				5B9F07431C723BFE00F73566 /* ControlViewController.m in Sources */,
 				5BDD6B141A1D0C95001D87D6 /* AppDelegate.m in Sources */,
@@ -703,6 +726,7 @@
 				5B0734221C6E382D00167934 /* CoverView.m in Sources */,
 				5B9F07401C72300200F73566 /* CoverLabel.m in Sources */,
 				5BAE71081C528D1000779081 /* SettingsController.m in Sources */,
+				5B7A52CF1F8D56950017AEB0 /* MPISpotifySearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -744,14 +768,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -789,14 +819,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

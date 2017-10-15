@@ -6,4 +6,6 @@ pod 'iTunesSearch'
 pod 'pop', '~> 1.0'
 pod 'PINCache', '~> 2.0'
 pod 'OpenSSL-OSX'
+pod 'JSONModel'
+pod 'GVUserDefaults'
 end

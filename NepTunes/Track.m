@@ -79,7 +79,7 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
     Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
     song.trackOrigin = TrackFromiTunes;
     song.kind = track.kind;
-    song->_rating = track.rating;
+    song.rating = track.rating;
     song.loved = track.loved;
     song.trackKind = kind;
     return song;

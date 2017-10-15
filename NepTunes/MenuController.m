@@ -16,7 +16,7 @@
 #import "UserNotificationsController.h"
 #import "MusicController.h"
 #import "iTunesSearch.h"
-#import "SpotifySearch.h"
+#import "MPISpotifySearch.h"
 #import "LastFm.h"
 #import "PreferencesController.h"
 #import <PINCache.h>
@@ -35,9 +35,11 @@ static NSUInteger const kNumberOfFrames = 10;
 
 @interface MenuController () <ItunesSearchCache, NSWindowDelegate, SpotifySearchCache>
 
-@property (nonatomic) NSStatusItem *statusItem;
 @property (nonatomic) IBOutlet NSMenu *recentTracksMenu;
 @property (nonatomic) IBOutlet NSMenuItem *recentTracksMenuItem;
+@property (nonatomic) IBOutlet MusicPlayer *musicPlayer;
+
+@property (nonatomic) NSStatusItem *statusItem;
 @property (nonatomic) RecentTracksController *recentTracksController;
 @property (nonatomic) MusicScrobbler *musicScrobbler;
 @property (nonatomic) SettingsController *settings;
@@ -46,15 +48,17 @@ static NSUInteger const kNumberOfFrames = 10;
 @property (nonatomic) PINCache *cachedSpotifySearchResults;
 @property (nonatomic) PreferencesController *preferencesController;
 //reachability
-@property (nonatomic) BOOL reachability;
 @property (nonatomic) OfflineScrobbler *offlineScrobbler;
 @property (nonatomic) AboutWindowController *aboutWindowController;
-@property (nonatomic) IBOutlet MusicPlayer *musicPlayer;
 @property (nonatomic) MusicController *musicController;
 @property (nonatomic) NSImage *currentMenubarImage;
 @property (nonatomic) UserNotificationsController *userNotificationsController;
-@property (nonatomic) BOOL bothPlayerAreAvailable;
 @property (nonatomic) NSCache *menubarIconsCache;
+@property (nonatomic) NSTimer *updateMenuTimer;
+
+@property (nonatomic) BOOL bothPlayerAreAvailable;
+@property (nonatomic) BOOL reachability;
+
 @end
 
 @implementation MenuController
@@ -78,7 +82,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
     //System status bar icon
     self.userNotificationsController = [UserNotificationsController sharedNotificationsController];
@@ -109,7 +113,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 #pragma mark - Reachability
 
--(void)setupReachability
+- (void)setupReachability
 {
     //1. this must be first
     self.reachability = YES;
@@ -117,7 +121,7 @@ static NSUInteger const kNumberOfFrames = 10;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:FXReachabilityStatusDidChangeNotification object:nil];
 }
 
--(void)reachabilityDidChange:(NSNotification *)note
+- (void)reachabilityDidChange:(NSNotification *)note
 {
     BOOL reachable = [FXReachability isReachable];
     if (!reachable && self.musicPlayer.playerState == MusicPlayerStatePlaying && self.settings.session) {
@@ -132,7 +136,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 #pragma mark - Status Bar Icon
 
--(void)installStatusBar
+- (void)installStatusBar
 {
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
@@ -143,7 +147,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 
 
--(void)removeStatusBarItem
+- (void)removeStatusBarItem
 {
     [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
     self.statusItem = nil;
@@ -151,7 +155,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 #pragma mark Status Bar Icon Animation
 
--(void)blinkMenuIcon
+- (void)blinkMenuIcon
 {
     if (self.statusItem) {
         self.animationCurrentStep = 0;
@@ -159,7 +163,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(void)animationStepForward:(BOOL)forward
+- (void)animationStepForward:(BOOL)forward
 {
     //Safety
     if (self.animationCurrentStep > kNumberOfFrames) {
@@ -207,7 +211,7 @@ static NSUInteger const kNumberOfFrames = 10;
     });
 }
 
--(NSImage *)imageForStep:(NSUInteger)step
+- (NSImage *)imageForStep:(NSUInteger)step
 {
     NSImage *cachedImage = [self.menubarIconsCache objectForKey:@(step)];
     if (cachedImage) {
@@ -215,8 +219,10 @@ static NSUInteger const kNumberOfFrames = 10;
     } else {
         if (step != 0) {
             NSImage *icon = [NSImage imageNamed:[NSString stringWithFormat:@"statusIcon%lu", (unsigned long)step]];
-            [self.menubarIconsCache setObject:icon forKey:@(step)];
-            self.currentMenubarImage = icon;
+            if (icon) {
+                [self.menubarIconsCache setObject:icon forKey:@(step)];
+                self.currentMenubarImage = icon;
+            }
         } else {
             NSImage *genericIcon = [self.menubarIconsCache objectForKey:@"generic"];
             if (genericIcon) {
@@ -236,13 +242,13 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 
--(void)backwardAnimation
+- (void)backwardAnimation
 {
     self.animationCurrentStep = 10;
     [self animationStepForward:NO];    
 }
 
--(void)setOriginalIcon
+- (void)setOriginalIcon
 {
     self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
     [self.currentMenubarImage setTemplate:YES];
@@ -251,7 +257,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 
 #pragma mark - Last.fm related
--(IBAction)loveSong:(id)sender {
+- (IBAction)loveSong:(id)sender {
     [self.musicController loveTrackWithCompletionHandler:^{
         [self.musicController.coverWindowController.controlViewController animationLoveButton];
     }];
@@ -274,7 +280,7 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 
--(IBAction)showSimilarArtists:(id)sender
+- (IBAction)showSimilarArtists:(id)sender
 {
     NSString *str = self.musicScrobbler.currentTrack.artist;
     str = [str stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
@@ -303,14 +309,14 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 
--(IBAction)quit:(id)sender
+- (IBAction)quit:(id)sender
 {
     [[NSApplication sharedApplication] terminate:self];
 }
 
 #pragma mark - Preferences
 
--(IBAction)openPreferences:(id)sender
+- (IBAction)openPreferences:(id)sender
 {
     [NSApp activateIgnoringOtherApps:YES];
     if (!self.preferencesController) {
@@ -326,7 +332,7 @@ static NSUInteger const kNumberOfFrames = 10;
     [self.preferencesController.window makeKeyAndOrderFront:nil];
 }
 
--(BOOL)windowShouldClose:(id)sender
+- (BOOL)windowShouldClose:(id)sender
 {
     return YES;
 }
@@ -344,14 +350,22 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 #pragma mark Update menu
--(void)updateMenu {
-    [self updateRecentMenu];
-    [self updateLoveSongMenuItem];
-    [self updateShowUserProfileMenuItem];
-    [self updateSimilarArtistMenuItem];
+- (void)updateMenu {
+    if (self.updateMenuTimer) {
+        [self.updateMenuTimer invalidate];
+        self.updateMenuTimer = nil;
+    }
+    __weak typeof(self) weakSelf = self;
+    self.updateMenuTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:[NSBlockOperation blockOperationWithBlock:^{
+        [weakSelf updateRecentMenu];
+        [weakSelf updateLoveSongMenuItem];
+        [weakSelf updateShowUserProfileMenuItem];
+        [weakSelf updateSimilarArtistMenuItem];
+        weakSelf.updateMenuTimer = nil;
+    }] selector:@selector(main) userInfo:nil repeats:NO];
 }
 
--(void)updateLoveSongMenuItem
+- (void)updateLoveSongMenuItem
 {
     BOOL internetIsReachable = [FXReachability isReachable];
     //if user is logged in, there is Internet conenction and we have a track
@@ -399,7 +413,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(BOOL)userHasTurnedOnIntegrationAndLovingMusicOniTunes
+- (BOOL)userHasTurnedOnIntegrationAndLovingMusicOniTunes
 {
     if (self.settings.integrationWithMusicPlayer && self.settings.loveTrackOniTunes && self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
         return YES;
@@ -407,13 +421,13 @@ static NSUInteger const kNumberOfFrames = 10;
     return NO;
 }
 
--(void)updateSimilarArtistMenuItem
+- (void)updateSimilarArtistMenuItem
 {
     BOOL internetIsReachable = [FXReachability isReachable];
     if (self.musicPlayer.isPlayerRunning) {
         if (self.musicScrobbler.currentTrack) {
             self.similarArtistMenuTtitle.enabled = YES;
-            self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Similar Artists to %@", nil), self.musicScrobbler.currentTrack.truncatedArtist];
+            self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Artists Similar  to %@", nil), self.musicScrobbler.currentTrack.truncatedArtist];
             if (!internetIsReachable) {
                 self.similarArtistMenuTtitle.enabled = NO;
             }
@@ -458,7 +472,7 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 
--(void)prepareSimilarArtistsMenuWithArtists:(NSArray *)artists
+- (void)prepareSimilarArtistsMenuWithArtists:(NSArray *)artists
 {
     if (artists.count) {
         if (!self.similarArtistMenuTtitle.hasSubmenu) {
@@ -503,7 +517,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(void)enumerateMenuItemsToFindArtist:(NSString *)artist withAsciiCoding:(BOOL)coding
+- (void)enumerateMenuItemsToFindArtist:(NSString *)artist withAsciiCoding:(BOOL)coding
 {
     if (coding) {
         artist = [self asciiString:artist];
@@ -524,12 +538,12 @@ static NSUInteger const kNumberOfFrames = 10;
     }];
 }
 
--(void)openLinkForArtistInMusicPlayerFromMenuItem:(NSMenuItem *)menuItem
+- (void)openLinkForArtistInMusicPlayerFromMenuItem:(NSMenuItem *)menuItem
 {
     [self.musicPlayer openArtistPageForArtistName:menuItem.title withFailureHandler:nil];
 }
 
--(NSString *)asciiString:(NSString *)string
+- (NSString *)asciiString:(NSString *)string
 {
     NSData *asciiEncoded = [string.lowercaseString dataUsingEncoding:NSASCIIStringEncoding
                                                 allowLossyConversion:YES];
@@ -540,7 +554,7 @@ static NSUInteger const kNumberOfFrames = 10;
     
 }
 
--(void)updateShowUserProfileMenuItem
+- (void)updateShowUserProfileMenuItem
 {
     BOOL internetIsReachable = [FXReachability isReachable];
     
@@ -559,7 +573,7 @@ static NSUInteger const kNumberOfFrames = 10;
 
 #pragma mark - Recent Items
 
--(void)prepareRecentItemsMenu
+- (void)prepareRecentItemsMenu
 {
     DebugMode(@"Preparing Recent Tracks menu")
     if (self.recentTracksController.tracks.count == 0) {
@@ -584,7 +598,7 @@ static NSUInteger const kNumberOfFrames = 10;
 }
 
 
--(void)updateRecentMenu
+- (void)updateRecentMenu
 {
     DebugMode(@"Updating Recent Tracks menu")
     Track *track = self.musicScrobbler.currentTrack;
@@ -608,9 +622,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
-
-
--(void)validateLinkFromMenuItem:(NSMenuItem *)menuItem
+- (void)validateLinkFromMenuItem:(NSMenuItem *)menuItem
 {
     Track *trackFromMenu = [self trackFromRecentTracksMenuItem:menuItem];
     //got track
@@ -621,7 +633,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(Track *)trackFromRecentTracksMenuItem:(NSMenuItem *)menuItem
+- (Track *)trackFromRecentTracksMenuItem:(NSMenuItem *)menuItem
 {
     __block Track *trackFromMenu;
     NSMenu *menu = [menuItem menu];
@@ -635,7 +647,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return trackFromMenu;
 }
 
--(void)validateCurrentMusicPlayerLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
+- (void)validateCurrentMusicPlayerLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
 {
     if (![FXReachability sharedInstance].isReachable) {
         menuItem.enabled = NO;
@@ -652,7 +664,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }];
 }
 
--(NSString *)generateLastFmLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
+- (NSString *)generateLastFmLinkForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
 {
     NSString *artist = track.artist;
     artist = [artist stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
@@ -673,7 +685,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return nil;
 }
 
--(void)openWebsite:(NSMenuItem *)menuItem
+- (void)openWebsite:(NSMenuItem *)menuItem
 {
     if (self.settings.integrationWithMusicPlayer && self.settings.showRecentTrackOnMusicPlayer) {
         Track *track = [self trackFromRecentTracksMenuItem:menuItem];
@@ -688,25 +700,23 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(void)openMusicPlayerPageForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
+- (void)openMusicPlayerPageForTrack:(Track *)track andMenuItem:(NSMenuItem *)menuItem
 {
     [self.musicPlayer openTrackPageForTrack:track withFailureHandler:^{
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[self generateLastFmLinkForTrack:track andMenuItem:menuItem]]];
     }];
-
 }
 
 
--(void)hideRecentMenu
+- (void)hideRecentMenu
 {
     if ([self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
         [self.statusMenu removeItem:self.recentTracksMenuItem];
         DebugMode(@"Hiding Recent Tracks menu")
     }
-    
 }
 
--(void)showRecentMenu
+- (void)showRecentMenu
 {
     if (![self.statusMenu.itemArray containsObject:self.recentTracksMenuItem]) {
         [self.statusMenu insertItem:self.recentTracksMenuItem atIndex:4];
@@ -721,24 +731,41 @@ static NSUInteger const kNumberOfFrames = 10;
     NSArray *result;
     if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
         result = [self.cachediTunesSearchResults objectForKey:key];
-    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
-        result = [self.cachediTunesSearchResults objectForKey:key];
     }
     return result;
 }
 
 - (void)cacheArray:(NSArray *)array forKey:(NSString *)key requestParams:(NSDictionary *)params maxAge:(NSTimeInterval)maxAge
 {
-    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
-        [self.cachediTunesSearchResults setObject:array forKey:key];
-    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
-        [self.cachedSpotifySearchResults setObject:array forKey:key];
+    if (array) {
+        if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+            [self.cachediTunesSearchResults setObject:array forKey:key];
+        }
+    }
+}
+
+#pragma mark - Spotify Search Cache
+- (id)cachedObjectForKey:(NSString *)key
+{
+    NSArray *result;
+    if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        result = [self.cachedSpotifySearchResults objectForKey:key];
+    }
+    return result;
+}
+
+- (void)cacheResult:(id)result
+             forKey:(NSString *)key
+             maxAge:(NSTimeInterval)maxAge
+{
+    if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        [self.cachedSpotifySearchResults setObject:result forKey:key];
     }
 }
 
 #pragma mark - update available sources
 
--(void)addCheckmarkToSourceWithName:(NSString *)sourceName
+- (void)addCheckmarkToSourceWithName:(NSString *)sourceName
 {
     NSInteger index = [self.statusMenu indexOfItemWithTitle:sourceName];
     if (index != -1) {
@@ -754,7 +781,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(void)insertBothSources
+- (void)insertBothSources
 {
     if (!self.bothPlayerAreAvailable) {
         NSMenuItem *separatorMenuItem = [NSMenuItem separatorItem];
@@ -788,7 +815,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(void)removeBothSources
+- (void)removeBothSources
 {
     if (self.bothPlayerAreAvailable) {
         [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]-1];
@@ -799,7 +826,7 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
--(void)activateNewSource:(NSMenuItem *)menuItem
+- (void)activateNewSource:(NSMenuItem *)menuItem
 {
     if ([menuItem.title localizedCaseInsensitiveContainsString:@"itunes"] && self.musicPlayer.currentPlayer != MusicPlayeriTunes) {
         [self.musicPlayer changeSourceTo:MusicPlayeriTunes];
@@ -808,8 +835,9 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
+
 #pragma mark - Getters
--(RecentTracksController *)recentTracksController
+- (RecentTracksController *)recentTracksController
 {
     if (!_recentTracksController) {
         _recentTracksController = [RecentTracksController sharedInstance];
@@ -817,7 +845,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _recentTracksController;
 }
 
--(MusicController *)musicController
+- (MusicController *)musicController
 {
     if (!_musicController) {
         _musicController = [MusicController sharedController];
@@ -825,7 +853,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _musicController;
 }
 
--(MusicScrobbler *)musicScrobbler
+- (MusicScrobbler *)musicScrobbler
 {
     if (!_musicScrobbler) {
         _musicScrobbler = [MusicScrobbler sharedScrobbler];
@@ -835,7 +863,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _musicScrobbler;
 }
 
--(SettingsController *)settings
+- (SettingsController *)settings
 {
     if (!_settings) {
         _settings = [SettingsController sharedSettings];
@@ -843,7 +871,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _settings;
 }
 
--(ItunesSearch *)iTunesSearch
+- (ItunesSearch *)iTunesSearch
 {
     if (!_iTunesSearch) {
         _iTunesSearch = [ItunesSearch sharedInstance];
@@ -854,18 +882,18 @@ static NSUInteger const kNumberOfFrames = 10;
     return _iTunesSearch;
 }
 
--(SpotifySearch *)spotifySearch
+- (MPISpotifySearch *)spotifySearch
 {
     if (!_spotifySearch) {
-        _spotifySearch = [SpotifySearch sharedInstance];
+        _spotifySearch = [MPISpotifySearch sharedInstance];
     }
-    if (!_spotifySearch.cacheDelegate) {
-        _spotifySearch.cacheDelegate = self;
+    if (!_spotifySearch.cache) {
+        _spotifySearch.cache = self;
     }
     return _spotifySearch;
 }
 
--(PINCache *)cachediTunesSearchResults
+- (PINCache *)cachediTunesSearchResults
 {
     if (!_cachediTunesSearchResults) {
         _cachediTunesSearchResults = [[PINCache alloc] initWithName:@"iTunesSearchCache"];
@@ -875,7 +903,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _cachediTunesSearchResults;
 }
 
--(PINCache *)cachedSpotifySearchResults
+- (PINCache *)cachedSpotifySearchResults
 {
     if (!_cachedSpotifySearchResults) {
         _cachedSpotifySearchResults = [[PINCache alloc] initWithName:@"SpotifySearchCache"];
@@ -885,7 +913,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _cachedSpotifySearchResults;
 }
 
--(OfflineScrobbler *)offlineScrobbler
+- (OfflineScrobbler *)offlineScrobbler
 {
     if (!_offlineScrobbler) {
         _offlineScrobbler = [OfflineScrobbler sharedInstance];
@@ -893,7 +921,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _offlineScrobbler;
 }
 
--(MusicPlayer *)musicPlayer
+- (MusicPlayer *)musicPlayer
 {
     if (!_musicPlayer) {
         _musicPlayer = [MusicPlayer sharedPlayer];
@@ -901,7 +929,7 @@ static NSUInteger const kNumberOfFrames = 10;
     return _musicPlayer;
 }
 
--(NSCache *)menubarIconsCache
+- (NSCache *)menubarIconsCache
 {
     if (!_menubarIconsCache) {
         _menubarIconsCache = [NSCache new];

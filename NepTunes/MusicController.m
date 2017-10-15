@@ -108,7 +108,7 @@ NSString *const kCoverWindowName = @"CoverWindow";
 -(void)prepareTrack:(NSTimer *)timer
 {
     if ([timer isValid]) {
-        [self updateMenu];
+//        [self updateMenu];
         if (self.musicScrobbler.currentTrack.trackOrigin == TrackFromSpotify && !self.settingsController.scrobbleFromSpotify) {
             return;
         }

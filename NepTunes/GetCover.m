@@ -212,8 +212,10 @@
 -(void)saveCoverImage:(NSImage *)image forTrack:(Track *)track
 {
     NSString *key = [self md5sumFromString: [NSString stringWithFormat:@"%@%@", track.artist, track.album]];
-    [self.imagesCache setObject:image forKey:key];
-    DebugMode(@"saving image to cache for key %@", key)
+    if (image) {
+        [self.imagesCache setObject:image forKey:key];
+        DebugMode(@"saving image to cache for key %@", key);
+    }
 }
 
 -(NSImage *)cachedCoverImageForTrack:(Track *)track

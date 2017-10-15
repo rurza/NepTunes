@@ -3,7 +3,7 @@
 //  enormego
 //
 //  Created by Shaun Harrison.
-//  Copyright (c) 2009-2015 enormego.
+//  Copyright (c) 2009-2017 enormego.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -54,10 +54,6 @@ static inline NSString* cachePathForKey(NSString* directory, NSString* key) {
 @end
 
 @implementation EGOCache
-
-+ (instancetype)currentCache {
-	return [self globalCache];
-}
 
 + (instancetype)globalCache {
 	static id instance;
@@ -313,7 +309,6 @@ static inline NSString* cachePathForKey(NSString* directory, NSString* key) {
 	}
 }
 
-
 #else
 
 - (NSImage*)imageForKey:(NSString*)key {
@@ -325,7 +320,7 @@ static inline NSString* cachePathForKey(NSString* directory, NSString* key) {
 }
 
 - (void)setImage:(NSImage*)anImage forKey:(NSString*)key withTimeoutInterval:(NSTimeInterval)timeoutInterval {
-	[self setData:[(NSBitmapImageRep *)[[anImage representations] objectAtIndex:0] representationUsingType:NSPNGFileType properties:nil] forKey:key withTimeoutInterval:timeoutInterval];
+	[self setData:[[NSBitmapImageRep imageRepWithData:anImage.TIFFRepresentation] representationUsingType:NSPNGFileType properties:@{ }] forKey:key withTimeoutInterval:timeoutInterval];
 }
 
 #endif

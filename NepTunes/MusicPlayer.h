@@ -36,16 +36,17 @@ extern NSString *const kCannotGetInfoFromSpotify;
 
 @interface MusicPlayer : NSObject
 
-@property (atomic, readonly) MusicPlayerApplication currentPlayer;
-@property (nonatomic, readonly) Track *currentTrack;
-@property (nonatomic, readonly) MusicPlayerState playerState;
-@property (nonatomic, readonly) BOOL isPlayerRunning;
-@property (nonatomic, readonly) BOOL canObtainCurrentTrackFromiTunes;
-@property (nonatomic) BOOL playerIntegration;
-@property (nonatomic) BOOL currentTrackIsLoved;
-@property (nonatomic) NSInteger soundVolume;
-@property (nonatomic) id<MusicPlayerDelegate> delegate;
-@property (nonatomic, readonly) NSUInteger numberOfPlayers;
+@property (atomic, readonly) MusicPlayerApplication     currentPlayer;
+@property (nonatomic, readonly) Track                   *currentTrack;
+@property (nonatomic, readonly) MusicPlayerState        playerState;
+@property (nonatomic, readonly) BOOL                    isPlayerRunning;
+@property (nonatomic, readonly) BOOL                    canObtainCurrentTrackFromiTunes;
+@property (nonatomic, readonly) NSUInteger              numberOfPlayers;
+
+@property (nonatomic) BOOL                              playerIntegration;
+@property (nonatomic) BOOL                              currentTrackIsLoved;
+@property (nonatomic) NSInteger                         soundVolume;
+@property (nonatomic) id<MusicPlayerDelegate>           delegate;
 
 +(instancetype)sharedPlayer;
 

@@ -44,22 +44,25 @@ static NSString *const kHUDXibName = @"HUDWindowController";
 -(IBAction)copyTrackLink:(NSMenuItem *)sender
 {   
     [[MusicPlayer sharedPlayer] getCurrentTrackURLPublicLink:YES withCompletionHandler:^(NSString *urlString) {
-        NSPasteboard *clipboard = [NSPasteboard generalPasteboard];
-        [clipboard clearContents];
-        NSArray *copiedObjects = @[urlString];
-        [clipboard writeObjects:copiedObjects];
-        if (self.hudWindowController.isVisible) {
-            [self.hudWindowController updateCurrentHUD];
+        if (urlString) {
+            NSPasteboard *clipboard = [NSPasteboard generalPasteboard];
+            [clipboard clearContents];
+            NSArray *copiedObjects = @[urlString];
+            [clipboard writeObjects:copiedObjects];
+            if (self.hudWindowController.isVisible) {
+                [self.hudWindowController updateCurrentHUD];
+            } else {
+                self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
+                [self.hudWindowController presentHUD];
+            }
+            self.hudWindowController.bottomVisualEffectView.hidden = YES;
+            self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"copied link"];
+            self.hudWindowController.centerImageView.image.template = YES;
+            self.hudWindowController.bottomLabel.hidden = NO;
+            self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Link copied", nil);
         } else {
-            self.hudWindowController = [[HUDWindowController alloc] initWithWindowNibName:kHUDXibName];
-            [self.hudWindowController presentHUD];
+            [self displayInfoThatLinkCannotBeCopied];
         }
-        self.hudWindowController.bottomVisualEffectView.hidden = YES;
-        self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"copied link"];
-        self.hudWindowController.centerImageView.image.template = YES;
-        self.hudWindowController.bottomLabel.hidden = NO;
-        self.hudWindowController.bottomLabel.stringValue = NSLocalizedString(@"Link copied", nil);
-
     } failureHandler:^(NSError *error) {
         [self displayInfoThatLinkCannotBeCopied];
     }];

@@ -12,16 +12,17 @@
 #import "Spotify.h"
 #import "Track.h"
 #import "MusicController.h"
-#import "SpotifySearch.h"
+#import "MPISpotifySearch.h"
 #import "ITunesSearch.h"
 #import "DebugMode.h"
+#import <PINCache/PINCache.h>
 
 NSString * const kiTunesBundleIdentifier = @"com.apple.iTunes";
 NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
 NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 
 
-@interface MusicPlayer ()
+@interface MusicPlayer () <ItunesSearchCache>
 
 @property (atomic, readwrite) MusicPlayerApplication currentPlayer;
 @property (nonatomic, readwrite) Track *currentTrack;
@@ -34,6 +35,7 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 @property (nonatomic) iTunesApplication *_iTunesApp;
 @property (nonatomic) SpotifyApplication *_spotifyApp;
 @property (nonatomic) ItunesSearch *iTunesSearch;
+@property (nonatomic) PINCache *iTunesSearchCache;
 @property (nonatomic, readonly) BOOL isiTunesRunning;
 @property (nonatomic, readonly) BOOL isSpotifyRunning;
 @property (nonatomic, readwrite) NSUInteger numberOfPlayers;
@@ -255,7 +257,7 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 {
     __weak typeof(self) weakSelf = self;
     if (player == MusicPlayerSpotify) {
-        [[SpotifySearch sharedInstance] searchForArtistWithName:artistName limit:@1 successHandler:^(NSArray * _Nullable result) {
+        [[MPISpotifySearch sharedInstance] searchForArtistWithName:artistName limit:@1 handler:^(NSError * _Nullable error, NSArray * _Nullable result) {
             if (result.count) {
                 NSDictionary *firstResult = [result firstObject];
                 NSString *link = [firstResult objectForKey:@"uri"];
@@ -264,10 +266,6 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                 if (failureHandler) {
                     failureHandler();
                 }
-            }
-        } failureHandler:^(NSError * _Nonnull error) {
-            if (failureHandler) {
-                failureHandler();
             }
         }];
     } else if (player == MusicPlayeriTunes) {
@@ -319,7 +317,7 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)getArtistURLForArtist:(NSString *)artist forPlayer:(MusicPlayerApplication)player publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
 {
     if (player == MusicPlayerSpotify) {
-        [[SpotifySearch sharedInstance] searchForArtistWithName:artist limit:@1 successHandler:^(NSArray * _Nullable result) {
+        [[MPISpotifySearch sharedInstance] searchForArtistWithName:artist limit:@1 handler:^(NSError * _Nullable error, NSArray * _Nullable result) {
             if (result.count) {
                 NSDictionary *firstResult = [result firstObject];
                 NSString *link;
@@ -330,13 +328,10 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                 }
                 handler(link);
             } else {
-                handler(nil);
-            }
-        } failureHandler:^(NSError * _Nonnull error) {
-            if (failureHandler) {
                 failureHandler(error);
             }
         }];
+
     } else if (player == MusicPlayeriTunes) {
         __weak typeof(self) weakSelf = self;
         [self.iTunesSearch getIdForArtist:artist successHandler:^(NSArray *result) {
@@ -404,13 +399,15 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 
 -(void)getTrackURL:(Track *)track publicLink:(BOOL)publicLink withCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *))failureHandler
 {
-    MusicPlayerApplication player;
+    MusicPlayerApplication player = MusicPlayerUndefined;
     if (track.trackOrigin == TrackFromSpotify) {
         player = MusicPlayerSpotify;
     } else if (track.trackOrigin == TrackFromiTunes) {
         player = MusicPlayeriTunes;
     }
-    [self getTrackURL:track forPlayer:player publicLink:publicLink withCompletionHandler:handler failureHandler:failureHandler];
+    if (player != MusicPlayerUndefined) {
+        [self getTrackURL:track forPlayer:player publicLink:publicLink withCompletionHandler:handler failureHandler:failureHandler];
+    }
 }
 
 -(void)getTrackURL:(Track *)track publicLink:(BOOL)publicLink forCurrentPlayerWithCompletionHandler:(void(^)(NSString *urlString))handler failureHandler:(void(^)(NSError *error))failureHandler
@@ -431,22 +428,26 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
             failureHandler(nil);
         }];
     } else if (player == MusicPlayerSpotify) {
-        SpotifySearch *spotifySearch = [SpotifySearch sharedInstance];
+        MPISpotifySearch *spotifySearch = [MPISpotifySearch sharedInstance];
         if (track.spotifyID) {
-            [spotifySearch getTrackWithID:track.spotifyID successHandler:^(NSArray * _Nullable result) {
-                NSDictionary *firstResult = result.firstObject;
-                NSString *resultString;
-                if (!publicLink) {
-                    resultString = [firstResult objectForKey:@"uri"];
+            [spotifySearch getTrackWithID:track.spotifyID handler:^(NSError * _Nullable error, id _Nullable result) {
+                if (result) {
+                    NSDictionary *firstResult = [(NSArray *)result firstObject];
+                    NSString *resultString;
+                    if (!publicLink) {
+                        resultString = [firstResult objectForKey:@"uri"];
+                    } else {
+                        resultString = [[firstResult objectForKey:@"external_urls"] objectForKey:@"spotify"];
+                    }
+                    handler(resultString);
                 } else {
-                    resultString = [[firstResult objectForKey:@"external_urls"] objectForKey:@"spotify"];
+                    failureHandler(error);
                 }
-                handler(resultString);
-            } failureHandler:^(NSError * _Nonnull error) {
-                handler(nil);
             }];
+            
         } else {
-            [spotifySearch getTrackWithName:track.trackName artist:track.artist album:track.album limit:@1 successHandler:^(NSArray * _Nullable result) {
+            
+            [spotifySearch getTrackWithName:track.trackName artist:track.artist album:track.album limit:@1 handler:^(NSError * _Nullable error, NSArray * _Nullable result) {
                 if (result.count) {
                     NSDictionary *firstResult = result.firstObject;
                     NSString *resultString;
@@ -459,8 +460,6 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
                 } else {
                     handler(nil);
                 }
-            } failureHandler:^(NSError * _Nonnull error) {
-                handler(nil);
             }];
         }
     } else {
@@ -630,6 +629,18 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
     }
 }
 
+#pragma mark - iTunes Search Cache Delegate
+- (NSArray *)cachedArrayForKey:(NSString *)key
+{
+    return [self.iTunesSearchCache objectForKey:key];
+}
+
+- (void)cacheArray:(NSArray *)array forKey:(NSString *)key requestParams:(NSDictionary *)params maxAge:(NSTimeInterval)maxAge
+{
+    if (array) {
+        [self.iTunesSearchCache setObject:array forKey:key];
+    }
+}
 
 #pragma mark - GETTERS
 
@@ -773,8 +784,17 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
         _iTunesSearch = [ItunesSearch sharedInstance];
         _iTunesSearch.affiliateToken = @"1010l3j7";
         _iTunesSearch.campaignToken = @"neptunes";
+        _iTunesSearch.cacheDelegate = self;
     }
     return _iTunesSearch;
+}
+
+- (PINCache *)iTunesSearchCache
+{
+    if (!_iTunesSearchCache) {
+        _iTunesSearchCache = [PINCache sharedCache];
+    }
+    return _iTunesSearchCache;
 }
 
 

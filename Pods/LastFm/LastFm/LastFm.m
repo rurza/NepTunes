@@ -338,7 +338,7 @@
         NSArray *methodParts = [method componentsSeparatedByString:@"."];
         if ([methodParts count] > 1) {
             NSString *secondPart = [methodParts objectAtIndex:1];
-            if ([secondPart hasPrefix:@"get"]) {
+            if ([secondPart hasPrefix:@"get"] && ![method isEqualToString:@"auth.getMobileSession"]) {
                 doPost = NO;
             }
         }
@@ -852,7 +852,6 @@
 - (NSOperation *)getSessionForUser:(NSString *)username password:(NSString *)password successHandler:(LastFmReturnBlockWithDictionary)successHandler failureHandler:(LastFmReturnBlockWithError)failureHandler {
     username = [self forceString:username];
     password = [self forceString:password];
-    NSString *authToken = [self md5sumFromString:[NSString stringWithFormat:@"%@%@", [username lowercaseString], [self md5sumFromString:password]]];
 
     NSDictionary *mappingObject = @{
         @"name": @[ @"./name", @"NSString" ],
@@ -862,7 +861,7 @@
 
     return [self performApiCallForMethod:@"auth.getMobileSession"
                                 useCache:NO
-                              withParams:@{ @"username": [username lowercaseString], @"authToken": authToken }
+                              withParams:@{ @"username": [username lowercaseString], @"password": password }
                                rootXpath:@"./session"
                         returnDictionary:YES
                             mappingObject:mappingObject

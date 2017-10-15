@@ -121,8 +121,8 @@ extern "C" {
 
 #if !(defined(VMS) || defined(__VMS)) /* VMS uses logical names instead */
 #if defined(HEADER_CRYPTLIB_H) && !defined(OPENSSLDIR)
-#define ENGINESDIR "/var/folders/qv/_hz0w49n0qx5t96frq7s72vw0000gn/T//openssl/bin/MacOSX10.11-x86_64.sdk/lib/engines"
-#define OPENSSLDIR "/var/folders/qv/_hz0w49n0qx5t96frq7s72vw0000gn/T//openssl/bin/MacOSX10.11-x86_64.sdk"
+#define ENGINESDIR "/var/folders/2g/7xl8hbbs2yv7wdy0j9mp_nb80000gn/T//openssl/bin/MacOSX10.13-x86_64.sdk/lib/engines"
+#define OPENSSLDIR "/var/folders/2g/7xl8hbbs2yv7wdy0j9mp_nb80000gn/T//openssl/bin/MacOSX10.13-x86_64.sdk"
 #endif
 #endif
 
