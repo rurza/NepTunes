@@ -13,6 +13,7 @@
 #import "MASShortcut+UserDefaults.h"
 //#import "MusicController.h"
 #import "MusicPlayer.h"
+#import "UserNotificationsController.h"
 
 static NSString *const kloveSongShortcut = @"loveSongShortcut";
 static NSString *const kshowYourProfileShortcut = @"showYourProfileShortcut";
@@ -29,6 +30,8 @@ static NSString *const kPlayPauseShortcut = @"playPauseShortcut";
 static NSString *const kNextTrackShortcut = @"nextTrackShortcut";
 static NSString *const kPreviousTrackShortcut = @"previousTrackShortcut";
 
+static NSString *const kBringPlayerToFrontShortcut = @"bringPlayerToFrontShortcut";
+static NSString *const kNowPlayingTrackShortcut = @"nowPlayingTrackShortcut";
 
 static NSString *const kHUDXibName = @"HUDWindowController";
 
@@ -53,6 +56,10 @@ static void *MASObservingContext = &MASObservingContext;
 @property (weak, nonatomic) IBOutlet MASShortcutView *nextTrackView;
 @property (weak, nonatomic) IBOutlet MASShortcutView *previousTrackView;
 
+@property (weak, nonatomic) IBOutlet MASShortcutView *bringPlayerToFrontView;
+@property (weak, nonatomic) IBOutlet MASShortcutView *nowPlayingTrackView;
+
+
 @property (nonatomic) HUDWindowController *hudWindowController;
 
 @end
@@ -76,6 +83,8 @@ static void *MASObservingContext = &MASObservingContext;
     self.nextTrackView.associatedUserDefaultsKey = kNextTrackShortcut;
     self.previousTrackView.associatedUserDefaultsKey = kPreviousTrackShortcut;
 
+    self.bringPlayerToFrontView.associatedUserDefaultsKey = kBringPlayerToFrontShortcut;
+    self.nowPlayingTrackView.associatedUserDefaultsKey = kNowPlayingTrackShortcut;
     
     [self bindShortcutsToAction];
     [self setUpObservers];
@@ -430,6 +439,16 @@ static void *MASObservingContext = &MASObservingContext;
         MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
         [musicPlayer backTrack];
     }];
+    
+    //Player
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kBringPlayerToFrontShortcut toAction:^{
+        [[MusicPlayer sharedPlayer] bringPlayerToFront];
+    }];
+    
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kNowPlayingTrackShortcut toAction:^{
+        [[UserNotificationsController sharedNotificationsController] displayNotificationWithCurrentTrackInfo];
+    }];
+    
 }
 
 -(void)updateMenu

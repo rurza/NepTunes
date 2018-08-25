@@ -19,6 +19,7 @@
 #import "MusicPlayer.h"
 #import "NSWindow+Spaces.h"
 #import "DebugMode.h"
+#import "NSTimer+CVPausable.h"
 @import Social;
 @import Accounts;
 

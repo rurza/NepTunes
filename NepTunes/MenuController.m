@@ -252,7 +252,9 @@ static NSUInteger const kNumberOfFrames = 10;
 {
     self.currentMenubarImage = [NSImage imageNamed:@"statusIcon"];
     [self.currentMenubarImage setTemplate:YES];
-    self.statusItem.button.image = self.currentMenubarImage;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.statusItem.button.image = self.currentMenubarImage;
+    });
 }
 
 

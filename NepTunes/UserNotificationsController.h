@@ -22,5 +22,6 @@
 -(void)displayNotificationThatLoveSongFailedWithError:(NSError *)error;
 -(void)displayNotificationThatTrackCanNotBeScrobbledWithError:(NSError *)error;
 -(void)displayNotificationThatICannotGetInfoAboutSpotify:(NSNotification *)note;
+-(void)displayNotificationWithCurrentTrackInfo;
 
 @end

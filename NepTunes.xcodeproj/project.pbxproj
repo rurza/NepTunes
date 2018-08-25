@@ -21,6 +21,7 @@
 		5B479B081F93894000DA362F /* GVUserDefaults+Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B479B071F93894000DA362F /* GVUserDefaults+Settings.m */; };
 		5B48B2911C5FB9B10041175B /* UserNotificationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B48B2901C5FB9B10041175B /* UserNotificationsController.m */; };
 		5B49F4A41D807421005943D3 /* NSWindow+Spaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B49F4A31D807421005943D3 /* NSWindow+Spaces.m */; };
+		5B4C4F9F207FDF3800FE1445 /* NSTimer+CVPausable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4C4F9E207FDF3800FE1445 /* NSTimer+CVPausable.m */; };
 		5B60B6F61B47ECDF00532423 /* MusicScrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */; };
 		5B70F4181D99A02600A6E294 /* alt icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5B70F4171D99A02600A6E294 /* alt icon.icns */; };
 		5B74FDD61A1D0EA5000FC78E /* LastFmCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */; };
@@ -129,6 +130,8 @@
 		5B48B2901C5FB9B10041175B /* UserNotificationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNotificationsController.m; sourceTree = "<group>"; };
 		5B49F4A21D807421005943D3 /* NSWindow+Spaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+Spaces.h"; sourceTree = "<group>"; };
 		5B49F4A31D807421005943D3 /* NSWindow+Spaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+Spaces.m"; sourceTree = "<group>"; };
+		5B4C4F9C207FDF3800FE1445 /* NSTimer+CVPausable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+CVPausable.h"; sourceTree = "<group>"; };
+		5B4C4F9E207FDF3800FE1445 /* NSTimer+CVPausable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+CVPausable.m"; sourceTree = "<group>"; };
 		5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicScrobbler.h; sourceTree = "<group>"; };
 		5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MusicScrobbler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B70F4151D998EFC00A6E294 /* DebugMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugMode.h; sourceTree = "<group>"; };
@@ -386,6 +389,8 @@
 				5BAE70FE1C5005CE00779081 /* OfflineScrobbler.h */,
 				5BAE70FF1C5005CE00779081 /* OfflineScrobbler.m */,
 				5B60B6F41B47ECDF00532423 /* MusicScrobbler.h */,
+				5B4C4F9C207FDF3800FE1445 /* NSTimer+CVPausable.h */,
+				5B4C4F9E207FDF3800FE1445 /* NSTimer+CVPausable.m */,
 				5B60B6F51B47ECDF00532423 /* MusicScrobbler.m */,
 				5B74FDD31A1D0EA5000FC78E /* LastFmCache.h */,
 				5B74FDD41A1D0EA5000FC78E /* LastFmCache.m */,
@@ -498,7 +503,6 @@
 				5B3751291A1D38DC007106D7 /* CopyFiles */,
 				5BE3C9B31B7BD5F70095DA69 /* ShellScript */,
 				5BF5AA0D1C4EB00B00C4FBA3 /* CopyFiles */,
-				DF1243A01C47FEC2F8B4E9EC /* [CP] Embed Pods Frameworks */,
 				6332649122EE30E5D0B9D258 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -656,30 +660,15 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes-resources.sh",
-				$PODS_CONFIGURATION_BUILD_DIR/MASShortcut/MASShortcut.bundle,
+				"${PODS_CONFIGURATION_BUILD_DIR}/MASShortcut/MASShortcut.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MASShortcut.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DF1243A01C47FEC2F8B4E9EC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NepTunes/Pods-NepTunes-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -705,6 +694,7 @@
 				5B1BC2421C6CDE26004EB785 /* CoverWindowController.m in Sources */,
 				5BDD6B161A1D0C95001D87D6 /* main.m in Sources */,
 				5BF402E71C73A156004FD0FA /* PreferencesController.m in Sources */,
+				5B4C4F9F207FDF3800FE1445 /* NSTimer+CVPausable.m in Sources */,
 				5B1BC2491C6CE337004EB785 /* CoverImageView.m in Sources */,
 				5BB0A6EE1D86D97400C143B6 /* OverlayHUD.m in Sources */,
 				5B2F4CE71B763C16009F0C53 /* MenuController.m in Sources */,

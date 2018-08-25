@@ -28,7 +28,7 @@
     
     [self.window setBackgroundColor:[NSColor clearColor]];
     self.window.contentView.layer.masksToBounds = YES;
-    self.window.contentView.layer.cornerRadius = 6;
+    self.window.contentView.layer.cornerRadius = 10;
 
     self.window.level = NSScreenSaverWindowLevel;
     self.centerImageView.image.template = YES;

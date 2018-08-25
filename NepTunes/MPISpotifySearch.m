@@ -141,7 +141,7 @@
     NSString *token = [GVUserDefaults standardUserDefaults].spotifyToken;
     NSDate *tokenExpirationDate = [GVUserDefaults standardUserDefaults].spotifyTokenExpirationDate;
     self.token = token;
-    if ([tokenExpirationDate compare:[NSDate date]] != NSOrderedAscending) {
+    if ([tokenExpirationDate compare:[NSDate date]] == NSOrderedAscending) {
         self.token = nil;
         [self authorizeClientWithHandler:^(NSError * _Nullable error, MPISpotifyToken * _Nullable token) {
             if (handler) { handler(error); }

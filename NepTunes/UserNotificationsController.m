@@ -152,6 +152,20 @@
     [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
 }
 
+- (void)displayNotificationWithCurrentTrackInfo
+{
+    MusicPlayer *player = [MusicPlayer sharedPlayer];
+    Track *track = player.currentTrack;
+    if (track) {
+        NSUserNotification *notification = [[NSUserNotification alloc] init];
+        notification.title = track.trackName;
+        notification.subtitle = track.artist;
+        notification.informativeText = track.album;
+        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+    }
+}
+
 -(void)forceLogOutUser
 {
     [[MenuController sharedController] forceLogOut];

@@ -580,13 +580,19 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
         self.numberOfPlayers--;
         if (self.isiTunesRunning) {
             self.currentPlayer = MusicPlayeriTunes;
+        } else {
+            self.currentPlayer = MusicPlayerUndefined;
         }
+        self._spotifyApp = nil;
     } else if ([[note.userInfo objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kiTunesBundleIdentifier]) {
         self.numberOfPlayers--;
         
         if (self.isSpotifyRunning) {
             self.currentPlayer = MusicPlayerSpotify;
+        }  else {
+            self.currentPlayer = MusicPlayerUndefined;
         }
+        self._iTunesApp = nil;
     }
     if (self.numberOfPlayers < 2 && numberOfPlayers == 2) {
         if ([self.delegate respondsToSelector:@selector(onePlayerIsAvailable)]) {
@@ -732,8 +738,8 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 
 -(SpotifyApplication *)_spotifyApp
 {
-    NSRunningApplication *spotify;
     if (!__spotifyApp) {
+        NSRunningApplication *spotify;
         NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
         for (NSRunningApplication *app in runningApps) {
             if ([app.bundleIdentifier isEqualToString:kSpotifyBundlerIdentifier]) {
@@ -741,20 +747,21 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
             }
         }
         if (spotify) {
-            __spotifyApp = (SpotifyApplication *)[SBApplication applicationWithBundleIdentifier:kSpotifyBundlerIdentifier];
+            __spotifyApp  = (SpotifyApplication *)[SBApplication applicationWithBundleIdentifier:kSpotifyBundlerIdentifier];
+        }
+        if (__spotifyApp && ![__spotifyApp respondsToSelector:@selector(playerState)]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCannotGetInfoFromSpotify object:self];
+            return nil;
         }
     }
-    if (__spotifyApp && ![__spotifyApp respondsToSelector:@selector(playerState)]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kCannotGetInfoFromSpotify object:self];
-        return nil;
-    }
+
     return __spotifyApp;
 }
 
 -(iTunesApplication *)_iTunesApp
 {
-    NSRunningApplication *iTunes;
     if (!__iTunesApp) {
+        NSRunningApplication *iTunes;
         NSArray *runningApps = [NSWorkspace sharedWorkspace].runningApplications;
         for (NSRunningApplication *app in runningApps) {
             if ([app.bundleIdentifier isEqualToString:kiTunesBundleIdentifier]) {
@@ -763,8 +770,6 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
         }
         if (iTunes) {
             __iTunesApp = (iTunesApplication *)[SBApplication applicationWithBundleIdentifier:kiTunesBundleIdentifier];
-        } else {
-            __iTunesApp = nil;
         }
     }
     return __iTunesApp;

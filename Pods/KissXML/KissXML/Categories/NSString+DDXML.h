@@ -1,17 +1,9 @@
 #import <Foundation/Foundation.h>
 
-#if DDXML_LIBXML_MODULE_ENABLED
-#if TARGET_OS_IOS && TARGET_OS_EMBEDDED
-@import libxml;
-#elif TARGET_IPHONE_SIMULATOR
-@import libxmlSimu;
-#elif TARGET_OS_MAC
-@import libxmlMac;
-#endif
-#else
-#import <libxml/tree.h>
-#endif
+// We redefine xmlChar to avoid a non-modular include
+typedef unsigned char xmlChar;
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSString (DDXML)
 
 /**
@@ -22,3 +14,4 @@
 - (NSString *)stringByTrimming;
 
 @end
+NS_ASSUME_NONNULL_END

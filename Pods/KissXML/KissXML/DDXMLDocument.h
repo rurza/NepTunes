@@ -21,21 +21,22 @@
 **/
 
 enum {
-	DDXMLDocumentXMLKind = 0,
-	DDXMLDocumentXHTMLKind,
-	DDXMLDocumentHTMLKind,
-	DDXMLDocumentTextKind
+	DDXMLDocumentXMLKind NS_SWIFT_NAME(XMLDocumentXMLKind) = 0,
+	DDXMLDocumentXHTMLKind NS_SWIFT_NAME(XMLDocumentXHTMLKind),
+	DDXMLDocumentHTMLKind NS_SWIFT_NAME(XMLDocumentHTMLKind),
+	DDXMLDocumentTextKind NS_SWIFT_NAME(XMLDocumentTextKind)
 };
-typedef NSUInteger DDXMLDocumentContentKind;
+typedef NSUInteger DDXMLDocumentContentKind NS_SWIFT_NAME(XMLDocumentContentKind);
 
+NS_ASSUME_NONNULL_BEGIN
 @interface DDXMLDocument : DDXMLNode
 {
 }
 
-- (id)initWithXMLString:(NSString *)string options:(NSUInteger)mask error:(NSError **)error;
-//- (id)initWithContentsOfURL:(NSURL *)url options:(NSUInteger)mask error:(NSError **)error;
-- (id)initWithData:(NSData *)data options:(NSUInteger)mask error:(NSError **)error;
-//- (id)initWithRootElement:(DDXMLElement *)element;
+- (nullable instancetype)initWithXMLString:(NSString *)string options:(NSUInteger)mask error:(NSError **)error;
+//- (instancetype)initWithContentsOfURL:(NSURL *)url options:(NSUInteger)mask error:(NSError **)error;
+- (nullable instancetype)initWithData:(NSData *)data options:(NSUInteger)mask error:(NSError **)error;
+//- (instancetype)initWithRootElement:(DDXMLElement *)element;
 
 //+ (Class)replacementClassForClass:(Class)cls;
 
@@ -58,7 +59,7 @@ typedef NSUInteger DDXMLDocumentContentKind;
 //- (DDXMLDTD *)DTD;
 
 //- (void)setRootElement:(DDXMLNode *)root;
-- (DDXMLElement *)rootElement;
+- (nullable DDXMLElement *)rootElement;
 
 //- (void)insertChild:(DDXMLNode *)child atIndex:(NSUInteger)index;
 
@@ -72,13 +73,17 @@ typedef NSUInteger DDXMLDocumentContentKind;
 
 //- (void)replaceChildAtIndex:(NSUInteger)index withNode:(DDXMLNode *)node;
 
-- (NSData *)XMLData;
+@property (readonly, copy) NSData *XMLData;
 - (NSData *)XMLDataWithOptions:(NSUInteger)options;
 
-//- (id)objectByApplyingXSLT:(NSData *)xslt arguments:(NSDictionary *)arguments error:(NSError **)error;
-//- (id)objectByApplyingXSLTString:(NSString *)xslt arguments:(NSDictionary *)arguments error:(NSError **)error;
-//- (id)objectByApplyingXSLTAtURL:(NSURL *)xsltURL arguments:(NSDictionary *)argument error:(NSError **)error;
+//- (instancetype)objectByApplyingXSLT:(NSData *)xslt arguments:(NSDictionary *)arguments error:(NSError **)error;
+//- (instancetype)objectByApplyingXSLTString:(NSString *)xslt arguments:(NSDictionary *)arguments error:(NSError **)error;
+//- (instancetype)objectByApplyingXSLTAtURL:(NSURL *)xsltURL arguments:(NSDictionary *)argument error:(NSError **)error;
 
 //- (BOOL)validateAndReturnError:(NSError **)error;
 
 @end
+#if TARGET_OS_IPHONE || TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH
+@compatibility_alias XMLDocument DDXMLDocument;
+#endif
+NS_ASSUME_NONNULL_END

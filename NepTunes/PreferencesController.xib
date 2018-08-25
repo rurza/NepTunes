@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2327e" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesController">
@@ -272,8 +274,8 @@ DQ
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="310" width="512" height="369"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="800"/>
+            <rect key="contentRect" x="335" y="390" width="512" height="369"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
             <view key="contentView" autoresizesSubviews="NO" id="Eh8-s8-w6Q">
                 <rect key="frame" x="0.0" y="0.0" width="512" height="369"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -448,19 +450,19 @@ DQ
             <point key="canvasLocation" x="-300" y="819"/>
         </customView>
         <customView identifier="Hotkeys" id="KNq-rN-Gzg" userLabel="Hotkey">
-            <rect key="frame" x="0.0" y="0.0" width="512" height="439"/>
+            <rect key="frame" x="0.0" y="0.0" width="512" height="516"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wMx-L5-uoG" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="400" width="126" height="19"/>
+                    <rect key="frame" x="361" y="477" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QDR-cs-IyV" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="326" width="126" height="19"/>
+                    <rect key="frame" x="361" y="403" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Yc-Xi-EgP">
-                    <rect key="frame" x="128" y="362" width="166" height="17"/>
+                    <rect key="frame" x="128" y="439" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Go to your Last.fm profile:" id="1KL-F9-vNA">
                         <font key="font" metaFont="system"/>
@@ -469,7 +471,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i3p-bb-WTK">
-                    <rect key="frame" x="128" y="325" width="132" height="17"/>
+                    <rect key="frame" x="128" y="402" width="132" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show similar artists:" id="GgS-0c-UWx">
                         <font key="font" metaFont="system"/>
@@ -478,11 +480,11 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0qu-6x-kgo" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="363" width="126" height="19"/>
+                    <rect key="frame" x="361" y="440" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rtb-Ld-FxH">
-                    <rect key="frame" x="128" y="399" width="72" height="17"/>
+                    <rect key="frame" x="128" y="476" width="72" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Love track:" id="ST0-W5-Cjg">
                         <font key="font" metaFont="system"/>
@@ -491,7 +493,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PcT-Vm-MrB">
-                    <rect key="frame" x="23" y="399" width="99" height="17"/>
+                    <rect key="frame" x="23" y="476" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Last.fm:" id="CbD-z3-WEH">
                         <font key="font" metaFont="system"/>
@@ -500,11 +502,11 @@ DQ
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="22L-50-mgG">
-                    <rect key="frame" x="0.0" y="312" width="512" height="5"/>
+                    <rect key="frame" x="0.0" y="389" width="512" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="15X-rk-div">
-                    <rect key="frame" x="23" y="286" width="99" height="17"/>
+                    <rect key="frame" x="23" y="363" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Volume:" id="2ca-YF-sRQ">
                         <font key="font" metaFont="system"/>
@@ -513,7 +515,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LGD-ID-Lec">
-                    <rect key="frame" x="128" y="285" width="166" height="17"/>
+                    <rect key="frame" x="128" y="362" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Increase player volume:" id="3ew-1J-4aM">
                         <font key="font" metaFont="system"/>
@@ -522,7 +524,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jcl-d0-pmO">
-                    <rect key="frame" x="128" y="248" width="166" height="17"/>
+                    <rect key="frame" x="128" y="325" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Decrease player volume:" id="ac3-Zj-gZK">
                         <font key="font" metaFont="system"/>
@@ -531,15 +533,15 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUn-Xm-UV7" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="285" width="126" height="19"/>
+                    <rect key="frame" x="361" y="362" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D1d-sA-gc1" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="248" width="126" height="19"/>
+                    <rect key="frame" x="361" y="325" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NbZ-91-hTJ">
-                    <rect key="frame" x="128" y="211" width="166" height="17"/>
+                    <rect key="frame" x="128" y="288" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Mute player:" id="umH-Th-amN">
                         <font key="font" metaFont="system"/>
@@ -548,11 +550,11 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dsM-wL-mrq" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="211" width="126" height="19"/>
+                    <rect key="frame" x="361" y="288" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vi3-Yw-rtR">
-                    <rect key="frame" x="23" y="57" width="99" height="17"/>
+                    <rect key="frame" x="23" y="134" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Rating (iTunes):" id="Zug-4y-VmU">
                         <font key="font" metaFont="system"/>
@@ -561,7 +563,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V6x-dV-Elk">
-                    <rect key="frame" x="128" y="57" width="166" height="17"/>
+                    <rect key="frame" x="128" y="134" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Increase track rating:" id="piu-nK-w1V">
                         <font key="font" metaFont="system"/>
@@ -570,7 +572,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dic-sZ-39l">
-                    <rect key="frame" x="128" y="20" width="166" height="17"/>
+                    <rect key="frame" x="128" y="97" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Decrease track rating:" id="4G5-Zu-bqC">
                         <font key="font" metaFont="system"/>
@@ -579,19 +581,19 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0TU-nP-Ned" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="57" width="126" height="19"/>
+                    <rect key="frame" x="361" y="134" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Huo-MD-sLh" customClass="MASShortcutView">
-                    <rect key="frame" x="361" y="20" width="126" height="19"/>
+                    <rect key="frame" x="361" y="97" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="DWe-kE-vxn">
-                    <rect key="frame" x="0.0" y="198" width="512" height="5"/>
+                    <rect key="frame" x="0.0" y="275" width="512" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ndr-eW-PKq">
-                    <rect key="frame" x="22" y="172" width="99" height="17"/>
+                    <rect key="frame" x="22" y="249" width="99" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Playback:" id="QUt-vG-xKh">
                         <font key="font" metaFont="system"/>
@@ -600,7 +602,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ISz-in-Dwf">
-                    <rect key="frame" x="127" y="171" width="166" height="17"/>
+                    <rect key="frame" x="127" y="248" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Play/Pause:" id="i8J-Xk-vxj">
                         <font key="font" metaFont="system"/>
@@ -609,7 +611,7 @@ DQ
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZT-fj-CAF">
-                    <rect key="frame" x="127" y="134" width="166" height="17"/>
+                    <rect key="frame" x="127" y="211" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Next track:" id="0LB-3m-0aY">
                         <font key="font" metaFont="system"/>
@@ -618,15 +620,15 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5d3-AU-mpe" customClass="MASShortcutView">
-                    <rect key="frame" x="360" y="171" width="126" height="19"/>
+                    <rect key="frame" x="360" y="248" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="14l-b6-Yks" customClass="MASShortcutView">
-                    <rect key="frame" x="360" y="134" width="126" height="19"/>
+                    <rect key="frame" x="360" y="211" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fcb-sl-SrM">
-                    <rect key="frame" x="127" y="97" width="166" height="17"/>
+                    <rect key="frame" x="127" y="174" width="166" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Previous track:" id="cdj-5N-HSF">
                         <font key="font" metaFont="system"/>
@@ -635,15 +637,54 @@ DQ
                     </textFieldCell>
                 </textField>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jrr-LW-7FW" customClass="MASShortcutView">
-                    <rect key="frame" x="360" y="97" width="126" height="19"/>
+                    <rect key="frame" x="360" y="174" width="126" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="QOm-lO-UmN">
-                    <rect key="frame" x="-1" y="84" width="512" height="5"/>
+                    <rect key="frame" x="-1" y="161" width="512" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
+                <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="3eu-Zz-BJb">
+                    <rect key="frame" x="0.0" y="84" width="512" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qiJ-EB-w0a">
+                    <rect key="frame" x="22" y="57" width="99" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Player:" id="eVc-ah-Qqy">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j7w-UO-IZ0">
+                    <rect key="frame" x="128" y="57" width="166" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bring player to front:" id="Yh7-nE-oX5">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1sK-k3-WJA" customClass="MASShortcutView">
+                    <rect key="frame" x="360" y="57" width="126" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="awE-BI-84j">
+                    <rect key="frame" x="127" y="20" width="166" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Now playing track:" id="FHf-q9-0DX">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OKH-OS-DmJ" customClass="MASShortcutView">
+                    <rect key="frame" x="361" y="20" width="126" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </customView>
             </subviews>
-            <point key="canvasLocation" x="836" y="182.5"/>
+            <point key="canvasLocation" x="836" y="214"/>
         </customView>
         <customObject id="meH-td-39k" customClass="CoverSettingsController">
             <connections>
@@ -679,6 +720,7 @@ DQ
         </customObject>
         <customObject id="48D-K4-yYd" customClass="HotkeyController">
             <connections>
+                <outlet property="bringPlayerToFrontView" destination="1sK-k3-WJA" id="N6o-jj-or0"/>
                 <outlet property="decreaseRatingView" destination="Huo-MD-sLh" id="G90-gO-s4e"/>
                 <outlet property="decreaseVolumeView" destination="D1d-sA-gc1" id="Ua1-y6-uZD"/>
                 <outlet property="increaseRatingView" destination="0TU-nP-Ned" id="1Ob-3v-hn8"/>
@@ -686,6 +728,7 @@ DQ
                 <outlet property="loveSongView" destination="wMx-L5-uoG" id="b9N-O2-rmz"/>
                 <outlet property="muteVolumeView" destination="dsM-wL-mrq" id="Mbv-RJ-XJC"/>
                 <outlet property="nextTrackView" destination="14l-b6-Yks" id="E0Z-Pw-FkJ"/>
+                <outlet property="nowPlayingTrackView" destination="OKH-OS-DmJ" id="jQF-Qn-Aan"/>
                 <outlet property="playPauseView" destination="5d3-AU-mpe" id="kj6-Yb-42c"/>
                 <outlet property="previousTrackView" destination="jrr-LW-7FW" id="zMD-Qg-l9v"/>
                 <outlet property="showSimilarArtistsView" destination="QDR-cs-IyV" id="ZvM-fA-YnP"/>

@@ -75,6 +75,7 @@ Have a bug? Please [create an issue on GitHub](https://github.com/gangverk/LastF
 
 Are you using LastFm in your iOS or Mac OS X app? Send a pull request with an updated README.md file to be included.
 
+Test the LastFM API on [RapidAPI](https://rapidapi.com/package/LastFM/functions?utm_source=LastFMGitHub&utm_medium=button).
 
 ## License
 LastFm is available under the MIT license. See the LICENSE file for more info.
