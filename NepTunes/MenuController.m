@@ -429,7 +429,7 @@ static NSUInteger const kNumberOfFrames = 10;
     if (self.musicPlayer.isPlayerRunning) {
         if (self.musicScrobbler.currentTrack) {
             self.similarArtistMenuTtitle.enabled = YES;
-            self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Artists Similar  to %@", nil), self.musicScrobbler.currentTrack.truncatedArtist];
+            self.similarArtistMenuTtitle.title = [NSString stringWithFormat:NSLocalizedString(@"Artists Similar to %@", nil), self.musicScrobbler.currentTrack.truncatedArtist];
             if (!internetIsReachable) {
                 self.similarArtistMenuTtitle.enabled = NO;
             }
