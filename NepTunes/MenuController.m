@@ -15,11 +15,8 @@
 #import "FXReachability.h"
 #import "UserNotificationsController.h"
 #import "MusicController.h"
-#import "iTunesSearch.h"
 #import "MPISpotifySearch.h"
-#import "LastFm.h"
 #import "PreferencesController.h"
-#import <PINCache.h>
 #import "OfflineScrobbler.h"
 #import "CoverWindowController.h"
 #import "ControlViewController.h"
@@ -29,6 +26,9 @@
 #import "DebugMode.h"
 
 @import QuartzCore;
+@import PINCache;
+@import iTunesSearch;
+@import LastFm;
 
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;

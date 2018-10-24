@@ -11,7 +11,6 @@
 #import "CoverWindow.h"
 #import "CoverImageView.h"
 #import "MusicController.h"
-#import "iTunesSearch.h"
 #import "CoverView.h"
 #import "GetCover.h"
 #import "CoverLabel.h"
@@ -23,6 +22,8 @@
 #import "MusicPlayer.h"
 #import "CoverSettingsController.h"
 #import "OverlayHUD.h"
+
+@import iTunesSearch;
 
 
 @interface CoverWindowController () <CoverGetterDelegate, ControlViewDelegate> {
@@ -342,9 +343,9 @@
 
 -(void)showControls
 {
-    if (self.coverSettingsController.simpleMode) {
-        return;
-    }
+//    if (self.coverSettingsController.simpleMode) {
+//        return;
+//    }
     MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
     if (!self.popoverIsShown) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
@@ -369,9 +370,9 @@
 
 -(void)hideControls
 {
-    if (self.coverSettingsController.simpleMode) {
-        return;
-    }
+//    if (self.coverSettingsController.simpleMode) {
+//        return;
+//    }
     if (!self.popoverIsShown && !self.controlsTimer) {
         POPBasicAnimation *controlOpacity = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
         controlOpacity.toValue = @(0);

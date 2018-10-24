@@ -2,12 +2,11 @@ PODS:
   - EGOCache (2.2.0)
   - GVUserDefaults (1.0.2)
   - iTunesSearch (1.1.1)
-  - JSONModel (1.7.0)
+  - JSONModel (1.8.0)
   - KissXML (5.2.3)
   - LastFm (1.17.0):
     - KissXML (~> 5.0)
   - MASShortcut (2.3.6)
-  - OpenSSL-OSX (1.0.211)
   - PINCache (2.3)
   - pop (1.0.10)
 
@@ -16,9 +15,8 @@ DEPENDENCIES:
   - GVUserDefaults
   - iTunesSearch
   - JSONModel
-  - LastFm (from `https://github.com/rurza/LastFm.git`, branch `master`)
+  - LastFm (from `../LastFm`)
   - MASShortcut
-  - OpenSSL-OSX
   - PINCache
   - pop
 
@@ -30,32 +28,24 @@ SPEC REPOS:
     - JSONModel
     - KissXML
     - MASShortcut
-    - OpenSSL-OSX
     - PINCache
     - pop
 
 EXTERNAL SOURCES:
   LastFm:
-    :branch: master
-    :git: https://github.com/rurza/LastFm.git
-
-CHECKOUT OPTIONS:
-  LastFm:
-    :commit: 64831916820d9ce1794945f87fc3c8f4db8cfdd6
-    :git: https://github.com/rurza/LastFm.git
+    :path: "../LastFm"
 
 SPEC CHECKSUMS:
   EGOCache: 191fd213da6804d487b49b1a91772ba904f3e324
   GVUserDefaults: 52d48cf8ba578b40a1a76312b196dfc9134ba36a
   iTunesSearch: 9bb35df794d9df6ffcaab9f84f494853d874467e
-  JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
+  JSONModel: 02ab723958366a3fd27da57ea2af2113658762e9
   KissXML: 09f88ff8161fd058d67b70740b8b516687b52823
-  LastFm: a23faadd5906fcffb3531379e55357e92a5cd82b
+  LastFm: c5a9399d8171463e1d0d66fddb1d58597b31d11e
   MASShortcut: 9c215e8a8a78f3d01ce56da48e2730ab66b538fa
-  OpenSSL-OSX: d9226a9b1c4257f41b819da9173a150c6a6fbfd5
   PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
 
-PODFILE CHECKSUM: 0511c4ced6d8be945fb6211937a7e631ca63b7ef
+PODFILE CHECKSUM: 973eec6e142aa464a140aa55d2db30fa45d36c2a
 
 COCOAPODS: 1.5.3

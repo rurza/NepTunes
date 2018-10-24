@@ -141,6 +141,29 @@ strip_invalid_archs() {
   STRIP_BINARY_RETVAL=1
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/EGOCache/EGOCache.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/GVUserDefaults/GVUserDefaults.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/KissXML/KissXML.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LastFm/LastFm.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/iTunesSearch/iTunesSearch.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/pop/pop.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/EGOCache/EGOCache.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/GVUserDefaults/GVUserDefaults.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/JSONModel/JSONModel.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/KissXML/KissXML.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LastFm/LastFm.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/iTunesSearch/iTunesSearch.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/pop/pop.framework"
+fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
 fi

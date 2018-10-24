@@ -11,13 +11,14 @@
 #import "Track.h"
 #import "OfflineScrobbler.h"
 #import "SettingsController.h"
-#import "LastFm.h"
 #import "UserNotificationsController.h"
 #import "MusicController.h"
 #import "CoverWindowController.h"
 #import "HotkeyController.h"
 #import "PreferencesCoverController.h"
-#import <POP.h>
+
+@import pop;
+@import LastFm;
 
 static NSString *const kAccountItemToolbarIdentifier = @"Account";
 

@@ -10,6 +10,7 @@
 
 @protocol MusicPlayerDelegate <NSObject>
 
+-(void)playerStateChanged;
 -(void)trackChanged;
 -(void)newActivePlayer;
 -(void)bothPlayersAreAvailable;

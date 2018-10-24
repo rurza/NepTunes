@@ -351,7 +351,7 @@ static void *MASObservingContext = &MASObservingContext;
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kIncreaseRatingShortcut
      toAction:^{
-         dispatch_async(dispatch_get_main_queue(), ^{
+//         dispatch_async(dispatch_get_main_queue(), ^{
              MusicPlayer *musicPlayer = [MusicPlayer sharedPlayer];
              NSInteger rating = musicPlayer.currentTrack.rating;
              if (self.hudWindowController.isVisible) {
@@ -373,7 +373,7 @@ static void *MASObservingContext = &MASObservingContext;
              } else if (rating >= 20) {
                  self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-2"];
                  musicPlayer.currentTrack.rating = 40;
-             } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+             } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length) {
                  self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
                  musicPlayer.currentTrack.rating = 20;
              } else {
@@ -384,7 +384,7 @@ static void *MASObservingContext = &MASObservingContext;
              self.hudWindowController.centerImageView.image = [NSImage imageNamed:@"star"];
              self.hudWindowController.starsImageView.image.template = YES;
              self.hudWindowController.centerImageView.image.template = YES;
-         });
+//         });
          
      }];
     
@@ -413,7 +413,7 @@ static void *MASObservingContext = &MASObservingContext;
              } else if (rating > 20) {
                  self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-1"];
                  musicPlayer.currentTrack.rating = 20;
-             } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length && musicPlayer.currentTrack.kind.length) {
+             } else if (rating >= 0 && musicPlayer.currentTrack.trackName.length && musicPlayer.currentTrack.artist.length) {
                  self.hudWindowController.starsImageView.image = [NSImage imageNamed:@"stars-0"];
                  musicPlayer.currentTrack.rating = 00;
              } else {

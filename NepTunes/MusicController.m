@@ -73,6 +73,16 @@ NSString *const kCoverWindowName = @"CoverWindow";
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:nil repeats:NO];
 }
 
+-(void)playerStateChanged
+{
+    if ([self hideNoMusicIfNeeded]) {
+        return;
+    }
+    [self updateCover];
+    [self updateMenu];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:self userInfo:nil];
+}
+
 
 -(void)bothPlayersAreAvailable
 {

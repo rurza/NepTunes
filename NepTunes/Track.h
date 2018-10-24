@@ -36,6 +36,7 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 
 @property (nonatomic, copy) NSString *trackName;
 @property (nonatomic, copy) NSString *artist;
+@property (nonatomic, copy) NSString *albumArtist;
 @property (nonatomic, copy) NSString *album;
 @property (nonatomic, copy) NSString *kind;
 @property (nonatomic, copy) NSString *artworkURL;
@@ -45,6 +46,8 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 @property (nonatomic) BOOL itIsNotMusic;
 @property (nonatomic) BOOL loved;
 @property (nonatomic) TrackOrigin trackOrigin;
+
+///it seems not comptaible with iTunes Version 12.9.0.164
 @property (nonatomic) TrackKind trackKind;
 @property (nonatomic) NSInteger rating;
 

@@ -13,9 +13,12 @@
 #import "Track.h"
 #import "MusicController.h"
 #import "MPISpotifySearch.h"
-#import "ITunesSearch.h"
+#import "SettingsController.h"
 #import "DebugMode.h"
 #import <PINCache/PINCache.h>
+#import "SBObject+Properties.h"
+
+@import iTunesSearch;
 
 NSString * const kiTunesBundleIdentifier = @"com.apple.iTunes";
 NSString * const kSpotifyBundlerIdentifier = @"com.spotify.client";
@@ -113,36 +116,43 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)notificationFromiTunes:(NSNotification *)notification
 {
     self.currentPlayer = MusicPlayeriTunes;
-    if (self.currentPlayer == MusicPlayeriTunes) {
+    NSDictionary *userInfoFromNotification = notification.userInfo;
+    Track *track = [self trackFromiTunesUserInfo:userInfoFromNotification];
+    if (self.currentPlayer == MusicPlayeriTunes && ![self.currentTrack isEqual:track] && self._iTunesApp.playerState == iTunesEPlSPlaying) {
         [self invalidateNoDurationTimerIfNeeded];
-        NSDictionary *userInfoFromNotification = notification.userInfo;
         [self setCurrentTrackFromiTunesOrUserInfo:userInfoFromNotification];
         [self.delegate trackChanged];
+    } else {
+        [self.delegate playerStateChanged];
+        DebugMode(@"It's the same track!")
     }
 }
 
 -(void)setCurrentTrackFromiTunesOrUserInfo:(NSDictionary *)userInfo
 {
-    
-    if (self._currentiTunesTrack.name.length && self._currentiTunesTrack.duration) {
+    if (self._currentiTunesTrack.name.length && self._currentiTunesTrack.time && !userInfo) {
         self.currentTrack = [Track trackWithiTunesTrack:self._currentiTunesTrack];
-        if ([userInfo objectForKey:@"Category"]) {
-            self.currentTrack.trackKind = TrackKindUndefined;
-        }
     } else {
         if (self.isiTunesRunning && userInfo) {
-            self.currentTrack = [[Track alloc] initWithTrackName:userInfo[@"Name"] artist:userInfo[@"Artist"] album:userInfo[@"Album"] andDuration:[userInfo[@"Total Time"] doubleValue] / 1000];
-            if ([[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"] || [userInfo objectForKey:@"Category"]) {
-                self.currentTrack.trackKind = TrackKindUndefined;
-            } else {
-                self.currentTrack.trackKind = TrackKindMusic;
-            }
+            self.currentTrack = [self trackFromiTunesUserInfo:userInfo];
             if ([userInfo[@"Total Time"] isEqualToNumber:@(0)] || !userInfo[@"Total Time"]) {
                 self._noDurationTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(updateTrackDuration:) userInfo:nil repeats:NO];
             }
-            self.currentTrack.trackOrigin = TrackFromiTunes;
         }
     }
+}
+
+- (Track *)trackFromiTunesUserInfo:(NSDictionary *)userInfo
+{
+    Track *track = [[Track alloc] initWithTrackName:userInfo[@"Name"] artist:userInfo[@"Artist"] album:userInfo[@"Album"] andDuration:[userInfo[@"Total Time"] doubleValue] / 1000];
+    track.rating = [[userInfo objectForKey:@"Rating"] integerValue];
+    if ([[userInfo objectForKey:@"Store URL"] containsString:@"itms://itunes.com/link?"] || [userInfo objectForKey:@"Category"]) {
+        track.trackKind = TrackKindUndefined;
+    } else {
+        track.trackKind = TrackKindMusic;
+    }
+    track.trackOrigin = TrackFromiTunes;
+    return track;
 }
 
 -(void)updateTrackDuration:(NSTimer *)timer
@@ -249,7 +259,6 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)openArtistPageForArtistName:(NSString *)artistName withFailureHandler:(void(^)(void))failureHandler
 {
     [self openArtistPageInPlayer:self.currentPlayer forArtistName:artistName withFailureHandler:failureHandler];
-    
 }
 
 

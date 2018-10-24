@@ -8,7 +8,6 @@
 
 #import "UserNotificationsController.h"
 #import "SettingsController.h"
-#import "LastFm.h"
 #import "AppDelegate.h"
 #import "MenuController.h"
 #import "MusicScrobbler.h"
@@ -17,6 +16,8 @@
 #import "PreferencesController.h"
 #import "MusicPlayer.h"
 #import "DebugMode.h"
+
+@import LastFm;
 
 @interface UserNotificationsController () <NSUserNotificationCenterDelegate>
 @property (nonatomic) BOOL doISentANotificationThatLastFmIsDown;

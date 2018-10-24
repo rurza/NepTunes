@@ -12,9 +12,10 @@
 #import "MusicScrobbler.h"
 #import "Track.h"
 #import "CoverSettingsController.h"
-#import <POP.h>
 #import "MenuController.h"
 #import "MusicPlayer.h"
+
+@import LastFm;
 
 static NSUInteger const kFPS = 30;
 static NSUInteger const kNumberOfFrames = 10;

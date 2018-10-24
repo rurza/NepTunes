@@ -1,11 +1,14 @@
+use_frameworks!
+platform :osx, '10.10'
+
 target 'NepTunes' do
-pod 'LastFm', :git => 'https://github.com/rurza/LastFm.git', :branch => 'master'
-pod 'EGOCache'
-pod 'MASShortcut'
-pod 'iTunesSearch'
-pod 'pop'
-pod 'PINCache'
-pod 'OpenSSL-OSX'
-pod 'JSONModel'
-pod 'GVUserDefaults'
+    
+    pod 'LastFm', :path => '../LastFm'
+    pod 'EGOCache'
+    pod 'MASShortcut'
+    pod 'iTunesSearch'
+    pod 'pop'
+    pod 'PINCache'
+    pod 'JSONModel'
+    pod 'GVUserDefaults'
 end

@@ -13,7 +13,6 @@
 
 @interface ItunesSearch ()
 @property (nonatomic, strong) NSOperationQueue *queue;
-@property (nonatomic) NSUInteger requestCounter;
 @end
 
 @implementation ItunesSearch
@@ -128,7 +127,8 @@
             }
             return;
         }
-    }    
+    }
+
     [self _performApiCallWithURL:url
                         useCache:useCache
                        signature:cacheKey
@@ -186,7 +186,7 @@
             }
             return;
         }
-        
+
         // Ensure a dictionary was received
         if (![jsonData isKindOfClass:[NSDictionary class]]) {
             if (failureHandler) {

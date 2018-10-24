@@ -11,17 +11,20 @@
 #import "Track.h"
 #import "MusicController.h"
 #import "FXReachability.h"
-#import "iTunesSearch.h"
 #import "SettingsController.h"
-#import <PINCache.h>
 #include <CommonCrypto/CommonDigest.h>
 #import "MusicPlayer.h"
 #import "DebugMode.h"
+
+@import PINCache;
+@import iTunesSearch;
 
 
 @interface GetCover () <NSURLSessionDelegate>
 @property (nonatomic) PINDiskCache *imagesCache;
 @property (nonatomic) ItunesSearch *itunesSearch;
+@property (nonatomic) NSURLSession *session;
+@property (nonatomic) NSMutableArray *tasks;
 @end
 
 @implementation GetCover
@@ -166,17 +169,25 @@
 {
     NSURL *artworkURL = [NSURL URLWithString:urlString];
     NSURLRequest *albumArtworkRequest = [NSURLRequest requestWithURL:artworkURL];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
     __weak typeof(self) weakSelf = self;
-    NSURLSessionDownloadTask *artworkDownloadTask = [session downloadTaskWithRequest:albumArtworkRequest completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    if (self.tasks.count > 0) {
+        for (NSURLSessionDownloadTask *task in self.tasks) {
+            [task cancel];
+        }
+        [self.tasks removeAllObjects];
+    }
+    __block NSURLSessionDownloadTask *artworkDownloadTask;
+    artworkDownloadTask = [self.session downloadTaskWithRequest:albumArtworkRequest completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSImage *artwork = [[NSImage alloc] initWithContentsOfURL:location];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf saveCoverImage:artwork forTrack:track];
             handler(artwork);
         });
+        NSLog(@"artworkDownloadTask = %@", artworkDownloadTask);
+        [self.tasks removeObject:artworkDownloadTask];
     }];
+    [self.tasks addObject:artworkDownloadTask];
     [artworkDownloadTask resume];
-    [session finishTasksAndInvalidate];
 }
 
 -(NSImage *)defaultCover
@@ -260,6 +271,22 @@
         _itunesSearch = [[ItunesSearch alloc] init];
     }
     return _itunesSearch;
+}
+
+- (NSURLSession *)session
+{
+    if (!_session) {
+        _session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+    }
+    return _session;
+}
+
+- (NSArray *)tasksAtIndexes:(NSIndexSet *)indexes
+{
+    if (!_tasks) {
+        _tasks = [NSMutableArray new];
+    }
+    return _tasks;
 }
 
 @end
