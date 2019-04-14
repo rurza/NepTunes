@@ -16,7 +16,7 @@
 #import "DDXMLDocument.h"
 #import "DDXMLElement.h"
 #import "DDXMLNode.h"
-#import "KissXML.h"
+#import "DDXMLPrivate.h"
 
 FOUNDATION_EXPORT double KissXMLVersionNumber;
 FOUNDATION_EXPORT const unsigned char KissXMLVersionString[];

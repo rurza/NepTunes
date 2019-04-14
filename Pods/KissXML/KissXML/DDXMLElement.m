@@ -29,18 +29,18 @@
  * Returns a DDXML wrapper object for the given primitive node.
  * The given node MUST be non-NULL and of the proper type.
 **/
-+ (instancetype)nodeWithElementPrimitive:(xmlNodePtr)node owner:(DDXMLNode *)owner
++ (id)nodeWithElementPrimitive:(xmlNodePtr)node owner:(DDXMLNode *)owner
 {
 	return [[DDXMLElement alloc] initWithElementPrimitive:node owner:owner];
 }
 
-- (instancetype)initWithElementPrimitive:(xmlNodePtr)node owner:(DDXMLNode *)inOwner
+- (id)initWithElementPrimitive:(xmlNodePtr)node owner:(DDXMLNode *)inOwner
 {
 	self = [super initWithPrimitive:(xmlKindPtr)node owner:inOwner];
 	return self;
 }
 
-+ (instancetype)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
++ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes
 	NSAssert(NO, @"Use nodeWithElementPrimitive:owner:");
@@ -48,7 +48,7 @@
 	return nil;
 }
 
-- (instancetype)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
+- (id)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes.
 	NSAssert(NO, @"Use initWithElementPrimitive:owner:");
@@ -56,7 +56,7 @@
 	return nil;
 }
 
-- (instancetype)initWithName:(NSString *)name
+- (id)initWithName:(NSString *)name
 {
 	// Note: Make every guarantee that genericPtr is not null
 	
@@ -69,7 +69,7 @@
 	return [self initWithElementPrimitive:node owner:nil];
 }
 
-- (instancetype)initWithName:(NSString *)name URI:(NSString *)URI
+- (id)initWithName:(NSString *)name URI:(NSString *)URI
 {
 	// Note: Make every guarantee that genericPtr is not null
 	
@@ -85,7 +85,7 @@
 	return result;
 }
 
-- (instancetype)initWithName:(NSString *)name stringValue:(NSString *)string
+- (id)initWithName:(NSString *)name stringValue:(NSString *)string
 {
 	// Note: Make every guarantee that genericPtr is not null
 	
@@ -101,7 +101,7 @@
 	return result;
 }
 
-- (instancetype)initWithXMLString:(NSString *)string error:(NSError **)error
+- (id)initWithXMLString:(NSString *)string error:(NSError **)error
 {
 	DDXMLDocument *doc = [[DDXMLDocument alloc] initWithXMLString:string options:0 error:error];
 	if (doc == nil)
