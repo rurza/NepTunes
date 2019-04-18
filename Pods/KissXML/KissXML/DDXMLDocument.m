@@ -1,6 +1,5 @@
 #import "DDXMLPrivate.h"
 #import "NSString+DDXML.h"
-#import <libxml/parser.h>
 
 #if ! __has_feature(objc_arc)
 #warning This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
@@ -30,18 +29,18 @@
  * Returns a DDXML wrapper object for the given primitive node.
  * The given node MUST be non-NULL and of the proper type.
 **/
-+ (instancetype)nodeWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)owner
++ (id)nodeWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)owner
 {
 	return [[DDXMLDocument alloc] initWithDocPrimitive:doc owner:owner];
 }
 
-- (instancetype)initWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)inOwner
+- (id)initWithDocPrimitive:(xmlDocPtr)doc owner:(DDXMLNode *)inOwner
 {
 	self = [super initWithPrimitive:(xmlKindPtr)doc owner:inOwner];
 	return self;
 }
 
-+ (instancetype)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
++ (id)nodeWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)owner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes
 	NSAssert(NO, @"Use nodeWithDocPrimitive:owner:");
@@ -49,7 +48,7 @@
 	return nil;
 }
 
-- (instancetype)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
+- (id)initWithPrimitive:(xmlKindPtr)kindPtr owner:(DDXMLNode *)inOwner
 {
 	// Promote initializers which use proper parameter types to enable compiler to catch more mistakes.
 	NSAssert(NO, @"Use initWithDocPrimitive:owner:");
@@ -63,7 +62,7 @@
  * Returns an initialized DDXMLDocument object, or nil if initialization fails
  * because of parsing errors or other reasons.
 **/
-- (instancetype)initWithXMLString:(NSString *)string options:(NSUInteger)mask error:(NSError **)error
+- (id)initWithXMLString:(NSString *)string options:(NSUInteger)mask error:(NSError **)error
 {
 	return [self initWithData:[string dataUsingEncoding:NSUTF8StringEncoding]
 	                  options:mask
@@ -76,7 +75,7 @@
  * Returns an initialized DDXMLDocument object, or nil if initialization fails
  * because of parsing errors or other reasons.
 **/
-- (instancetype)initWithData:(NSData *)data options:(NSUInteger)mask error:(NSError **)error
+- (id)initWithData:(NSData *)data options:(NSUInteger)mask error:(NSError **)error
 {
 	if (data == nil || [data length] == 0)
 	{
@@ -112,7 +111,7 @@
 	DDXMLNotZombieAssert();
 #endif
 	
-	xmlDocPtr doc = (xmlDocPtr)self->genericPtr;
+	xmlDocPtr doc = (xmlDocPtr)genericPtr;
 	
 	// doc->children is a list containing possibly comments, DTDs, etc...
 	
