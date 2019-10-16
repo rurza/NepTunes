@@ -508,7 +508,11 @@ NSString * const kCannotGetInfoFromSpotify = @"cannotGetInfoFromSpotify";
 -(void)updateRating:(NSNotification *)note
 {
     if (self.currentPlayer == MusicPlayeriTunes) {
-        self._currentiTunesTrack.rating = ((Track *)note.object).rating;
+        NSInteger newRating = ((Track *)note.object).rating;
+        if ((self._currentiTunesTrack.ratingKind == iTunesERtKComputed) && (self._currentiTunesTrack.rating == newRating)) {
+            return ;
+        }
+        self._currentiTunesTrack.rating = newRating;
     }
 }
 
