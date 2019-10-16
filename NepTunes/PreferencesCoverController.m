@@ -7,7 +7,6 @@
 //
 
 #import "PreferencesCoverController.h"
-#import <POP.h>
 #import "CoverView.h"
 #import "GetCover.h"
 #import "CoverImageView.h"
@@ -17,6 +16,7 @@
 #import "MusicController.h"
 #import "MusicPlayer.h"
 
+@import pop;
 
 @interface PreferencesCoverController () <CoverGetterDelegate>
 @property (strong, nonatomic) IBOutlet CoverView *coverView;

@@ -12,6 +12,7 @@
 #import "MusicPlayerDelegate.h"
 @class iTunesTrack;
 @class SpotifyTrack;
+@class MusicTrack;
 
 #define FOUR_MINUTES 60 * 4
 #define DELAY_FOR_RADIO 5
@@ -19,7 +20,8 @@
 typedef NS_ENUM(NSInteger, MusicPlayerApplication) {
     MusicPlayerUndefined,
     MusicPlayeriTunes,
-    MusicPlayerSpotify
+    MusicPlayerSpotify,
+    MusicPlayerMusicApp
 };
 
 typedef NS_ENUM(NSInteger, MusicPlayerState) {
@@ -32,20 +34,22 @@ typedef NS_ENUM(NSInteger, MusicPlayerState) {
 extern NSString *const kiTunesBundleIdentifier;
 extern NSString *const kSpotifyBundlerIdentifier;
 extern NSString *const kCannotGetInfoFromSpotify;
+extern NSString *const kMusicAppBundleIdentifier;
 
 
 @interface MusicPlayer : NSObject
 
-@property (atomic, readonly) MusicPlayerApplication currentPlayer;
-@property (nonatomic, readonly) Track *currentTrack;
-@property (nonatomic, readonly) MusicPlayerState playerState;
-@property (nonatomic, readonly) BOOL isPlayerRunning;
-@property (nonatomic, readonly) BOOL canObtainCurrentTrackFromiTunes;
-@property (nonatomic) BOOL playerIntegration;
-@property (nonatomic) BOOL currentTrackIsLoved;
-@property (nonatomic) NSInteger soundVolume;
-@property (nonatomic) id<MusicPlayerDelegate> delegate;
-@property (nonatomic, readonly) NSUInteger numberOfPlayers;
+@property (atomic, readonly) MusicPlayerApplication     currentPlayer;
+@property (nonatomic, readonly) Track                   *currentTrack;
+@property (nonatomic, readonly) MusicPlayerState        playerState;
+@property (nonatomic, readonly) BOOL                    isPlayerRunning;
+@property (nonatomic, readonly) BOOL                    canObtainCurrentTrackFromiTunes;
+@property (nonatomic, readonly) NSUInteger              numberOfPlayers;
+
+@property (nonatomic) BOOL                              playerIntegration;
+@property (nonatomic) BOOL                              currentTrackIsLoved;
+@property (nonatomic) NSInteger                         soundVolume;
+@property (nonatomic) id<MusicPlayerDelegate>           delegate;
 
 +(instancetype)sharedPlayer;
 
@@ -75,4 +79,6 @@ extern NSString *const kCannotGetInfoFromSpotify;
 -(void)loveCurrentTrackOniTunes;
 -(void)bringPlayerToFront;
 -(void)changeSourceTo:(MusicPlayerApplication)source;
+
+-(NSString *)runningSystemPlayerName;
 @end

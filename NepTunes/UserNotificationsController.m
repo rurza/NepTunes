@@ -8,7 +8,6 @@
 
 #import "UserNotificationsController.h"
 #import "SettingsController.h"
-#import "LastFm.h"
 #import "AppDelegate.h"
 #import "MenuController.h"
 #import "MusicScrobbler.h"
@@ -17,6 +16,8 @@
 #import "PreferencesController.h"
 #import "MusicPlayer.h"
 #import "DebugMode.h"
+
+@import LastFm;
 
 @interface UserNotificationsController () <NSUserNotificationCenterDelegate>
 @property (nonatomic) BOOL doISentANotificationThatLastFmIsDown;
@@ -150,6 +151,20 @@
     
     [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
     [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+}
+
+- (void)displayNotificationWithCurrentTrackInfo
+{
+    MusicPlayer *player = [MusicPlayer sharedPlayer];
+    Track *track = player.currentTrack;
+    if (track) {
+        NSUserNotification *notification = [[NSUserNotification alloc] init];
+        notification.title = track.trackName;
+        notification.subtitle = track.artist;
+        notification.informativeText = track.album;
+        [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+    }
 }
 
 -(void)forceLogOutUser

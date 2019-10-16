@@ -10,6 +10,7 @@
 #import "iTunes.h"
 #import "Spotify.h"
 #import "MusicPlayer.h"
+#import "Music.h"
 
 NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotificationName";
 
@@ -41,6 +42,7 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
     [encoder encodeObject:self.artist forKey:@"artist"];
     [encoder encodeObject:self.album forKey:@"album"];
     [encoder encodeObject:@(self.duration) forKey:@"duration"];
+    [encoder encodeObject:self.albumArtist forKey:@"albumArtist"];
 }
 
 -(id)initWithCoder:(NSCoder *)decoder
@@ -51,6 +53,7 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
         //decode the properties
         self.trackName = [decoder decodeObjectForKey:@"trackName"];
         self.artist = [decoder decodeObjectForKey:@"artist"];
+        self.albumArtist = [decoder decodeObjectForKey:@"albumArtist"];
         self.album = [decoder decodeObjectForKey:@"album"];
         self.duration = [[decoder decodeObjectForKey:@"duration"] doubleValue];
     }
@@ -59,7 +62,6 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
 
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track
 {
-
     TrackKind kind;
     if ([track respondsToSelector:NSSelectorFromString(@"mediaKind")]) {
         if (track.mediaKind == iTunesEMdKPodcast) {
@@ -76,12 +78,21 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
     if ((!track.name || !track.artist || track.name.length == 0 || track.artist.length == 0) && kind == TrackKindMusic) {
         return nil;
     }
-    Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    __block double duration = track.duration;
+    if (duration == 0 && track.time) {
+        NSArray<NSString *> *elements = [[track.time componentsSeparatedByString:@":"] reverseObjectEnumerator].allObjects;
+        for (NSUInteger i = 0; i < elements.count; i++) {
+            NSString *element = elements[i];
+            duration += element.doubleValue * pow(60, i) ;
+        }
+    }
+    Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:duration];
     song.trackOrigin = TrackFromiTunes;
-    song.kind = track.kind;
-    song->_rating = track.rating;
+    song.rating = track.rating;
     song.loved = track.loved;
     song.trackKind = kind;
+    song.albumArtist = track.albumArtist;
+    NSLog(@"%@", song);
     return song;
 }
 
@@ -94,7 +105,19 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
     song.artworkURL = track.artworkUrl;
     song.trackKind = TrackKindMusic;
     song.trackOrigin = TrackFromSpotify;
+    song.albumArtist = track.albumArtist;
     song.spotifyID = [[track id] stringByReplacingOccurrencesOfString:@"spotify:track:" withString:@""];
+    return song;
+}
+
++(Track *)trackWithMusicTrack:(MusicTrack *)track
+{
+    Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    song.trackOrigin = TrackFromMusicApp;
+    song.rating = track.rating;
+    song.loved = track.loved;
+    song.trackKind = TrackKindMusic;
+    song.albumArtist = track.albumArtist;
     return song;
 }
 

@@ -89,7 +89,8 @@ static NSString *const kAPISecret = @"679d4509ae07a46400dd27a05c7e9885";
             filteredAlbum = [[self stringsWithRemovedUnwantedTagsFromTrack:track] lastObject];
         }
         __weak typeof(self) weakSelf = self;
-        [self.scrobbler sendScrobbledTrack:filteredName byArtist:track.artist onAlbum:filteredAlbum withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
+        
+        [self.scrobbler sendScrobbledTrack:filteredName byArtist:track.artist albumArtist:track.albumArtist  onAlbum:filteredAlbum withDuration:track.duration atTimestamp:timestamp successHandler:^(NSDictionary *result) {
             if ([OfflineScrobbler sharedInstance].lastFmIsDown) {
                 [OfflineScrobbler sharedInstance].lastFmIsDown = NO;
             }

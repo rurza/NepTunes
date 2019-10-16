@@ -17,7 +17,7 @@ Features:
 * Can be configured to be compatible with Shortcut Recorder
 * Can be installed both through CocoaPods and as a Git submodule
 * Mac App Store friendly
-* Works on OS X 10.6 and up
+* Works on OS X 10.10 and up
 * Hacking-friendly codebase covered with tests
 
 Partially done:
@@ -38,6 +38,8 @@ If you want to stick to the 1.x branch, you can use the version smart match oper
     pod 'MASShortcut', '~> 1'
 
 You can also install via [Carthage](https://github.com/Carthage/Carthage), or you can use Git submodules and link against the MASShortcut framework manually.
+
+To build from the command line, type 'make release'. The framework will be created in a temporary directory and revealed in Finder when the build is complete.
 
 # Usage
 

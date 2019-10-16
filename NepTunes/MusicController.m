@@ -19,6 +19,7 @@
 #import "MusicPlayer.h"
 #import "NSWindow+Spaces.h"
 #import "DebugMode.h"
+#import "NSTimer+CVPausable.h"
 @import Social;
 @import Accounts;
 
@@ -59,7 +60,7 @@ NSString *const kCoverWindowName = @"CoverWindow";
 -(void)trackChanged
 {
     DebugMode(@"Notification sent from Music Player")
-    
+    NSLog(@"trackChanged");
     if ([self hideNoMusicIfNeeded]) {
         return;
     }
@@ -70,6 +71,16 @@ NSString *const kCoverWindowName = @"CoverWindow";
     [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:self userInfo:nil];
 
     self.mainTimer = [NSTimer scheduledTimerWithTimeInterval:DELAY_FOR_RADIO target:self selector:@selector(prepareTrack:) userInfo:nil repeats:NO];
+}
+
+-(void)playerStateChanged
+{
+    if ([self hideNoMusicIfNeeded]) {
+        return;
+    }
+    [self updateCover];
+    [self updateMenu];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTrackInfoUpdated object:self userInfo:nil];
 }
 
 
@@ -91,6 +102,8 @@ NSString *const kCoverWindowName = @"CoverWindow";
         [self.menuController addCheckmarkToSourceWithName:@"iTunes"];
     } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
         [self.menuController addCheckmarkToSourceWithName:@"Spotify"];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerMusicApp) {
+        [self.menuController addCheckmarkToSourceWithName:@"Music.app"];
     }
 }
 
@@ -108,7 +121,7 @@ NSString *const kCoverWindowName = @"CoverWindow";
 -(void)prepareTrack:(NSTimer *)timer
 {
     if ([timer isValid]) {
-        [self updateMenu];
+//        [self updateMenu];
         if (self.musicScrobbler.currentTrack.trackOrigin == TrackFromSpotify && !self.settingsController.scrobbleFromSpotify) {
             return;
         }

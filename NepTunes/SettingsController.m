@@ -34,6 +34,7 @@ static NSString *const kSpotifyOnly = @"spotifyOnly";
 static NSString *const kiTunesOnly = @"iTunesOnly";
 static NSString *const kScrobbleFromSpotify = @"scrobbleFromSpotify";
 static NSString *const kCutExtraTags = @"cutExtraTags";
+static NSString *const kLaunchCounter = @"launchCounter";
 
 static NSString * const kRememberFrame = @"NSWindowAutosaveFrameMovesToActiveDisplay";
 
@@ -756,6 +757,23 @@ static NSString *const kDebugMode = @"debugMode";
     }
     [self.userDefaults setObject:@(cutExtraTags) forKey:kCutExtraTags];
     [self saveSettings];
+}
+
+#pragma mark - Launch Counter
+- (void)updateLaunchCounter
+{
+    NSNumber *launchCounter = [self.userDefaults objectForKey:kLaunchCounter];
+    NSUInteger launchCounterInt = launchCounter.unsignedIntegerValue;
+    launchCounterInt++;
+    [self.userDefaults setObject:@(launchCounterInt) forKey:kLaunchCounter];
+}
+
+- (NSNumber *)launchCounter
+{
+    if (!_launchCounter) {
+        _launchCounter = [self.userDefaults objectForKey:kLaunchCounter];
+    }
+    return _launchCounter;
 }
 
 #pragma mark - Save

@@ -25,10 +25,12 @@
     
     self.window.contentView.wantsLayer = YES;
     self.window.opaque = NO;
-    [self.window setBackgroundColor:[NSColor clearColor]];
     
+    [self.window setBackgroundColor:[NSColor clearColor]];
+    self.window.contentView.layer.masksToBounds = YES;
+    self.window.contentView.layer.cornerRadius = 10;
+
     self.window.level = NSScreenSaverWindowLevel;
-    self.visualEffectView.layer.cornerRadius = 6;
     self.centerImageView.image.template = YES;
     self.bottomImageView.image.template = YES;
     self.starsImageView.image.template = YES;

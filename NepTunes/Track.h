@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 @class iTunesTrack;
 @class SpotifyTrack;
+@class MusicTrack;
 
 typedef NS_ENUM(NSInteger, TrackOrigin) {
     TrackFromiTunes,
-    TrackFromSpotify
+    TrackFromSpotify,
+    TrackFromMusicApp
 };
 
 typedef NS_ENUM(NSInteger, TrackKind) {
@@ -36,6 +38,7 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 
 @property (nonatomic, copy) NSString *trackName;
 @property (nonatomic, copy) NSString *artist;
+@property (nonatomic, copy) NSString *albumArtist;
 @property (nonatomic, copy) NSString *album;
 @property (nonatomic, copy) NSString *kind;
 @property (nonatomic, copy) NSString *artworkURL;
@@ -45,6 +48,8 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 @property (nonatomic) BOOL itIsNotMusic;
 @property (nonatomic) BOOL loved;
 @property (nonatomic) TrackOrigin trackOrigin;
+
+///it seems not comptaible with iTunes Version 12.9.0.164
 @property (nonatomic) TrackKind trackKind;
 @property (nonatomic) NSInteger rating;
 
@@ -53,6 +58,7 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d;
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track;
 +(Track *)trackWithSpotifyTrack:(SpotifyTrack *)track;
++(Track *)trackWithMusicTrack:(MusicTrack *)track;
 -(BOOL)isEqualToTrack:(Track *)track;
 -(void)setRating:(NSInteger)rating;
 -(NSInteger)rating;
