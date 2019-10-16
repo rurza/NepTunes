@@ -1398,7 +1398,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1110;
+				LastUpgradeCheck = 1100;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1793,6 +1793,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 186EF652FDAE0C7E9659F823C30BA1FF /* JSONModel.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1808,7 +1809,7 @@
 				INFOPLIST_FILE = "Target Support Files/JSONModel/JSONModel-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/JSONModel/JSONModel.modulemap";
 				PRODUCT_MODULE_NAME = JSONModel;
 				PRODUCT_NAME = JSONModel;
@@ -1824,6 +1825,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D80999111ACE43E6CBC1B209B3384E3 /* KissXML.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1839,7 +1841,7 @@
 				INFOPLIST_FILE = "Target Support Files/KissXML/KissXML-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/KissXML/KissXML.modulemap";
 				PRODUCT_MODULE_NAME = KissXML;
 				PRODUCT_NAME = KissXML;
@@ -1855,6 +1857,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4646B269CC28DC9AAC40B4BBD5C9BCE /* LastFm.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1870,7 +1873,7 @@
 				INFOPLIST_FILE = "Target Support Files/LastFm/LastFm-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/LastFm/LastFm.modulemap";
 				PRODUCT_MODULE_NAME = LastFm;
 				PRODUCT_NAME = LastFm;
@@ -1886,6 +1889,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A1833946428D24D96F04B5AC8CA4F238 /* MASShortcut.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1902,7 +1906,7 @@
 				INFOPLIST_FILE = "Target Support Files/MASShortcut/MASShortcut-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/MASShortcut/MASShortcut.modulemap";
 				PRODUCT_MODULE_NAME = MASShortcut;
 				PRODUCT_NAME = MASShortcut;
@@ -1918,6 +1922,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4646B269CC28DC9AAC40B4BBD5C9BCE /* LastFm.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1933,7 +1938,7 @@
 				INFOPLIST_FILE = "Target Support Files/LastFm/LastFm-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/LastFm/LastFm.modulemap";
 				PRODUCT_MODULE_NAME = LastFm;
 				PRODUCT_NAME = LastFm;
@@ -2013,6 +2018,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E24FE6DE020558CC9353A8B8ABEE77BB /* EGOCache.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2028,7 +2034,7 @@
 				INFOPLIST_FILE = "Target Support Files/EGOCache/EGOCache-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/EGOCache/EGOCache.modulemap";
 				PRODUCT_MODULE_NAME = EGOCache;
 				PRODUCT_NAME = EGOCache;
@@ -2044,6 +2050,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0632E40A44C057A33FF1BE59584C5195 /* PINCache.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2059,7 +2066,7 @@
 				INFOPLIST_FILE = "Target Support Files/PINCache/PINCache-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/PINCache/PINCache.modulemap";
 				PRODUCT_MODULE_NAME = PINCache;
 				PRODUCT_NAME = PINCache;
@@ -2075,6 +2082,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2AA6FD0D94463ACB7C507DEFD912B310 /* GVUserDefaults.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2091,7 +2099,7 @@
 				INFOPLIST_FILE = "Target Support Files/GVUserDefaults/GVUserDefaults-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/GVUserDefaults/GVUserDefaults.modulemap";
 				PRODUCT_MODULE_NAME = GVUserDefaults;
 				PRODUCT_NAME = GVUserDefaults;
@@ -2107,6 +2115,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0B837116A4F8E66A25FCFA3ACF91B9C9 /* pop.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2122,7 +2131,7 @@
 				INFOPLIST_FILE = "Target Support Files/pop/pop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/pop/pop.modulemap";
 				PRODUCT_MODULE_NAME = pop;
 				PRODUCT_NAME = pop;
@@ -2156,6 +2165,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0B837116A4F8E66A25FCFA3ACF91B9C9 /* pop.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2171,7 +2181,7 @@
 				INFOPLIST_FILE = "Target Support Files/pop/pop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/pop/pop.modulemap";
 				PRODUCT_MODULE_NAME = pop;
 				PRODUCT_NAME = pop;
@@ -2187,6 +2197,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E24FE6DE020558CC9353A8B8ABEE77BB /* EGOCache.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2202,7 +2213,7 @@
 				INFOPLIST_FILE = "Target Support Files/EGOCache/EGOCache-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/EGOCache/EGOCache.modulemap";
 				PRODUCT_MODULE_NAME = EGOCache;
 				PRODUCT_NAME = EGOCache;
@@ -2218,6 +2229,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F2874EC5F0627A50EE4B33FA0FE4BCC9 /* iTunesSearch.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2234,7 +2246,7 @@
 				INFOPLIST_FILE = "Target Support Files/iTunesSearch/iTunesSearch-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/iTunesSearch/iTunesSearch.modulemap";
 				PRODUCT_MODULE_NAME = iTunesSearch;
 				PRODUCT_NAME = iTunesSearch;
@@ -2250,6 +2262,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 186EF652FDAE0C7E9659F823C30BA1FF /* JSONModel.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2265,7 +2278,7 @@
 				INFOPLIST_FILE = "Target Support Files/JSONModel/JSONModel-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/JSONModel/JSONModel.modulemap";
 				PRODUCT_MODULE_NAME = JSONModel;
 				PRODUCT_NAME = JSONModel;
@@ -2281,6 +2294,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2AA6FD0D94463ACB7C507DEFD912B310 /* GVUserDefaults.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2297,7 +2311,7 @@
 				INFOPLIST_FILE = "Target Support Files/GVUserDefaults/GVUserDefaults-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/GVUserDefaults/GVUserDefaults.modulemap";
 				PRODUCT_MODULE_NAME = GVUserDefaults;
 				PRODUCT_NAME = GVUserDefaults;
@@ -2313,6 +2327,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F2874EC5F0627A50EE4B33FA0FE4BCC9 /* iTunesSearch.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2329,7 +2344,7 @@
 				INFOPLIST_FILE = "Target Support Files/iTunesSearch/iTunesSearch-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/iTunesSearch/iTunesSearch.modulemap";
 				PRODUCT_MODULE_NAME = iTunesSearch;
 				PRODUCT_NAME = iTunesSearch;
@@ -2345,6 +2360,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D80999111ACE43E6CBC1B209B3384E3 /* KissXML.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2360,7 +2376,7 @@
 				INFOPLIST_FILE = "Target Support Files/KissXML/KissXML-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/KissXML/KissXML.modulemap";
 				PRODUCT_MODULE_NAME = KissXML;
 				PRODUCT_NAME = KissXML;
@@ -2377,6 +2393,7 @@
 			baseConfigurationReference = 883B54C6EBF7E841BBD2DF1EDB5F35CF /* Pods-NepTunes.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2429,6 +2446,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A1833946428D24D96F04B5AC8CA4F238 /* MASShortcut.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2445,7 +2463,7 @@
 				INFOPLIST_FILE = "Target Support Files/MASShortcut/MASShortcut-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/MASShortcut/MASShortcut.modulemap";
 				PRODUCT_MODULE_NAME = MASShortcut;
 				PRODUCT_NAME = MASShortcut;
@@ -2462,6 +2480,7 @@
 			baseConfigurationReference = 054DDABD7BFF116131DA3CC6C8716874 /* Pods-NepTunes.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2496,6 +2515,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0632E40A44C057A33FF1BE59584C5195 /* PINCache.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2511,7 +2531,7 @@
 				INFOPLIST_FILE = "Target Support Files/PINCache/PINCache-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "Target Support Files/PINCache/PINCache.modulemap";
 				PRODUCT_MODULE_NAME = PINCache;
 				PRODUCT_NAME = PINCache;
