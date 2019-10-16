@@ -19,51 +19,48 @@
  * https://github.com/robbiehanson/KissXML/wiki/Reference
 **/
 
-NS_ASSUME_NONNULL_BEGIN
 @interface DDXMLElement : DDXMLNode
 {
 }
 
-- (instancetype)initWithName:(NSString *)name;
-- (instancetype)initWithName:(NSString *)name URI:(nullable NSString *)URI;
-- (instancetype)initWithName:(NSString *)name stringValue:(nullable NSString *)string;
-- (nullable instancetype)initWithXMLString:(NSString *)string error:(NSError **)error;
+- (id)initWithName:(NSString *)name;
+- (id)initWithName:(NSString *)name URI:(NSString *)URI;
+- (id)initWithName:(NSString *)name stringValue:(NSString *)string;
+- (id)initWithXMLString:(NSString *)string error:(NSError **)error;
 
 #pragma mark --- Elements by name ---
 
-- (NSArray<DDXMLElement *> *)elementsForName:(NSString *)name;
-- (NSArray<DDXMLElement *> *)elementsForLocalName:(NSString *)localName URI:(nullable NSString *)URI;
+- (NSArray *)elementsForName:(NSString *)name;
+- (NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)URI;
 
 #pragma mark --- Attributes ---
 
 - (void)addAttribute:(DDXMLNode *)attribute;
 - (void)removeAttributeForName:(NSString *)name;
-@property (nullable, copy) NSArray<DDXMLNode *> *attributes;
+- (void)setAttributes:(NSArray *)attributes;
 //- (void)setAttributesAsDictionary:(NSDictionary *)attributes;
-- (nullable DDXMLNode *)attributeForName:(NSString *)name;
+- (NSArray *)attributes;
+- (DDXMLNode *)attributeForName:(NSString *)name;
 //- (DDXMLNode *)attributeForLocalName:(NSString *)localName URI:(NSString *)URI;
 
 #pragma mark --- Namespaces ---
 
 - (void)addNamespace:(DDXMLNode *)aNamespace;
 - (void)removeNamespaceForPrefix:(NSString *)name;
-@property (nullable, copy) NSArray<DDXMLNode *> *namespaces; //primitive
-- (nullable DDXMLNode *)namespaceForPrefix:(NSString *)prefix;
-- (nullable DDXMLNode *)resolveNamespaceForName:(NSString *)name;
-- (nullable NSString *)resolvePrefixForNamespaceURI:(NSString *)namespaceURI;
+- (void)setNamespaces:(NSArray *)namespaces;
+- (NSArray *)namespaces;
+- (DDXMLNode *)namespaceForPrefix:(NSString *)prefix;
+- (DDXMLNode *)resolveNamespaceForName:(NSString *)name;
+- (NSString *)resolvePrefixForNamespaceURI:(NSString *)namespaceURI;
 
 #pragma mark --- Children ---
 
 - (void)insertChild:(DDXMLNode *)child atIndex:(NSUInteger)index;
 //- (void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
 - (void)removeChildAtIndex:(NSUInteger)index;
-- (void)setChildren:(nullable NSArray<DDXMLNode *> *)children;
+- (void)setChildren:(NSArray *)children;
 - (void)addChild:(DDXMLNode *)child;
 //- (void)replaceChildAtIndex:(NSUInteger)index withNode:(DDXMLNode *)node;
 //- (void)normalizeAdjacentTextNodesPreservingCDATA:(BOOL)preserve;
 
 @end
-#if TARGET_OS_IPHONE || TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH
-@compatibility_alias XMLElement DDXMLElement;
-#endif
-NS_ASSUME_NONNULL_END
