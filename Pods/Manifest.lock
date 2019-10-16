@@ -6,9 +6,9 @@ PODS:
   - KissXML (5.2.3)
   - LastFm (1.17.0):
     - KissXML (~> 5.0)
-  - MASShortcut (2.3.6)
+  - MASShortcut (2.4.0)
   - PINCache (2.3)
-  - pop (1.0.10)
+  - pop (1.0.12)
 
 DEPENDENCIES:
   - EGOCache
@@ -21,7 +21,7 @@ DEPENDENCIES:
   - pop
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://cdn.cocoapods.org/:
     - EGOCache
     - GVUserDefaults
     - iTunesSearch
@@ -41,11 +41,11 @@ SPEC CHECKSUMS:
   iTunesSearch: 9bb35df794d9df6ffcaab9f84f494853d874467e
   JSONModel: 02ab723958366a3fd27da57ea2af2113658762e9
   KissXML: 09f88ff8161fd058d67b70740b8b516687b52823
-  LastFm: c5a9399d8171463e1d0d66fddb1d58597b31d11e
-  MASShortcut: 9c215e8a8a78f3d01ce56da48e2730ab66b538fa
+  LastFm: a23faadd5906fcffb3531379e55357e92a5cd82b
+  MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
   PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
-  pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
+  pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
 
 PODFILE CHECKSUM: 973eec6e142aa464a140aa55d2db30fa45d36c2a
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.3

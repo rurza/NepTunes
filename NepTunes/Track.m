@@ -10,6 +10,7 @@
 #import "iTunes.h"
 #import "Spotify.h"
 #import "MusicPlayer.h"
+#import "Music.h"
 
 NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotificationName";
 
@@ -106,6 +107,17 @@ NSString * const kTrackRatingWasSetNotificationName = @"TrackRatingWasSetNotific
     song.trackOrigin = TrackFromSpotify;
     song.albumArtist = track.albumArtist;
     song.spotifyID = [[track id] stringByReplacingOccurrencesOfString:@"spotify:track:" withString:@""];
+    return song;
+}
+
++(Track *)trackWithMusicTrack:(MusicTrack *)track
+{
+    Track *song = [[Track alloc] initWithTrackName:track.name artist:track.artist album:track.album andDuration:track.duration];
+    song.trackOrigin = TrackFromMusicApp;
+    song.rating = track.rating;
+    song.loved = track.loved;
+    song.trackKind = TrackKindMusic;
+    song.albumArtist = track.albumArtist;
     return song;
 }
 

@@ -357,6 +357,9 @@ static NSUInteger const kNumberOfFrames = 10;
         [self.updateMenuTimer invalidate];
         self.updateMenuTimer = nil;
     }
+    if (self.bothPlayerAreAvailable) {
+        [self addCheckMarkToCurrenlyActivePlayer];
+    }
     __weak typeof(self) weakSelf = self;
     self.updateMenuTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:[NSBlockOperation blockOperationWithBlock:^{
         [weakSelf updateRecentMenu];
@@ -783,6 +786,17 @@ static NSUInteger const kNumberOfFrames = 10;
     }
 }
 
+- (void)addCheckMarkToCurrenlyActivePlayer
+{
+    if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
+        [self addCheckmarkToSourceWithName:@"iTunes"];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
+        [self addCheckmarkToSourceWithName:NSLocalizedString(@"Spotify", nil)];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerMusicApp) {
+        [self addCheckmarkToSourceWithName:@"Music"];
+    }
+}
+
 - (void)insertBothSources
 {
     if (!self.bothPlayerAreAvailable) {
@@ -792,27 +806,19 @@ static NSUInteger const kNumberOfFrames = 10;
         
         sourceLabelMenuItem.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"SOURCE:", nil) attributes:@{NSFontAttributeName:[NSFont systemFontOfSize:10], NSForegroundColorAttributeName:[NSColor lightGrayColor]}];
         
-        NSMenuItem *iTunesMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"iTunes", nil) action:@selector(activateNewSource:) keyEquivalent:@""];
+        
+        NSMenuItem *systemPlayerMenuItem = [[NSMenuItem alloc] initWithTitle:[self.musicPlayer runningSystemPlayerName] action:@selector(activateNewSource:) keyEquivalent:@""];
         NSMenuItem *spotifyMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Spotify", nil) action:@selector(activateNewSource:) keyEquivalent:@""];
         
-        iTunesMenuItem.target = self;
+        systemPlayerMenuItem.target = self;
         spotifyMenuItem.target = self;
         
         [self.statusMenu insertItem:separatorMenuItem atIndex:[self.statusMenu indexOfItemWithTag:12]];
         [self.statusMenu insertItem:sourceLabelMenuItem atIndex:[self.statusMenu indexOfItem:separatorMenuItem]+1];
-        [self.statusMenu insertItem:iTunesMenuItem atIndex:[self.statusMenu indexOfItem:sourceLabelMenuItem]+1];
-        [self.statusMenu insertItem:spotifyMenuItem atIndex:[self.statusMenu indexOfItem:iTunesMenuItem]+1];
+        [self.statusMenu insertItem:systemPlayerMenuItem atIndex:[self.statusMenu indexOfItem:sourceLabelMenuItem]+1];
+        [self.statusMenu insertItem:spotifyMenuItem atIndex:[self.statusMenu indexOfItem:systemPlayerMenuItem]+1];
         
-        if (self.musicPlayer.currentPlayer == MusicPlayeriTunes) {
-            [self addCheckmarkToSourceWithName:@"iTunes"];
-        } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
-            [self addCheckmarkToSourceWithName:NSLocalizedString(@"Spotify", nil)];
-        } else {
-            spotifyMenuItem.enabled = YES;
-            iTunesMenuItem.enabled = YES;
-            spotifyMenuItem.state = 0;
-            iTunesMenuItem.state = 0;
-        }
+        [self addCheckMarkToCurrenlyActivePlayer];
         self.bothPlayerAreAvailable = YES;
     }
 }
@@ -820,10 +826,17 @@ static NSUInteger const kNumberOfFrames = 10;
 - (void)removeBothSources
 {
     if (self.bothPlayerAreAvailable) {
-        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]-1];
-        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]];
-        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"iTunes", nil)]];
-        [self.statusMenu removeItemAtIndex:[self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"Spotify", nil)]];
+        NSInteger index = [self.statusMenu indexOfItemWithTitle:NSLocalizedString(@"SOURCE:", nil)]-1;
+        if (index >= 0) {
+            [self.statusMenu removeItemAtIndex:index];
+        }
+        for (NSString *itemTitle in @[@"SOURCE:", @"iTunes", @"Spotify", @"Music"]) {
+            index = [self.statusMenu indexOfItemWithTitle:itemTitle];
+            if (index >= 0) {
+                [self.statusMenu removeItemAtIndex:index];
+            }
+            index = -1;
+        }
         self.bothPlayerAreAvailable = NO;
     }
 }
@@ -834,6 +847,8 @@ static NSUInteger const kNumberOfFrames = 10;
         [self.musicPlayer changeSourceTo:MusicPlayeriTunes];
     } else if ([menuItem.title localizedCaseInsensitiveContainsString:@"spotify"] && self.musicPlayer.currentPlayer != MusicPlayerSpotify) {
         [self.musicPlayer changeSourceTo:MusicPlayerSpotify];
+    } else if ([menuItem.title localizedCaseInsensitiveContainsString:@"music"] && self.musicPlayer.currentPlayer != MusicPlayerMusicApp) {
+        [self.musicPlayer changeSourceTo:MusicPlayerMusicApp];
     }
 }
 

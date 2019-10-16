@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -12,6 +12,7 @@
                 <outlet property="copyrightLabel" destination="LNp-qb-hRo" id="4f1-0j-DuI"/>
                 <outlet property="followOnTwitterButton" destination="wJa-wt-nRY" id="ol2-dV-GBS"/>
                 <outlet property="micropixelsButton" destination="nl2-W2-2Gs" id="XrF-YA-QEy"/>
+                <outlet property="myLastFmButton" destination="g9c-un-ytp" id="Tpa-qV-7rn"/>
                 <outlet property="rateInMASButton" destination="YHu-Av-kne" id="3oK-Ut-hLw"/>
                 <outlet property="supportButton" destination="PAl-Z3-vod" id="Hrn-uH-sVC"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
@@ -22,27 +23,27 @@
         <window title="About NepTunes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" animationBehavior="documentWindow" appearanceType="darkAqua" frameAutosaveName="" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="410" width="236" height="345"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="contentRect" x="196" y="410" width="236" height="380"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="236" height="345"/>
+                <rect key="frame" x="0.0" y="0.0" width="236" height="380"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <visualEffectView appearanceType="vibrantDark" fixedFrame="YES" blendingMode="behindWindow" material="appearanceBased" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="YbV-ub-Fdb">
-                        <rect key="frame" x="0.0" y="0.0" width="236" height="345"/>
+                        <rect key="frame" x="0.0" y="0.0" width="236" height="380"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" preferredMaxLayoutWidth="175" translatesAutoresizingMaskIntoConstraints="NO" id="LNp-qb-hRo">
-                                <rect key="frame" x="24" y="3" width="188" height="16"/>
+                                <rect key="frame" x="24" y="13" width="188" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Copyright © 2014-2017 Adam Rozynski" id="oMo-56-wVT">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Copyright © 2014-2020 Adam Rozynski" id="oMo-56-wVT">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h5X-jd-qDa">
-                                <rect key="frame" x="38" y="188" width="160" height="18"/>
+                                <rect key="frame" x="38" y="233" width="160" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="center" title="version xx (build xx)" id="c4s-dQ-8Y5">
                                     <font key="font" metaFont="system"/>
@@ -51,12 +52,12 @@
                                 </textFieldCell>
                             </textField>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hMI-DF-gvm">
-                                <rect key="frame" x="68" y="215" width="100" height="100"/>
+                                <rect key="frame" x="68" y="260" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="aNb-Hh-MkZ"/>
                             </imageView>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nl2-W2-2Gs">
-                                <rect key="frame" x="58" y="29" width="120" height="19"/>
+                                <rect key="frame" x="58" y="34" width="120" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="micropixels" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="MgR-qJ-4Q5">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -67,7 +68,7 @@
                                 </connections>
                             </button>
                             <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PAl-Z3-vod">
-                                <rect key="frame" x="48" y="103" width="140" height="30"/>
+                                <rect key="frame" x="48" y="150" width="140" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="smallSquare" title="Support" bezelStyle="smallSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="4bi-QA-vtk">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -78,7 +79,7 @@
                                 </connections>
                             </button>
                             <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YHu-Av-kne">
-                                <rect key="frame" x="48" y="63" width="140" height="30"/>
+                                <rect key="frame" x="48" y="110" width="140" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="smallSquare" title="Rate on App Store" bezelStyle="smallSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="Ifg-a6-3S4">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -89,7 +90,7 @@
                                 </connections>
                             </button>
                             <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wJa-wt-nRY">
-                                <rect key="frame" x="48" y="143" width="140" height="30"/>
+                                <rect key="frame" x="48" y="190" width="140" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="smallSquare" title="Follow on Twitter" bezelStyle="smallSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="6h0-nc-ovz">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -97,6 +98,17 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="followOnTwitter:" target="-2" id="AW8-3m-zdu"/>
+                                </connections>
+                            </button>
+                            <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g9c-un-ytp">
+                                <rect key="frame" x="48" y="70" width="140" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="smallSquare" title="Author's Last.fm" bezelStyle="smallSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="oRe-gX-dYy">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="openMyLastFm:" target="-2" id="4Cv-SG-271"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -110,7 +122,7 @@
         </window>
     </objects>
     <resources>
-        <image name="icon" width="341.33334350585938" height="341.33334350585938"/>
+        <image name="icon" width="1024" height="1024"/>
         <image name="micropixels" width="597" height="125"/>
     </resources>
 </document>

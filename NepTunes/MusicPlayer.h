@@ -12,6 +12,7 @@
 #import "MusicPlayerDelegate.h"
 @class iTunesTrack;
 @class SpotifyTrack;
+@class MusicTrack;
 
 #define FOUR_MINUTES 60 * 4
 #define DELAY_FOR_RADIO 5
@@ -19,7 +20,8 @@
 typedef NS_ENUM(NSInteger, MusicPlayerApplication) {
     MusicPlayerUndefined,
     MusicPlayeriTunes,
-    MusicPlayerSpotify
+    MusicPlayerSpotify,
+    MusicPlayerMusicApp
 };
 
 typedef NS_ENUM(NSInteger, MusicPlayerState) {
@@ -32,6 +34,7 @@ typedef NS_ENUM(NSInteger, MusicPlayerState) {
 extern NSString *const kiTunesBundleIdentifier;
 extern NSString *const kSpotifyBundlerIdentifier;
 extern NSString *const kCannotGetInfoFromSpotify;
+extern NSString *const kMusicAppBundleIdentifier;
 
 
 @interface MusicPlayer : NSObject
@@ -76,4 +79,6 @@ extern NSString *const kCannotGetInfoFromSpotify;
 -(void)loveCurrentTrackOniTunes;
 -(void)bringPlayerToFront;
 -(void)changeSourceTo:(MusicPlayerApplication)source;
+
+-(NSString *)runningSystemPlayerName;
 @end

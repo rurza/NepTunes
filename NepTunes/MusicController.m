@@ -60,7 +60,7 @@ NSString *const kCoverWindowName = @"CoverWindow";
 -(void)trackChanged
 {
     DebugMode(@"Notification sent from Music Player")
-    
+    NSLog(@"trackChanged");
     if ([self hideNoMusicIfNeeded]) {
         return;
     }
@@ -102,6 +102,8 @@ NSString *const kCoverWindowName = @"CoverWindow";
         [self.menuController addCheckmarkToSourceWithName:@"iTunes"];
     } else if (self.musicPlayer.currentPlayer == MusicPlayerSpotify) {
         [self.menuController addCheckmarkToSourceWithName:@"Spotify"];
+    } else if (self.musicPlayer.currentPlayer == MusicPlayerMusicApp) {
+        [self.menuController addCheckmarkToSourceWithName:@"Music.app"];
     }
 }
 

@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 @class iTunesTrack;
 @class SpotifyTrack;
+@class MusicTrack;
 
 typedef NS_ENUM(NSInteger, TrackOrigin) {
     TrackFromiTunes,
-    TrackFromSpotify
+    TrackFromSpotify,
+    TrackFromMusicApp
 };
 
 typedef NS_ENUM(NSInteger, TrackKind) {
@@ -56,6 +58,7 @@ extern NSString *const kTrackRatingWasSetNotificationName;
 -(instancetype)initWithTrackName:(NSString *)tn artist:(NSString *)art album:(NSString *)alb andDuration:(double)d;
 +(Track *)trackWithiTunesTrack:(iTunesTrack *)track;
 +(Track *)trackWithSpotifyTrack:(SpotifyTrack *)track;
++(Track *)trackWithMusicTrack:(MusicTrack *)track;
 -(BOOL)isEqualToTrack:(Track *)track;
 -(void)setRating:(NSInteger)rating;
 -(NSInteger)rating;

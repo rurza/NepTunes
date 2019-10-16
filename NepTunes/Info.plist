@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.66</string>
+	<string>1.70</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>4602</string>
+	<string>4732</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.music</string>
 	<key>LSMinimumSystemVersion</key>
@@ -36,7 +36,7 @@
 	<key>NSAppleEventsUsageDescription</key>
 	<string>NepTunes uses Apple Events to get info about currently playing music.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2014-2017 micropixels.</string>
+	<string>Copyright © 2014-2019 micropixels.</string>
 	<key>NSMainNibFile</key>
 	<string>Interface</string>
 	<key>NSPrincipalClass</key>
