@@ -87,7 +87,7 @@
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         [notification setTitle:[NSString stringWithFormat:@"%@", track.artist]];
         if ([SettingsController sharedSettings].cutExtraTags) {
-            [notification setInformativeText:[NSString stringWithFormat:@"%@ ♥️ at Last.fm", [[[MusicScrobbler sharedScrobbler] stringsWithRemovedUnwantedTagsFromTrack:track] firstObject]]];
+            [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", [[[MusicScrobbler sharedScrobbler] stringsWithRemovedUnwantedTagsFromTrack:track] firstObject]]];
         } else {
             [notification setInformativeText:[NSString stringWithFormat:@"%@ ❤️ at Last.fm", track.trackName]];
         }
