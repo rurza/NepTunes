@@ -1,6 +1,0 @@
-framework module iTunesSearch {
-  umbrella header "iTunesSearch-umbrella.h"
-
-  export *
-  module * { export * }
-}
