@@ -7,14 +7,17 @@
 
 import Cocoa
 import SwiftUI
+import ComposableArchitecture
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
 
+    var store: Store<AppState, AppAction>!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        store = Store(initialState: AppState(), reducer: appReducer, environment: AppEnvironment())
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
 
