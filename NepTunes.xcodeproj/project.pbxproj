@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,30 @@
 		661AD7C72639D5C100B0292D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C52639D5C100B0292D /* Main.storyboard */; };
 		661AD7D32639D5C100B0292D /* NepTunesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7D22639D5C100B0292D /* NepTunesTests.swift */; };
 		661AD7DE2639D5C100B0292D /* NepTunesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7DD2639D5C100B0292D /* NepTunesUITests.swift */; };
+		663392F22649B4EB00930323 /* MusicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663392F12649B4EB00930323 /* MusicApp.swift */; };
+		663392FB2649C69400930323 /* MusicBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663392FA2649C69400930323 /* MusicBridge.swift */; };
+		663A9B52264B20190038CD06 /* MusicScript.applescript in Sources */ = {isa = PBXBuildFile; fileRef = 663392F72649C5E200930323 /* MusicScript.applescript */; };
+		663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663A9B53264B20480038CD06 /* AppleScriptObjC.framework */; };
+		663A9B56264D011E0038CD06 /* MusicTrackInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B55264D011E0038CD06 /* MusicTrackInfo.swift */; };
+		663A9B58264DA56B0038CD06 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B57264DA56B0038CD06 /* AppState.swift */; };
+		663A9B5A264DABA90038CD06 /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B59264DABA90038CD06 /* AppReducer.swift */; };
+		663A9B5C264DABE00038CD06 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B5B264DABE00038CD06 /* AppEnvironment.swift */; };
+		663A9B5E264DACCC0038CD06 /* AppAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B5D264DACCC0038CD06 /* AppAction.swift */; };
+		663A9B60264DAD880038CD06 /* LastFmState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B5F264DAD880038CD06 /* LastFmState.swift */; };
+		663A9B62264DAF7E0038CD06 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B61264DAF7E0038CD06 /* UserDefault.swift */; };
+		663A9B64264DBE150038CD06 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B63264DBE150038CD06 /* Secrets.swift */; };
+		663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B65264DC6430038CD06 /* LastFmAction.swift */; };
+		6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC37265039F100FEF316 /* SwiftCurry */; };
+		6677EC3B26503A3700FEF316 /* LastFmKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC3A26503A3700FEF316 /* LastFmKit */; };
+		6677EC3E26503ADF00FEF316 /* DeezerClient in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC3D26503ADF00FEF316 /* DeezerClient */; };
+		668749A3264F25BA00BAF594 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 668749A2264F25BA00BAF594 /* Nuke */; };
+		668749A5264F25EC00BAF594 /* LastFmReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668749A4264F25EC00BAF594 /* LastFmReducer.swift */; };
+		668749A7264F278500BAF594 /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668749A6264F278500BAF594 /* OnboardingState.swift */; };
+		668749A9264F278E00BAF594 /* OnboardingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668749A8264F278E00BAF594 /* OnboardingAction.swift */; };
+		66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 66D043D6263B237C008E07B2 /* ComposableArchitecture */; };
+		66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AA2651AA0D007AA13F /* Player.swift */; };
+		66F8F7AD2651AA39007AA13F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AC2651AA39007AA13F /* Track.swift */; };
+		66F8F7AF2651B9EC007AA13F /* PlayerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AE2651B9EC007AA13F /* PlayerObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +72,26 @@
 		661AD7D92639D5C100B0292D /* NepTunesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NepTunesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		661AD7DD2639D5C100B0292D /* NepTunesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NepTunesUITests.swift; sourceTree = "<group>"; };
 		661AD7DF2639D5C100B0292D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		663392F12649B4EB00930323 /* MusicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicApp.swift; sourceTree = "<group>"; };
+		663392F72649C5E200930323 /* MusicScript.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = MusicScript.applescript; sourceTree = "<group>"; };
+		663392FA2649C69400930323 /* MusicBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBridge.swift; sourceTree = "<group>"; };
+		663392FC2649C87900930323 /* ASOCPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ASOCPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		663A9B53264B20480038CD06 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
+		663A9B55264D011E0038CD06 /* MusicTrackInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicTrackInfo.swift; sourceTree = "<group>"; };
+		663A9B57264DA56B0038CD06 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		663A9B59264DABA90038CD06 /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
+		663A9B5B264DABE00038CD06 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		663A9B5D264DACCC0038CD06 /* AppAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAction.swift; sourceTree = "<group>"; };
+		663A9B5F264DAD880038CD06 /* LastFmState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmState.swift; sourceTree = "<group>"; };
+		663A9B61264DAF7E0038CD06 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
+		663A9B63264DBE150038CD06 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		663A9B65264DC6430038CD06 /* LastFmAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAction.swift; sourceTree = "<group>"; };
+		668749A4264F25EC00BAF594 /* LastFmReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmReducer.swift; sourceTree = "<group>"; };
+		668749A6264F278500BAF594 /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
+		668749A8264F278E00BAF594 /* OnboardingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAction.swift; sourceTree = "<group>"; };
+		66F8F7AA2651AA0D007AA13F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		66F8F7AC2651AA39007AA13F /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		66F8F7AE2651B9EC007AA13F /* PlayerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +99,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6677EC3B26503A3700FEF316 /* LastFmKit in Frameworks */,
+				66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */,
+				668749A3264F25BA00BAF594 /* Nuke in Frameworks */,
+				6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */,
+				6677EC3E26503ADF00FEF316 /* DeezerClient in Frameworks */,
+				663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,10 +128,12 @@
 		661AD7B02639D5C000B0292D = {
 			isa = PBXGroup;
 			children = (
+				663392FC2649C87900930323 /* ASOCPlayground.playground */,
 				661AD7BB2639D5C000B0292D /* NepTunes */,
 				661AD7D12639D5C100B0292D /* NepTunesTests */,
 				661AD7DC2639D5C100B0292D /* NepTunesUITests */,
 				661AD7BA2639D5C000B0292D /* Products */,
+				66D043CE263B234F008E07B2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +151,22 @@
 			isa = PBXGroup;
 			children = (
 				661AD7BC2639D5C000B0292D /* AppDelegate.swift */,
+				663A9B57264DA56B0038CD06 /* AppState.swift */,
+				663A9B59264DABA90038CD06 /* AppReducer.swift */,
+				663A9B5D264DACCC0038CD06 /* AppAction.swift */,
+				663A9B5B264DABE00038CD06 /* AppEnvironment.swift */,
+				663A9B5F264DAD880038CD06 /* LastFmState.swift */,
+				663A9B65264DC6430038CD06 /* LastFmAction.swift */,
+				668749A4264F25EC00BAF594 /* LastFmReducer.swift */,
+				668749A6264F278500BAF594 /* OnboardingState.swift */,
+				668749A8264F278E00BAF594 /* OnboardingAction.swift */,
+				663A9B61264DAF7E0038CD06 /* UserDefault.swift */,
+				663A9B63264DBE150038CD06 /* Secrets.swift */,
+				66F8F7AE2651B9EC007AA13F /* PlayerObserver.swift */,
+				663392F92649C68600930323 /* Music Bridge */,
+				663392F12649B4EB00930323 /* MusicApp.swift */,
+				66F8F7AA2651AA0D007AA13F /* Player.swift */,
+				66F8F7AC2651AA39007AA13F /* Track.swift */,
 				661AD7BE2639D5C000B0292D /* ContentView.swift */,
 				661AD7C02639D5C100B0292D /* Assets.xcassets */,
 				661AD7C52639D5C100B0292D /* Main.storyboard */,
@@ -135,6 +203,24 @@
 			path = NepTunesUITests;
 			sourceTree = "<group>";
 		};
+		663392F92649C68600930323 /* Music Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				663392F72649C5E200930323 /* MusicScript.applescript */,
+				663392FA2649C69400930323 /* MusicBridge.swift */,
+				663A9B55264D011E0038CD06 /* MusicTrackInfo.swift */,
+			);
+			path = "Music Bridge";
+			sourceTree = "<group>";
+		};
+		66D043CE263B234F008E07B2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				663A9B53264B20480038CD06 /* AppleScriptObjC.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -151,6 +237,13 @@
 			dependencies = (
 			);
 			name = NepTunes;
+			packageProductDependencies = (
+				66D043D6263B237C008E07B2 /* ComposableArchitecture */,
+				668749A2264F25BA00BAF594 /* Nuke */,
+				6677EC37265039F100FEF316 /* SwiftCurry */,
+				6677EC3A26503A3700FEF316 /* LastFmKit */,
+				6677EC3D26503ADF00FEF316 /* DeezerClient */,
+			);
 			productName = NepTunes;
 			productReference = 661AD7B92639D5C000B0292D /* NepTunes.app */;
 			productType = "com.apple.product-type.application";
@@ -202,6 +295,7 @@
 				TargetAttributes = {
 					661AD7B82639D5C000B0292D = {
 						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
 					};
 					661AD7CD2639D5C100B0292D = {
 						CreatedOnToolsVersion = 12.5;
@@ -222,6 +316,13 @@
 				Base,
 			);
 			mainGroup = 661AD7B02639D5C000B0292D;
+			packageReferences = (
+				66D043D5263B237C008E07B2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				668749A1264F25BA00BAF594 /* XCRemoteSwiftPackageReference "Nuke" */,
+				6677EC36265039F100FEF316 /* XCRemoteSwiftPackageReference "SwiftCurry" */,
+				6677EC3926503A3700FEF316 /* XCRemoteSwiftPackageReference "LastFmKit" */,
+				6677EC3C26503ADF00FEF316 /* XCRemoteSwiftPackageReference "DeezerClient" */,
+			);
 			productRefGroup = 661AD7BA2639D5C000B0292D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -265,8 +366,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				668749A5264F25EC00BAF594 /* LastFmReducer.swift in Sources */,
+				663A9B52264B20190038CD06 /* MusicScript.applescript in Sources */,
+				663392F22649B4EB00930323 /* MusicApp.swift in Sources */,
+				663A9B58264DA56B0038CD06 /* AppState.swift in Sources */,
+				66F8F7AD2651AA39007AA13F /* Track.swift in Sources */,
+				668749A7264F278500BAF594 /* OnboardingState.swift in Sources */,
+				663A9B60264DAD880038CD06 /* LastFmState.swift in Sources */,
+				663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,
+				663A9B56264D011E0038CD06 /* MusicTrackInfo.swift in Sources */,
+				668749A9264F278E00BAF594 /* OnboardingAction.swift in Sources */,
+				663392FB2649C69400930323 /* MusicBridge.swift in Sources */,
+				663A9B5A264DABA90038CD06 /* AppReducer.swift in Sources */,
+				663A9B62264DAF7E0038CD06 /* UserDefault.swift in Sources */,
+				663A9B5E264DACCC0038CD06 /* AppAction.swift in Sources */,
 				661AD7BD2639D5C000B0292D /* AppDelegate.swift in Sources */,
+				66F8F7AF2651B9EC007AA13F /* PlayerObserver.swift in Sources */,
+				663A9B64264DBE150038CD06 /* Secrets.swift in Sources */,
+				66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */,
+				663A9B5C264DABE00038CD06 /* AppEnvironment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +552,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -445,9 +565,13 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -457,6 +581,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -469,9 +594,12 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -490,7 +618,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -512,7 +640,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -600,6 +728,77 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6677EC36265039F100FEF316 /* XCRemoteSwiftPackageReference "SwiftCurry" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rurza/SwiftCurry";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		6677EC3926503A3700FEF316 /* XCRemoteSwiftPackageReference "LastFmKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rurza/LastFmKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		6677EC3C26503ADF00FEF316 /* XCRemoteSwiftPackageReference "DeezerClient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rurza/DeezerClient";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		668749A1264F25BA00BAF594 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.6.0;
+			};
+		};
+		66D043D5263B237C008E07B2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.18.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6677EC37265039F100FEF316 /* SwiftCurry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6677EC36265039F100FEF316 /* XCRemoteSwiftPackageReference "SwiftCurry" */;
+			productName = SwiftCurry;
+		};
+		6677EC3A26503A3700FEF316 /* LastFmKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6677EC3926503A3700FEF316 /* XCRemoteSwiftPackageReference "LastFmKit" */;
+			productName = LastFmKit;
+		};
+		6677EC3D26503ADF00FEF316 /* DeezerClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6677EC3C26503ADF00FEF316 /* XCRemoteSwiftPackageReference "DeezerClient" */;
+			productName = DeezerClient;
+		};
+		668749A2264F25BA00BAF594 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 668749A1264F25BA00BAF594 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		66D043D6263B237C008E07B2 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66D043D5263B237C008E07B2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 661AD7B12639D5C000B0292D /* Project object */;
 }

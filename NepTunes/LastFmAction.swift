@@ -6,13 +6,24 @@
 //
 
 import Foundation
+import LastFmKit
 
 enum LastFmAction {
-    case logOut
+    case trackAction(LastFmTrackAction)
+    case userAction(LastFmUserAction)
+}
+
+enum LastFmTrackAction {
+    case scrobbleNow(title: String, artist: String, albumArtist: String?, album: String?)
+    case updateNowPlaying(title: String, artist: String, albumArtist: String?, album: String?)
+    case love(title: String, artist: String)
+    case unlove(title: String, artist: String)
+}
+
+
+enum LastFmUserAction {
+    case getUserAvatar(username: String)
     case logIn(username: String, password: String)
-    case scrobble
-    case updateNowPlaying
-    case love
-    case unlove
-    case getAvatar
+    case userLoginResponse(Result<LastFmSession, Error>)
+    case logOut
 }
