@@ -14,5 +14,4 @@ FOUNDATION_EXPORT double PluginsVersionNumber;
 FOUNDATION_EXPORT const unsigned char PluginsVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Plugins/PublicHeader.h>
-#import <Plugins/PluginsInterface.h>
 

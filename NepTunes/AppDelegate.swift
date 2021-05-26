@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var playerObserver: PlayerObserver?
     var store: Store<AppState, AppAction>!
     var pluginInstance: PluginsInterface?
+    var note: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         store = Store(initialState: AppState(), reducer: appReducer, environment: AppEnvironment())
@@ -29,7 +30,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let principalClass = statusBarPlugin?.principalClass as? PluginsInterface.Type
         pluginInstance = initPlugin(from: principalClass)
        
+        Bundle.main.loadAppleScriptObjectiveCScripts()
+        let musicAppleScriptClass: AnyClass = NSClassFromString("MusicScript")!
+        let bridge = musicAppleScriptClass.alloc() as! MusicBridge
 
+
+        note = DistributedNotificationCenter.default().addObserver(forName: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"), object: nil, queue: nil) { note in
+        //    print(note.userInfo as Any?)
+            print(bridge.currentTrack)
+            if let track = bridge.currentTrack {
+                self.pluginInstance?.trackDidChange(track.title, byArtist: track.artist)
+            }
+        }
+
+        
         let contentView = ContentView()
         // Create the window and set the content view.
         window = NSWindow(

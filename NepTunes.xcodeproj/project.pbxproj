@@ -13,11 +13,7 @@
 		660BBA40265ECE2C0010EC56 /* Plugins.h in Headers */ = {isa = PBXBuildFile; fileRef = 660BBA30265ECE2C0010EC56 /* Plugins.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		660BBA43265ECE2C0010EC56 /* Plugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; };
 		660BBA44265ECE2C0010EC56 /* Plugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		660BBA58265ECFB60010EC56 /* Plugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; };
-		660BBA59265ECFB60010EC56 /* Plugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		660BBA5F265ED1850010EC56 /* StatusBarInfo.nepext in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		660BBA64265EEC3A0010EC56 /* StatusBarInfoPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 660BBA63265EEC3A0010EC56 /* StatusBarInfoPlugin.m */; };
-		660BBA68265EEDD60010EC56 /* PluginsInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 660BBA67265EEDD60010EC56 /* PluginsInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		660BBA6A265EF0F10010EC56 /* PluginsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660BBA69265EF0F10010EC56 /* PluginsInterface.swift */; };
 		661AD7BD2639D5C000B0292D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7BC2639D5C000B0292D /* AppDelegate.swift */; };
 		661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7BE2639D5C000B0292D /* ContentView.swift */; };
 		661AD7C12639D5C100B0292D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C02639D5C100B0292D /* Assets.xcassets */; };
@@ -45,6 +41,10 @@
 		668749A5264F25EC00BAF594 /* LastFmReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668749A4264F25EC00BAF594 /* LastFmReducer.swift */; };
 		668749A7264F278500BAF594 /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668749A6264F278500BAF594 /* OnboardingState.swift */; };
 		668749A9264F278E00BAF594 /* OnboardingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668749A8264F278E00BAF594 /* OnboardingAction.swift */; };
+		669CFDC6265EF2B700E397DD /* Plugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; };
+		669CFDC7265EF2B700E397DD /* Plugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		669CFDCC265EF2CD00E397DD /* StatusBarPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669CFDCB265EF2CD00E397DD /* StatusBarPlugin.swift */; };
+		669CFDCD265EF4BB00E397DD /* StatusBarInfo.nepext in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 660BBA6F265EF28E0010EC56 /* StatusBarInfo.nepext */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 66D043D6263B237C008E07B2 /* ComposableArchitecture */; };
 		66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AA2651AA0D007AA13F /* Player.swift */; };
 		66F8F7AD2651AA39007AA13F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AC2651AA39007AA13F /* Track.swift */; };
@@ -74,20 +74,6 @@
 			remoteGlobalIDString = 660BBA2D265ECE2C0010EC56;
 			remoteInfo = Plugins;
 		};
-		660BBA5A265ECFB60010EC56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 660BBA2D265ECE2C0010EC56;
-			remoteInfo = Plugins;
-		};
-		660BBA60265ED1850010EC56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 660BBA51265ECF8C0010EC56;
-			remoteInfo = StatusBarInfo;
-		};
 		661AD7CF2639D5C100B0292D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
@@ -102,6 +88,20 @@
 			remoteGlobalIDString = 661AD7B82639D5C000B0292D;
 			remoteInfo = NepTunes;
 		};
+		669CFDC8265EF2B700E397DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 660BBA2D265ECE2C0010EC56;
+			remoteInfo = Plugins;
+		};
+		669CFDCE265EF4BB00E397DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 660BBA6E265EF28E0010EC56;
+			remoteInfo = StatusBarInfo;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -111,7 +111,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				660BBA5F265ED1850010EC56 /* StatusBarInfo.nepext in Embed PlugIns */,
+				669CFDCD265EF4BB00E397DD /* StatusBarInfo.nepext in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,13 +127,13 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		660BBA5C265ECFB60010EC56 /* Embed Frameworks */ = {
+		669CFDCA265EF2B700E397DD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				660BBA59265ECFB60010EC56 /* Plugins.framework in Embed Frameworks */,
+				669CFDC7265EF2B700E397DD /* Plugins.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,11 +148,9 @@
 		660BBA36265ECE2C0010EC56 /* PluginsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PluginsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		660BBA3D265ECE2C0010EC56 /* PluginsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginsTests.swift; sourceTree = "<group>"; };
 		660BBA3F265ECE2C0010EC56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StatusBarInfo.nepext; sourceTree = BUILT_PRODUCTS_DIR; };
-		660BBA54265ECF8C0010EC56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		660BBA62265EEC3A0010EC56 /* StatusBarInfoPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBarInfoPlugin.h; sourceTree = "<group>"; };
-		660BBA63265EEC3A0010EC56 /* StatusBarInfoPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusBarInfoPlugin.m; sourceTree = "<group>"; };
-		660BBA67265EEDD60010EC56 /* PluginsInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PluginsInterface.h; sourceTree = "<group>"; };
+		660BBA69265EF0F10010EC56 /* PluginsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginsInterface.swift; sourceTree = "<group>"; };
+		660BBA6F265EF28E0010EC56 /* StatusBarInfo.nepext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StatusBarInfo.nepext; sourceTree = BUILT_PRODUCTS_DIR; };
+		660BBA71265EF28E0010EC56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		661AD7B92639D5C000B0292D /* NepTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NepTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		661AD7BC2639D5C000B0292D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		661AD7BE2639D5C000B0292D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -184,6 +182,7 @@
 		668749A4264F25EC00BAF594 /* LastFmReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmReducer.swift; sourceTree = "<group>"; };
 		668749A6264F278500BAF594 /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		668749A8264F278E00BAF594 /* OnboardingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAction.swift; sourceTree = "<group>"; };
+		669CFDCB265EF2CD00E397DD /* StatusBarPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarPlugin.swift; sourceTree = "<group>"; };
 		66F8F7AA2651AA0D007AA13F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		66F8F7AC2651AA39007AA13F /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		66F8F7AE2651B9EC007AA13F /* PlayerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerObserver.swift; sourceTree = "<group>"; };
@@ -206,11 +205,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		660BBA4F265ECF8C0010EC56 /* Frameworks */ = {
+		660BBA6C265EF28E0010EC56 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				660BBA58265ECFB60010EC56 /* Plugins.framework in Frameworks */,
+				669CFDC6265EF2B700E397DD /* Plugins.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				660BBA30265ECE2C0010EC56 /* Plugins.h */,
-				660BBA67265EEDD60010EC56 /* PluginsInterface.h */,
+				660BBA69265EF0F10010EC56 /* PluginsInterface.swift */,
 				660BBA31265ECE2C0010EC56 /* Info.plist */,
 			);
 			path = Plugins;
@@ -264,12 +263,11 @@
 			path = PluginsTests;
 			sourceTree = "<group>";
 		};
-		660BBA53265ECF8C0010EC56 /* StatusBarInfo */ = {
+		660BBA70265EF28E0010EC56 /* StatusBarInfo */ = {
 			isa = PBXGroup;
 			children = (
-				660BBA54265ECF8C0010EC56 /* Info.plist */,
-				660BBA62265EEC3A0010EC56 /* StatusBarInfoPlugin.h */,
-				660BBA63265EEC3A0010EC56 /* StatusBarInfoPlugin.m */,
+				660BBA71265EF28E0010EC56 /* Info.plist */,
+				669CFDCB265EF2CD00E397DD /* StatusBarPlugin.swift */,
 			);
 			path = StatusBarInfo;
 			sourceTree = "<group>";
@@ -283,7 +281,7 @@
 				661AD7DC2639D5C100B0292D /* NepTunesUITests */,
 				660BBA2F265ECE2C0010EC56 /* Plugins */,
 				660BBA3C265ECE2C0010EC56 /* PluginsTests */,
-				660BBA53265ECF8C0010EC56 /* StatusBarInfo */,
+				660BBA70265EF28E0010EC56 /* StatusBarInfo */,
 				661AD7BA2639D5C000B0292D /* Products */,
 				66D043CE263B234F008E07B2 /* Frameworks */,
 			);
@@ -297,7 +295,7 @@
 				661AD7D92639D5C100B0292D /* NepTunesUITests.xctest */,
 				660BBA2E265ECE2C0010EC56 /* Plugins.framework */,
 				660BBA36265ECE2C0010EC56 /* PluginsTests.xctest */,
-				660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */,
+				660BBA6F265EF28E0010EC56 /* StatusBarInfo.nepext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -386,7 +384,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				660BBA40265ECE2C0010EC56 /* Plugins.h in Headers */,
-				660BBA68265EEDD60010EC56 /* PluginsInterface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,23 +427,23 @@
 			productReference = 660BBA36265ECE2C0010EC56 /* PluginsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		660BBA51265ECF8C0010EC56 /* StatusBarInfo */ = {
+		660BBA6E265EF28E0010EC56 /* StatusBarInfo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 660BBA55265ECF8C0010EC56 /* Build configuration list for PBXNativeTarget "StatusBarInfo" */;
+			buildConfigurationList = 660BBA72265EF28E0010EC56 /* Build configuration list for PBXNativeTarget "StatusBarInfo" */;
 			buildPhases = (
-				660BBA4E265ECF8C0010EC56 /* Sources */,
-				660BBA4F265ECF8C0010EC56 /* Frameworks */,
-				660BBA50265ECF8C0010EC56 /* Resources */,
-				660BBA5C265ECFB60010EC56 /* Embed Frameworks */,
+				660BBA6B265EF28E0010EC56 /* Sources */,
+				660BBA6C265EF28E0010EC56 /* Frameworks */,
+				660BBA6D265EF28E0010EC56 /* Resources */,
+				669CFDCA265EF2B700E397DD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				660BBA5B265ECFB60010EC56 /* PBXTargetDependency */,
+				669CFDC9265EF2B700E397DD /* PBXTargetDependency */,
 			);
 			name = StatusBarInfo;
 			productName = StatusBarInfo;
-			productReference = 660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */;
+			productReference = 660BBA6F265EF28E0010EC56 /* StatusBarInfo.nepext */;
 			productType = "com.apple.product-type.bundle";
 		};
 		661AD7B82639D5C000B0292D /* NepTunes */ = {
@@ -463,7 +460,7 @@
 			);
 			dependencies = (
 				660BBA42265ECE2C0010EC56 /* PBXTargetDependency */,
-				660BBA61265ED1850010EC56 /* PBXTargetDependency */,
+				669CFDCF265EF4BB00E397DD /* PBXTargetDependency */,
 			);
 			name = NepTunes;
 			packageProductDependencies = (
@@ -530,7 +527,7 @@
 						CreatedOnToolsVersion = 12.5;
 						TestTargetID = 661AD7B82639D5C000B0292D;
 					};
-					660BBA51265ECF8C0010EC56 = {
+					660BBA6E265EF28E0010EC56 = {
 						CreatedOnToolsVersion = 12.5;
 						LastSwiftMigration = 1250;
 					};
@@ -573,7 +570,7 @@
 				661AD7D82639D5C100B0292D /* NepTunesUITests */,
 				660BBA2D265ECE2C0010EC56 /* Plugins */,
 				660BBA35265ECE2C0010EC56 /* PluginsTests */,
-				660BBA51265ECF8C0010EC56 /* StatusBarInfo */,
+				660BBA6E265EF28E0010EC56 /* StatusBarInfo */,
 			);
 		};
 /* End PBXProject section */
@@ -593,7 +590,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		660BBA50265ECF8C0010EC56 /* Resources */ = {
+		660BBA6D265EF28E0010EC56 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -631,6 +628,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				660BBA6A265EF0F10010EC56 /* PluginsInterface.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,11 +640,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		660BBA4E265ECF8C0010EC56 /* Sources */ = {
+		660BBA6B265EF28E0010EC56 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				660BBA64265EEC3A0010EC56 /* StatusBarInfoPlugin.m in Sources */,
+				669CFDCC265EF2CD00E397DD /* StatusBarPlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -713,16 +711,6 @@
 			target = 660BBA2D265ECE2C0010EC56 /* Plugins */;
 			targetProxy = 660BBA41265ECE2C0010EC56 /* PBXContainerItemProxy */;
 		};
-		660BBA5B265ECFB60010EC56 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 660BBA2D265ECE2C0010EC56 /* Plugins */;
-			targetProxy = 660BBA5A265ECFB60010EC56 /* PBXContainerItemProxy */;
-		};
-		660BBA61265ED1850010EC56 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 660BBA51265ECF8C0010EC56 /* StatusBarInfo */;
-			targetProxy = 660BBA60265ED1850010EC56 /* PBXContainerItemProxy */;
-		};
 		661AD7D02639D5C100B0292D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 661AD7B82639D5C000B0292D /* NepTunes */;
@@ -732,6 +720,16 @@
 			isa = PBXTargetDependency;
 			target = 661AD7B82639D5C000B0292D /* NepTunes */;
 			targetProxy = 661AD7DA2639D5C100B0292D /* PBXContainerItemProxy */;
+		};
+		669CFDC9265EF2B700E397DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 660BBA2D265ECE2C0010EC56 /* Plugins */;
+			targetProxy = 669CFDC8265EF2B700E397DD /* PBXContainerItemProxy */;
+		};
+		669CFDCF265EF4BB00E397DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 660BBA6E265EF28E0010EC56 /* StatusBarInfo */;
+			targetProxy = 669CFDCE265EF4BB00E397DD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -807,6 +805,7 @@
 		660BBA4A265ECE2C0010EC56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = YL78V8PY6H;
@@ -826,6 +825,7 @@
 		660BBA4B265ECE2C0010EC56 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = YL78V8PY6H;
@@ -842,7 +842,7 @@
 			};
 			name = Release;
 		};
-		660BBA56265ECF8C0010EC56 /* Debug */ = {
+		660BBA73265EF28E0010EC56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -856,7 +856,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunesStatusBarInfo;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes.StatusBarInfo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -865,7 +865,7 @@
 			};
 			name = Debug;
 		};
-		660BBA57265ECF8C0010EC56 /* Release */ = {
+		660BBA74265EF28E0010EC56 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -879,7 +879,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunesStatusBarInfo;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes.StatusBarInfo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1005,6 +1005,7 @@
 		661AD7E32639D5C100B0292D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -1034,6 +1035,7 @@
 		661AD7E42639D5C100B0292D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -1164,11 +1166,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		660BBA55265ECF8C0010EC56 /* Build configuration list for PBXNativeTarget "StatusBarInfo" */ = {
+		660BBA72265EF28E0010EC56 /* Build configuration list for PBXNativeTarget "StatusBarInfo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				660BBA56265ECF8C0010EC56 /* Debug */,
-				660BBA57265ECF8C0010EC56 /* Release */,
+				660BBA73265EF28E0010EC56 /* Debug */,
+				660BBA74265EF28E0010EC56 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

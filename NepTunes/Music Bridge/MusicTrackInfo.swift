@@ -14,5 +14,5 @@ struct MusicTrackInfo {
     var album: String?
     var albumArtist: String?
     var artworkImageData: Data?
-    var trackURL: URL?
+//    var trackURL: URL?
 }

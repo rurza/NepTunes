@@ -63,16 +63,12 @@ script MusicScript
 			if alb is equal to "" then
 				set alb to missing value
 			end if
-			set dgsdfd to address of current track
-			if dgsdfd is equal to "" then
-				set dgsdfd to missing value
-			end if
 			try
 				set art to raw data of artwork 1 of artworks of current track
 			on error
 				set art to missing value
 			end try
-			return {trackDuration:dur, trackName:nam, trackArtworkData:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb, trackURL:dgsdfd}
+			return {trackDuration:dur, trackName:nam, trackArtworkData:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb}
 		end tell
 	end trackInfo
 	
