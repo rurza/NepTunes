@@ -20,9 +20,13 @@ let appReducer = AppReducer.combine(
             case .finishOnboarding:
                 state.onboardingFinished = true
             }
+        case let .newPlayerIsAvailable(player):
+            if state.currentPlayer == nil {
+                state.currentPlayer = player
+            }
         default:
             ()
         }
         return .none
     }
-)
+).debug()

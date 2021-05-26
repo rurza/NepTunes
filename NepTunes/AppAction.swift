@@ -10,6 +10,6 @@ import Foundation
 enum AppAction {
     case lastFmAction(LastFmAction)
     case onboardingAction(OnboardingAction)
-    case changePlayer(Player?)
+    case newPlayerIsAvailable(PlayerType?)
     case trackChanged(track: Track, player: Player)
 }

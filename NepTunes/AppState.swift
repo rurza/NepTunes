@@ -10,5 +10,7 @@ import Foundation
 struct AppState {
     var lastFmState: LastFmState = LastFmState()
     @UserDefault(key: "onboardingFinished", defaultValue: false) var onboardingFinished: Bool
-    var currentPlayer: Player? = nil
+    var currentPlayer: PlayerType? = nil
+    var musicAppState: MusicAppState?
+//    var spotifyState: SpotifyState?
 }

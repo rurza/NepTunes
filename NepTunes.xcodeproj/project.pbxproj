@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660BBA14265D84BC0010EC56 /* NepTunesInterface.swift */; };
+		660BBA37265ECE2C0010EC56 /* Plugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; };
+		660BBA3E265ECE2C0010EC56 /* PluginsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660BBA3D265ECE2C0010EC56 /* PluginsTests.swift */; };
+		660BBA40265ECE2C0010EC56 /* Plugins.h in Headers */ = {isa = PBXBuildFile; fileRef = 660BBA30265ECE2C0010EC56 /* Plugins.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		660BBA43265ECE2C0010EC56 /* Plugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; };
+		660BBA44265ECE2C0010EC56 /* Plugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		660BBA58265ECFB60010EC56 /* Plugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; };
+		660BBA59265ECFB60010EC56 /* Plugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		660BBA5F265ED1850010EC56 /* StatusBarInfo.nepext in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		660BBA64265EEC3A0010EC56 /* StatusBarInfoPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 660BBA63265EEC3A0010EC56 /* StatusBarInfoPlugin.m */; };
+		660BBA68265EEDD60010EC56 /* PluginsInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 660BBA67265EEDD60010EC56 /* PluginsInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		661AD7BD2639D5C000B0292D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7BC2639D5C000B0292D /* AppDelegate.swift */; };
 		661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7BE2639D5C000B0292D /* ContentView.swift */; };
 		661AD7C12639D5C100B0292D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C02639D5C100B0292D /* Assets.xcassets */; };
@@ -38,9 +49,45 @@
 		66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AA2651AA0D007AA13F /* Player.swift */; };
 		66F8F7AD2651AA39007AA13F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AC2651AA39007AA13F /* Track.swift */; };
 		66F8F7AF2651B9EC007AA13F /* PlayerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AE2651B9EC007AA13F /* PlayerObserver.swift */; };
+		66F8F7B42656EC50007AA13F /* MusicAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7B32656EC50007AA13F /* MusicAppState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		660BBA38265ECE2C0010EC56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 660BBA2D265ECE2C0010EC56;
+			remoteInfo = Plugins;
+		};
+		660BBA3A265ECE2C0010EC56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 661AD7B82639D5C000B0292D;
+			remoteInfo = NepTunes;
+		};
+		660BBA41265ECE2C0010EC56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 660BBA2D265ECE2C0010EC56;
+			remoteInfo = Plugins;
+		};
+		660BBA5A265ECFB60010EC56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 660BBA2D265ECE2C0010EC56;
+			remoteInfo = Plugins;
+		};
+		660BBA60265ED1850010EC56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 660BBA51265ECF8C0010EC56;
+			remoteInfo = StatusBarInfo;
+		};
 		661AD7CF2639D5C100B0292D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
@@ -57,7 +104,55 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		660BBA28265D956A0010EC56 /* Embed PlugIns */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				660BBA5F265ED1850010EC56 /* StatusBarInfo.nepext in Embed PlugIns */,
+			);
+			name = "Embed PlugIns";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA48265ECE2C0010EC56 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				660BBA44265ECE2C0010EC56 /* Plugins.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA5C265ECFB60010EC56 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				660BBA59265ECFB60010EC56 /* Plugins.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		660BBA14265D84BC0010EC56 /* NepTunesInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NepTunesInterface.swift; sourceTree = "<group>"; };
+		660BBA2E265ECE2C0010EC56 /* Plugins.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Plugins.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		660BBA30265ECE2C0010EC56 /* Plugins.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plugins.h; sourceTree = "<group>"; };
+		660BBA31265ECE2C0010EC56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		660BBA36265ECE2C0010EC56 /* PluginsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PluginsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		660BBA3D265ECE2C0010EC56 /* PluginsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginsTests.swift; sourceTree = "<group>"; };
+		660BBA3F265ECE2C0010EC56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StatusBarInfo.nepext; sourceTree = BUILT_PRODUCTS_DIR; };
+		660BBA54265ECF8C0010EC56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		660BBA62265EEC3A0010EC56 /* StatusBarInfoPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBarInfoPlugin.h; sourceTree = "<group>"; };
+		660BBA63265EEC3A0010EC56 /* StatusBarInfoPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusBarInfoPlugin.m; sourceTree = "<group>"; };
+		660BBA67265EEDD60010EC56 /* PluginsInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PluginsInterface.h; sourceTree = "<group>"; };
 		661AD7B92639D5C000B0292D /* NepTunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NepTunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		661AD7BC2639D5C000B0292D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		661AD7BE2639D5C000B0292D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,9 +187,33 @@
 		66F8F7AA2651AA0D007AA13F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		66F8F7AC2651AA39007AA13F /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		66F8F7AE2651B9EC007AA13F /* PlayerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerObserver.swift; sourceTree = "<group>"; };
+		66F8F7B32656EC50007AA13F /* MusicAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAppState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		660BBA2B265ECE2C0010EC56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA33265ECE2C0010EC56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				660BBA37265ECE2C0010EC56 /* Plugins.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA4F265ECF8C0010EC56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				660BBA58265ECFB60010EC56 /* Plugins.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		661AD7B62639D5C000B0292D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -104,6 +223,7 @@
 				668749A3264F25BA00BAF594 /* Nuke in Frameworks */,
 				6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */,
 				6677EC3E26503ADF00FEF316 /* DeezerClient in Frameworks */,
+				660BBA43265ECE2C0010EC56 /* Plugins.framework in Frameworks */,
 				663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -125,6 +245,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		660BBA2F265ECE2C0010EC56 /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				660BBA30265ECE2C0010EC56 /* Plugins.h */,
+				660BBA67265EEDD60010EC56 /* PluginsInterface.h */,
+				660BBA31265ECE2C0010EC56 /* Info.plist */,
+			);
+			path = Plugins;
+			sourceTree = "<group>";
+		};
+		660BBA3C265ECE2C0010EC56 /* PluginsTests */ = {
+			isa = PBXGroup;
+			children = (
+				660BBA3D265ECE2C0010EC56 /* PluginsTests.swift */,
+				660BBA3F265ECE2C0010EC56 /* Info.plist */,
+			);
+			path = PluginsTests;
+			sourceTree = "<group>";
+		};
+		660BBA53265ECF8C0010EC56 /* StatusBarInfo */ = {
+			isa = PBXGroup;
+			children = (
+				660BBA54265ECF8C0010EC56 /* Info.plist */,
+				660BBA62265EEC3A0010EC56 /* StatusBarInfoPlugin.h */,
+				660BBA63265EEC3A0010EC56 /* StatusBarInfoPlugin.m */,
+			);
+			path = StatusBarInfo;
+			sourceTree = "<group>";
+		};
 		661AD7B02639D5C000B0292D = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +281,9 @@
 				661AD7BB2639D5C000B0292D /* NepTunes */,
 				661AD7D12639D5C100B0292D /* NepTunesTests */,
 				661AD7DC2639D5C100B0292D /* NepTunesUITests */,
+				660BBA2F265ECE2C0010EC56 /* Plugins */,
+				660BBA3C265ECE2C0010EC56 /* PluginsTests */,
+				660BBA53265ECF8C0010EC56 /* StatusBarInfo */,
 				661AD7BA2639D5C000B0292D /* Products */,
 				66D043CE263B234F008E07B2 /* Frameworks */,
 			);
@@ -143,6 +295,9 @@
 				661AD7B92639D5C000B0292D /* NepTunes.app */,
 				661AD7CE2639D5C100B0292D /* NepTunesTests.xctest */,
 				661AD7D92639D5C100B0292D /* NepTunesUITests.xctest */,
+				660BBA2E265ECE2C0010EC56 /* Plugins.framework */,
+				660BBA36265ECE2C0010EC56 /* PluginsTests.xctest */,
+				660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,6 +320,7 @@
 				66F8F7AE2651B9EC007AA13F /* PlayerObserver.swift */,
 				663392F92649C68600930323 /* Music Bridge */,
 				663392F12649B4EB00930323 /* MusicApp.swift */,
+				66F8F7B32656EC50007AA13F /* MusicAppState.swift */,
 				66F8F7AA2651AA0D007AA13F /* Player.swift */,
 				66F8F7AC2651AA39007AA13F /* Track.swift */,
 				661AD7BE2639D5C000B0292D /* ContentView.swift */,
@@ -173,6 +329,7 @@
 				661AD7C82639D5C100B0292D /* Info.plist */,
 				661AD7C92639D5C100B0292D /* NepTunes.entitlements */,
 				661AD7C22639D5C100B0292D /* Preview Content */,
+				660BBA14265D84BC0010EC56 /* NepTunesInterface.swift */,
 			);
 			path = NepTunes;
 			sourceTree = "<group>";
@@ -223,7 +380,75 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		660BBA29265ECE2C0010EC56 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				660BBA40265ECE2C0010EC56 /* Plugins.h in Headers */,
+				660BBA68265EEDD60010EC56 /* PluginsInterface.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		660BBA2D265ECE2C0010EC56 /* Plugins */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 660BBA45265ECE2C0010EC56 /* Build configuration list for PBXNativeTarget "Plugins" */;
+			buildPhases = (
+				660BBA29265ECE2C0010EC56 /* Headers */,
+				660BBA2A265ECE2C0010EC56 /* Sources */,
+				660BBA2B265ECE2C0010EC56 /* Frameworks */,
+				660BBA2C265ECE2C0010EC56 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Plugins;
+			productName = Plugins;
+			productReference = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		660BBA35265ECE2C0010EC56 /* PluginsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 660BBA49265ECE2C0010EC56 /* Build configuration list for PBXNativeTarget "PluginsTests" */;
+			buildPhases = (
+				660BBA32265ECE2C0010EC56 /* Sources */,
+				660BBA33265ECE2C0010EC56 /* Frameworks */,
+				660BBA34265ECE2C0010EC56 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				660BBA39265ECE2C0010EC56 /* PBXTargetDependency */,
+				660BBA3B265ECE2C0010EC56 /* PBXTargetDependency */,
+			);
+			name = PluginsTests;
+			productName = PluginsTests;
+			productReference = 660BBA36265ECE2C0010EC56 /* PluginsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		660BBA51265ECF8C0010EC56 /* StatusBarInfo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 660BBA55265ECF8C0010EC56 /* Build configuration list for PBXNativeTarget "StatusBarInfo" */;
+			buildPhases = (
+				660BBA4E265ECF8C0010EC56 /* Sources */,
+				660BBA4F265ECF8C0010EC56 /* Frameworks */,
+				660BBA50265ECF8C0010EC56 /* Resources */,
+				660BBA5C265ECFB60010EC56 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				660BBA5B265ECFB60010EC56 /* PBXTargetDependency */,
+			);
+			name = StatusBarInfo;
+			productName = StatusBarInfo;
+			productReference = 660BBA52265ECF8C0010EC56 /* StatusBarInfo.nepext */;
+			productType = "com.apple.product-type.bundle";
+		};
 		661AD7B82639D5C000B0292D /* NepTunes */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 661AD7E22639D5C100B0292D /* Build configuration list for PBXNativeTarget "NepTunes" */;
@@ -231,10 +456,14 @@
 				661AD7B52639D5C000B0292D /* Sources */,
 				661AD7B62639D5C000B0292D /* Frameworks */,
 				661AD7B72639D5C000B0292D /* Resources */,
+				660BBA28265D956A0010EC56 /* Embed PlugIns */,
+				660BBA48265ECE2C0010EC56 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				660BBA42265ECE2C0010EC56 /* PBXTargetDependency */,
+				660BBA61265ED1850010EC56 /* PBXTargetDependency */,
 			);
 			name = NepTunes;
 			packageProductDependencies = (
@@ -293,6 +522,18 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					660BBA2D265ECE2C0010EC56 = {
+						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
+					};
+					660BBA35265ECE2C0010EC56 = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = 661AD7B82639D5C000B0292D;
+					};
+					660BBA51265ECF8C0010EC56 = {
+						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
+					};
 					661AD7B82639D5C000B0292D = {
 						CreatedOnToolsVersion = 12.5;
 						LastSwiftMigration = 1250;
@@ -330,11 +571,35 @@
 				661AD7B82639D5C000B0292D /* NepTunes */,
 				661AD7CD2639D5C100B0292D /* NepTunesTests */,
 				661AD7D82639D5C100B0292D /* NepTunesUITests */,
+				660BBA2D265ECE2C0010EC56 /* Plugins */,
+				660BBA35265ECE2C0010EC56 /* PluginsTests */,
+				660BBA51265ECF8C0010EC56 /* StatusBarInfo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		660BBA2C265ECE2C0010EC56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA34265ECE2C0010EC56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA50265ECF8C0010EC56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		661AD7B72639D5C000B0292D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -362,16 +627,41 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		660BBA2A265ECE2C0010EC56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA32265ECE2C0010EC56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				660BBA3E265ECE2C0010EC56 /* PluginsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		660BBA4E265ECF8C0010EC56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				660BBA64265EEC3A0010EC56 /* StatusBarInfoPlugin.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		661AD7B52639D5C000B0292D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				668749A5264F25EC00BAF594 /* LastFmReducer.swift in Sources */,
+				66F8F7B42656EC50007AA13F /* MusicAppState.swift in Sources */,
 				663A9B52264B20190038CD06 /* MusicScript.applescript in Sources */,
 				663392F22649B4EB00930323 /* MusicApp.swift in Sources */,
 				663A9B58264DA56B0038CD06 /* AppState.swift in Sources */,
 				66F8F7AD2651AA39007AA13F /* Track.swift in Sources */,
 				668749A7264F278500BAF594 /* OnboardingState.swift in Sources */,
+				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
 				663A9B60264DAD880038CD06 /* LastFmState.swift in Sources */,
 				663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,
@@ -408,6 +698,31 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		660BBA39265ECE2C0010EC56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 660BBA2D265ECE2C0010EC56 /* Plugins */;
+			targetProxy = 660BBA38265ECE2C0010EC56 /* PBXContainerItemProxy */;
+		};
+		660BBA3B265ECE2C0010EC56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 661AD7B82639D5C000B0292D /* NepTunes */;
+			targetProxy = 660BBA3A265ECE2C0010EC56 /* PBXContainerItemProxy */;
+		};
+		660BBA42265ECE2C0010EC56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 660BBA2D265ECE2C0010EC56 /* Plugins */;
+			targetProxy = 660BBA41265ECE2C0010EC56 /* PBXContainerItemProxy */;
+		};
+		660BBA5B265ECFB60010EC56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 660BBA2D265ECE2C0010EC56 /* Plugins */;
+			targetProxy = 660BBA5A265ECFB60010EC56 /* PBXContainerItemProxy */;
+		};
+		660BBA61265ED1850010EC56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 660BBA51265ECF8C0010EC56 /* StatusBarInfo */;
+			targetProxy = 660BBA60265ED1850010EC56 /* PBXContainerItemProxy */;
+		};
 		661AD7D02639D5C100B0292D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 661AD7B82639D5C000B0292D /* NepTunes */;
@@ -432,6 +747,146 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		660BBA46265ECE2C0010EC56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = YL78V8PY6H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Plugins/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes.Plugins;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		660BBA47265ECE2C0010EC56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = YL78V8PY6H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Plugins/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes.Plugins;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		660BBA4A265ECE2C0010EC56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = YL78V8PY6H;
+				INFOPLIST_FILE = PluginsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes.PluginsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NepTunes.app/Contents/MacOS/NepTunes";
+			};
+			name = Debug;
+		};
+		660BBA4B265ECE2C0010EC56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = YL78V8PY6H;
+				INFOPLIST_FILE = PluginsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunes.PluginsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NepTunes.app/Contents/MacOS/NepTunes";
+			};
+			name = Release;
+		};
+		660BBA56265ECF8C0010EC56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = YL78V8PY6H;
+				INFOPLIST_FILE = StatusBarInfo/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunesStatusBarInfo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = nepext;
+			};
+			name = Debug;
+		};
+		660BBA57265ECF8C0010EC56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = YL78V8PY6H;
+				INFOPLIST_FILE = StatusBarInfo/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.micropixels.NepTunesStatusBarInfo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = nepext;
+			};
+			name = Release;
+		};
 		661AD7E02639D5C100B0292D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -691,6 +1146,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		660BBA45265ECE2C0010EC56 /* Build configuration list for PBXNativeTarget "Plugins" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				660BBA46265ECE2C0010EC56 /* Debug */,
+				660BBA47265ECE2C0010EC56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		660BBA49265ECE2C0010EC56 /* Build configuration list for PBXNativeTarget "PluginsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				660BBA4A265ECE2C0010EC56 /* Debug */,
+				660BBA4B265ECE2C0010EC56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		660BBA55265ECF8C0010EC56 /* Build configuration list for PBXNativeTarget "StatusBarInfo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				660BBA56265ECF8C0010EC56 /* Debug */,
+				660BBA57265ECF8C0010EC56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		661AD7B42639D5C000B0292D /* Build configuration list for PBXProject "NepTunes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
