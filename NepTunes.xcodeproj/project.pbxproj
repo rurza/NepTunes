@@ -44,7 +44,6 @@
 		669CFDC6265EF2B700E397DD /* Plugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; };
 		669CFDC7265EF2B700E397DD /* Plugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 660BBA2E265ECE2C0010EC56 /* Plugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		669CFDCC265EF2CD00E397DD /* StatusBarPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669CFDCB265EF2CD00E397DD /* StatusBarPlugin.swift */; };
-		669CFDCD265EF4BB00E397DD /* StatusBarInfo.nepext in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 660BBA6F265EF28E0010EC56 /* StatusBarInfo.nepext */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 66D043D6263B237C008E07B2 /* ComposableArchitecture */; };
 		66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AA2651AA0D007AA13F /* Player.swift */; };
 		66F8F7AD2651AA39007AA13F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AC2651AA39007AA13F /* Track.swift */; };
@@ -95,27 +94,9 @@
 			remoteGlobalIDString = 660BBA2D265ECE2C0010EC56;
 			remoteInfo = Plugins;
 		};
-		669CFDCE265EF4BB00E397DD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 661AD7B12639D5C000B0292D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 660BBA6E265EF28E0010EC56;
-			remoteInfo = StatusBarInfo;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		660BBA28265D956A0010EC56 /* Embed PlugIns */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				669CFDCD265EF4BB00E397DD /* StatusBarInfo.nepext in Embed PlugIns */,
-			);
-			name = "Embed PlugIns";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		660BBA48265ECE2C0010EC56 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -453,14 +434,12 @@
 				661AD7B52639D5C000B0292D /* Sources */,
 				661AD7B62639D5C000B0292D /* Frameworks */,
 				661AD7B72639D5C000B0292D /* Resources */,
-				660BBA28265D956A0010EC56 /* Embed PlugIns */,
 				660BBA48265ECE2C0010EC56 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				660BBA42265ECE2C0010EC56 /* PBXTargetDependency */,
-				669CFDCF265EF4BB00E397DD /* PBXTargetDependency */,
 			);
 			name = NepTunes;
 			packageProductDependencies = (
@@ -725,11 +704,6 @@
 			isa = PBXTargetDependency;
 			target = 660BBA2D265ECE2C0010EC56 /* Plugins */;
 			targetProxy = 669CFDC8265EF2B700E397DD /* PBXContainerItemProxy */;
-		};
-		669CFDCF265EF4BB00E397DD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 660BBA6E265EF28E0010EC56 /* StatusBarInfo */;
-			targetProxy = 669CFDCE265EF4BB00E397DD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
