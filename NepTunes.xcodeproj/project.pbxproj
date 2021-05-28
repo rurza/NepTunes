@@ -28,6 +28,7 @@
 		663A9B62264DAF7E0038CD06 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B61264DAF7E0038CD06 /* UserDefault.swift */; };
 		663A9B64264DBE150038CD06 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B63264DBE150038CD06 /* Secrets.swift */; };
 		663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B65264DC6430038CD06 /* LastFmAction.swift */; };
+		664C5E172661971100197596 /* NepTunesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 664C5E162661971100197596 /* NepTunesKit */; };
 		6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC37265039F100FEF316 /* SwiftCurry */; };
 		6677EC3B26503A3700FEF316 /* LastFmKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC3A26503A3700FEF316 /* LastFmKit */; };
 		6677EC3E26503ADF00FEF316 /* DeezerClient in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC3D26503ADF00FEF316 /* DeezerClient */; };
@@ -101,6 +102,7 @@
 		663A9B61264DAF7E0038CD06 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		663A9B63264DBE150038CD06 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		663A9B65264DC6430038CD06 /* LastFmAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAction.swift; sourceTree = "<group>"; };
+		664C5E152661970700197596 /* NepTunesKit */ = {isa = PBXFileReference; lastKnownFileType = folder; path = NepTunesKit; sourceTree = "<group>"; };
 		668749A4264F25EC00BAF594 /* LastFmReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmReducer.swift; sourceTree = "<group>"; };
 		668749A6264F278500BAF594 /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		668749A8264F278E00BAF594 /* OnboardingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAction.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6677EC3B26503A3700FEF316 /* LastFmKit in Frameworks */,
+				664C5E172661971100197596 /* NepTunesKit in Frameworks */,
 				66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */,
 				668749A3264F25BA00BAF594 /* Nuke in Frameworks */,
 				6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */,
@@ -144,6 +147,7 @@
 		661AD7B02639D5C000B0292D = {
 			isa = PBXGroup;
 			children = (
+				664C5E152661970700197596 /* NepTunesKit */,
 				661AD7BB2639D5C000B0292D /* NepTunes */,
 				661AD7D12639D5C100B0292D /* NepTunesTests */,
 				661AD7DC2639D5C100B0292D /* NepTunesUITests */,
@@ -261,6 +265,7 @@
 				6677EC37265039F100FEF316 /* SwiftCurry */,
 				6677EC3A26503A3700FEF316 /* LastFmKit */,
 				6677EC3D26503ADF00FEF316 /* DeezerClient */,
+				664C5E162661971100197596 /* NepTunesKit */,
 			);
 			productName = NepTunes;
 			productReference = 661AD7B92639D5C000B0292D /* NepTunes.app */;
@@ -795,6 +800,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		664C5E162661971100197596 /* NepTunesKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NepTunesKit;
+		};
 		6677EC37265039F100FEF316 /* SwiftCurry */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6677EC36265039F100FEF316 /* XCRemoteSwiftPackageReference "SwiftCurry" */;
