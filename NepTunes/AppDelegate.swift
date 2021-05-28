@@ -8,7 +8,6 @@
 import Cocoa
 import SwiftUI
 import ComposableArchitecture
-import Plugins
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -17,7 +16,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var playerObserver: PlayerObserver?
     var store: Store<AppState, AppAction>!
-    var pluginInstance: PluginsInterface?
     var note: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -57,14 +55,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
     }
 
-    func initPlugin(from type: PluginsInterface.Type?) -> PluginsInterface? {
-        if let cls = type {
-            let plugin = cls.init()
-            return plugin
-        }
-        return nil
-    }
-    
+//    func initPlugin(from type: PluginsInterface.Type?) -> PluginsInterface? {
+//        if let cls = type {
+//            let plugin = cls.init()
+//            return plugin
+//        }
+//        return nil
+//    }
+//    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
