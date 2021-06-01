@@ -20,15 +20,6 @@
         }
       },
       {
-        "package": "LastFmKit",
-        "repositoryURL": "https://github.com/rurza/LastFmKit",
-        "state": {
-          "branch": "main",
-          "revision": "03270248a871aec9e93cf1f91b9534b494f81f63",
-          "version": null
-        }
-      },
-      {
         "package": "Nuke",
         "repositoryURL": "https://github.com/kean/Nuke.git",
         "state": {

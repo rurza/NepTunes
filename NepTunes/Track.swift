@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Track {
+struct Track: Equatable {
     let title: String
     let artist: String
     var album: String?

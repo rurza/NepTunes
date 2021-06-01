@@ -7,7 +7,7 @@
 
 import ComposableArchitecture
 
-let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, AppEnvironment> { state, action, environment in
+let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, LastFmEnvironment> { state, action, environment in
     switch action {
     case let .logIn(username: username, password: password):
         return environment.lastFmClient
@@ -31,11 +31,11 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, AppEnvironment> {
     }
 }
 
-let lastFmTrackReducer = Reducer<LastFmState, LastFmTrackAction, AppEnvironment> { state, action, environment in
+let lastFmTrackReducer = Reducer<LastFmState, LastFmTrackAction, LastFmEnvironment> { state, action, environment in
     return .none
 }
 
-let lastFmReducer = Reducer<LastFmState, LastFmAction, AppEnvironment> { state, action, environment in
+let lastFmReducer = Reducer<LastFmState, LastFmAction, LastFmEnvironment> { state, action, environment in
     switch action {
     case let .trackAction(trackAction):
         return lastFmTrackReducer.run(&state, trackAction, environment).map { .trackAction($0) }

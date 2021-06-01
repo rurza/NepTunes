@@ -14,13 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
     
-    var playerObserver: PlayerObserver?
-    var store: Store<AppState, AppAction>!
-    var note: NSObjectProtocol?
+    let store = Store(initialState: AppState(), reducer: appReducer, environment: .live)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        store = Store(initialState: AppState(), reducer: appReducer, environment: AppEnvironment())
-        playerObserver = PlayerObserver(store: store)
         // Create the SwiftUI view that provides the window contents.
 //        let bundle = Bundle.main
 //        let pluginsPath = bundle.builtInPlugInsPath!
@@ -53,16 +49,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
+        let viewStore = ViewStore(store)
+        viewStore.send(.playerAction(.startObservingPlayers))
     }
 
-//    func initPlugin(from type: PluginsInterface.Type?) -> PluginsInterface? {
-//        if let cls = type {
-//            let plugin = cls.init()
-//            return plugin
-//        }
-//        return nil
-//    }
-//    
+
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum OnboardingAction {
+enum OnboardingAction: Equatable {
     case finishOnboarding
 }

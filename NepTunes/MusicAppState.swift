@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct MusicAppState {
+struct MusicAppState: Equatable {
     
 }

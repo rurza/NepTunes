@@ -5,7 +5,7 @@
 //  Created by Adam Różyński on 16/05/2021.
 //
 
-import Foundation
+import Cocoa
 
 protocol Player {
     var type: PlayerType { get }
@@ -16,7 +16,15 @@ protocol Player {
     func backTrack()
 }
 
-enum PlayerType: String, CaseIterable {
+enum PlayerType: String, CaseIterable, Equatable {
     case spotify = "com.spotify.client"
     case musicApp = "com.apple.Music"
+}
+
+
+extension PlayerType {
+    init?(runningApplication: NSRunningApplication?) {
+        guard let bundleIdentifier = runningApplication?.bundleIdentifier else { return nil }
+        self.init(rawValue: bundleIdentifier)
+    }
 }

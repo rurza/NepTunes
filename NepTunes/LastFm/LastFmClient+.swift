@@ -1,21 +1,13 @@
 //
-//  AppEnvironment.swift
+//  LastFmClient+.swift
 //  NepTunes
 //
-//  Created by Adam Różyński on 13/05/2021.
+//  Created by Adam Różyński on 01/06/2021.
 //
 
 import Foundation
 import LastFmKit
 import Combine
-import ComposableArchitecture
-
-struct AppEnvironment {
-
-    var mainQueue: AnySchedulerOf<DispatchQueue> = DispatchQueue.main.eraseToAnyScheduler()
-    var lastFmClient: LastFmClient = .live
-    
-}
 
 extension LastFmClient {
     static var live: Self {
@@ -28,4 +20,3 @@ extension LastFmClient {
         return client
     }
 }
-
