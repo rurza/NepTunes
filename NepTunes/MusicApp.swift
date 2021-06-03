@@ -11,7 +11,16 @@ import ScriptingBridge
 class MusicApp: Player {
     
     var type: PlayerType = .musicApp
-    var currentTrack: Track?
+    var currentTrack: Track? {
+        if let bridgeTrack = bridge.currentTrack {
+            return Track(title: bridgeTrack.title,
+                         artist: bridgeTrack.artist,
+                         album: bridgeTrack.album,
+                         albumArtist: bridgeTrack.albumArtist,
+                         coverData: bridgeTrack.artworkImageData)
+        }
+        return nil
+    }
     var volume: Int {
         set {
             bridge.volume = newValue
@@ -19,6 +28,10 @@ class MusicApp: Player {
         get {
             bridge.volume
         }
+    }
+    
+    var state: MusicPlayerState {
+        bridge.state
     }
     
     private lazy var bridge: MusicBridge = {

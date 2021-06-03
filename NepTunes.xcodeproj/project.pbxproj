@@ -46,7 +46,6 @@
 		66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 66D043D6263B237C008E07B2 /* ComposableArchitecture */; };
 		66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AA2651AA0D007AA13F /* Player.swift */; };
 		66F8F7AD2651AA39007AA13F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AC2651AA39007AA13F /* Track.swift */; };
-		66F8F7B42656EC50007AA13F /* MusicAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7B32656EC50007AA13F /* MusicAppState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,7 +131,6 @@
 		66A1DB282666C72E006BD2DD /* LastFmClient+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LastFmClient+.swift"; sourceTree = "<group>"; };
 		66F8F7AA2651AA0D007AA13F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		66F8F7AC2651AA39007AA13F /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
-		66F8F7B32656EC50007AA13F /* MusicAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAppState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,15 +198,14 @@
 				66A1DB222666BD03006BD2DD /* PlayerState.swift */,
 				66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */,
 				66A1DB262666C165006BD2DD /* PlayerReducer.swift */,
+				66F8F7AA2651AA0D007AA13F /* Player.swift */,
+				663392F12649B4EB00930323 /* MusicApp.swift */,
+				66F8F7AC2651AA39007AA13F /* Track.swift */,
 				66A1DB212666B9F4006BD2DD /* LastFm */,
 				66A1DB202666B9E9006BD2DD /* Onboarding */,
 				663A9B61264DAF7E0038CD06 /* UserDefault.swift */,
 				663A9B63264DBE150038CD06 /* Secrets.swift */,
 				663392F92649C68600930323 /* Music Bridge */,
-				663392F12649B4EB00930323 /* MusicApp.swift */,
-				66F8F7B32656EC50007AA13F /* MusicAppState.swift */,
-				66F8F7AA2651AA0D007AA13F /* Player.swift */,
-				66F8F7AC2651AA39007AA13F /* Track.swift */,
 				661AD7BE2639D5C000B0292D /* ContentView.swift */,
 				661AD7C02639D5C100B0292D /* Assets.xcassets */,
 				661AD7C52639D5C100B0292D /* Main.storyboard */,
@@ -445,7 +442,6 @@
 			files = (
 				66A1DB1926656513006BD2DD /* PlayerAction.swift in Sources */,
 				668749A5264F25EC00BAF594 /* LastFmReducer.swift in Sources */,
-				66F8F7B42656EC50007AA13F /* MusicAppState.swift in Sources */,
 				66A1DB17266564D1006BD2DD /* AppLifecycleAction.swift in Sources */,
 				66A1DB252666BDA4006BD2DD /* PlayerEnvironment.swift in Sources */,
 				663A9B52264B20190038CD06 /* MusicScript.applescript in Sources */,

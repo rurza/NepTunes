@@ -8,12 +8,15 @@
 import Foundation
 
 enum PlayerAction: Equatable {
-//    case trackChanged(track: Track, player: Player)
     case startObservingPlayers
     case currentPlayerDidChange(PlayerType?)
     case newPlayerIsAvailable(PlayerType)
     case playerDidQuit(PlayerType)
     case stopObservingPlayers
+    case startObservingMusicPlayer
+    case stopObservingMusicPlayer
+    case trackDidChange(Track)
+    case retryGettingArtwork
 }
 
 //extension PlayerAction {

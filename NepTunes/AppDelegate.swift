@@ -38,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        }
 
         
-        let contentView = ContentView()
+        let contentView = ContentView(store: store.scope(state: \.playerState, action: AppAction.playerAction))
         // Create the window and set the content view.
         window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),

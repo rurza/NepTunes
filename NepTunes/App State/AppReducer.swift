@@ -17,6 +17,9 @@ let appReducer = AppReducer.combine(
         .pullback(
             state: \.playerState,
             action: /AppAction.playerAction,
-            environment: { PlayerEnvironment(newPlayerLaunched: $0.newPlayerLaunched, playerQuitEffect: $0.playerQuit)}
+            environment: { PlayerEnvironment(newPlayerLaunched: $0.newPlayerLaunched,
+                                             playerQuit: $0.playerQuit,
+                                             musicTrackDidChange: $0.musicTrackDidChange,
+                                             musicApp: $0.musicApp)}
         )
 ).debug()

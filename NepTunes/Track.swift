@@ -12,6 +12,6 @@ struct Track: Equatable {
     let artist: String
     var album: String?
     var albumArtist: String?
-    var coverData: Data
+    var coverData: Data?
 }
 

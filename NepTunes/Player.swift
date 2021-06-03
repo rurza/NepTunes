@@ -11,6 +11,7 @@ protocol Player {
     var type: PlayerType { get }
     var currentTrack: Track? { get }
     var volume: Int { set get }
+    var state: MusicPlayerState { get }
     func playPause()
     func nextTrack()
     func backTrack()
