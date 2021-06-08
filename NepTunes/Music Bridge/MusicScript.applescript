@@ -68,7 +68,8 @@ script MusicScript
 			on error
 				set art to missing value
 			end try
-			return {trackDuration:dur, trackName:nam, trackArtworkData:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb}
+            set dadd to date added of current track
+			return {trackDuration:dur, trackName:nam, trackArtworkData:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb, dateAdded:dadd}
 		end tell
 	end trackInfo
 	

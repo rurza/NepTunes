@@ -5,17 +5,23 @@
 //  Created by Adam Różyński on 01/06/2021.
 //
 
-import Foundation
+import Cocoa
 import ComposableArchitecture
+import Combine
 
-let playerReducer = Reducer<PlayerState, PlayerAction, PlayerEnvironment> { state, action, environment in
+
+let playerReducer = Reducer<SharedState<PlayerState>, PlayerAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
     
     struct PlayerObservingId: Hashable { }
     struct MusicPlayerObservingId: Hashable { }
-    struct TimerId: Hashable { }
+    struct RetryGetArtworkId: Hashable { }
+    struct DownloadArtworkId: Hashable { }
     
     switch action {
     case .startObservingPlayers:
+        for app in NSWorkspace.shared.runningApplications {
+            let playerType = PlayerType(runningApplication: app)
+        }
         return .merge(
             environment
                 .newPlayerLaunched
@@ -34,7 +40,7 @@ let playerReducer = Reducer<PlayerState, PlayerAction, PlayerEnvironment> { stat
         }
         return .none
     case let .currentPlayerDidChange(playerType):
-        state.currentPlayerState = CurrentPlayerState(player: environment.playerForPlayerType(playerType))
+        state.currentPlayerState = CurrentPlayer(player: environment.environment.playerForPlayerType(playerType))
         return .init(value: .startObservingMusicPlayer)
     case let .playerDidQuit(playerType):
         state.availablePlayers.removeAll(where: { $0 == playerType })
@@ -55,22 +61,29 @@ let playerReducer = Reducer<PlayerState, PlayerAction, PlayerEnvironment> { stat
             .cancellable(id: MusicPlayerObservingId())
     case .stopObservingMusicPlayer:
         return .cancel(id: MusicPlayerObservingId())
-    case .trackDidChange(let track):
-        state.currentPlayerState = CurrentPlayerState(player: environment.playerForPlayerType(state.currentPlayerState.currentPlayerType))
-        if let player = environment.playerForPlayerType(state.currentPlayerState.currentPlayerType) {
-            if (state.currentPlayerState.currentTrack?.coverData == nil
-                || state.currentPlayerState.currentTrack?.artist ==  nil)
-                && player.state == .playing {
-                return Effect.timer(id: TimerId(), every: 1, on: DispatchQueue.main.eraseToAnyScheduler()).map { _ in .retryGettingArtwork }
+    case let .trackDidChange(track):
+        let effects: [Effect<PlayerAction, Never>] = [.cancel(id: RetryGetArtworkId()), .cancel(id: DownloadArtworkId())]
+        if let currentPlayerType = state.currentPlayerState.currentPlayerType {
+            state.currentPlayerState = .playerWithTrack(currentPlayerType, track)
+            if track.artworkData == nil && state.settings.showCover {
+                let getArtwork = environment.getTrackInfo
+                    .map { return PlayerAction.trackDidChange($0) }
+                    .catch { _ in
+                        
+                        return Effect<PlayerAction, Never>(value: .provideDefaultCover)
+                    }
+                    .eraseToEffect()
+                return .concatenate(effects + [getArtwork])
             }
         }
+        return .merge(effects)
+    case .getCoverURL:
+        return .concatenate(.cancel(id: RetryGetArtworkId()))
         
+    case .getCover(_):
         return .none
-    case .retryGettingArtwork:
-        #warning("fix")
-        return Effect.concatenate(
-            .cancel(id: TimerId()),
-            Effect(value: .trackDidChange(environment.musicApp.currentTrack!))
-        )
+    case .provideDefaultCover:
+        return .none
     }
 }
+

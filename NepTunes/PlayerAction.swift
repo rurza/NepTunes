@@ -16,14 +16,7 @@ enum PlayerAction: Equatable {
     case startObservingMusicPlayer
     case stopObservingMusicPlayer
     case trackDidChange(Track)
-    case retryGettingArtwork
+    case getCoverURL
+    case getCover(URL)
+    case provideDefaultCover
 }
-
-//extension PlayerAction {
-//    static func == (lhs: PlayerAction, rhs: PlayerAction) -> Bool {
-//        switch (lhs, rhs) {
-//        case (.trackChanged(track: let lhsTrack, player: let lhsPlayer), .trackChanged(track: let rhsTrack, player: let rhsPlayer)):
-//            return lhsTrack == rhsTrack && lhsPlayer.type == rhsPlayer.type
-//        }
-//    }
-//}

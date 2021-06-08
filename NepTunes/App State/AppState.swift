@@ -9,10 +9,17 @@ import Foundation
 
 struct AppState: Equatable {
 
-//    var lastFmState: LastFmState = LastFmState()
-    var playerState = PlayerState()
-//    var musicAppState: MusicAppState?
-//    var onboardingState: OnboardingState = OnboardingState()
-//    var spotifyState: SpotifyState?
+    var settings = Settings()
+    var player = PlayerState()
+    
+    var playerState: SharedState<PlayerState> {
+        get {
+            return SharedState<PlayerState>(settings: self.settings, state: self.player)
+        }
+        set {
+            self.settings = newValue.settings
+            self.player = newValue.state
+        }
+    }
     
 }

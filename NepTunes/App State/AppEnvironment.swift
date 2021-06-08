@@ -12,22 +12,21 @@ import ComposableArchitecture
 
 struct AppEnvironment {
 
-    var mainQueue: AnySchedulerOf<DispatchQueue>
     var lastFmClient: LastFmClient
     var newPlayerLaunched: Effect<PlayerType, Never>
     var playerQuit: Effect<PlayerType, Never>
     var musicTrackDidChange: Effect<Track, Never>
+    var artworkDownloader: ArtworkDownloader
     var musicApp: Player
-    var date: () -> Date
+//    var spotifyApp: Player
     
     static let live = Self(
-        mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
         lastFmClient: .live,
         newPlayerLaunched: newPlayerLaunchedEffect,
         playerQuit: playerQuitEffect,
         musicTrackDidChange: musicTrackDidChangeEffect,
-        musicApp: MusicApp(),
-        date: Date.init
+        artworkDownloader: .live,
+        musicApp: MusicApp()
     )
     
 }
@@ -53,13 +52,5 @@ private let playerQuitEffect = NSWorkspace.shared
 private let musicTrackDidChangeEffect: Effect<Track, Never> = DistributedNotificationCenter
     .default
     .publisher(for: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"))
-    .compactMap {
-        if let userInfo = $0.userInfo,
-           let title = userInfo["Name"] as? String,
-           let artist = userInfo["Artist"] as? String,
-           let album = userInfo["Album"] as? String {
-            return Track(title :title, artist: artist, album: album, albumArtist: nil, coverData: nil)
-        }
-        return nil
-    }
+    .compactMap { Track(userInfo: $0.userInfo) }
     .eraseToEffect()

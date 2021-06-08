@@ -48,7 +48,8 @@ extension MusicBridge {
                               duration: duration,
                               album: trackInfo["trackAlbum"] as? String,
                               albumArtist: trackInfo["albumArtist"] as? String,
-                              artworkImageData: (trackInfo["trackArtworkData"] as? NSAppleEventDescriptor)?.data)
+                              artworkImageData: (trackInfo["trackArtworkData"] as? NSAppleEventDescriptor)?.data,
+                              dateAdded: trackInfo["dateAdded"] as? Date)
     }
 }
 

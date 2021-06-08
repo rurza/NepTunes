@@ -9,10 +9,10 @@ import Foundation
 
 struct PlayerState: Equatable {
     var availablePlayers: [PlayerType] = []
-    var currentPlayerState = CurrentPlayerState.none
+    var currentPlayerState = CurrentPlayer.none
 }
 
-enum CurrentPlayerState: Equatable {
+enum CurrentPlayer: Equatable {
     case none
     case playerWithoutTrack(PlayerType)
     case playerWithTrack(PlayerType, Track)
@@ -26,7 +26,6 @@ enum CurrentPlayerState: Equatable {
             self = .none
         }
     }
-    
     
     var currentPlayerType: PlayerType? {
         switch self {

@@ -15,6 +15,7 @@
 		661AD7C72639D5C100B0292D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C52639D5C100B0292D /* Main.storyboard */; };
 		661AD7D32639D5C100B0292D /* PlayerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7D22639D5C100B0292D /* PlayerStateTests.swift */; };
 		661AD7DE2639D5C100B0292D /* NepTunesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7DD2639D5C100B0292D /* NepTunesUITests.swift */; };
+		662A8050266FC2D300249A69 /* ArtworkDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A804F266FC2D300249A69 /* ArtworkDownloader.swift */; };
 		663392F22649B4EB00930323 /* MusicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663392F12649B4EB00930323 /* MusicApp.swift */; };
 		663392FB2649C69400930323 /* MusicBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663392FA2649C69400930323 /* MusicBridge.swift */; };
 		663A9B52264B20190038CD06 /* MusicScript.applescript in Sources */ = {isa = PBXBuildFile; fileRef = 663392F72649C5E200930323 /* MusicScript.applescript */; };
@@ -29,6 +30,8 @@
 		663A9B64264DBE150038CD06 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B63264DBE150038CD06 /* Secrets.swift */; };
 		663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B65264DC6430038CD06 /* LastFmAction.swift */; };
 		664C5E2D26619DDF00197596 /* NepTunesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 664C5E2C26619DDF00197596 /* NepTunesKit */; };
+		6677B521266C296900E54145 /* SystemEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6677B520266C296900E54145 /* SystemEnvironment.swift */; };
+		6677B523266C2AA200E54145 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6677B522266C2AA200E54145 /* Publisher+.swift */; };
 		6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC37265039F100FEF316 /* SwiftCurry */; };
 		6677EC3E26503ADF00FEF316 /* DeezerClient in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC3D26503ADF00FEF316 /* DeezerClient */; };
 		668749A3264F25BA00BAF594 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 668749A2264F25BA00BAF594 /* Nuke */; };
@@ -43,6 +46,9 @@
 		66A1DB252666BDA4006BD2DD /* PlayerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */; };
 		66A1DB272666C165006BD2DD /* PlayerReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB262666C165006BD2DD /* PlayerReducer.swift */; };
 		66A1DB292666C72E006BD2DD /* LastFmClient+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB282666C72E006BD2DD /* LastFmClient+.swift */; };
+		66CDC3A4266FEED800AF773E /* SharedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A3266FEED800AF773E /* SharedState.swift */; };
+		66CDC3A6266FF01800AF773E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A5266FF01800AF773E /* Settings.swift */; };
+		66CF7F87266E853B00B4B418 /* Reducer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CF7F86266E853B00B4B418 /* Reducer+.swift */; };
 		66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 66D043D6263B237C008E07B2 /* ComposableArchitecture */; };
 		66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AA2651AA0D007AA13F /* Player.swift */; };
 		66F8F7AD2651AA39007AA13F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AC2651AA39007AA13F /* Track.swift */; };
@@ -104,6 +110,7 @@
 		661AD7D92639D5C100B0292D /* NepTunesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NepTunesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		661AD7DD2639D5C100B0292D /* NepTunesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NepTunesUITests.swift; sourceTree = "<group>"; };
 		661AD7DF2639D5C100B0292D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		662A804F266FC2D300249A69 /* ArtworkDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDownloader.swift; sourceTree = "<group>"; };
 		663392F12649B4EB00930323 /* MusicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicApp.swift; sourceTree = "<group>"; };
 		663392F72649C5E200930323 /* MusicScript.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = MusicScript.applescript; sourceTree = "<group>"; };
 		663392FA2649C69400930323 /* MusicBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBridge.swift; sourceTree = "<group>"; };
@@ -118,6 +125,8 @@
 		663A9B63264DBE150038CD06 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		663A9B65264DC6430038CD06 /* LastFmAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAction.swift; sourceTree = "<group>"; };
 		664C5E2B26619DDA00197596 /* NepTunesKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = NepTunesKit; path = ../NepTunesKit; sourceTree = "<group>"; };
+		6677B520266C296900E54145 /* SystemEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEnvironment.swift; sourceTree = "<group>"; };
+		6677B522266C2AA200E54145 /* Publisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+.swift"; sourceTree = "<group>"; };
 		668749A4264F25EC00BAF594 /* LastFmReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmReducer.swift; sourceTree = "<group>"; };
 		668749A6264F278500BAF594 /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		668749A8264F278E00BAF594 /* OnboardingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAction.swift; sourceTree = "<group>"; };
@@ -129,6 +138,9 @@
 		66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEnvironment.swift; sourceTree = "<group>"; };
 		66A1DB262666C165006BD2DD /* PlayerReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerReducer.swift; sourceTree = "<group>"; };
 		66A1DB282666C72E006BD2DD /* LastFmClient+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LastFmClient+.swift"; sourceTree = "<group>"; };
+		66CDC3A3266FEED800AF773E /* SharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedState.swift; sourceTree = "<group>"; };
+		66CDC3A5266FF01800AF773E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		66CF7F86266E853B00B4B418 /* Reducer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reducer+.swift"; sourceTree = "<group>"; };
 		66F8F7AA2651AA0D007AA13F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		66F8F7AC2651AA39007AA13F /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -201,6 +213,12 @@
 				66F8F7AA2651AA0D007AA13F /* Player.swift */,
 				663392F12649B4EB00930323 /* MusicApp.swift */,
 				66F8F7AC2651AA39007AA13F /* Track.swift */,
+				6677B520266C296900E54145 /* SystemEnvironment.swift */,
+				6677B522266C2AA200E54145 /* Publisher+.swift */,
+				66CF7F86266E853B00B4B418 /* Reducer+.swift */,
+				662A804F266FC2D300249A69 /* ArtworkDownloader.swift */,
+				66CDC3A3266FEED800AF773E /* SharedState.swift */,
+				66CDC3A5266FF01800AF773E /* Settings.swift */,
 				66A1DB212666B9F4006BD2DD /* LastFm */,
 				66A1DB202666B9E9006BD2DD /* Onboarding */,
 				663A9B61264DAF7E0038CD06 /* UserDefault.swift */,
@@ -366,7 +384,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					661AD7B82639D5C000B0292D = {
 						CreatedOnToolsVersion = 12.5;
@@ -443,15 +461,19 @@
 				66A1DB1926656513006BD2DD /* PlayerAction.swift in Sources */,
 				668749A5264F25EC00BAF594 /* LastFmReducer.swift in Sources */,
 				66A1DB17266564D1006BD2DD /* AppLifecycleAction.swift in Sources */,
+				662A8050266FC2D300249A69 /* ArtworkDownloader.swift in Sources */,
+				66CDC3A4266FEED800AF773E /* SharedState.swift in Sources */,
 				66A1DB252666BDA4006BD2DD /* PlayerEnvironment.swift in Sources */,
 				663A9B52264B20190038CD06 /* MusicScript.applescript in Sources */,
 				66A1DB232666BD03006BD2DD /* PlayerState.swift in Sources */,
+				66CF7F87266E853B00B4B418 /* Reducer+.swift in Sources */,
 				66A1DB292666C72E006BD2DD /* LastFmClient+.swift in Sources */,
 				663392F22649B4EB00930323 /* MusicApp.swift in Sources */,
 				663A9B58264DA56B0038CD06 /* AppState.swift in Sources */,
 				66F8F7AD2651AA39007AA13F /* Track.swift in Sources */,
 				668749A7264F278500BAF594 /* OnboardingState.swift in Sources */,
 				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
+				6677B523266C2AA200E54145 /* Publisher+.swift in Sources */,
 				663A9B60264DAD880038CD06 /* LastFmState.swift in Sources */,
 				663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */,
 				66A1DB1B26656B46006BD2DD /* LastFmEnvironment.swift in Sources */,
@@ -460,6 +482,8 @@
 				663A9B56264D011E0038CD06 /* MusicTrackInfo.swift in Sources */,
 				668749A9264F278E00BAF594 /* OnboardingAction.swift in Sources */,
 				663392FB2649C69400930323 /* MusicBridge.swift in Sources */,
+				6677B521266C296900E54145 /* SystemEnvironment.swift in Sources */,
+				66CDC3A6266FF01800AF773E /* Settings.swift in Sources */,
 				663A9B5A264DABA90038CD06 /* AppReducer.swift in Sources */,
 				663A9B62264DAF7E0038CD06 /* UserDefault.swift in Sources */,
 				663A9B5E264DACCC0038CD06 /* AppAction.swift in Sources */,
@@ -635,6 +659,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"NepTunes/Preview Content\"";
@@ -664,6 +689,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = NepTunes/NepTunes.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"NepTunes/Preview Content\"";

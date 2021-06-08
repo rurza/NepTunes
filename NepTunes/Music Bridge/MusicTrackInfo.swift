@@ -7,7 +7,6 @@
 
 import Foundation
 
-#warning("to delete?")
 struct MusicTrackInfo {
     let title: String
     let artist: String
@@ -15,5 +14,6 @@ struct MusicTrackInfo {
     var album: String?
     var albumArtist: String?
     var artworkImageData: Data?
+    var dateAdded: Date?
 //    var trackURL: URL?
 }

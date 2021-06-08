@@ -7,7 +7,7 @@
 
 import ComposableArchitecture
 
-typealias AppReducer = Reducer<AppState, AppAction, AppEnvironment>
+typealias AppReducer = Reducer<AppState, AppAction, SystemEnvironment<AppEnvironment>>
 
 let appReducer = AppReducer.combine(
     .init { state, action, environment in
@@ -17,9 +17,16 @@ let appReducer = AppReducer.combine(
         .pullback(
             state: \.playerState,
             action: /AppAction.playerAction,
-            environment: { PlayerEnvironment(newPlayerLaunched: $0.newPlayerLaunched,
-                                             playerQuit: $0.playerQuit,
-                                             musicTrackDidChange: $0.musicTrackDidChange,
-                                             musicApp: $0.musicApp)}
+            environment: {
+                .live(
+                    environment: PlayerEnvironment(newPlayerLaunched: $0.newPlayerLaunched,
+                                                   playerQuit: $0.playerQuit,
+                                                   musicTrackDidChange: $0.musicTrackDidChange,
+                                                   musicApp: $0.musicApp,
+                                                   getTrackInfo: getTrackCoverFromPlayer($0.musicApp),
+                                                   artworkDownloader: $0.artworkDownloader)
+                )
+                
+            }
         )
 ).debug()

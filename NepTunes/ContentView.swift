@@ -10,12 +10,12 @@ import ComposableArchitecture
 
 struct ContentView: View {
     
-    let store: Store<PlayerState, PlayerAction>
+    let store: Store<SharedState<PlayerState>, PlayerAction>
     
     var body: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                Image(nsImage: NSImage(data: viewStore.currentPlayerState.currentTrack?.coverData ?? Data()) ?? NSImage(systemSymbolName: "music.mic", accessibilityDescription: "artwork")!).resizable().frame(width: 200, height: 200)
+                Image(nsImage: NSImage(data: viewStore.currentPlayerState.currentTrack?.artworkData ?? Data()) ?? NSImage(systemSymbolName: "music.mic", accessibilityDescription: "artwork")!).resizable().frame(width: 200, height: 200)
                 VStack {
                     Text(viewStore.currentPlayerState.currentTrack?.title ?? "None").bold()
                     Text(viewStore.currentPlayerState.currentTrack?.artist ?? "None")
@@ -28,23 +28,21 @@ struct ContentView: View {
 
 
 struct ContentView_Previews: PreviewProvider {
+    
+    static var musicApp: MusicApp {
+        MusicApp()
+    }
+    
     static var previews: some View {
         ContentView(store: Store(
-            initialState: PlayerState(),
+            initialState: SharedState(settings: Settings(), state: PlayerState()),
             reducer: playerReducer,
-            environment: PlayerEnvironment(newPlayerLaunched: .none,
-                                           playerQuit: .none,
-                                           musicTrackDidChange: .none,
-                                           musicApp: MusicApp())
+            environment: .live(environment: PlayerEnvironment(newPlayerLaunched: .none,
+                                                              playerQuit: .none,
+                                                              musicTrackDidChange: .none,
+                                                              musicApp: musicApp,
+                                                              getTrackInfo: getTrackCoverFromPlayer(musicApp),
+                                                              artworkDownloader: .live))
         ))
     }
 }
-
-//extension NSImage {
-//    convenience init?(data: Data?) {
-//        if let data = data {
-//            self.init(data: data)
-//        }
-//        return nil
-//    }
-//}

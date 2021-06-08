@@ -8,10 +8,30 @@
 import Foundation
 
 struct Track: Equatable {
+    
     let title: String
     let artist: String
     var album: String?
     var albumArtist: String?
-    var coverData: Data?
+    var artworkData: Data?
+    
+    init(title: String, artist: String, album: String? = nil, albumArtist: String? = nil, artworkData: Data? = nil) {
+        self.title = title
+        self.artist = artist
+        self.album = album
+        self.albumArtist = albumArtist
+        self.artworkData = artworkData
+    }
+    
+    init?(userInfo: [AnyHashable : Any]?) {
+        if let userInfo = userInfo,
+           let title = userInfo["Name"] as? String,
+           let artist = userInfo["Artist"] as? String {
+            self.title = title
+            self.artist = artist
+            self.album = userInfo["Album"] as? String
+        } else {
+            return nil
+        }
+    }
 }
-
