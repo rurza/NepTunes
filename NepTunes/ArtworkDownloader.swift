@@ -12,8 +12,23 @@ import DeezerClient
 struct ArtworkDownloader {
     var getArtworkURL: (String) -> Effect<Data, Error>
     
+    struct NotFound: Error { }
+    
     static let live = Self(getArtworkURL: { album in
-        DeezerClient().searchForAlbum(named: album).compactMap { $0.data.first?.bigCover }.flatMap { URLSession.shared.dataTaskPublisher(for: $0).mapError { $0 as Error } }.map(\.data).eraseToEffect()
+        DeezerClient().searchForAlbum(named: album)
+            .tryCompactMap { response -> URL? in
+                if let cover = response.data.first?.bigCover {
+                    return cover
+                }
+                throw NotFound()
+            }
+            .flatMap {
+                URLSession.shared
+                    .dataTaskPublisher(for: $0)
+                    .mapError { $0 as Error }
+            }
+            .map(\.data)
+            .eraseToEffect()
     })
 }
 

@@ -30,6 +30,8 @@
 		663A9B64264DBE150038CD06 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B63264DBE150038CD06 /* Secrets.swift */; };
 		663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663A9B65264DC6430038CD06 /* LastFmAction.swift */; };
 		664C5E2D26619DDF00197596 /* NepTunesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 664C5E2C26619DDF00197596 /* NepTunesKit */; };
+		6650D2D02683C66B003279A0 /* PlayerTrackReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6650D2CF2683C66B003279A0 /* PlayerTrackReducer.swift */; };
+		6650D2D22683C89D003279A0 /* PlayerReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6650D2D12683C89D003279A0 /* PlayerReducer.swift */; };
 		6677B521266C296900E54145 /* SystemEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6677B520266C296900E54145 /* SystemEnvironment.swift */; };
 		6677B523266C2AA200E54145 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6677B522266C2AA200E54145 /* Publisher+.swift */; };
 		6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC37265039F100FEF316 /* SwiftCurry */; };
@@ -44,7 +46,7 @@
 		66A1DB1F2666B7C5006BD2DD /* LastFmKit in Frameworks */ = {isa = PBXBuildFile; productRef = 66A1DB1E2666B7C5006BD2DD /* LastFmKit */; };
 		66A1DB232666BD03006BD2DD /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB222666BD03006BD2DD /* PlayerState.swift */; };
 		66A1DB252666BDA4006BD2DD /* PlayerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */; };
-		66A1DB272666C165006BD2DD /* PlayerReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB262666C165006BD2DD /* PlayerReducer.swift */; };
+		66A1DB272666C165006BD2DD /* PlayerAppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB262666C165006BD2DD /* PlayerAppReducer.swift */; };
 		66A1DB292666C72E006BD2DD /* LastFmClient+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB282666C72E006BD2DD /* LastFmClient+.swift */; };
 		66CDC3A4266FEED800AF773E /* SharedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A3266FEED800AF773E /* SharedState.swift */; };
 		66CDC3A6266FF01800AF773E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A5266FF01800AF773E /* Settings.swift */; };
@@ -125,6 +127,8 @@
 		663A9B63264DBE150038CD06 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		663A9B65264DC6430038CD06 /* LastFmAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAction.swift; sourceTree = "<group>"; };
 		664C5E2B26619DDA00197596 /* NepTunesKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = NepTunesKit; path = ../NepTunesKit; sourceTree = "<group>"; };
+		6650D2CF2683C66B003279A0 /* PlayerTrackReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTrackReducer.swift; sourceTree = "<group>"; };
+		6650D2D12683C89D003279A0 /* PlayerReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerReducer.swift; sourceTree = "<group>"; };
 		6677B520266C296900E54145 /* SystemEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEnvironment.swift; sourceTree = "<group>"; };
 		6677B522266C2AA200E54145 /* Publisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+.swift"; sourceTree = "<group>"; };
 		668749A4264F25EC00BAF594 /* LastFmReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmReducer.swift; sourceTree = "<group>"; };
@@ -136,7 +140,7 @@
 		66A1DB1D2666B7BD006BD2DD /* LastFmKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LastFmKit; path = ../LastFmKit; sourceTree = "<group>"; };
 		66A1DB222666BD03006BD2DD /* PlayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
 		66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEnvironment.swift; sourceTree = "<group>"; };
-		66A1DB262666C165006BD2DD /* PlayerReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerReducer.swift; sourceTree = "<group>"; };
+		66A1DB262666C165006BD2DD /* PlayerAppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAppReducer.swift; sourceTree = "<group>"; };
 		66A1DB282666C72E006BD2DD /* LastFmClient+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LastFmClient+.swift"; sourceTree = "<group>"; };
 		66CDC3A3266FEED800AF773E /* SharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedState.swift; sourceTree = "<group>"; };
 		66CDC3A5266FF01800AF773E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -206,11 +210,7 @@
 				661AD7BC2639D5C000B0292D /* AppDelegate.swift */,
 				66A1DB1C2665759C006BD2DD /* App State */,
 				66A1DB16266564D1006BD2DD /* AppLifecycleAction.swift */,
-				66A1DB1826656513006BD2DD /* PlayerAction.swift */,
-				66A1DB222666BD03006BD2DD /* PlayerState.swift */,
-				66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */,
-				66A1DB262666C165006BD2DD /* PlayerReducer.swift */,
-				66F8F7AA2651AA0D007AA13F /* Player.swift */,
+				6650D2D32683CC77003279A0 /* Player */,
 				663392F12649B4EB00930323 /* MusicApp.swift */,
 				66F8F7AC2651AA39007AA13F /* Track.swift */,
 				6677B520266C296900E54145 /* SystemEnvironment.swift */,
@@ -269,6 +269,20 @@
 				663A9B55264D011E0038CD06 /* MusicTrackInfo.swift */,
 			);
 			path = "Music Bridge";
+			sourceTree = "<group>";
+		};
+		6650D2D32683CC77003279A0 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				66A1DB1826656513006BD2DD /* PlayerAction.swift */,
+				66A1DB222666BD03006BD2DD /* PlayerState.swift */,
+				66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */,
+				6650D2D12683C89D003279A0 /* PlayerReducer.swift */,
+				66A1DB262666C165006BD2DD /* PlayerAppReducer.swift */,
+				6650D2CF2683C66B003279A0 /* PlayerTrackReducer.swift */,
+				66F8F7AA2651AA0D007AA13F /* Player.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		66A1DB1C2665759C006BD2DD /* App State */ = {
@@ -469,16 +483,18 @@
 				66CF7F87266E853B00B4B418 /* Reducer+.swift in Sources */,
 				66A1DB292666C72E006BD2DD /* LastFmClient+.swift in Sources */,
 				663392F22649B4EB00930323 /* MusicApp.swift in Sources */,
+				6650D2D02683C66B003279A0 /* PlayerTrackReducer.swift in Sources */,
 				663A9B58264DA56B0038CD06 /* AppState.swift in Sources */,
 				66F8F7AD2651AA39007AA13F /* Track.swift in Sources */,
 				668749A7264F278500BAF594 /* OnboardingState.swift in Sources */,
+				6650D2D22683C89D003279A0 /* PlayerReducer.swift in Sources */,
 				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
 				6677B523266C2AA200E54145 /* Publisher+.swift in Sources */,
 				663A9B60264DAD880038CD06 /* LastFmState.swift in Sources */,
 				663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */,
 				66A1DB1B26656B46006BD2DD /* LastFmEnvironment.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,
-				66A1DB272666C165006BD2DD /* PlayerReducer.swift in Sources */,
+				66A1DB272666C165006BD2DD /* PlayerAppReducer.swift in Sources */,
 				663A9B56264D011E0038CD06 /* MusicTrackInfo.swift in Sources */,
 				668749A9264F278E00BAF594 /* OnboardingAction.swift in Sources */,
 				663392FB2649C69400930323 /* MusicBridge.swift in Sources */,

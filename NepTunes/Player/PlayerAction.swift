@@ -8,6 +8,11 @@
 import Foundation
 
 enum PlayerAction: Equatable {
+    case appAction(PlayerAppAction)
+    case trackAction(PlayerTrackAction)
+}
+
+enum PlayerAppAction: Equatable {
     case startObservingPlayers
     case currentPlayerDidChange(PlayerType?)
     case newPlayerIsAvailable(PlayerType)
@@ -15,6 +20,9 @@ enum PlayerAction: Equatable {
     case stopObservingPlayers
     case startObservingMusicPlayer
     case stopObservingMusicPlayer
+}
+
+enum PlayerTrackAction: Equatable {
     case trackDidChange(Track)
     case getCoverURL
     case getCover(URL)

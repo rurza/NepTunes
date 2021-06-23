@@ -50,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         let viewStore = ViewStore(store)
-        viewStore.send(.playerAction(.startObservingPlayers))
+        viewStore.send(.playerAction(.appAction(.startObservingPlayers)))
     }
 
 

@@ -15,10 +15,10 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                Image(nsImage: NSImage(data: viewStore.currentPlayerState.currentTrack?.artworkData ?? Data()) ?? NSImage(systemSymbolName: "music.mic", accessibilityDescription: "artwork")!).resizable().frame(width: 200, height: 200)
+                Image(nsImage: NSImage(data: viewStore.currentPlayerState?.currentTrack?.artworkData ?? Data()) ?? NSImage(systemSymbolName: "music.mic", accessibilityDescription: "artwork")!).resizable().frame(width: 200, height: 200)
                 VStack {
-                    Text(viewStore.currentPlayerState.currentTrack?.title ?? "None").bold()
-                    Text(viewStore.currentPlayerState.currentTrack?.artist ?? "None")
+                    Text(viewStore.currentPlayerState?.currentTrack?.title ?? "None").bold()
+                    Text(viewStore.currentPlayerState?.currentTrack?.artist ?? "None")
                 }
             }
         }
