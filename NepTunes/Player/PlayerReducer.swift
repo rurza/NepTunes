@@ -14,10 +14,16 @@ struct MusicPlayerObservingId: Hashable { }
 let playerReducer = Reducer<SharedState<PlayerState>, PlayerAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
     switch action {
     case .appAction(.startObservingMusicPlayer):
-        return environment
-            .musicTrackDidChange
-            .map { PlayerAction.trackAction(.trackDidChange($0)) }
-            .cancellable(id: MusicPlayerObservingId())
+        return .merge(
+            environment
+                .musicTrackDidChange
+                .map { PlayerAction.trackAction(.trackDidChange($0)) }
+                .cancellable(id: MusicPlayerObservingId()),
+            environment.getTrackInfo
+                .catch { error in Effect.none }
+                .eraseToEffect()
+                .map { PlayerAction.trackAction(.trackDidChange($0)) }
+            )
     case let .appAction(appAction):
         return playerAppReducer.run(&state, appAction, environment).map(PlayerAction.appAction)
     case let .trackAction(trackAction):

@@ -16,10 +16,7 @@ let playerAppReducer = Reducer<SharedState<PlayerState>, PlayerAppAction, System
     
     switch action {
     case .startObservingPlayers:
-        for app in NSWorkspace.shared.runningApplications {
-            let playerType = PlayerType(runningApplication: app)
-        }
-        return .merge(
+        let effects: Effect<PlayerAppAction, Never> = Effect.merge(
             environment
                 .newPlayerLaunched
                 .map { .newPlayerIsAvailable($0) },
@@ -28,6 +25,12 @@ let playerAppReducer = Reducer<SharedState<PlayerState>, PlayerAppAction, System
                 .map { .playerDidQuit($0) }
         )
         .cancellable(id: PlayerObservingId())
+        for app in NSWorkspace.shared.runningApplications {
+            if let playerType = PlayerType(runningApplication: app) {
+                return .merge(effects, Effect<PlayerAppAction, Never>(value: .newPlayerIsAvailable(playerType)))
+            }
+        }
+        return effects
     case let .newPlayerIsAvailable(newPlayerType):
         if !state.availablePlayers.contains(newPlayerType) {
             state.availablePlayers.append(newPlayerType)
