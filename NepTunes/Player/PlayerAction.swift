@@ -18,8 +18,8 @@ enum PlayerAppAction: Equatable {
     case newPlayerIsAvailable(PlayerType)
     case playerDidQuit(PlayerType)
     case stopObservingPlayers
-    case startObservingMusicPlayer
-    case stopObservingMusicPlayer
+    case startObservingPlayer(PlayerType)
+    case stopObservingPlayer(PlayerType)
 }
 
 enum PlayerTrackAction: Equatable {

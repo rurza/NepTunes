@@ -62,7 +62,7 @@ class PlayerReducerTests: XCTestCase {
         store.receive(.appAction(.currentPlayerDidChange(playerType))) { state in
             state.currentPlayerState = CurrentPlayerState(playerType: playerType, currentTrack: nil)
         }
-        store.receive(.appAction(.startObservingMusicPlayer))
+        store.receive(.appAction(.startObservingPlayer(.musicApp)))
 
         
         store.send(.trackAction(.trackDidChange(newTrack))) { state in
@@ -76,8 +76,26 @@ class PlayerReducerTests: XCTestCase {
             state.currentPlayerState?.currentTrack = trackWithEmptyArtworkData
         }
         
+        store.send(.appAction(.newPlayerIsAvailable(.spotify))) { state in
+            state.availablePlayers = [.musicApp, .spotify]
+            state.currentPlayerState = CurrentPlayerState(playerType: .musicApp, currentTrack: trackWithEmptyArtworkData)
+        }
+        
+        store.send(.appAction(.playerDidQuit(.musicApp))) { state in
+            state.availablePlayers = [.spotify]
+        }
+        
+        store.receive(.appAction(.stopObservingPlayer(.musicApp)))
+        
+        store.receive(.appAction(.currentPlayerDidChange(.spotify))) { state in
+            state.currentPlayerState = CurrentPlayerState(playerType: .spotify, currentTrack: nil)
+        }
+        
+        store.receive(.appAction(.startObservingPlayer(.spotify)))
+        
+        // stop observing shit
         store.send(.appAction(.stopObservingPlayers))
-        store.send(.appAction(.stopObservingMusicPlayer))
+        store.send(.appAction(.stopObservingPlayer(.spotify)))
         
     }
     

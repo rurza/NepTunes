@@ -12,7 +12,7 @@ import Combine
 
 let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
     
-    struct PlayerObservingId: Hashable { }
+    struct AllPlayersObservingId: Hashable { }
     
     switch action {
     case .startObservingPlayers:
@@ -24,7 +24,7 @@ let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<P
                 .playerQuit
                 .map { .playerDidQuit($0) }
         )
-        .cancellable(id: PlayerObservingId())
+        .cancellable(id: AllPlayersObservingId())
         if let playerType = environment.currentlyRunningPlayer() {
             return .merge(effects, Effect<PlayerAppAction, Never>(value: .newPlayerIsAvailable(playerType)))
         }
@@ -40,27 +40,40 @@ let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<P
     case let .currentPlayerDidChange(playerType):
         if let playerType = playerType {
             state.currentPlayerState = CurrentPlayerState(playerType: playerType)
+            return Effect(value: .startObservingPlayer(playerType))
         } else {
             state.currentPlayerState = nil
+            return .none
         }
-        return Effect(value: .startObservingMusicPlayer)
     case let .playerDidQuit(playerType):
+        let stopObservingQuittedPlayerEffect = Effect<PlayerAppAction, Never>(value: .stopObservingPlayer(playerType))
         state.availablePlayers.removeAll(where: { $0 == playerType })
         if state.currentPlayerState?.playerType == playerType && state.availablePlayers.count == 0  {
-            return Effect(value: .currentPlayerDidChange(nil))
+            return .concatenate(
+                stopObservingQuittedPlayerEffect,
+                Effect(value: .currentPlayerDidChange(nil))
+            )
         } else if state.currentPlayerState?.playerType == playerType,
                   let availablePlayerType = state.availablePlayers.first {// current player quit and there is more players available
-            return Effect(value: .currentPlayerDidChange(availablePlayerType))
+            return .concatenate(
+                stopObservingQuittedPlayerEffect,
+                Effect(value: .currentPlayerDidChange(availablePlayerType))
+            )
         }
         return .none
     case .stopObservingPlayers:
-        return .cancel(id: PlayerObservingId())
-    case .startObservingMusicPlayer:
-        /// handled in the parent reducer
+        return .cancel(id: AllPlayersObservingId())
+    case let .startObservingPlayer(playerType):
+        /// part of it is handled in the parent reducer
         return .none
-    case .stopObservingMusicPlayer:
-        return .cancel(id: MusicPlayerObservingId())
-    
+    case let .stopObservingPlayer(playerType):
+        switch playerType {
+        case .musicApp:
+            return .cancel(id: MusicPlayerObservingId())
+        case .spotify:
+            return .cancel(id: SpotifyPlayerObservingId())
+        }
+        
     }
 }
 
