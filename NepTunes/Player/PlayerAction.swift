@@ -24,7 +24,5 @@ enum PlayerAppAction: Equatable {
 
 enum PlayerTrackAction: Equatable {
     case trackDidChange(Track)
-//    case getCoverURL
-//    case getCover(URL)
     case provideDefaultCover
 }

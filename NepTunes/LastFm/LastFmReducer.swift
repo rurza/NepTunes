@@ -62,6 +62,7 @@ let lastFmTrackReducer = Reducer<LastFmState, LastFmTrackAction, SystemEnvironme
         return .none
     }
 }
+.debugActions("👨‍🎤")
 
 
 let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
@@ -90,7 +91,7 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
         )
     }
 }
-.debugActions()
+.debugActions("⏰")
 
 
 let lastFmReducer = Reducer<LastFmState, LastFmAction, SystemEnvironment<LastFmEnvironment>>.combine(

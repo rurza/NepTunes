@@ -37,4 +37,22 @@ let appReducer = AppReducer.combine(
                         }
                     }
         )
+        .combined(with:
+                    Reducer { state, action, environment in
+                        switch action {
+                        case .lastFmAction(.timerAction(.timerTicked)):
+                            guard let track = state.playerState.currentPlayerState?.currentTrack else { return Effect(value: .lastFmAction(.timerAction(.invalidate)))}
+                            let scrobbleRatio = Double(environment.settings.scrobblePercentage) / 100
+                            let secondsElapsed = Double(state.lastFmState.lastFmTimerState.secondsElapsed)
+                            guard state.lastFmState.lastFmTimerState.isTimerActive && secondsElapsed >= track.duration * scrobbleRatio else { return .none }
+                            return .concatenate(
+                                Effect(value: .lastFmAction(.timerAction(.invalidate))),
+                                Effect(value: AppAction.lastFmAction(.trackAction(.scrobbleNow(title: track.title, artist: track.artist, albumArtist: track.albumArtist, album: track.album))))
+                            )
+                                
+                        default:
+                            return .none
+                        }
+                    }
+        )
 )
