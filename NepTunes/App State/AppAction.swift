@@ -7,10 +7,9 @@
 
 import Foundation
 
-enum AppAction: Equatable {
+enum AppAction {
     case playerAction(PlayerAction)
-
-//    case lastFmAction(LastFmAction)
+    case lastFmAction(LastFmAction)
 //    case onboardingAction(OnboardingAction)
 //    case appLifecycleAction(AppLifecycleAction)
 }

@@ -11,9 +11,10 @@ import ComposableArchitecture
 
 @dynamicMemberLookup
 struct SystemEnvironment<Environment> {
-    var date: () -> Date
     var environment: Environment
-    var mainQueue: () -> AnySchedulerOf<DispatchQueue>
+    var mainQueue: AnySchedulerOf<DispatchQueue>
+    var date: () -> Date
+    var settings: SettingsProvider
     
     subscript<Dependency>(
         dynamicMember keyPath: WritableKeyPath<Environment, Dependency>
@@ -28,18 +29,20 @@ struct SystemEnvironment<Environment> {
     /// - Returns: A new system environment.
     static func live(environment: Environment) -> Self {
         Self(
-            date: Date.init,
             environment: environment,
-            mainQueue: { DispatchQueue.main.eraseToAnyScheduler() }
+            mainQueue: .main,
+            date: Date.init,
+            settings: Settings()
         )
     }
     
     /// Transforms the underlying wrapped environment.
     func map<NewEnvironment>(_ transform: @escaping (Environment) -> NewEnvironment) -> SystemEnvironment<NewEnvironment> {
         .init(
-            date: self.date,
             environment: transform(self.environment),
-            mainQueue: self.mainQueue
+            mainQueue: self.mainQueue,
+            date: self.date,
+            settings: self.settings
         )
     }
 }

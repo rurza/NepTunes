@@ -11,7 +11,7 @@ import ComposableArchitecture
 struct MusicPlayerObservingId: Hashable { }
 
 
-let playerReducer = Reducer<SharedState<PlayerState>, PlayerAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
+let playerReducer = Reducer<PlayerState, PlayerAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
     switch action {
     case .appAction(.startObservingMusicPlayer):
         return .merge(
@@ -20,6 +20,7 @@ let playerReducer = Reducer<SharedState<PlayerState>, PlayerAction, SystemEnviro
                 .map { PlayerAction.trackAction(.trackDidChange($0)) }
                 .cancellable(id: MusicPlayerObservingId()),
             environment.getTrackInfo
+                .filter { _ in environment.musicApp.state == .playing }
                 .catch { error in Effect.none }
                 .eraseToEffect()
                 .map { PlayerAction.trackAction(.trackDidChange($0)) }

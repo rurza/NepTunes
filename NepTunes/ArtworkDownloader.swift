@@ -30,5 +30,11 @@ struct ArtworkDownloader {
             .map(\.data)
             .eraseToEffect()
     })
+    
+    static func mock(data: @escaping () -> Data) -> Self {
+        Self { _ in
+            Effect(value: data())
+        }
+    }
 }
 

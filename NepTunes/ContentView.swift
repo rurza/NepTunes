@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct ContentView: View {
     
-    let store: Store<SharedState<PlayerState>, PlayerAction>
+    let store: Store<PlayerState, PlayerAction>
     
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -26,23 +26,3 @@ struct ContentView: View {
     }
 }
 
-
-struct ContentView_Previews: PreviewProvider {
-    
-    static var musicApp: MusicApp {
-        MusicApp()
-    }
-    
-    static var previews: some View {
-        ContentView(store: Store(
-            initialState: SharedState(settings: Settings(), state: PlayerState()),
-            reducer: playerReducer,
-            environment: .live(environment: PlayerEnvironment(newPlayerLaunched: .none,
-                                                              playerQuit: .none,
-                                                              musicTrackDidChange: .none,
-                                                              musicApp: musicApp,
-                                                              getTrackInfo: getTrackCoverFromPlayer(musicApp),
-                                                              artworkDownloader: .live))
-        ))
-    }
-}

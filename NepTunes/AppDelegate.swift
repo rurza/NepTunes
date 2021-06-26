@@ -14,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
     
-    let store = Store(initialState: AppState(), reducer: appReducer, environment: .live(environment: .live))
+    let store = Store(initialState: AppState(), reducer: appReducer, environment: SystemEnvironment.live(environment: AppEnvironment.live))
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.

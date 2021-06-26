@@ -13,7 +13,6 @@ import ComposableArchitecture
 
 @dynamicMemberLookup
 struct SharedState<State: Equatable>: Equatable {
-    var settings: Settings
     var state: State
     
     subscript<Dependency>(
@@ -26,7 +25,6 @@ struct SharedState<State: Equatable>: Equatable {
     /// Transforms the underlying wrapped state.
     func map<NewState>(_ transform: @escaping (State) -> NewState) -> SharedState<NewState> {
         .init(
-            settings: self.settings,
             state: transform(self.state)
         )
     }

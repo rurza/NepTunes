@@ -8,12 +8,14 @@
 import Foundation
 import LastFmKit
 
-enum LastFmAction: Equatable {
+enum LastFmAction {
     case trackAction(LastFmTrackAction)
     case userAction(LastFmUserAction)
+    case timerAction(LastFmTimerAction)
+    case trackDidChange
 }
 
-enum LastFmTrackAction: Equatable {
+enum LastFmTrackAction {
     case scrobbleNow(title: String, artist: String, albumArtist: String?, album: String?)
     case updateNowPlaying(title: String, artist: String, albumArtist: String?, album: String?)
     case love(title: String, artist: String)
@@ -21,30 +23,19 @@ enum LastFmTrackAction: Equatable {
 }
 
 
-enum LastFmUserAction: Equatable {
+enum LastFmUserAction {
     case getUserAvatar(username: String)
     case logIn(username: String, password: String)
     case userLoginResponse(Result<LastFmSession, Error>)
+    case setUsername(String)
+    case password(String)
     case logOut
 }
 
-extension LastFmUserAction {
-    static func == (lhs: LastFmUserAction, rhs: LastFmUserAction) -> Bool {
-        switch (lhs, rhs) {
-        case let (.userLoginResponse(lhsResult), .userLoginResponse(rhsResult)):
-            switch (lhsResult, rhsResult) {
-            case let (.success(lhsSession), .success(rhsSession)):
-                return lhsSession == rhsSession
-            default:
-                return false
-            }
-        case let (.logIn(username: lhsUsername, password: lhsPassword), .logIn(username: rhsUsername, password: rhsPassword)):
-            return lhsUsername == rhsUsername && lhsPassword == rhsPassword
-        case let (.getUserAvatar(username: lhsUsername), .getUserAvatar(username: rhsUsername)):
-            return lhsUsername == rhsUsername
-        default:
-            return false
-        }
-    }
+enum LastFmTimerAction {
+    case invalidate
+    case start
+    case timerTicked
+    case toggle
 }
 

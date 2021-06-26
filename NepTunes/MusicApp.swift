@@ -17,7 +17,8 @@ class MusicApp: Player {
                          artist: bridgeTrack.artist,
                          album: bridgeTrack.album,
                          albumArtist: bridgeTrack.albumArtist,
-                         artworkData: bridgeTrack.artworkImageData)
+                         artworkData: bridgeTrack.artworkImageData,
+                         duration: bridgeTrack.duration)
         }
         return nil
     }

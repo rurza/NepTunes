@@ -9,8 +9,10 @@ import Cocoa
 
 protocol Player {
     var type: PlayerType { get }
+    
+    /// set for the test purposes
     var currentTrack: Track? { get }
-    var volume: Int { set get }
+    var volume: Int { get set }
     var state: MusicPlayerState { get }
     func playPause()
     func nextTrack()

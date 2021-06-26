@@ -14,13 +14,15 @@ struct Track: Equatable {
     var album: String?
     var albumArtist: String?
     var artworkData: Data?
+    var duration: TimeInterval
     
-    init(title: String, artist: String, album: String? = nil, albumArtist: String? = nil, artworkData: Data? = nil) {
+    init(title: String, artist: String, album: String? = nil, albumArtist: String? = nil, artworkData: Data? = nil, duration: TimeInterval) {
         self.title = title
         self.artist = artist
         self.album = album
         self.albumArtist = albumArtist
         self.artworkData = artworkData
+        self.duration = duration
     }
     
     init?(userInfo: [AnyHashable : Any]?) {
@@ -30,6 +32,7 @@ struct Track: Equatable {
             self.title = title
             self.artist = artist
             self.album = userInfo["Album"] as? String
+            self.duration = 0
         } else {
             return nil
         }

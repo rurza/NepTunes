@@ -7,7 +7,7 @@
 
 import ComposableArchitecture
 
-let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, LastFmEnvironment> { state, action, environment in
+let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
     switch action {
     case let .logIn(username: username, password: password):
         return environment.lastFmClient
@@ -15,8 +15,9 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, LastFmEnvironment
             .catchToEffect()
             .map(LastFmUserAction.userLoginResponse)
     case let .userLoginResponse(.success(session)):
-        state.session = session.key
-        state.username = session.name
+        environment.settings.session = session.key
+        environment.settings.username = session.name
+        state.loginState = nil
         return .none
     case let .userLoginResponse(.failure(error)):
         #warning("handle")
@@ -25,23 +26,89 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, LastFmEnvironment
     case .getUserAvatar(username: let username):
         return .none
     case .logOut:
-        state.session = nil
-        state.username = nil
+        environment.settings.session = nil
+        environment.settings.username = nil
+        state.loginState = nil
+        return .none
+    case let .setUsername(username):
+        if var loginState = state.loginState {
+            loginState.username = username
+            state.loginState = loginState
+        } else {
+            state.loginState = LastFmLoginState(username: username, password: nil)
+        }
+        return .none
+    case let .password(password):
+        if var loginState = state.loginState {
+            loginState.password = password
+            state.loginState = loginState
+        } else {
+            state.loginState = LastFmLoginState(username: nil, password: password)
+        }
         return .none
     }
 }
 
-let lastFmTrackReducer = Reducer<LastFmState, LastFmTrackAction, LastFmEnvironment> { state, action, environment in
-    return .none
-}
-
-let lastFmReducer = Reducer<LastFmState, LastFmAction, LastFmEnvironment> { state, action, environment in
+let lastFmTrackReducer = Reducer<LastFmState, LastFmTrackAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
+    
     switch action {
-    case let .trackAction(trackAction):
-        return lastFmTrackReducer.run(&state, trackAction, environment).map { .trackAction($0) }
-    case let .userAction(userAction):
-        return lastFmUserReducer.run(&state, userAction, environment).map { .userAction($0) }
+    case .scrobbleNow(title: let title, artist: let artist, albumArtist: let albumArtist, album: let album):
+        return .none
+    case .updateNowPlaying(title: let title, artist: let artist, albumArtist: let albumArtist, album: let album):
+        return .none
+    case .love(title: let title, artist: let artist):
+        return .none
+    case .unlove(title: let title, artist: let artist):
+        return .none
     }
 }
+
+
+let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
+    
+    struct TimerId: Hashable { }
+    
+    switch action {
+    case .invalidate:
+        state.isTimerActive = false
+        state.secondsElapsed = 0
+        return .cancel(id: TimerId())
+    case .timerTicked:
+        state.secondsElapsed += 1
+        return .none
+    case .toggle:
+        state.isTimerActive.toggle()
+        if state.isTimerActive {
+            return Effect.timer(id: TimerId(), every: 1, on: environment.mainQueue).map { _ in .timerTicked }
+        } else {
+            return .cancel(id: TimerId())
+        }
+    case .start:
+        return .concatenate(
+            Effect(value: .invalidate),
+            Effect(value: .toggle)
+        )
+    }
+}
+.debugActions()
+
+
+let lastFmReducer = Reducer<LastFmState, LastFmAction, SystemEnvironment<LastFmEnvironment>>.combine(
+    Reducer { state, action, environment in
+        switch action {
+        case .trackDidChange:
+            return Effect(value: .timerAction(.start))
+        case let .trackAction(trackAction):
+            return lastFmTrackReducer.run(&state, trackAction, environment).map { .trackAction($0) }
+        case let .userAction(userAction):
+            return lastFmUserReducer.run(&state, userAction, environment).map { .userAction($0) }
+        case .timerAction(_):
+            return .none
+        }
+    },
+    lastFmTimerReducer.pullback(state: \.lastFmTimerState,
+                                action: /LastFmAction.timerAction) { $0 }
+
+)
 
 

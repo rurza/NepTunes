@@ -5,12 +5,12 @@
 //  Created by Adam Różyński on 01/06/2021.
 //
 
-import Cocoa
+import Foundation
 import ComposableArchitecture
 import Combine
 
 
-let playerAppReducer = Reducer<SharedState<PlayerState>, PlayerAppAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
+let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
     
     struct PlayerObservingId: Hashable { }
     
@@ -25,10 +25,8 @@ let playerAppReducer = Reducer<SharedState<PlayerState>, PlayerAppAction, System
                 .map { .playerDidQuit($0) }
         )
         .cancellable(id: PlayerObservingId())
-        for app in NSWorkspace.shared.runningApplications {
-            if let playerType = PlayerType(runningApplication: app) {
-                return .merge(effects, Effect<PlayerAppAction, Never>(value: .newPlayerIsAvailable(playerType)))
-            }
+        if let playerType = environment.currentlyRunningPlayer() {
+            return .merge(effects, Effect<PlayerAppAction, Never>(value: .newPlayerIsAvailable(playerType)))
         }
         return effects
     case let .newPlayerIsAvailable(newPlayerType):

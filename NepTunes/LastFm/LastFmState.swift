@@ -8,25 +8,17 @@
 import Foundation
 
 struct LastFmState: Equatable {
-    /// in the version of the app the key was stored in 'pl.micropixels.neptunes.sessionKey'
-    @UserDefault(key: "lastFmSession", defaultValue: nil) var session: String?
-    
-    /// in the version of the app the key was stored in 'pl.micropixels.neptunes.usernameKey'
-    @UserDefault(key: "lastFmUser", defaultValue: nil) var username: String?
     var loginState: LastFmLoginState?
-    
-    @UserDefault(key: "scrobblePercentage", defaultValue: 50) var scrobblePercentage: UInt
-    
-    static func == (lhs: LastFmState, rhs: LastFmState) -> Bool {
-        lhs.scrobblePercentage == rhs.scrobblePercentage
-            && lhs.username == rhs.username
-            && lhs.session == rhs.session
-    }
-    
+    var lastFmTimerState = LastFmTimerState()
 }
 
-struct LastFmLoginState {
+struct LastFmLoginState: Equatable {
     var username: String?
     var password: String?
+}
+
+struct LastFmTimerState: Equatable {
+    var isTimerActive = false
+    var secondsElapsed = 0
 }
 

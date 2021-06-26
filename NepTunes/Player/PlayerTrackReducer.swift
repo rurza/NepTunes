@@ -8,7 +8,7 @@
 import ComposableArchitecture
 
 
-let playerTrackReducer = Reducer<SharedState<PlayerState>, PlayerTrackAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
+let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
     
     struct RetryGetArtworkId: Hashable { }
     struct DownloadArtworkId: Hashable { }
@@ -17,14 +17,14 @@ let playerTrackReducer = Reducer<SharedState<PlayerState>, PlayerTrackAction, Sy
     case let .trackDidChange(track):
         let effects: [Effect<PlayerTrackAction, Never>] = [.cancel(id: RetryGetArtworkId()), .cancel(id: DownloadArtworkId())]
         state.currentPlayerState?.currentTrack = track
-        if track.artworkData == nil && state.settings.showCover {
+        if track.artworkData == nil && environment.settings.showCover {
             let getArtwork = environment.getTrackInfo
                 .map { return .trackDidChange($0) }
-                .retry(2, delay: 2, scheduler: DispatchQueue.main)
+                .retry(2, delay: 2, scheduler: environment.mainQueue)
                 .catch { _ -> Effect<PlayerTrackAction, Never> in
                     if let album = track.album {
                         return environment.artworkDownloader.getArtworkURL(album)
-                            .receive(on: DispatchQueue.main)
+                            .receive(on: environment.mainQueue)
                             .map { data -> Track in
                                 var track = track
                                 track.artworkData = data
@@ -41,12 +41,8 @@ let playerTrackReducer = Reducer<SharedState<PlayerState>, PlayerTrackAction, Sy
             return .concatenate(effects + [getArtwork])
         }
         return .merge(effects)
-    case .getCoverURL:
-        return .concatenate(.cancel(id: RetryGetArtworkId()))
-        
-    case .getCover(_):
-        return .none
     case .provideDefaultCover:
+        #warning("handle")
         return .none
     }
 }
