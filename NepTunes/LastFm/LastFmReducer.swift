@@ -77,18 +77,13 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
     case .timerTicked:
         state.secondsElapsed += 1
         return .none
-    case .toggle:
-        state.isTimerActive.toggle()
-        if state.isTimerActive {
-            return Effect.timer(id: TimerId(), every: 1, on: environment.mainQueue).map { _ in .timerTicked }
-        } else {
-            return .cancel(id: TimerId())
-        }
     case .start:
-        return .concatenate(
-            Effect(value: .invalidate),
-            Effect(value: .toggle)
-        )
+        guard !state.isTimerActive else { return .none }
+        state.isTimerActive = true
+        return Effect.timer(id: TimerId(), every: 1, on: environment.mainQueue).map { _ in .timerTicked }
+    case .pause:
+        state.isTimerActive = false
+        return .cancel(id: TimerId())
     }
 }
 .debugActions("⏰")
@@ -97,8 +92,6 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
 let lastFmReducer = Reducer<LastFmState, LastFmAction, SystemEnvironment<LastFmEnvironment>>.combine(
     Reducer { state, action, environment in
         switch action {
-        case .trackDidChange:
-            return Effect(value: .timerAction(.start))
         case let .trackAction(trackAction):
             return lastFmTrackReducer.run(&state, trackAction, environment).map { .trackAction($0) }
         case let .userAction(userAction):

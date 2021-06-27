@@ -23,6 +23,7 @@ struct PlayerEnvironment {
     var getTrackInfo: Effect<Track, PlayerEnvironment.Error>
     var artworkDownloader: ArtworkDownloader
     var currentlyRunningPlayer: () -> PlayerType?
+//    var musicStateDidChange: Effect<MusicPlayerState, Never>
     
 //    func playerForPlayerType(_ playerType: PlayerType?) -> Player? {
 //        switch playerType {
@@ -61,7 +62,7 @@ private let getTrackCoverFromPlayer: (Player) -> Effect<Track, PlayerEnvironment
                     subscriber.send(completion: .finished)
                 }
             } else {
-                fatalError()
+                subscriber.send(completion: .finished)
             }
             return AnyCancellable { }
         }.eraseToEffect()
@@ -75,3 +76,13 @@ private let getCurrentlyRunningPlayer: () -> PlayerType? = {
     }
     return nil
 }
+
+//private let musicStateDidChangeEffect: (Player) -> Effect<MusicPlayerState, Never> =
+//    { player in
+//        DistributedNotificationCenter
+//            .default
+//            .publisher(for: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"))
+//            .compactMap { _ in player.state }
+//            .eraseToEffect()
+//    }
+

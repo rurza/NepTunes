@@ -20,9 +20,11 @@ enum PlayerAppAction: Equatable {
     case stopObservingPlayers
     case startObservingPlayer(PlayerType)
     case stopObservingPlayer(PlayerType)
+    case musicStateDidChange(MusicPlayerState)
 }
 
 enum PlayerTrackAction: Equatable {
     case trackDidChange(Track)
+    case currentTrackWasUpdated(Track)
     case provideDefaultCover
 }

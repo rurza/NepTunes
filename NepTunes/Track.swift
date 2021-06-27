@@ -37,4 +37,8 @@ struct Track: Equatable {
             return nil
         }
     }
+    
+    func isTheSameTrackAs(_ track: Track?) -> Bool {
+        self.artist == track?.artist && self.title == track?.title && self.album == track?.album
+    }
 }

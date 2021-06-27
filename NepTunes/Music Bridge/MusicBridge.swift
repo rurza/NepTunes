@@ -61,6 +61,7 @@ enum MusicPlayerState { // Music' 'player state' property
     case fastForwarding
     case rewinding
     
+    ///stopped, playing, paused, fast forwarding, rewinding}
     init(rawValue: Int) {
         switch rawValue {
         case 1:

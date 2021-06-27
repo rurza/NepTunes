@@ -73,7 +73,8 @@ let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<P
         case .spotify:
             return .cancel(id: SpotifyPlayerObservingId())
         }
-        
+    case let .musicStateDidChange(state):
+        return .none
     }
 }
 

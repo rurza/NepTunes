@@ -12,7 +12,7 @@ enum LastFmAction {
     case trackAction(LastFmTrackAction)
     case userAction(LastFmUserAction)
     case timerAction(LastFmTimerAction)
-    case trackDidChange
+//    case trackDidChange
 }
 
 enum LastFmTrackAction {
@@ -36,6 +36,6 @@ enum LastFmTimerAction {
     case invalidate
     case start
     case timerTicked
-    case toggle
+    case pause
 }
 

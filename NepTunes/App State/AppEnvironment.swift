@@ -49,8 +49,13 @@ private let playerQuitEffect = NSWorkspace.shared
     }
     .eraseToEffect()
 
-private let musicTrackDidChangeEffect: Effect<Track, Never> = DistributedNotificationCenter
+private let musicTrackDidChangeEffect: Effect<Track, Never>
+    = DistributedNotificationCenter
     .default
     .publisher(for: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"))
+    .map { note -> Notification in
+        print(note.userInfo)
+        return note
+    }
     .compactMap { Track(userInfo: $0.userInfo) }
     .eraseToEffect()
