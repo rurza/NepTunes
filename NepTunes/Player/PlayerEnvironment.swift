@@ -12,8 +12,14 @@ import DeezerClient
 
 struct PlayerEnvironment {
     
-    enum Error: Swift.Error {
-        case noCover
+    struct Error: Swift.Error {
+        enum `Type` {
+            case noCover
+            case noDuration
+            case noTrack
+        }
+        let type: Type
+        let track: Track
     }
     
     var newPlayerLaunched: Effect<PlayerType, Never>
@@ -23,18 +29,6 @@ struct PlayerEnvironment {
     var getTrackInfo: Effect<Track, PlayerEnvironment.Error>
     var artworkDownloader: ArtworkDownloader
     var currentlyRunningPlayer: () -> PlayerType?
-//    var musicStateDidChange: Effect<MusicPlayerState, Never>
-    
-//    func playerForPlayerType(_ playerType: PlayerType?) -> Player? {
-//        switch playerType {
-//        case .musicApp:
-//            return musicApp
-//        case .none:
-//            return nil
-//        default:
-//            fatalError()
-//        }
-//    }
     
 }
 
@@ -44,25 +38,27 @@ extension PlayerEnvironment {
                     playerQuit: appEnvironment.playerQuit,
                     musicTrackDidChange: appEnvironment.musicTrackDidChange,
                     musicApp: appEnvironment.musicApp,
-                    getTrackInfo: getTrackCoverFromPlayer(appEnvironment.musicApp),
+                    getTrackInfo: getTrackInfoFromPlayer(appEnvironment.musicApp),
                     artworkDownloader: appEnvironment.artworkDownloader,
                     currentlyRunningPlayer: getCurrentlyRunningPlayer)
     }
 }
 
 
-private let getTrackCoverFromPlayer: (Player) -> Effect<Track, PlayerEnvironment.Error> = { player in
+private let getTrackInfoFromPlayer: (Player) -> Effect<Track, PlayerEnvironment.Error> = { player in
     Effect<Track, PlayerEnvironment.Error>
         .run { subscriber in
             if let track = player.currentTrack {
-                if track.artworkData == nil {
-                    subscriber.send(completion: .failure(.noCover))
+                if track.duration == nil {
+                    subscriber.send(completion: .failure(PlayerEnvironment.Error(type: .noDuration, track: track)))
+                } else if track.artworkData == nil {
+                    subscriber.send(completion: .failure(PlayerEnvironment.Error(type: .noCover, track: track)))
                 } else {
                     subscriber.send(track)
                     subscriber.send(completion: .finished)
                 }
             } else {
-                subscriber.send(completion: .finished)
+                subscriber.send(completion: .failure(PlayerEnvironment.Error(type: .noTrack, track: .emptyTrack)))
             }
             return AnyCancellable { }
         }.eraseToEffect()
@@ -76,13 +72,3 @@ private let getCurrentlyRunningPlayer: () -> PlayerType? = {
     }
     return nil
 }
-
-//private let musicStateDidChangeEffect: (Player) -> Effect<MusicPlayerState, Never> =
-//    { player in
-//        DistributedNotificationCenter
-//            .default
-//            .publisher(for: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"))
-//            .compactMap { _ in player.state }
-//            .eraseToEffect()
-//    }
-

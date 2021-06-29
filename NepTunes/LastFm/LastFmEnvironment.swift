@@ -12,13 +12,3 @@ import ComposableArchitecture
 struct LastFmEnvironment {
     var lastFmClient: LastFmClient
 }
-
-let scrobbleTimer: (Track, TimeInterval) -> Effect<Track, Never> = { track, interval in
-    Timer.publish(every: interval,
-                  on: .main,
-                  in: .common,
-                  options: nil)
-        .autoconnect()
-        .map { _ in track }
-        .eraseToEffect()
-}

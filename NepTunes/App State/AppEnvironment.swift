@@ -54,7 +54,6 @@ private let musicTrackDidChangeEffect: Effect<Track, Never>
     .default
     .publisher(for: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"))
     .map { note -> Notification in
-        print(note.userInfo)
         return note
     }
     .compactMap { Track(userInfo: $0.userInfo) }

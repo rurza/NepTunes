@@ -18,6 +18,7 @@ struct LastFmLoginState: Equatable {
 }
 
 struct LastFmTimerState: Equatable {
+    /// not sure if this is needed
     var isTimerActive = false
     var secondsElapsed = 0
 }

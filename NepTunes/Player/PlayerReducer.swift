@@ -19,13 +19,13 @@ let playerReducer = Reducer<PlayerState, PlayerAction, SystemEnvironment<PlayerE
             return .merge(
                 environment
                     .musicTrackDidChange
-                    .map { PlayerAction.trackAction(.trackDidChange($0)) }
+                    .map { PlayerAction.trackAction(.playerInfo($0)) }
                     .cancellable(id: MusicPlayerObservingId()),
                 environment.getTrackInfo
-                    .filter { _ in environment.musicApp.state == .playing }
-                    .catch { error in Effect.none }
+                    .catch { error in Effect(value: error.track) }
+                    .filter { _ in environment.musicApp.state == .playing || environment.musicApp.state == .paused }
                     .eraseToEffect()
-                    .map { PlayerAction.trackAction(.trackDidChange($0)) }
+                    .map { PlayerAction.trackAction(.playerInfo($0)) }
                 )
             .cancellable(id: MusicPlayerObservingId())
         case .spotify:

@@ -34,7 +34,6 @@
 		6677B521266C296900E54145 /* SystemEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6677B520266C296900E54145 /* SystemEnvironment.swift */; };
 		6677B523266C2AA200E54145 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6677B522266C2AA200E54145 /* Publisher+.swift */; };
 		6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC37265039F100FEF316 /* SwiftCurry */; };
-		6677EC3E26503ADF00FEF316 /* DeezerClient in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC3D26503ADF00FEF316 /* DeezerClient */; };
 		66828D8E2687B1610012F60A /* MockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D8D2687B1610012F60A /* MockSettings.swift */; };
 		66828D922687BB160012F60A /* MusicAppMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D912687BB160012F60A /* MusicAppMock.swift */; };
 		668749A3264F25BA00BAF594 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 668749A2264F25BA00BAF594 /* Nuke */; };
@@ -49,6 +48,7 @@
 		66A1DB252666BDA4006BD2DD /* PlayerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */; };
 		66A1DB272666C165006BD2DD /* PlayerAppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB262666C165006BD2DD /* PlayerAppReducer.swift */; };
 		66A1DB292666C72E006BD2DD /* LastFmClient+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB282666C72E006BD2DD /* LastFmClient+.swift */; };
+		66B5B5D6268A570E00253831 /* DeezerClient in Frameworks */ = {isa = PBXBuildFile; productRef = 66B5B5D5268A570E00253831 /* DeezerClient */; };
 		66CDC3A4266FEED800AF773E /* SharedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A3266FEED800AF773E /* SharedState.swift */; };
 		66CDC3A6266FF01800AF773E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A5266FF01800AF773E /* Settings.swift */; };
 		66CF7F87266E853B00B4B418 /* Reducer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CF7F86266E853B00B4B418 /* Reducer+.swift */; };
@@ -135,6 +135,7 @@
 		66A1DB242666BDA4006BD2DD /* PlayerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEnvironment.swift; sourceTree = "<group>"; };
 		66A1DB262666C165006BD2DD /* PlayerAppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAppReducer.swift; sourceTree = "<group>"; };
 		66A1DB282666C72E006BD2DD /* LastFmClient+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LastFmClient+.swift"; sourceTree = "<group>"; };
+		66B5B5D4268A4B2600253831 /* DeezerClient */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DeezerClient; path = ../DeezerClient; sourceTree = "<group>"; };
 		66CDC3A3266FEED800AF773E /* SharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedState.swift; sourceTree = "<group>"; };
 		66CDC3A5266FF01800AF773E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		66CF7F86266E853B00B4B418 /* Reducer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reducer+.swift"; sourceTree = "<group>"; };
@@ -151,8 +152,8 @@
 				66A1DB1F2666B7C5006BD2DD /* LastFmKit in Frameworks */,
 				66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */,
 				668749A3264F25BA00BAF594 /* Nuke in Frameworks */,
+				66B5B5D6268A570E00253831 /* DeezerClient in Frameworks */,
 				6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */,
-				6677EC3E26503ADF00FEF316 /* DeezerClient in Frameworks */,
 				663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,6 +171,7 @@
 		661AD7B02639D5C000B0292D = {
 			isa = PBXGroup;
 			children = (
+				66B5B5D4268A4B2600253831 /* DeezerClient */,
 				66A1DB1D2666B7BD006BD2DD /* LastFmKit */,
 				664C5E2B26619DDA00197596 /* NepTunesKit */,
 				661AD7BB2639D5C000B0292D /* NepTunes */,
@@ -324,9 +326,9 @@
 				66D043D6263B237C008E07B2 /* ComposableArchitecture */,
 				668749A2264F25BA00BAF594 /* Nuke */,
 				6677EC37265039F100FEF316 /* SwiftCurry */,
-				6677EC3D26503ADF00FEF316 /* DeezerClient */,
 				664C5E2C26619DDF00197596 /* NepTunesKit */,
 				66A1DB1E2666B7C5006BD2DD /* LastFmKit */,
+				66B5B5D5268A570E00253831 /* DeezerClient */,
 			);
 			productName = NepTunes;
 			productReference = 661AD7B92639D5C000B0292D /* NepTunes.app */;
@@ -382,7 +384,6 @@
 				66D043D5263B237C008E07B2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				668749A1264F25BA00BAF594 /* XCRemoteSwiftPackageReference "Nuke" */,
 				6677EC36265039F100FEF316 /* XCRemoteSwiftPackageReference "SwiftCurry" */,
-				6677EC3C26503ADF00FEF316 /* XCRemoteSwiftPackageReference "DeezerClient" */,
 			);
 			productRefGroup = 661AD7BA2639D5C000B0292D /* Products */;
 			projectDirPath = "";
@@ -748,14 +749,6 @@
 				kind = branch;
 			};
 		};
-		6677EC3C26503ADF00FEF316 /* XCRemoteSwiftPackageReference "DeezerClient" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/rurza/DeezerClient";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		668749A1264F25BA00BAF594 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke.git";
@@ -784,11 +777,6 @@
 			package = 6677EC36265039F100FEF316 /* XCRemoteSwiftPackageReference "SwiftCurry" */;
 			productName = SwiftCurry;
 		};
-		6677EC3D26503ADF00FEF316 /* DeezerClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6677EC3C26503ADF00FEF316 /* XCRemoteSwiftPackageReference "DeezerClient" */;
-			productName = DeezerClient;
-		};
 		668749A2264F25BA00BAF594 /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 668749A1264F25BA00BAF594 /* XCRemoteSwiftPackageReference "Nuke" */;
@@ -797,6 +785,10 @@
 		66A1DB1E2666B7C5006BD2DD /* LastFmKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LastFmKit;
+		};
+		66B5B5D5268A570E00253831 /* DeezerClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DeezerClient;
 		};
 		66D043D6263B237C008E07B2 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;

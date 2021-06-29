@@ -10,14 +10,14 @@ import ComposableArchitecture
 import DeezerClient
 
 struct ArtworkDownloader {
-    var getArtworkURL: (String) -> Effect<Data, Error>
+    var getArtworkURL: (String, String) -> Effect<Data, Error>
     
     struct NotFound: Error { }
     
-    static let live = Self(getArtworkURL: { album in
-        DeezerClient().searchForAlbum(named: album)
+    static let live = Self(getArtworkURL: { album, artist in
+        DeezerClient().searchForAlbum(named: album, byArtist: artist)
             .tryCompactMap { response -> URL? in
-                if let cover = response.data.first?.bigCover {
+                if let cover = response.data.first?.album?.bigCover {
                     return cover
                 }
                 throw NotFound()
@@ -32,7 +32,7 @@ struct ArtworkDownloader {
     })
     
     static func mock(data: @escaping () -> Data) -> Self {
-        Self { _ in
+        Self { _, _  in
             Effect(value: data())
         }
     }

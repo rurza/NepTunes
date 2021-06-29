@@ -14,9 +14,9 @@ struct Track: Equatable {
     var album: String?
     var albumArtist: String?
     var artworkData: Data?
-    var duration: TimeInterval
+    var duration: TimeInterval?
     
-    init(title: String, artist: String, album: String? = nil, albumArtist: String? = nil, artworkData: Data? = nil, duration: TimeInterval) {
+    init(title: String, artist: String, album: String? = nil, albumArtist: String? = nil, artworkData: Data? = nil, duration: TimeInterval?) {
         self.title = title
         self.artist = artist
         self.album = album
@@ -25,18 +25,20 @@ struct Track: Equatable {
         self.duration = duration
     }
     
-    init?(userInfo: [AnyHashable : Any]?) {
+    init(userInfo: [AnyHashable : Any]?) {
         if let userInfo = userInfo,
            let title = userInfo["Name"] as? String,
            let artist = userInfo["Artist"] as? String {
             self.title = title
             self.artist = artist
             self.album = userInfo["Album"] as? String
-            self.duration = 0
+            self.duration = nil
         } else {
-            return nil
+            self = .emptyTrack
         }
     }
+    
+    static let emptyTrack = Track(title: "", artist: "", duration: nil)
     
     func isTheSameTrackAs(_ track: Track?) -> Bool {
         self.artist == track?.artist && self.title == track?.title && self.album == track?.album
