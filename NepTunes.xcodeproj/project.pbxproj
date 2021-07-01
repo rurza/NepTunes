@@ -53,6 +53,7 @@
 		66CDC3A6266FF01800AF773E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A5266FF01800AF773E /* Settings.swift */; };
 		66CF7F87266E853B00B4B418 /* Reducer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CF7F86266E853B00B4B418 /* Reducer+.swift */; };
 		66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 66D043D6263B237C008E07B2 /* ComposableArchitecture */; };
+		66D4D8B7268E2D9900C5B565 /* LastFmReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8B6268E2D9900C5B565 /* LastFmReducerTests.swift */; };
 		66F8F7AB2651AA0D007AA13F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AA2651AA0D007AA13F /* Player.swift */; };
 		66F8F7AD2651AA39007AA13F /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F8F7AC2651AA39007AA13F /* Track.swift */; };
 /* End PBXBuildFile section */
@@ -139,6 +140,7 @@
 		66CDC3A3266FEED800AF773E /* SharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedState.swift; sourceTree = "<group>"; };
 		66CDC3A5266FF01800AF773E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		66CF7F86266E853B00B4B418 /* Reducer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reducer+.swift"; sourceTree = "<group>"; };
+		66D4D8B6268E2D9900C5B565 /* LastFmReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmReducerTests.swift; sourceTree = "<group>"; };
 		66F8F7AA2651AA0D007AA13F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		66F8F7AC2651AA39007AA13F /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,6 +236,7 @@
 			children = (
 				661AD7D42639D5C100B0292D /* Info.plist */,
 				661AD7D22639D5C100B0292D /* PlayerReducerTests.swift */,
+				66D4D8B6268E2D9900C5B565 /* LastFmReducerTests.swift */,
 				66828D8D2687B1610012F60A /* MockSettings.swift */,
 				66828D912687BB160012F60A /* MusicAppMock.swift */,
 			);
@@ -465,6 +468,7 @@
 				66828D8E2687B1610012F60A /* MockSettings.swift in Sources */,
 				66828D922687BB160012F60A /* MusicAppMock.swift in Sources */,
 				661AD7D32639D5C100B0292D /* PlayerReducerTests.swift in Sources */,
+				66D4D8B7268E2D9900C5B565 /* LastFmReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

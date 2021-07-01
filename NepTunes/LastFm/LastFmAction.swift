@@ -8,14 +8,13 @@
 import Foundation
 import LastFmKit
 
-enum LastFmAction {
+enum LastFmAction: Equatable {
     case trackAction(LastFmTrackAction)
     case userAction(LastFmUserAction)
     case timerAction(LastFmTimerAction)
-//    case trackDidChange
 }
 
-enum LastFmTrackAction {
+enum LastFmTrackAction: Equatable {
     case scrobbleNow(title: String, artist: String, albumArtist: String?, album: String?)
     case updateNowPlaying(title: String, artist: String, albumArtist: String?, album: String?)
     case love(title: String, artist: String)
@@ -23,16 +22,40 @@ enum LastFmTrackAction {
 }
 
 
-enum LastFmUserAction {
+enum LastFmUserAction: Equatable {
     case getUserAvatar(username: String)
     case logIn(username: String, password: String)
     case userLoginResponse(Result<LastFmSession, Error>)
     case setUsername(String)
     case password(String)
     case logOut
+    
+    static func == (lhs: LastFmUserAction, rhs: LastFmUserAction) -> Bool {
+        switch (lhs, rhs) {
+        case let (.userLoginResponse(lhsResult), .userLoginResponse(rhsResult)):
+            switch (lhsResult, rhsResult) {
+            case let (.success(lhsSession), .success(rhsSession)):
+                return lhsSession == rhsSession
+            default:
+                return false
+            }
+        case let (.logIn(username: lhsUsername, password: lhsPassword), .logIn(username: rhsUsername, password: rhsPassword)):
+            return lhsUsername == rhsUsername && lhsPassword == rhsPassword
+        case let (.getUserAvatar(username: lhsUsername), .getUserAvatar(username: rhsUsername)):
+            return lhsUsername == rhsUsername
+        case let (.setUsername(lhsUsername), .setUsername(rhsUsername)):
+            return lhsUsername == rhsUsername
+        case let (.password(lhsPassword), .password(rhsPassword)):
+            return lhsPassword == rhsPassword
+        case (.logOut, .logOut):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
-enum LastFmTimerAction {
+enum LastFmTimerAction: Equatable {
     case invalidate
     case start
     case timerTicked
