@@ -28,7 +28,7 @@ class PlayerReducerTests: XCTestCase {
                              artworkData: nil,
                              duration: 396)
         
-        let getTrackArtwork = Effect<Track, PlayerEnvironment.Error>(error: PlayerEnvironment.Error.noCover)
+        let getTrackArtwork = Effect<Track, PlayerEnvironment.Error>(error: PlayerEnvironment.Error(type: .noDuration, track: .emptyTrack))
         
         // artwork data used for the ArtworkDownloader
         let artworkData = Data()
@@ -65,20 +65,37 @@ class PlayerReducerTests: XCTestCase {
         store.receive(.appAction(.startObservingPlayer(.musicApp)))
 
         
-        store.send(.trackAction(.trackDidChange(newTrack))) { state in
+        store.send(.trackAction(.playerInfo(.emptyTrack))) { state in
+            state.currentPlayerState?.currentTrack = nil
+        }
+        
+        // 1. we received new info about the track
+        store.send(.trackAction(.playerInfo(newTrack)))
+        
+        // 2. the track is new, so we'll receive .newTrack action
+        store.receive(.trackAction(.newTrack(newTrack)))
+        
+        // 3. the track has duration, so we'll receive .trackBasicInfoAvailable and the state will change
+        store.receive(.trackAction(.trackBasicInfoAvailable(newTrack))) { state in
             state.currentPlayerState?.currentTrack = newTrack
         }
         
-        var trackWithEmptyArtworkData = newTrack
-        trackWithEmptyArtworkData.artworkData = artworkData
+        // 4. but the track doesn't have the artwork data, so we'll try to get the cover using `artworkDownloader`
+        store.receive(.trackAction(.trackCoverNeedsToBeDownloaded(newTrack)))
         
-        store.receive(.trackAction(.trackDidChange(trackWithEmptyArtworkData))) { state in
-            state.currentPlayerState?.currentTrack = trackWithEmptyArtworkData
+        // 5. the artwork downloader will provide `artworkData` for the track, so our reducer will return effect with
+        // `trackBasicInfoAvailable` but with the data
+        var trackWithData = newTrack
+        trackWithData.artworkData = artworkData
+        
+        // 6. and the state will change, where we have the full info about the track
+        store.receive(.trackAction(.trackBasicInfoAvailable(trackWithData))) { state in
+            state.currentPlayerState?.currentTrack = trackWithData
         }
         
         store.send(.appAction(.newPlayerIsAvailable(.spotify))) { state in
             state.availablePlayers = [.musicApp, .spotify]
-            state.currentPlayerState = CurrentPlayerState(playerType: .musicApp, currentTrack: trackWithEmptyArtworkData)
+            state.currentPlayerState = CurrentPlayerState(playerType: .musicApp, currentTrack: trackWithData)
         }
         
         store.send(.appAction(.playerDidQuit(.musicApp))) { state in
