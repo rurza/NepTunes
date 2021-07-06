@@ -22,25 +22,33 @@ struct PlayerEnvironment {
         let track: Track
     }
     
+    var spotifyApp: Player
+    var musicApp: Player
+    var currentlyRunningPlayer: () -> PlayerType?
+    var artworkDownloader: ArtworkDownloader
+
+    // Effects
     var newPlayerLaunched: Effect<PlayerType, Never>
     var playerQuit: Effect<PlayerType, Never>
     var musicTrackDidChange: Effect<Track, Never>
-    var musicApp: Player
-    var getTrackInfo: Effect<Track, PlayerEnvironment.Error>
-    var artworkDownloader: ArtworkDownloader
-    var currentlyRunningPlayer: () -> PlayerType?
+    var spotifyTrackDidChange: Effect<Track, Never>
+    var getMusicTrackInfo: Effect<Track, PlayerEnvironment.Error>
+    var getSpotifyTrackInfo: Effect<Track, PlayerEnvironment.Error>
     
 }
 
 extension PlayerEnvironment {
     static func live(appEnvironment: AppEnvironment) -> Self {
-        return Self(newPlayerLaunched: appEnvironment.newPlayerLaunched,
+        return Self(spotifyApp: appEnvironment.spotifyApp,
+                    musicApp: appEnvironment.musicApp ,
+                    currentlyRunningPlayer: getCurrentlyRunningPlayer,
+                    artworkDownloader: appEnvironment.artworkDownloader,
+                    newPlayerLaunched: appEnvironment.newPlayerLaunched,
                     playerQuit: appEnvironment.playerQuit,
                     musicTrackDidChange: appEnvironment.musicTrackDidChange,
-                    musicApp: appEnvironment.musicApp,
-                    getTrackInfo: getTrackInfoFromPlayer(appEnvironment.musicApp),
-                    artworkDownloader: appEnvironment.artworkDownloader,
-                    currentlyRunningPlayer: getCurrentlyRunningPlayer)
+                    spotifyTrackDidChange: appEnvironment.spotifyTrackDidChange,
+                    getMusicTrackInfo: getTrackInfoFromPlayer(appEnvironment.musicApp),
+                    getSpotifyTrackInfo: getTrackInfoFromPlayer(appEnvironment.spotifyApp))
     }
 }
 

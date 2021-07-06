@@ -1,23 +1,22 @@
 //
-//  MusicApp.swift
+//  SpotifyApp.swift
 //  NepTunes
 //
-//  Created by Adam Różyński on 10/05/2021.
+//  Created by Adam Różyński on 06/07/2021.
 //
 
 import Foundation
-import ScriptingBridge
 
-class MusicApp: Player {
+class SpotifyApp: Player {
     
-    var type: PlayerType = .musicApp
+    var type: PlayerType = .spotify
     var currentTrack: Track? {
         if let bridgeTrack = bridge.currentTrack {
             return Track(title: bridgeTrack.title,
                          artist: bridgeTrack.artist,
                          album: bridgeTrack.album,
                          albumArtist: bridgeTrack.albumArtist,
-                         artworkData: bridgeTrack.artworkImageData,
+                         artworkData: nil,
                          duration: bridgeTrack.duration)
         }
         return nil
@@ -31,16 +30,16 @@ class MusicApp: Player {
         }
     }
     
-    var state: MusicPlayerState {
-        bridge.state
+    var state: PlayerPlaybackState {
+        bridge.state.playerPlaybackState()
     }
     
-    private lazy var bridge: MusicBridge = {
+    private lazy var bridge: SpotifyBridge = {
         // AppleScriptObjC setup
         Bundle.main.loadAppleScriptObjectiveCScripts()
         // create an instance of MusicBridge script object for Swift code to use
-        let musicAppleScriptClass: AnyClass = NSClassFromString("MusicScript")!
-        let bridge = musicAppleScriptClass.alloc() as! MusicBridge
+        let musicAppleScriptClass: AnyClass = NSClassFromString("SpotifyScript")!
+        let bridge = musicAppleScriptClass.alloc() as! SpotifyBridge
         return bridge
     }()
     
@@ -53,8 +52,7 @@ class MusicApp: Player {
     }
     
     func backTrack() {
-        bridge.backTrack()
+        bridge.previousTrack()
     }
-    
     
 }

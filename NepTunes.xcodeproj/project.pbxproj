@@ -14,6 +14,10 @@
 		661AD7C42639D5C100B0292D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C32639D5C100B0292D /* Preview Assets.xcassets */; };
 		661AD7C72639D5C100B0292D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C52639D5C100B0292D /* Main.storyboard */; };
 		661AD7D32639D5C100B0292D /* PlayerReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7D22639D5C100B0292D /* PlayerReducerTests.swift */; };
+		6629725C2694A39500D31DCD /* SpotifyScript.applescript in Sources */ = {isa = PBXBuildFile; fileRef = 6629725B2694A39500D31DCD /* SpotifyScript.applescript */; };
+		6629725E2694A84A00D31DCD /* SpotifyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6629725D2694A84A00D31DCD /* SpotifyBridge.swift */; };
+		662972602694B7AE00D31DCD /* SpotifyTrackInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6629725F2694B7AE00D31DCD /* SpotifyTrackInfo.swift */; };
+		662972622694B8EE00D31DCD /* SpotifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662972612694B8EE00D31DCD /* SpotifyApp.swift */; };
 		662A8050266FC2D300249A69 /* ArtworkDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A804F266FC2D300249A69 /* ArtworkDownloader.swift */; };
 		663392F22649B4EB00930323 /* MusicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663392F12649B4EB00930323 /* MusicApp.swift */; };
 		663392FB2649C69400930323 /* MusicBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663392FA2649C69400930323 /* MusicBridge.swift */; };
@@ -109,6 +113,10 @@
 		661AD7CE2639D5C100B0292D /* NepTunesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NepTunesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		661AD7D22639D5C100B0292D /* PlayerReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerReducerTests.swift; sourceTree = "<group>"; };
 		661AD7D42639D5C100B0292D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6629725B2694A39500D31DCD /* SpotifyScript.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = SpotifyScript.applescript; sourceTree = "<group>"; };
+		6629725D2694A84A00D31DCD /* SpotifyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyBridge.swift; sourceTree = "<group>"; };
+		6629725F2694B7AE00D31DCD /* SpotifyTrackInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTrackInfo.swift; sourceTree = "<group>"; };
+		662972612694B8EE00D31DCD /* SpotifyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyApp.swift; sourceTree = "<group>"; };
 		662A804F266FC2D300249A69 /* ArtworkDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDownloader.swift; sourceTree = "<group>"; };
 		663392F12649B4EB00930323 /* MusicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicApp.swift; sourceTree = "<group>"; };
 		663392F72649C5E200930323 /* MusicScript.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = MusicScript.applescript; sourceTree = "<group>"; };
@@ -209,7 +217,6 @@
 				66A1DB1C2665759C006BD2DD /* App State */,
 				66A1DB16266564D1006BD2DD /* AppLifecycleAction.swift */,
 				6650D2D32683CC77003279A0 /* Player */,
-				663392F12649B4EB00930323 /* MusicApp.swift */,
 				66F8F7AC2651AA39007AA13F /* Track.swift */,
 				6677B520266C296900E54145 /* SystemEnvironment.swift */,
 				6677B522266C2AA200E54145 /* Publisher+.swift */,
@@ -222,6 +229,7 @@
 				66A1DB202666B9E9006BD2DD /* Onboarding */,
 				663A9B61264DAF7E0038CD06 /* UserDefault.swift */,
 				663A9B63264DBE150038CD06 /* Secrets.swift */,
+				6629725A2694A34000D31DCD /* Spotify Bridge */,
 				663392F92649C68600930323 /* Music Bridge */,
 				661AD7BE2639D5C000B0292D /* ContentView.swift */,
 				661AD7C02639D5C100B0292D /* Assets.xcassets */,
@@ -255,9 +263,21 @@
 			path = NepTunesTests;
 			sourceTree = "<group>";
 		};
+		6629725A2694A34000D31DCD /* Spotify Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				6629725B2694A39500D31DCD /* SpotifyScript.applescript */,
+				6629725D2694A84A00D31DCD /* SpotifyBridge.swift */,
+				6629725F2694B7AE00D31DCD /* SpotifyTrackInfo.swift */,
+				662972612694B8EE00D31DCD /* SpotifyApp.swift */,
+			);
+			path = "Spotify Bridge";
+			sourceTree = "<group>";
+		};
 		663392F92649C68600930323 /* Music Bridge */ = {
 			isa = PBXGroup;
 			children = (
+				663392F12649B4EB00930323 /* MusicApp.swift */,
 				663392F72649C5E200930323 /* MusicScript.applescript */,
 				663392FA2649C69400930323 /* MusicBridge.swift */,
 				663A9B55264D011E0038CD06 /* MusicTrackInfo.swift */,
@@ -459,6 +479,7 @@
 				663392F22649B4EB00930323 /* MusicApp.swift in Sources */,
 				6650D2D02683C66B003279A0 /* PlayerTrackReducer.swift in Sources */,
 				663A9B58264DA56B0038CD06 /* AppState.swift in Sources */,
+				6629725E2694A84A00D31DCD /* SpotifyBridge.swift in Sources */,
 				66F8F7AD2651AA39007AA13F /* Track.swift in Sources */,
 				668749A7264F278500BAF594 /* OnboardingState.swift in Sources */,
 				6650D2D22683C89D003279A0 /* PlayerReducer.swift in Sources */,
@@ -468,10 +489,13 @@
 				663A9B66264DC6430038CD06 /* LastFmAction.swift in Sources */,
 				66A1DB1B26656B46006BD2DD /* LastFmEnvironment.swift in Sources */,
 				66D4D8BC268E56BD00C5B565 /* PlayerScrobblerState.swift in Sources */,
+				662972622694B8EE00D31DCD /* SpotifyApp.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,
 				66A1DB272666C165006BD2DD /* PlayerAppReducer.swift in Sources */,
 				663A9B56264D011E0038CD06 /* MusicTrackInfo.swift in Sources */,
+				6629725C2694A39500D31DCD /* SpotifyScript.applescript in Sources */,
 				668749A9264F278E00BAF594 /* OnboardingAction.swift in Sources */,
+				662972602694B7AE00D31DCD /* SpotifyTrackInfo.swift in Sources */,
 				663392FB2649C69400930323 /* MusicBridge.swift in Sources */,
 				6677B521266C296900E54145 /* SystemEnvironment.swift in Sources */,
 				66D4D8BE268E56D900C5B565 /* PlayerScrobblerReducer.swift in Sources */,

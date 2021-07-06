@@ -13,7 +13,7 @@ protocol Player {
     /// set for the test purposes
     var currentTrack: Track? { get }
     var volume: Int { get set }
-    var state: MusicPlayerState { get }
+    var state: PlayerPlaybackState { get }
     func playPause()
     func nextTrack()
     func backTrack()
@@ -30,4 +30,11 @@ extension PlayerType {
         guard let bundleIdentifier = runningApplication?.bundleIdentifier else { return nil }
         self.init(rawValue: bundleIdentifier)
     }
+}
+
+enum PlayerPlaybackState {
+    case unknown
+    case stopped
+    case playing
+    case paused
 }

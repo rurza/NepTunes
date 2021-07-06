@@ -19,6 +19,7 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
     /// that's is playing right now or that the music app send some garbage notification (like "Connecting...")
     case let .playerInfo(track):
         let previousTrack = state.currentPlayerState?.currentTrack
+        #warning("SUPPORT ADS FROM SPOTIFY")
         if track == Track.emptyTrack { // garbage from Music.app
             /// we actually want to set the current track to nil
             state.currentPlayerState?.currentTrack = nil
@@ -44,7 +45,8 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
         
         /// if we don't have the duration – we want to get it
         if track.duration == nil {
-            return environment.getTrackInfo
+            #warning("FIX")
+            return environment.getSpotifyTrackInfo
                 .cancellable(id: RetryGetTrackDurationId())
                 .retry(2, delay: 1, scheduler: environment.mainQueue)
                 .catch { error in
@@ -67,7 +69,7 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
             return .none
         }
     case let .trackCoverNeedsToBeDownloaded(track):
-        return environment.getTrackInfo
+        return environment.getSpotifyTrackInfo
             .cancellable(id: RetryGetArtworkId())
             .map { .newTrack($0) }
             .catch { _ -> Effect<PlayerTrackAction, Never> in

@@ -29,6 +29,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         )
     case let .playerInfo(track):
         let currentTrack = state.currentTrack
+        #warning("FIX")
         let playerState = environment.musicApp.state
         
         // only if it's the same track as before, so it means that the player changed it playback state
@@ -43,7 +44,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
                 return Effect(value: .timerAction(.start))
             case .stopped:
                 return Effect(value: .timerAction(.invalidate))
-            case .fastForwarding, .rewinding, .unknown:
+            case .unknown:
                 return .none
             }
         } else if playerState == .stopped {

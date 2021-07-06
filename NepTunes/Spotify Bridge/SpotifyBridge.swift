@@ -1,29 +1,27 @@
 //
-//  MusicBridge.swift
+//  SpotifyBridge.swift
 //  NepTunes
 //
-//  Created by Adam Różyński on 10/05/2021.
+//  Created by Adam Różyński on 06/07/2021.
 //
 
+import Foundation
 import AppleScriptObjC
-import Cocoa
 
-// dynamic cast, that's why the alias is set to NSObject
-@objc(NSObject) protocol MusicBridge {
+@objc(NSObject) protocol SpotifyBridge {
     
     var isRunning: NSNumber { get }
     var playerState: NSNumber { get }
     var soundVolume: NSNumber { get }
-    var trackLoved: NSNumber { get }
     var trackInfo: NSDictionary { get }
     
     func playPause()
     func setSoundVolume(_ volume: NSNumber)
     func nextTrack()
-    func backTrack()
+    func previousTrack()
 }
 
-extension MusicBridge {
+extension SpotifyBridge {
     var isRunning: Bool { self.isRunning.boolValue }
     
     var volume: Int {
@@ -35,31 +33,29 @@ extension MusicBridge {
         }
     }
     
-    var state: MusicPlayerState { MusicPlayerState(rawValue: self.playerState.intValue) }
+    var state: SpotifyState { SpotifyState(rawValue: self.playerState.intValue) }
     
-    var currentTrack: MusicTrackInfo? {
+    var currentTrack: SpotifyTrackInfo? {
+        // duration in Spotify is in milliseconds
         guard let duration = trackInfo["trackDuration"] as? Double else {
-            assert(false)
             return nil
         }
-        return MusicTrackInfo(title: trackInfo["trackName"] as! String,
-                              artist: trackInfo["trackArtist"] as! String,
-                              duration: duration,
-                              album: trackInfo["trackAlbum"] as? String,
-                              albumArtist: trackInfo["albumArtist"] as? String,
-                              artworkImageData: (trackInfo["trackArtworkData"] as? NSAppleEventDescriptor)?.data)
+        return SpotifyTrackInfo(title: trackInfo["trackName"] as! String,
+                                artist: trackInfo["trackArtist"] as! String,
+                                duration: duration / 1000,
+                                album: trackInfo["trackAlbum"] as? String,
+                                albumArtist: trackInfo["albumArtist"] as? String,
+                                artworkURL: trackInfo["trackArtworkURL"] as? URL)
     }
 }
 
-enum MusicPlayerState { // Music' 'player state' property
-    case unknown // extra case e.g. Music is not running
+enum SpotifyState { // SpotifyBridge' 'player state' property
+    case unknown // extra case e.g. Spotify is not running
     case stopped
     case playing
     case paused
-    case fastForwarding
-    case rewinding
     
-    ///stopped, playing, paused, fast forwarding, rewinding}
+    ///stopped, playing, paused
     init(rawValue: Int) {
         switch rawValue {
         case 1:
@@ -68,10 +64,6 @@ enum MusicPlayerState { // Music' 'player state' property
             self = .playing
         case 3:
             self = .paused
-        case 4:
-            self = .fastForwarding
-        case 5:
-            self = .rewinding
         default:
             self = .unknown
         }
@@ -89,6 +81,4 @@ enum MusicPlayerState { // Music' 'player state' property
             return .unknown
         }
     }
-    
 }
-

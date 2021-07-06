@@ -1,25 +1,24 @@
 
-
-script MusicScript
+script SpotifyScript
 	property parent : class "NSObject"
 	
 	to isRunning() -- () -> NSNumber (Bool)
 		-- AppleScript will automatically launch apps before sending Apple events;
 		-- if that is undesirable, check the app object's `running` property first
-		return running of application "Music"
+		return running of application "Spotify"
 	end isRunning
 	
 	to playPause()
-		tell application "Music" to playpause
+		tell application "Spotify" to playpause
 	end playPause
 	
 	to playerState() -- () -> NSNumber (PlayerState)
-		tell application "Music"
+		tell application "Spotify"
 			if running then
 				set currentState to player state
 				-- ASOC does not bridge AppleScript's 'type class' and 'constant' values
 				set i to 1
-				repeat with stateEnumRef in {stopped, playing, paused, fast forwarding, rewinding}
+				repeat with stateEnumRef in {stopped, playing, paused}
 					if currentState is equal to contents of stateEnumRef then return i
 					set i to i + 1
 				end repeat
@@ -28,30 +27,30 @@ script MusicScript
 		end tell
 	end playerState
 	
-	to backTrack()
-		tell application "Music" to back track
-	end backTrack
+	to previousTrack()
+		tell application "Spotify" to previous track
+	end previousTrack
 	
 	to nextTrack()
-		tell application "Music" to next track
-		end nextTrack
+		tell application "Spotify" to next track
+	end nextTrack
 	
 	to soundVolume() -- () -> NSNumber (Int, 0...100)
-		tell application "Music"
+		tell application "Spotify"
 			return sound volume -- ASOC will convert returned integer to NSNumber
 		end tell
 	end soundVolume
 	
 	to setSoundVolume:newVolume -- (NSNumber) -> ()
 		-- ASOC does not convert NSObject parameters to AS types automatically…
-		tell application "Music"
+		tell application "Spotify"
 			-- …so be sure to coerce NSNumber to native integer before using it in Apple event
 			set sound volume to newVolume as integer
 		end tell
 	end setSoundVolume:
 	
 	to trackInfo()
-		tell application "Music"
+		tell application "Spotify"
 			set dur to duration of current track
 			set nam to name of current track
 			set tar to artist of current track
@@ -63,21 +62,9 @@ script MusicScript
 			if alb is equal to "" then
 				set alb to missing value
 			end if
-			try
-				set art to raw data of artwork 1 of artworks of current track
-			on error
-				set art to missing value
-			end try
-			return {trackDuration:dur, trackName:nam, trackArtworkData:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb}
+            set art to artwork url of current track
+			return {trackDuration:dur, trackName:nam, trackArtworkURL:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb}
 		end tell
 	end trackInfo
-
-	
-	to trackLoved()
-		tell application "Music"
-			return loved of current track
-		end tell
-	end trackLoved
-	
 	
 end script

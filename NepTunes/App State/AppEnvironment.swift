@@ -16,17 +16,20 @@ struct AppEnvironment {
     var newPlayerLaunched: Effect<PlayerType, Never>
     var playerQuit: Effect<PlayerType, Never>
     var musicTrackDidChange: Effect<Track, Never>
+    var spotifyTrackDidChange: Effect<Track, Never>
     var artworkDownloader: ArtworkDownloader
     var musicApp: Player
-//    var spotifyApp: Player
+    var spotifyApp: Player
     
     static let live = Self(
         lastFmClient: .live,
         newPlayerLaunched: newPlayerLaunchedEffect,
         playerQuit: playerQuitEffect,
         musicTrackDidChange: musicTrackDidChangeEffect,
+        spotifyTrackDidChange: spotifyTrackDidChangeEffect,
         artworkDownloader: .live,
-        musicApp: MusicApp()
+        musicApp: MusicApp(),
+        spotifyApp: SpotifyApp()
     )
     
 }
@@ -53,8 +56,12 @@ private let musicTrackDidChangeEffect: Effect<Track, Never>
     = DistributedNotificationCenter
     .default
     .publisher(for: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"))
-    .map { note -> Notification in
-        return note
-    }
+    .compactMap { Track(userInfo: $0.userInfo) }
+    .eraseToEffect()
+
+private let spotifyTrackDidChangeEffect: Effect<Track, Never>
+    = DistributedNotificationCenter
+    .default
+    .publisher(for: NSNotification.Name(rawValue: "com.spotify.client.PlaybackStateChanged"))
     .compactMap { Track(userInfo: $0.userInfo) }
     .eraseToEffect()
