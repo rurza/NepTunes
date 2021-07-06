@@ -7,7 +7,8 @@
 
 @testable import NepTunes
 
-struct MusicAppMock: Player {
+// this has to be a reference type, so we can simulate the environment change
+class MusicAppMock: Player {
     
     var type: PlayerType = .musicApp
     
@@ -18,7 +19,14 @@ struct MusicAppMock: Player {
     var state: MusicPlayerState = .stopped
     
     func playPause() {
-        
+        switch state {
+        case .stopped, .paused:
+            state = .playing
+        case .playing:
+            state = .paused
+        default:
+            break
+        }
     }
     
     func nextTrack() {

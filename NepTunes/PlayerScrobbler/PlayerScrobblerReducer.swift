@@ -40,7 +40,6 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
             case .paused:
                 return Effect(value: .timerAction(.pause))
             case .playing:
-                #warning("support only tracks longer than 30s")
                 return Effect(value: .timerAction(.start))
             case .stopped:
                 return Effect(value: .timerAction(.invalidate))
@@ -60,13 +59,18 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         let playerState = environment.musicApp.state
         
         /// `.playerAction(.trackAction(.trackBasicInfoAvailable))` is called only when the track really changed and there is
-        /// its durationa available
+        /// its duration is available
         if playerState == .playing {
+            #warning("support only tracks longer than 30s")
             return Effect(value: .timerAction(.start))
         } else {
             return .none
         }
-    default:
+    case .scrobbleNow:
+        return .none
+    case .updateNowPlaying:
+        return .none
+    case .timerAction:
         return .none
     }
 }
@@ -101,7 +105,7 @@ let playerScrobblerCasePath = CasePath<AppAction, PlayerScrobblerAction> { playe
     case let .lastFmAction(.trackAction(.updateNowPlaying(title: title, artist: artist, albumArtist: albumArtist, album: album))):
         return .updateNowPlaying(title: title, artist: artist, albumArtist: albumArtist, album: album)
     default:
-        fatalError()
+        return nil
     }
 }
 
