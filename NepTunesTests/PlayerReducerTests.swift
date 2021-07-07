@@ -81,7 +81,7 @@ class PlayerReducerTests: XCTestCase {
         }
         
         // 4. but the track doesn't have the artwork data, so we'll try to get the cover using `artworkDownloader`
-        store.receive(.trackAction(.trackCoverNeedsToBeDownloaded(newTrack)))
+        store.receive(.trackAction(.trackDoesNotHaveBothArtoworkAndArtworkURL(newTrack)))
         
         // 5. the artwork downloader will provide `artworkData` for the track, so our reducer will return effect with
         // `trackBasicInfoAvailable` but with the data

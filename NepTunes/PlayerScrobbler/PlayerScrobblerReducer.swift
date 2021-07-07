@@ -13,7 +13,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
     switch action {
     /// the timer ticked and we need access to the track to verify if the user was listening it enough long to scrobble it
     case .timerAction(.timerTicked):
-        guard let track = state.currentTrack,
+        guard let track = state.currentPlayerState?.currentTrack,
               let trackDuration = track.duration // the duration is a safety check here, in theory a track can have nil for the duration
         else { return Effect(value: .timerAction(.invalidate))}
         let scrobbleRatio = Double(environment.settings.scrobblePercentage) / 100
@@ -28,9 +28,9 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
                                        album: track.album))
         )
     case let .playerInfo(track):
-        let currentTrack = state.currentTrack
-        #warning("FIX")
-        let playerState = environment.musicApp.state
+        guard let playerType = state.currentPlayerState?.playerType else { return .none }
+        let currentTrack = state.currentPlayerState?.currentTrack
+        let playerState = environment.environment.playerForPlayerType(playerType).state
         
         // only if it's the same track as before, so it means that the player changed it playback state
         // we're using this method, because the track info from notification won't have the artwork
@@ -57,7 +57,8 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         // whenever it plays or not
         return Effect(value: .timerAction(.invalidate))
     case let .trackBasicInfoAvailable(track):
-        let playerState = environment.musicApp.state
+        guard let currentPlayerType = state.currentPlayerState?.playerType else { fatalError() }
+        let playerState = environment.environment.playerForPlayerType(currentPlayerType).state
         
         /// `.playerAction(.trackAction(.trackBasicInfoAvailable))` is called only when the track really changed and there is
         /// its duration is available

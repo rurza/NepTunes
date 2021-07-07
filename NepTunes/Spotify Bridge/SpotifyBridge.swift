@@ -40,12 +40,18 @@ extension SpotifyBridge {
         guard let duration = trackInfo["trackDuration"] as? Double else {
             return nil
         }
+        let url: URL?
+        if let urlString = trackInfo["trackArtworkURL"] as? String {
+            url = URL(string: urlString)
+        } else {
+            url = nil
+        }
         return SpotifyTrackInfo(title: trackInfo["trackName"] as! String,
                                 artist: trackInfo["trackArtist"] as! String,
                                 duration: duration / 1000,
+                                artworkURL: url,
                                 album: trackInfo["trackAlbum"] as? String,
-                                albumArtist: trackInfo["albumArtist"] as? String,
-                                artworkURL: trackInfo["trackArtworkURL"] as? URL)
+                                albumArtist: trackInfo["albumArtist"] as? String)
     }
 }
 

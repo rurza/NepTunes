@@ -12,12 +12,14 @@ class SpotifyApp: Player {
     var type: PlayerType = .spotify
     var currentTrack: Track? {
         if let bridgeTrack = bridge.currentTrack {
-            return Track(title: bridgeTrack.title,
-                         artist: bridgeTrack.artist,
-                         album: bridgeTrack.album,
-                         albumArtist: bridgeTrack.albumArtist,
-                         artworkData: nil,
-                         duration: bridgeTrack.duration)
+            let track = Track(title: bridgeTrack.title,
+                              artist: bridgeTrack.artist,
+                              album: bridgeTrack.album,
+                              albumArtist: bridgeTrack.albumArtist,
+                              artworkData: nil,
+                              artworkURL: bridgeTrack.artworkURL,
+                              duration: bridgeTrack.duration)
+            return track
         }
         return nil
     }

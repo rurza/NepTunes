@@ -11,7 +11,7 @@ struct SpotifyTrackInfo {
     let title: String
     let artist: String
     let duration: Double
+    let artworkURL: URL?
     var album: String?
     var albumArtist: String?
-    var artworkURL: URL?
 }

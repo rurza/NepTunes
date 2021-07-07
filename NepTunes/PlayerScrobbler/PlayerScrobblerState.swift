@@ -8,6 +8,6 @@
 import Foundation
 
 struct PlayerScrobblerState: Equatable {
-    var currentTrack: Track?
+    var currentPlayerState: CurrentPlayerState?
     var timerState: LastFmTimerState = LastFmTimerState()
 }

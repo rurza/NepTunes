@@ -21,7 +21,7 @@ let playerReducer = Reducer<PlayerState, PlayerAction, SystemEnvironment<PlayerE
                     .musicTrackDidChange
                     .map { PlayerAction.trackAction(.playerInfo($0)) }
                     .cancellable(id: MusicPlayerObservingId()),
-                environment.getMusicTrackInfo
+                environment.getTrackInfo(environment.musicApp)
                     .catch { error in Effect(value: error.track) }
                     .filter { _ in environment.musicApp.state == .playing || environment.musicApp.state == .paused }
                     .eraseToEffect()
@@ -35,7 +35,7 @@ let playerReducer = Reducer<PlayerState, PlayerAction, SystemEnvironment<PlayerE
                     .map { PlayerAction.trackAction(.playerInfo($0)) }
                     .cancellable(id: SpotifyPlayerObservingId()),
                 environment
-                    .getSpotifyTrackInfo
+                    .getTrackInfo(environment.spotifyApp)
                     .catch { error in Effect(value: error.track) }
                     .filter { _ in environment.spotifyApp.state == .playing || environment.spotifyApp.state == .paused }
                     .eraseToEffect()

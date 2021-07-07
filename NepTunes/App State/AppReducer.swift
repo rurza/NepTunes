@@ -22,15 +22,13 @@ let appReducer = AppReducer.combine(
     playerScrobblerReducer
         .pullback(state: \.playerScrobblerState,
                   action: playerScrobblerCasePath,
-                  environment: { $0.map { PlayerScrobblerEnvironment(musicApp: $0.musicApp) } }), // it's important that this reducer runs before the playerReducer, so the currentTrack isn't set yet
+                  environment: { $0.map { .live($0) } }), // it's important that this reducer runs before the playerReducer, so the currentTrack isn't set yet
     playerReducer
         .pullback(
             state: \.playerState,
             action: /AppAction.playerAction,
             environment: { appEnvironment in
-                appEnvironment.map {
-                    PlayerEnvironment.live(appEnvironment: $0)
-                }
+                .live(environment: appEnvironment.playerEnvironment)
             }
         )
 )

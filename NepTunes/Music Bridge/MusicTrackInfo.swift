@@ -10,7 +10,7 @@ import Foundation
 struct MusicTrackInfo {
     let title: String
     let artist: String
-    let duration: Double
+    let duration: Double?
     var album: String?
     var albumArtist: String?
     var artworkImageData: Data?

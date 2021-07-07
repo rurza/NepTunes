@@ -38,13 +38,10 @@ extension MusicBridge {
     var state: MusicPlayerState { MusicPlayerState(rawValue: self.playerState.intValue) }
     
     var currentTrack: MusicTrackInfo? {
-        guard let duration = trackInfo["trackDuration"] as? Double else {
-            assert(false)
-            return nil
-        }
-        return MusicTrackInfo(title: trackInfo["trackName"] as! String,
-                              artist: trackInfo["trackArtist"] as! String,
-                              duration: duration,
+        guard let title = trackInfo["trackName"] as? String, let artist = trackInfo["trackArtist"] as? String else { return nil }
+        return MusicTrackInfo(title: title,
+                              artist: artist,
+                              duration: trackInfo["trackDuration"] as? Double,
                               album: trackInfo["trackAlbum"] as? String,
                               albumArtist: trackInfo["albumArtist"] as? String,
                               artworkImageData: (trackInfo["trackArtworkData"] as? NSAppleEventDescriptor)?.data)
