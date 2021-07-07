@@ -10,7 +10,14 @@ import Foundation
 class SpotifyApp: Player {
     
     var type: PlayerType = .spotify
+    
+    var isRunning: Bool { bridge.isRunning.boolValue }
+    
     var currentTrack: Track? {
+        // extremely important to check if the app is running, otherwise it'll launch it
+        guard isRunning else {
+            return nil
+        }
         if let bridgeTrack = bridge.currentTrack {
             let track = Track(title: bridgeTrack.title,
                               artist: bridgeTrack.artist,

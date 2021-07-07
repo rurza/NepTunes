@@ -30,5 +30,17 @@ let appReducer = AppReducer.combine(
             environment: { appEnvironment in
                 .live(environment: appEnvironment.playerEnvironment)
             }
-        )
+        ),
+    // this reducer is used to cancel the timer if there is no current player
+    Reducer { state, action, environment in
+        switch action {
+        case let .playerAction(.appAction(.currentPlayerDidChange(newPlayer))):
+            if newPlayer == nil {
+                return Effect(value: .lastFmAction(.timerAction(.invalidate)))
+            }
+            return .none
+        default:
+            return .none
+        }
+    }
 )

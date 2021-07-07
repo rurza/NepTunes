@@ -19,7 +19,7 @@ struct PlayerEnvironment {
             case noTrack
         }
         let type: Type
-        let track: Track
+        let track: Track?
     }
     
     var spotifyApp: Player
@@ -94,6 +94,9 @@ private let spotifyTrackDidChangeEffect: Effect<Track, Never>
 private let getTrackInfoFromPlayerEffect: (Player) -> Effect<Track, PlayerEnvironment.Error> = { player in
     Effect<Track, PlayerEnvironment.Error>
         .run { subscriber in
+            guard player.isRunning else {
+                return AnyCancellable { }
+            }
             if let track = player.currentTrack {
                 if track.duration == nil {
                     subscriber.send(completion: .failure(PlayerEnvironment.Error(type: .noDuration, track: track)))
@@ -104,7 +107,7 @@ private let getTrackInfoFromPlayerEffect: (Player) -> Effect<Track, PlayerEnviro
                     subscriber.send(completion: .finished)
                 }
             } else {
-                subscriber.send(completion: .failure(PlayerEnvironment.Error(type: .noTrack, track: .emptyTrack)))
+                subscriber.send(completion: .failure(PlayerEnvironment.Error(type: .noTrack, track: nil)))
             }
             return AnyCancellable { }
         }.eraseToEffect()

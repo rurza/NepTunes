@@ -10,8 +10,14 @@ import ScriptingBridge
 
 class MusicApp: Player {
     
+    var isRunning: Bool { bridge.isRunning.boolValue }
+    
     var type: PlayerType = .musicApp
     var currentTrack: Track? {
+        // extremely important to check if the app is running, otherwise it'll launch it
+        guard isRunning else {
+            return nil
+        }
         if let bridgeTrack = bridge.currentTrack {
             return Track(title: bridgeTrack.title,
                          artist: bridgeTrack.artist,

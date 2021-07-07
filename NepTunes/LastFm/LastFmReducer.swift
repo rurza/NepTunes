@@ -75,18 +75,24 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
         state.secondsElapsed = 0
         return .cancel(id: TimerId())
     case .timerTicked:
+        print("Date: \(Date())")
         state.secondsElapsed += 1
         return .none
     case .start:
         guard !state.isTimerActive else { return .none }
         state.isTimerActive = true
-        return Effect.timer(id: TimerId(), every: 1, on: environment.mainQueue).map { _ in .timerTicked }
+        return Effect
+            .timer(id: TimerId(),
+                   every: .milliseconds(1000),
+                   tolerance: .zero,
+                   on: environment.mainQueue)
+            .map { _ in .timerTicked }
     case .pause:
         state.isTimerActive = false
         return .cancel(id: TimerId())
     }
 }
-.debugActions("⏰")
+.debug("⏰")
 
 
 let lastFmReducer = Reducer<LastFmState, LastFmAction, SystemEnvironment<LastFmEnvironment>>.combine(

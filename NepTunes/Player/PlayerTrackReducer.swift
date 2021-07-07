@@ -49,11 +49,9 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
             return environment.getTrackInfo(player)
                 .cancellable(id: RetryGetTrackDurationId())
                 .retry(2, delay: 1, scheduler: environment.mainQueue)
-                .catch { error in
-                    return Effect(value: error.track)
-                }
-                .eraseToEffect()
                 .map { track -> PlayerTrackAction in .trackBasicInfoAvailable(track) }
+                .catch { _ in Effect(value: .noTrack) }
+                .eraseToEffect()
         } else {
             return Effect(value: .trackBasicInfoAvailable(track))
         }
@@ -114,6 +112,8 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
         #warning("handle")
         track.artworkData = Data()
         return Effect(value: .trackBasicInfoAvailable(track))
+    case .noTrack:
+        return .none
     }
 }
 .debugActions("\(Date()) 🎧")

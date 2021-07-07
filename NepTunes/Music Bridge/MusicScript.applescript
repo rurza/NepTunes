@@ -52,23 +52,25 @@ script MusicScript
 	
 	to trackInfo()
 		tell application "Music"
-			set dur to duration of current track
-			set nam to name of current track
-			set tar to artist of current track
-			set aar to album artist of current track
-			if aar is equal to "" then
-				set aar to missing value
-			end if
-			set alb to album of current track
-			if alb is equal to "" then
-				set alb to missing value
-			end if
-			try
-				set art to raw data of artwork 1 of artworks of current track
-			on error
-				set art to missing value
-			end try
-			return {trackDuration:dur, trackName:nam, trackArtworkData:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb}
+            if running then
+                set dur to duration of current track
+                set nam to name of current track
+                set tar to artist of current track
+                set aar to album artist of current track
+                if aar is equal to "" then
+                    set aar to missing value
+                end if
+                set alb to album of current track
+                if alb is equal to "" then
+                    set alb to missing value
+                end if
+                try
+                    set art to raw data of artwork 1 of artworks of current track
+                on error
+                    set art to missing value
+                end try
+                return {trackDuration:dur, trackName:nam, trackArtworkData:art, trackArtist:tar, albumArtist:aar, trackAlbum:alb}
+            end if
 		end tell
 	end trackInfo
 

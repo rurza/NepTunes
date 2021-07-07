@@ -45,4 +45,6 @@ enum PlayerTrackAction: Equatable {
     
     /// this action is sent when the artwork download failed
     case provideDefaultCover(Track)
+    
+    case noTrack
 }

@@ -17,13 +17,14 @@ struct Track: Equatable {
     let artworkURL: URL?
     var duration: TimeInterval?
     
-    init(title: String,
+    init?(title: String,
          artist: String,
          album: String?,
          albumArtist: String?,
          artworkData: Data?,
          artworkURL: URL?,
          duration: TimeInterval?) {
+        guard artist != "" else { return nil }
         self.title = title
         self.artist = artist
         self.album = album
@@ -33,28 +34,28 @@ struct Track: Equatable {
         self.duration = duration
     }
     
-    init(userInfo: [AnyHashable : Any]?) {
+    init?(userInfo: [AnyHashable : Any]?) {
         if let userInfo = userInfo,
            let title = userInfo["Name"] as? String,
            let artist = userInfo["Artist"] as? String,
            artist != "" {
-            self.title = title
-            self.artist = artist
-            self.album = userInfo["Album"] as? String
-            self.duration = nil
-            self.artworkURL = nil
+            self.init(title: title,
+                      artist: artist,
+                      album: userInfo["Album"] as? String,
+                      albumArtist: userInfo["AlbumArtist"] as? String,
+                      artworkData: nil, artworkURL: nil, duration: nil)
         } else {
-            self = .emptyTrack
+            return nil
         }
     }
-    
-    static let emptyTrack = Track(title: "",
-                                  artist: "",
-                                  album: nil,
-                                  albumArtist: nil,
-                                  artworkData: nil,
-                                  artworkURL: nil,
-                                  duration: nil)
+//
+//    static let emptyTrack = Track(title: "",
+//                                  artist: "",
+//                                  album: nil,
+//                                  albumArtist: nil,
+//                                  artworkData: nil,
+//                                  artworkURL: nil,
+//                                  duration: nil)!
     
     func isTheSameTrackAs(_ track: Track?) -> Bool {
         self.artist == track?.artist && self.title == track?.title && self.album == track?.album

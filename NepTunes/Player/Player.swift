@@ -17,6 +17,8 @@ protocol Player {
     func playPause()
     func nextTrack()
     func backTrack()
+    
+    var isRunning: Bool { get }
 }
 
 enum PlayerType: String, CaseIterable, Equatable {

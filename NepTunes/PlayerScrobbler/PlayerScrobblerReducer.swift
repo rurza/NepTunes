@@ -13,9 +13,15 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
     switch action {
     /// the timer ticked and we need access to the track to verify if the user was listening it enough long to scrobble it
     case .timerAction(.timerTicked):
-        guard let track = state.currentPlayerState?.currentTrack,
+        guard let currentPlayerType = state.currentPlayerState?.playerType else {
+            return Effect(value: .timerAction(.invalidate))
+        }
+        // we're getting the track directly from the player instead of state, because Spotify can play the ad and we want to invalidate the timer
+        // it's because Spotify doesn't send any notification when the ad started playing
+        guard let track = environment.environment.playerForPlayerType(currentPlayerType).currentTrack,
               let trackDuration = track.duration // the duration is a safety check here, in theory a track can have nil for the duration
         else { return Effect(value: .timerAction(.invalidate))}
+        
         let scrobbleRatio = Double(environment.settings.scrobblePercentage) / 100
         let secondsElapsed = Double(state.timerState.secondsElapsed)
         guard state.timerState.isTimerActive
