@@ -57,8 +57,8 @@ enum LastFmUserAction: Equatable {
 
 enum LastFmTimerAction: Equatable {
     case invalidate
-    case start
+    case start(fireInterval: TimeInterval)
     case timerTicked
-    case pause
+    case toggle
 }
 

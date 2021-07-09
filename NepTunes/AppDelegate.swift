@@ -13,6 +13,7 @@ import ComposableArchitecture
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
+    var timer: Timer?
     
     let store = Store(initialState: AppState(), reducer: appReducer, environment: SystemEnvironment.live(environment: AppEnvironment.live))
 
@@ -36,6 +37,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //                self.pluginInstance?.trackDidChange(track.title, byArtist: track.artist)
 //            }
 //        }
+
+
 
         
         let contentView = ContentView(store: store.scope(state: \.playerState, action: AppAction.playerAction))

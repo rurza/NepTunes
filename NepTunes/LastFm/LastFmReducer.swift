@@ -71,25 +71,30 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
     
     switch action {
     case .invalidate:
-        state.isTimerActive = false
-        state.secondsElapsed = 0
+        state.fireInterval = 0
+        state.startDate = nil
         return .cancel(id: TimerId())
     case .timerTicked:
-        print("Date: \(Date())")
-        state.secondsElapsed += 1
-        return .none
-    case .start:
-        guard !state.isTimerActive else { return .none }
-        state.isTimerActive = true
+        return Effect(value: .invalidate)
+    case let .start(interval):
+        guard state.startDate == nil else { return .none }
+        state.startDate = Date()
+        state.fireInterval = interval
         return Effect
             .timer(id: TimerId(),
-                   every: .milliseconds(1000),
+                   every: .seconds(interval),
                    tolerance: .zero,
-                   on: environment.mainQueue)
+                   on: environment.runLoop)
             .map { _ in .timerTicked }
-    case .pause:
-        state.isTimerActive = false
-        return .cancel(id: TimerId())
+    case .toggle:
+        if let startDate = state.startDate {
+            let differnce = Date().timeIntervalSince(startDate)
+            state.fireInterval -= differnce
+            state.startDate = nil
+            return .cancel(id: TimerId())
+        } else {
+            return Effect(value: .start(fireInterval: state.fireInterval))
+        }
     }
 }
 .debug("⏰")

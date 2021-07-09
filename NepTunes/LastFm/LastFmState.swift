@@ -18,8 +18,13 @@ struct LastFmLoginState: Equatable {
 }
 
 struct LastFmTimerState: Equatable {
-    /// not sure if this is needed
-    var isTimerActive = false
-    var secondsElapsed = 0
+//    var isTimerActive = false
+
+    var fireInterval: TimeInterval = 0
+    // when the timer last started
+    // for exmaple it starts with interval 100s
+    // the startDate will be set to current date and if the timer will be paused
+    // we will calculate the difference to update the fireInterval
+    var startDate: Date?
 }
 

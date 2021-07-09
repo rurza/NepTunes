@@ -13,6 +13,7 @@ import ComposableArchitecture
 struct SystemEnvironment<Environment> {
     var environment: Environment
     var mainQueue: AnySchedulerOf<DispatchQueue>
+    var runLoop: AnySchedulerOf<RunLoop>
     var date: () -> Date
     var settings: SettingsProvider
     
@@ -31,6 +32,7 @@ struct SystemEnvironment<Environment> {
         Self(
             environment: environment,
             mainQueue: .main,
+            runLoop: .main,
             date: Date.init,
             settings: Settings()
         )
@@ -41,6 +43,7 @@ struct SystemEnvironment<Environment> {
         .init(
             environment: transform(self.environment),
             mainQueue: self.mainQueue,
+            runLoop: self.runLoop,
             date: self.date,
             settings: self.settings
         )

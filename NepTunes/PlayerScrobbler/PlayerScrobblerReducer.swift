@@ -21,18 +21,11 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         guard let track = environment.environment.playerForPlayerType(currentPlayerType).currentTrack,
               let trackDuration = track.duration // the duration is a safety check here, in theory a track can have nil for the duration
         else { return Effect(value: .timerAction(.invalidate))}
-        
-        let scrobbleRatio = Double(environment.settings.scrobblePercentage) / 100
-        let secondsElapsed = Double(state.timerState.secondsElapsed)
-        guard state.timerState.isTimerActive
-                && secondsElapsed >= trackDuration * scrobbleRatio else { return .none }
-        return .concatenate(
-            Effect(value: .timerAction(.invalidate)),
-            Effect(value: .scrobbleNow(title: track.title,
-                                       artist: track.artist,
-                                       albumArtist: track.albumArtist,
-                                       album: track.album))
-        )
+
+        return Effect(value: .scrobbleNow(title: track.title,
+                                          artist: track.artist,
+                                          albumArtist: track.albumArtist,
+                                          album: track.album))
     case let .playerInfo(track):
         guard let playerType = state.currentPlayerState?.playerType else { return .none }
         let currentTrack = state.currentPlayerState?.currentTrack
@@ -44,10 +37,8 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         if track.isTheSameTrackAs(currentTrack) {
             /// we're basing decision on the environment's state
             switch playerState {
-            case .paused:
-                return Effect(value: .timerAction(.pause))
-            case .playing:
-                return Effect(value: .timerAction(.start))
+            case .paused, .playing:
+                return Effect(value: .timerAction(.toggle))
             case .stopped:
                 return Effect(value: .timerAction(.invalidate))
             case .unknown:
@@ -63,14 +54,16 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         // whenever it plays or not
         return Effect(value: .timerAction(.invalidate))
     case let .trackBasicInfoAvailable(track):
+        guard let trackDuration = track.duration else { return .none }
         guard let currentPlayerType = state.currentPlayerState?.playerType else { fatalError() }
         let playerState = environment.environment.playerForPlayerType(currentPlayerType).state
         
         /// `.playerAction(.trackAction(.trackBasicInfoAvailable))` is called only when the track really changed and there is
         /// its duration is available
-        if playerState == .playing {
-            #warning("support only tracks longer than 30s")
-            return Effect(value: .timerAction(.start))
+        if playerState == .playing, trackDuration >= 30 {
+            let scrobbleRatio = Double(environment.settings.scrobblePercentage) / 100
+            let fireInterval = trackDuration * scrobbleRatio
+            return Effect(value: .timerAction(.start(fireInterval: fireInterval)))
         } else {
             return .none
         }

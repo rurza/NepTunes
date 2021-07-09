@@ -48,14 +48,6 @@ struct Track: Equatable {
             return nil
         }
     }
-//
-//    static let emptyTrack = Track(title: "",
-//                                  artist: "",
-//                                  album: nil,
-//                                  albumArtist: nil,
-//                                  artworkData: nil,
-//                                  artworkURL: nil,
-//                                  duration: nil)!
     
     func isTheSameTrackAs(_ track: Track?) -> Bool {
         self.artist == track?.artist && self.title == track?.title && self.album == track?.album
