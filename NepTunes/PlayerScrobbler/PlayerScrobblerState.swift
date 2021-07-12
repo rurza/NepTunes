@@ -9,5 +9,5 @@ import Foundation
 
 struct PlayerScrobblerState: Equatable {
     var currentPlayerState: CurrentPlayerState?
-//    var timerState: LastFmTimerState = LastFmTimerState()
+    var timerState: LastFmTimerState = LastFmTimerState()
 }

@@ -92,8 +92,10 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
             state.fireInterval -= difference
             state.startDate = nil
             return .cancel(id: TimerId())
-        } else {
+        } else if state.fireInterval > 0 {
             return Effect(value: .start(fireInterval: state.fireInterval))
+        } else {
+            return .none
         }
     }
 }

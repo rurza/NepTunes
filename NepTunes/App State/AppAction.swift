@@ -10,6 +10,5 @@ import Foundation
 enum AppAction {
     case playerAction(PlayerAction)
     case lastFmAction(LastFmAction)
-//    case onboardingAction(OnboardingAction)
-//    case appLifecycleAction(AppLifecycleAction)
+    case playerScrobblerAction
 }

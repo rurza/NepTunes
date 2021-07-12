@@ -10,6 +10,8 @@ import ComposableArchitecture
 
 /// the reducer lifting lastFm and player reducer
 let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction, SystemEnvironment<PlayerScrobblerEnvironment>> { state, action, environment in
+
+    
     switch action {
     /// the timer ticked and we need access to the track to verify if the user was listening it enough long to scrobble it
     case .timerAction(.timerTicked):
@@ -28,7 +30,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
                                           album: track.album))
     case let .playerInfo(track):
         guard let playerType = state.currentPlayerState?.playerType else { return .none }
-        let currentTrack = state.currentPlayerState?.currentTrack
+        guard let currentTrack = state.currentPlayerState?.currentTrack else { return .none }
         let playerState = environment.environment.playerForPlayerType(playerType).state
         
         // only if it's the same track as before, so it means that the player changed it playback state;
@@ -39,7 +41,11 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
             /// we're basing decision on the environment's state
             switch playerState {
             case .paused, .playing:
-                return Effect(value: .timerAction(.toggle))
+                if state.timerState.fireInterval > 0 {
+                    return Effect(value: .timerAction(.toggle))
+                } else {
+                    return Effect(value: .trackBasicInfoAvailable(currentTrack))
+                }
             case .stopped:
                 return Effect(value: .timerAction(.invalidate))
             case .unknown:
@@ -55,7 +61,6 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         // whenever it plays or not
         return Effect(value: .timerAction(.invalidate))
     case let .trackBasicInfoAvailable(track):
-        precondition(track.duration != nil)
         guard let trackDuration = track.duration else { return .none }
         guard let currentPlayerType = state.currentPlayerState?.playerType else { fatalError() }
         let playerState = environment.environment.playerForPlayerType(currentPlayerType).state
@@ -77,6 +82,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         return .none
     }
 }
+.debugActions("🙉")
 
 let playerScrobblerCasePath = CasePath<AppAction, PlayerScrobblerAction> { playerScrobblerAction in
     switch playerScrobblerAction {

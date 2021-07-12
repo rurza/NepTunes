@@ -58,6 +58,7 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
         
         // we should have the duration
     case let .trackBasicInfoAvailable(track):
+        guard track != state.currentPlayerState?.currentTrack else { return .none }
         state.currentPlayerState?.currentTrack = track
         
         // there is no artwork – we should get it from the player or download it
@@ -118,4 +119,4 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
         return .none
     }
 }
-.debugActions("\(Date()) 🎧")
+.debugActions("🎧")
