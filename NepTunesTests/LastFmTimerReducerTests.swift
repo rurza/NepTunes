@@ -13,7 +13,7 @@ import Combine
 class LastFmTimerReducerTests: XCTestCase {
     
     func testReducer() throws {
-        let date = Date(timeIntervalSince1970: 1624736850)
+        var date = Date(timeIntervalSince1970: 1624736850)
 
         let lastFmEnvironment = LastFmEnvironment(lastFmClient: .mock(with: { request in
             return Future<Data, URLError> { promise in
@@ -21,48 +21,46 @@ class LastFmTimerReducerTests: XCTestCase {
             }.eraseToAnyPublisher()
         }))
         
-        let scheduler = DispatchQueue.test
+        let runLoop = RunLoop.test
         
-        let systemEnvironment = SystemEnvironment(environment: lastFmEnvironment, mainQueue: scheduler.eraseToAnyScheduler(), date: { date }, settings: MockSettings())
+        let systemEnvironment = SystemEnvironment(environment: lastFmEnvironment,
+                                                  mainQueue: DispatchQueue.test.eraseToAnyScheduler(),
+                                                  runLoop: runLoop.eraseToAnyScheduler(),
+                                                  date: { date }, settings: MockSettings())
         
         let store = TestStore(initialState: LastFmTimerState(),
                               reducer: lastFmTimerReducer,
                               environment: systemEnvironment)
         
-        store.send(.start) { state in
-            state.isTimerActive = true
+        let fireInterval: TimeInterval = 5
+        store.send(.start(fireInterval: fireInterval)) { state in
+            state.fireInterval = fireInterval
+            state.startDate = date
         }
         
-        scheduler.advance(by: 2)
-        store.receive(.timerTicked) { state in
-            state.secondsElapsed = 1
+        date += 2
+
+        store.send(.toggle) { state in
+            state.fireInterval = 3
+            state.startDate = nil
         }
         
-        store.receive(.timerTicked) { state in
-            state.secondsElapsed = 2
+        date += 5
+        
+        store.send(.toggle) { state in
+            state.fireInterval = 3
         }
         
-        store.send(.pause) { state in
-            state.secondsElapsed = 2
-            state.isTimerActive = false
+        store.receive(.start(fireInterval: 3)) { state in
+            state.startDate = date
         }
         
-        scheduler.advance(by: 2)
+        runLoop.advance(by: 3)
         
-        store.send(.start) { state in
-            state.secondsElapsed = 2
-            state.isTimerActive = true
-        }
-        
-        scheduler.advance(by: 1)
-        
-        store.receive(.timerTicked) { state in
-            state.secondsElapsed = 3
-        }
-        
-        store.send(.invalidate) { state in
-            state.isTimerActive = false
-            state.secondsElapsed = 0
+        store.receive(.timerTicked)
+        store.receive(.invalidate) { state in
+            state.fireInterval = 0
+            state.startDate = nil
         }
         
     }

@@ -10,7 +10,7 @@ import ComposableArchitecture
 import Combine
 
 
-let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<PlayerEnvironment>> { state, action, environment in
+let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<PlayerAppEnvironment>> { state, action, environment in
     
     struct AllPlayersObservingId: Hashable { }
     
@@ -25,8 +25,9 @@ let playerAppReducer = Reducer<PlayerState, PlayerAppAction, SystemEnvironment<P
                 .map { .playerDidQuit($0) }
         )
         .cancellable(id: AllPlayersObservingId())
-        if let playerType = environment.currentlyRunningPlayer() {
-            return .merge(effects, Effect<PlayerAppAction, Never>(value: .newPlayerIsAvailable(playerType)))
+        if let playerTypes = environment.currentlyRunningPlayers() {
+            let playersAreAvailableEffects = Effect.concatenate(playerTypes.map { Effect<PlayerAppAction, Never>(value: .newPlayerIsAvailable($0)) })
+            return .merge(effects, playersAreAvailableEffects)
         }
         return effects
     case let .newPlayerIsAvailable(newPlayerType):

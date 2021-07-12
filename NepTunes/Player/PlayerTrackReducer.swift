@@ -77,7 +77,7 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
             .map { data -> PlayerTrackAction in
                 var track = track
                 track.artworkData = data
-                return .trackBasicInfoAvailable(track)
+                return .trackArtworkIsAvailable(track)
             }
             .replaceError(with: .provideDefaultCover(track))
             .eraseToEffect()
@@ -95,7 +95,7 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
                         .map { data -> PlayerTrackAction in
                             var track = track
                             track.artworkData = data
-                            return PlayerTrackAction.trackBasicInfoAvailable(track)
+                            return .trackArtworkIsAvailable(track)
                         }
                         .catch { error in
                             return Effect(value: .provideDefaultCover(track))
@@ -106,12 +106,14 @@ let playerTrackReducer = Reducer<PlayerState, PlayerTrackAction, SystemEnvironme
                 }
             }
             .eraseToEffect()
-        
+    case let .trackArtworkIsAvailable(track):
+        state.currentPlayerState?.currentTrack = track
+        return .none
     case let .provideDefaultCover(track):
         var track = track
         #warning("handle")
         track.artworkData = Data()
-        return Effect(value: .trackBasicInfoAvailable(track))
+        return Effect(value: .trackArtworkIsAvailable(track))
     case .noTrack:
         return .none
     }

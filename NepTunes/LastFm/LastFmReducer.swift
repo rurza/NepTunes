@@ -78,7 +78,7 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
         return Effect(value: .invalidate)
     case let .start(interval):
         guard state.startDate == nil else { return .none }
-        state.startDate = Date()
+        state.startDate = environment.date()
         state.fireInterval = interval
         return Effect
             .timer(id: TimerId(),
@@ -88,8 +88,8 @@ let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvi
             .map { _ in .timerTicked }
     case .toggle:
         if let startDate = state.startDate {
-            let differnce = Date().timeIntervalSince(startDate)
-            state.fireInterval -= differnce
+            let difference = environment.date().timeIntervalSince(startDate)
+            state.fireInterval -= difference
             state.startDate = nil
             return .cancel(id: TimerId())
         } else {

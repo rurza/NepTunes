@@ -10,13 +10,15 @@
 // this has to be a reference type, so we can simulate the environment change
 class MusicAppMock: Player {
     
+    var state: PlayerPlaybackState = .stopped
+    
+    var isRunning: Bool { true }
+    
     var type: PlayerType = .musicApp
     
     var currentTrack: Track? = nil
     
     var volume: Int = 100
-    
-    var state: MusicPlayerState = .stopped
     
     func playPause() {
         switch state {

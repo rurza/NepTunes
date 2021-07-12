@@ -22,14 +22,14 @@ struct PlayerEnvironment {
         let track: Track?
     }
     
+    var appEnvironment: PlayerAppEnvironment
     var spotifyApp: Player
     var musicApp: Player
-    var currentlyRunningPlayer: () -> PlayerType?
+
     var artworkDownloader: ArtworkDownloader
 
     // Effects
-    var newPlayerLaunched: Effect<PlayerType, Never>
-    var playerQuit: Effect<PlayerType, Never>
+
     var musicTrackDidChange: Effect<Track, Never>
     var spotifyTrackDidChange: Effect<Track, Never>
     var getTrackInfo: (Player) -> Effect<Track, PlayerEnvironment.Error>
@@ -38,20 +38,31 @@ struct PlayerEnvironment {
     
 }
 
+struct PlayerAppEnvironment {
+    var currentlyRunningPlayers: () -> [PlayerType]?
+    var newPlayerLaunched: Effect<PlayerType, Never>
+    var playerQuit: Effect<PlayerType, Never>
+    
+    static var live: Self {
+        Self(currentlyRunningPlayers: getCurrentlyRunningPlayers,
+             newPlayerLaunched: newPlayerLaunchedEffect,
+             playerQuit: playerQuitEffect)
+    }
+}
+
 extension PlayerEnvironment {
     static var live: Self {
         let musicApp = MusicApp()
         let spotifyApp = SpotifyApp()
-        return Self(spotifyApp: spotifyApp,
-                    musicApp: musicApp,
-                    currentlyRunningPlayer: getCurrentlyRunningPlayer,
-                    artworkDownloader: .live,
-                    newPlayerLaunched: newPlayerLaunchedEffect,
-                    playerQuit: playerQuitEffect,
-                    musicTrackDidChange: musicTrackDidChangeEffect,
-                    spotifyTrackDidChange: spotifyTrackDidChangeEffect,
-                    getTrackInfo: getTrackInfoFromPlayerEffect,
-                    playerForPlayerType: playerForPlayerTypeWithAvailablePlayers(musicApp, spotifyApp))
+        return Self(
+            appEnvironment: .live,
+            spotifyApp: spotifyApp,
+            musicApp: musicApp,
+            artworkDownloader: .live,
+            musicTrackDidChange: musicTrackDidChangeEffect,
+            spotifyTrackDidChange: spotifyTrackDidChangeEffect,
+            getTrackInfo: getTrackInfoFromPlayerEffect,
+            playerForPlayerType: playerForPlayerTypeWithAvailablePlayers(musicApp, spotifyApp))
     }
 }
 
@@ -113,13 +124,18 @@ private let getTrackInfoFromPlayerEffect: (Player) -> Effect<Track, PlayerEnviro
         }.eraseToEffect()
 }
 
-private let getCurrentlyRunningPlayer: () -> PlayerType? = {
+private let getCurrentlyRunningPlayers: () -> [PlayerType]? = {
+    var playerTypes = [PlayerType]()
     for app in NSWorkspace.shared.runningApplications {
         if let playerType = PlayerType(runningApplication: app) {
-            return playerType
+            playerTypes.append(playerType)
         }
     }
-    return nil
+    if playerTypes.count > 0 {
+        return playerTypes
+    } else {
+        return nil
+    }
 }
 
 private let playerForPlayerTypeWithAvailablePlayers: (MusicApp, SpotifyApp) -> (PlayerType) -> Player

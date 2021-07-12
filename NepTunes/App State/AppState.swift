@@ -14,13 +14,12 @@ struct AppState: Equatable {
     
     var playerScrobblerState: PlayerScrobblerState {
         get {
-            PlayerScrobblerState(currentPlayerState: playerState.currentPlayerState,
-                                 timerState: lastFmState.lastFmTimerState)
+            PlayerScrobblerState(currentPlayerState: playerState.currentPlayerState)
         }
         set {
-            // we don't want to update the state of the `currentPlayerState` here
-            lastFmState.lastFmTimerState = newValue.timerState
+            //empty
         }
+       
     }
     
 }

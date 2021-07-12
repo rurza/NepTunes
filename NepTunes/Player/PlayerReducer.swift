@@ -46,7 +46,7 @@ let playerReducer = Reducer<PlayerState, PlayerAction, SystemEnvironment<PlayerE
         }
         
     case let .appAction(appAction):
-        return playerAppReducer.run(&state, appAction, environment).map(PlayerAction.appAction)
+        return playerAppReducer.run(&state, appAction, environment.map { $0.appEnvironment }).map(PlayerAction.appAction)
     case let .trackAction(trackAction):
         return playerTrackReducer.run(&state, trackAction, environment).map(PlayerAction.trackAction)
     }

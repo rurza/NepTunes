@@ -43,6 +43,9 @@ enum PlayerTrackAction: Equatable {
     /// this action is sent when we can't get the artwork from the app and we have to download it
     case trackDoesNotHaveBothArtworkAndArtworkURL(Track)
     
+    /// this action is sent when
+    case trackArtworkIsAvailable(Track)
+    
     /// this action is sent when the artwork download failed
     case provideDefaultCover(Track)
     

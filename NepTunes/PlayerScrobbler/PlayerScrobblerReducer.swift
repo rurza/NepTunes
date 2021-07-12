@@ -31,8 +31,9 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         let currentTrack = state.currentPlayerState?.currentTrack
         let playerState = environment.environment.playerForPlayerType(playerType).state
         
-        // only if it's the same track as before, so it means that the player changed it playback state
-        // we're using this method, because the track info from notification won't have the artwork
+        // only if it's the same track as before, so it means that the player changed it playback state;
+        //
+        // we're using `isTheSameTrackAs` method, because the track info from the notification won't have the artwork
         // so it won't pass standard equality check
         if track.isTheSameTrackAs(currentTrack) {
             /// we're basing decision on the environment's state
@@ -54,6 +55,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         // whenever it plays or not
         return Effect(value: .timerAction(.invalidate))
     case let .trackBasicInfoAvailable(track):
+        precondition(track.duration != nil)
         guard let trackDuration = track.duration else { return .none }
         guard let currentPlayerType = state.currentPlayerState?.playerType else { fatalError() }
         let playerState = environment.environment.playerForPlayerType(currentPlayerType).state
