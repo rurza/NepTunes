@@ -62,5 +62,5 @@ fastlane/test_output
 iOSInjectionProject/
 
 .DS_Store
-NepTunes/Secrets.swift
+Secrets.swift
 .swiftpm
