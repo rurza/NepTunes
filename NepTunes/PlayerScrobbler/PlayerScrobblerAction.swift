@@ -9,9 +9,9 @@ import Foundation
 
 enum PlayerScrobblerAction: Equatable {
     case timerAction(ScrobblerTimerAction)
-    case playerInfo(Track)
-    case newTrack(Track)
-    case trackBasicInfoAvailable(Track)
+    case newEventFromPlayerWithTrack(Track)
+    case playerChangedTheTrack(Track)
+    case scrobblerTimerShouldStartForTrack(Track)
     case scrobbleNow(title: String, artist: String, albumArtist: String?, album: String?)
     case updateNowPlaying(title: String, artist: String, albumArtist: String?, album: String?)
 }

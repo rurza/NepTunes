@@ -30,7 +30,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
                                               artist: track.artist,
                                               albumArtist: track.albumArtist,
                                               album: track.album))
-        case let .playerInfo(track):
+        case let .newEventFromPlayerWithTrack(track):
             guard let playerType = state.currentPlayerState?.playerType else { return .none }
             guard let currentTrack = state.currentPlayerState?.currentTrack else { return .none }
             let playerState = environment.environment.playerForPlayerType(playerType).state
@@ -46,7 +46,7 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
                     if state.timerState.fireInterval > 0 {
                         return Effect(value: .timerAction(.toggle))
                     } else {
-                        return Effect(value: .trackBasicInfoAvailable(currentTrack))
+                        return Effect(value: .scrobblerTimerShouldStartForTrack(currentTrack))
                     }
                 case .stopped:
                     return Effect(value: .timerAction(.invalidate))
@@ -58,11 +58,11 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
             } else {
                 return .none
             }
-        case .newTrack:
+        case .playerChangedTheTrack:
             // we want to invalidate the timer if the new track is available
             // whenever it plays or not
             return Effect(value: .timerAction(.invalidate))
-        case let .trackBasicInfoAvailable(track):
+        case let .scrobblerTimerShouldStartForTrack(track):
             guard let trackDuration = track.duration else { return .none }
             // it's better to quietly return here
             guard let currentPlayerType = state.currentPlayerState?.playerType else { return .none }
@@ -86,15 +86,15 @@ let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobblerAction
         }
     }
 )
-.debugActions("🙉")
+.debugActions("playerScrobblerReducer")
 
 let playerScrobblerCasePath = CasePath<AppAction, PlayerScrobblerAction> { playerScrobblerAction in
     switch playerScrobblerAction {
-    case let .newTrack(track):
+    case let .playerChangedTheTrack(track):
         return .playerAction(.trackAction(.newTrack(track)))
-    case let .playerInfo(track):
+    case let .newEventFromPlayerWithTrack(track):
         return .playerAction(.trackAction(.playerInfo(track)))
-    case let .trackBasicInfoAvailable(track):
+    case let .scrobblerTimerShouldStartForTrack(track):
         return .playerAction(.trackAction(.trackBasicInfoAvailable(track)))
     case let .timerAction(timerAction):
         return .scrobblerTimerAction(timerAction)
@@ -106,11 +106,11 @@ let playerScrobblerCasePath = CasePath<AppAction, PlayerScrobblerAction> { playe
 } extract: { appAction in
     switch appAction {
     case let .playerAction(.trackAction(.newTrack(track))):
-        return .newTrack(track)
+        return .playerChangedTheTrack(track)
     case let .playerAction(.trackAction(.playerInfo(track))):
-        return .playerInfo(track)
+        return .newEventFromPlayerWithTrack(track)
     case let .playerAction(.trackAction(.trackBasicInfoAvailable(track))):
-        return .trackBasicInfoAvailable(track)
+        return .scrobblerTimerShouldStartForTrack(track)
     case let .scrobblerTimerAction(action):
         return .timerAction(action)
     case let .lastFmAction(.trackAction(.scrobbleNow(title: title, artist: artist, albumArtist: albumArtist, album: album))):

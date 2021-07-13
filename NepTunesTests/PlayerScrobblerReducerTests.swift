@@ -56,10 +56,10 @@ class PlayerScrobblerReducerTests: XCTestCase {
         
         musicApp.state = .playing
         
-        testStore.send(.newTrack(track))
+        testStore.send(.playerChangedTheTrack(track))
         testStore.receive(.timerAction(.invalidate))
         
-        testStore.send(.trackBasicInfoAvailable(track))
+        testStore.send(.scrobblerTimerShouldStartForTrack(track))
         testStore.receive(.timerAction(.start(fireInterval: trackDuration / 2))) { state in
             state.timerState.startDate = date
             state.timerState.fireInterval = trackDuration / 2
@@ -69,7 +69,7 @@ class PlayerScrobblerReducerTests: XCTestCase {
         date += 5
         runLoop.advance(by: 5)
         var expectedFireInterval = trackDuration / 2 - 5
-        testStore.send(.playerInfo(track))
+        testStore.send(.newEventFromPlayerWithTrack(track))
         testStore.receive(.timerAction(.toggle)) { state in
             state.timerState.fireInterval = expectedFireInterval
             state.timerState.startDate = nil
@@ -77,7 +77,7 @@ class PlayerScrobblerReducerTests: XCTestCase {
         
         // 2. Unpause after 5s
         date += 5
-        testStore.send(.playerInfo(track))
+        testStore.send(.newEventFromPlayerWithTrack(track))
         testStore.receive(.timerAction(.toggle))
         testStore.receive(.timerAction(.start(fireInterval: expectedFireInterval))) { state in
             state.timerState.startDate = date
@@ -97,15 +97,15 @@ class PlayerScrobblerReducerTests: XCTestCase {
         // in real life it happens with the Spotify, but it doesn't matter now
         musicApp.state = .paused
         
-        testStore.send(.playerInfo(track))
-        testStore.receive(.trackBasicInfoAvailable(track))
+        testStore.send(.newEventFromPlayerWithTrack(track))
+        testStore.receive(.scrobblerTimerShouldStartForTrack(track))
         // nothing should be received here
         
         // now we're start playing the music
         musicApp.state = .playing
         
-        testStore.send(.playerInfo(track))
-        testStore.receive(.trackBasicInfoAvailable(track))
+        testStore.send(.newEventFromPlayerWithTrack(track))
+        testStore.receive(.scrobblerTimerShouldStartForTrack(track))
         testStore.receive(.timerAction(.start(fireInterval: trackDuration / 2))) { state in
             state.timerState.startDate = date
             state.timerState.fireInterval = trackDuration / 2
