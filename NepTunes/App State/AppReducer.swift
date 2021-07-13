@@ -36,7 +36,7 @@ let appReducer = AppReducer.combine(
         switch action {
         case let .playerAction(.appAction(.currentPlayerDidChange(newPlayer))):
             if newPlayer == nil {
-                return Effect(value: .lastFmAction(.timerAction(.invalidate)))
+                return Effect(value: .scrobblerTimerAction(.invalidate))
             }
             return .none
         default:

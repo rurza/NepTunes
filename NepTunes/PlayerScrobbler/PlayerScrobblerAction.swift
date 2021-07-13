@@ -8,7 +8,7 @@
 import Foundation
 
 enum PlayerScrobblerAction: Equatable {
-    case timerAction(LastFmTimerAction)
+    case timerAction(ScrobblerTimerAction)
     case playerInfo(Track)
     case newTrack(Track)
     case trackBasicInfoAvailable(Track)

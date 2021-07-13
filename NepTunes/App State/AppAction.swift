@@ -10,5 +10,5 @@ import Foundation
 enum AppAction {
     case playerAction(PlayerAction)
     case lastFmAction(LastFmAction)
-    case playerScrobblerAction
+    case scrobblerTimerAction(ScrobblerTimerAction)
 }

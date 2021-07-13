@@ -65,42 +65,6 @@ let lastFmTrackReducer = Reducer<LastFmState, LastFmTrackAction, SystemEnvironme
 .debugActions("🛑")
 
 
-let lastFmTimerReducer = Reducer<LastFmTimerState, LastFmTimerAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
-    
-    struct TimerId: Hashable { }
-    
-    switch action {
-    case .invalidate:
-        state.fireInterval = 0
-        state.startDate = nil
-        return .cancel(id: TimerId())
-    case .timerTicked:
-        return Effect(value: .invalidate)
-    case let .start(interval):
-        guard state.startDate == nil else { return .none }
-        state.startDate = environment.date()
-        state.fireInterval = interval
-        return Effect
-            .timer(id: TimerId(),
-                   every: .seconds(interval),
-                   tolerance: .zero,
-                   on: environment.runLoop)
-            .map { _ in .timerTicked }
-    case .toggle:
-        if let startDate = state.startDate {
-            let difference = environment.date().timeIntervalSince(startDate)
-            state.fireInterval -= difference
-            state.startDate = nil
-            return .cancel(id: TimerId())
-        } else if state.fireInterval > 0 {
-            return Effect(value: .start(fireInterval: state.fireInterval))
-        } else {
-            return .none
-        }
-    }
-}
-.debug("⏰")
-
 
 let lastFmReducer = Reducer<LastFmState, LastFmAction, SystemEnvironment<LastFmEnvironment>>.combine(
     Reducer { state, action, environment in
@@ -109,13 +73,8 @@ let lastFmReducer = Reducer<LastFmState, LastFmAction, SystemEnvironment<LastFmE
             return lastFmTrackReducer.run(&state, trackAction, environment).map { .trackAction($0) }
         case let .userAction(userAction):
             return lastFmUserReducer.run(&state, userAction, environment).map { .userAction($0) }
-        case .timerAction(_):
-            return .none
         }
-    },
-    lastFmTimerReducer.pullback(state: \.lastFmTimerState,
-                                action: /LastFmAction.timerAction) { $0 }
-
+    }
 )
 
 

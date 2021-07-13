@@ -11,7 +11,6 @@ import LastFmKit
 enum LastFmAction: Equatable {
     case trackAction(LastFmTrackAction)
     case userAction(LastFmUserAction)
-    case timerAction(LastFmTimerAction)
 }
 
 enum LastFmTrackAction: Equatable {
@@ -54,11 +53,3 @@ enum LastFmUserAction: Equatable {
         }
     }
 }
-
-enum LastFmTimerAction: Equatable {
-    case invalidate
-    case start(fireInterval: TimeInterval)
-    case timerTicked
-    case toggle
-}
-

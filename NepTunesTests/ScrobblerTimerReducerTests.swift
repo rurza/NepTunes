@@ -1,5 +1,5 @@
 //
-//  LastFmTimerReducerTests.swift
+//  ScrobblerTimerReducerTests.swift
 //  NepTunesTests
 //
 //  Created by Adam Różyński on 01/07/2021.
@@ -10,26 +10,20 @@ import XCTest
 import ComposableArchitecture
 import Combine
 
-class LastFmTimerReducerTests: XCTestCase {
+class ScrobblerTimerReducerTests: XCTestCase {
     
     func testReducer() throws {
         var date = Date(timeIntervalSince1970: 1624736850)
-
-        let lastFmEnvironment = LastFmEnvironment(lastFmClient: .mock(with: { request in
-            return Future<Data, URLError> { promise in
-                promise(.success(Data()))
-            }.eraseToAnyPublisher()
-        }))
         
         let runLoop = RunLoop.test
         
-        let systemEnvironment = SystemEnvironment(environment: lastFmEnvironment,
+        let systemEnvironment = SystemEnvironment(environment: VoidEnvironment(),
                                                   mainQueue: DispatchQueue.test.eraseToAnyScheduler(),
                                                   runLoop: runLoop.eraseToAnyScheduler(),
                                                   date: { date }, settings: MockSettings())
         
-        let store = TestStore(initialState: LastFmTimerState(),
-                              reducer: lastFmTimerReducer,
+        let store = TestStore(initialState: ScrobblerTimerState(),
+                              reducer: scrobblerTimerReducer,
                               environment: systemEnvironment)
         
         let fireInterval: TimeInterval = 5

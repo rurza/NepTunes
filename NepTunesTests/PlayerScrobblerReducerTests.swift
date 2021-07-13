@@ -15,10 +15,21 @@ class PlayerScrobblerReducerTests: XCTestCase {
     func testTimerTickedAction() throws {
         /// Saturday, June 26, 2021 7:47:30 PM GMT
         var date = Date(timeIntervalSince1970: 1624736850)
-
         var musicApp = MusicAppMock()
-        
         let spotify = SpotifyMock()
+        let runLoop = RunLoop.test
+        
+        let trackDuration: TimeInterval = 200
+
+        let track = Track(title: "Ágćtis Byrjun",
+                          artist: "Sigur Rós",
+                          album: "Heim",
+                          albumArtist: "Sigur Rós",
+                          artworkData: nil,
+                          artworkURL: nil,
+                          duration: trackDuration)!
+        
+        musicApp.currentTrack = track
         
         let playerScrobblerEnvironment = PlayerScrobblerEnvironment(musicApp: musicApp, spotifyApp: spotify) { playerType in
             switch playerType {
@@ -32,20 +43,11 @@ class PlayerScrobblerReducerTests: XCTestCase {
         let environment = SystemEnvironment(
             environment: playerScrobblerEnvironment,
             mainQueue: .immediate,
-            runLoop: .immediate,
+            runLoop: runLoop.eraseToAnyScheduler(),
             date: { date },
             settings: MockSettings()
         )
-        
-        let trackDuration: TimeInterval = 200
 
-        let track = Track(title: "Ágćtis Byrjun",
-                          artist: "Sigur Rós",
-                          album: "Heim",
-                          albumArtist: "Sigur Rós",
-                          artworkData: nil,
-                          artworkURL: nil,
-                          duration: trackDuration)!
 
         let state = PlayerScrobblerState(currentPlayerState: CurrentPlayerState(playerType: .musicApp, currentTrack: track))
         let testStore = TestStore(initialState: state,
@@ -58,10 +60,62 @@ class PlayerScrobblerReducerTests: XCTestCase {
         testStore.receive(.timerAction(.invalidate))
         
         testStore.send(.trackBasicInfoAvailable(track))
-        testStore.receive(.timerAction(.start(fireInterval: trackDuration / 2)))
+        testStore.receive(.timerAction(.start(fireInterval: trackDuration / 2))) { state in
+            state.timerState.startDate = date
+            state.timerState.fireInterval = trackDuration / 2
+        }
         
+        // 1. Pause after 5 seconds
+        date += 5
+        runLoop.advance(by: 5)
+        var expectedFireInterval = trackDuration / 2 - 5
+        testStore.send(.playerInfo(track))
+        testStore.receive(.timerAction(.toggle)) { state in
+            state.timerState.fireInterval = expectedFireInterval
+            state.timerState.startDate = nil
+        }
+        
+        // 2. Unpause after 5s
+        date += 5
         testStore.send(.playerInfo(track))
         testStore.receive(.timerAction(.toggle))
+        testStore.receive(.timerAction(.start(fireInterval: expectedFireInterval))) { state in
+            state.timerState.startDate = date
+        }
+
+        
+        runLoop.advance(by: RunLoop.SchedulerTimeType.Stride(integerLiteral: expectedFireInterval))
+        testStore.receive(.timerAction(.timerTicked))
+        testStore.receive(.timerAction(.invalidate)) { state in
+            state.timerState.fireInterval = 0
+            state.timerState.startDate = nil
+        }
+        testStore.receive(.scrobbleNow(title: track.title, artist: track.artist, albumArtist: track.albumArtist, album: track.album))
+        
+        // Now we'll the situation where the NepTunes was launched, the music is paused
+        // and we'll get the `playerInfo` notification with the `same` track that already is in the state
+        // in real life it happens with the Spotify, but it doesn't matter now
+        musicApp.state = .paused
+        
+        testStore.send(.playerInfo(track))
+        testStore.receive(.trackBasicInfoAvailable(track))
+        // nothing should be received here
+        
+        // now we're start playing the music
+        musicApp.state = .playing
+        
+        testStore.send(.playerInfo(track))
+        testStore.receive(.trackBasicInfoAvailable(track))
+        testStore.receive(.timerAction(.start(fireInterval: trackDuration / 2))) { state in
+            state.timerState.startDate = date
+            state.timerState.fireInterval = trackDuration / 2
+        }
+        
+        // and we invalidate the timer in the end
+        testStore.send(.timerAction(.invalidate)) { state in
+            state.timerState.startDate = nil
+            state.timerState.fireInterval = 0
+        }
     }
     
 //    func testPlayerInfoAction() throws {

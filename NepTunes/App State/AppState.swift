@@ -11,15 +11,18 @@ struct AppState: Equatable {
 
     var playerState = PlayerState()
     var lastFmState = LastFmState()
+    var scrobblerTimerState = ScrobblerTimerState()
     
     var playerScrobblerState: PlayerScrobblerState {
         get {
             PlayerScrobblerState(currentPlayerState: playerState.currentPlayerState,
-                                 timerState: lastFmState.lastFmTimerState)
+                                 timerState: scrobblerTimerState)
         }
         set {
             // we don't want to update the state of the `currentPlayerState` here
-            lastFmState.lastFmTimerState = newValue.timerState
+            // because the reducer doesn't change it
+            
+            scrobblerTimerState = newValue.timerState
         }
     }
     

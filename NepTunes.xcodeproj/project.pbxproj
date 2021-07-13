@@ -39,6 +39,10 @@
 		6677B523266C2AA200E54145 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6677B522266C2AA200E54145 /* Publisher+.swift */; };
 		6677EC38265039F100FEF316 /* SwiftCurry in Frameworks */ = {isa = PBXBuildFile; productRef = 6677EC37265039F100FEF316 /* SwiftCurry */; };
 		6678E661269CCE53005E78E6 /* SpotifyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E660269CCE53005E78E6 /* SpotifyMock.swift */; };
+		6678E663269DB133005E78E6 /* ScrobblerTimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E662269DB133005E78E6 /* ScrobblerTimerState.swift */; };
+		6678E665269DB15B005E78E6 /* ScrobblerTimerReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E664269DB15B005E78E6 /* ScrobblerTimerReducer.swift */; };
+		6678E667269DB1C4005E78E6 /* ScrobblerTimerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E666269DB1C4005E78E6 /* ScrobblerTimerAction.swift */; };
+		6678E669269DB26F005E78E6 /* VoidEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E668269DB26F005E78E6 /* VoidEnvironment.swift */; };
 		66828D8E2687B1610012F60A /* MockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D8D2687B1610012F60A /* MockSettings.swift */; };
 		66828D922687BB160012F60A /* MusicAppMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D912687BB160012F60A /* MusicAppMock.swift */; };
 		668749A3264F25BA00BAF594 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 668749A2264F25BA00BAF594 /* Nuke */; };
@@ -58,7 +62,7 @@
 		66CDC3A6266FF01800AF773E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDC3A5266FF01800AF773E /* Settings.swift */; };
 		66CF7F87266E853B00B4B418 /* Reducer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CF7F86266E853B00B4B418 /* Reducer+.swift */; };
 		66D043D7263B237C008E07B2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 66D043D6263B237C008E07B2 /* ComposableArchitecture */; };
-		66D4D8B7268E2D9900C5B565 /* LastFmTimerReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8B6268E2D9900C5B565 /* LastFmTimerReducerTests.swift */; };
+		66D4D8B7268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8B6268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift */; };
 		66D4D8B9268E549B00C5B565 /* PlayerScrobblerReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8B8268E549B00C5B565 /* PlayerScrobblerReducerTests.swift */; };
 		66D4D8BC268E56BD00C5B565 /* PlayerScrobblerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8BB268E56BD00C5B565 /* PlayerScrobblerState.swift */; };
 		66D4D8BE268E56D900C5B565 /* PlayerScrobblerReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8BD268E56D900C5B565 /* PlayerScrobblerReducer.swift */; };
@@ -138,6 +142,10 @@
 		6677B520266C296900E54145 /* SystemEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEnvironment.swift; sourceTree = "<group>"; };
 		6677B522266C2AA200E54145 /* Publisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+.swift"; sourceTree = "<group>"; };
 		6678E660269CCE53005E78E6 /* SpotifyMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyMock.swift; sourceTree = "<group>"; };
+		6678E662269DB133005E78E6 /* ScrobblerTimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobblerTimerState.swift; sourceTree = "<group>"; };
+		6678E664269DB15B005E78E6 /* ScrobblerTimerReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobblerTimerReducer.swift; sourceTree = "<group>"; };
+		6678E666269DB1C4005E78E6 /* ScrobblerTimerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobblerTimerAction.swift; sourceTree = "<group>"; };
+		6678E668269DB26F005E78E6 /* VoidEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoidEnvironment.swift; sourceTree = "<group>"; };
 		66828D8D2687B1610012F60A /* MockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettings.swift; sourceTree = "<group>"; };
 		66828D912687BB160012F60A /* MusicAppMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAppMock.swift; sourceTree = "<group>"; };
 		668749A4264F25EC00BAF594 /* LastFmReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmReducer.swift; sourceTree = "<group>"; };
@@ -155,7 +163,7 @@
 		66CDC3A3266FEED800AF773E /* SharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedState.swift; sourceTree = "<group>"; };
 		66CDC3A5266FF01800AF773E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		66CF7F86266E853B00B4B418 /* Reducer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reducer+.swift"; sourceTree = "<group>"; };
-		66D4D8B6268E2D9900C5B565 /* LastFmTimerReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmTimerReducerTests.swift; sourceTree = "<group>"; };
+		66D4D8B6268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobblerTimerReducerTests.swift; sourceTree = "<group>"; };
 		66D4D8B8268E549B00C5B565 /* PlayerScrobblerReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScrobblerReducerTests.swift; sourceTree = "<group>"; };
 		66D4D8BB268E56BD00C5B565 /* PlayerScrobblerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScrobblerState.swift; sourceTree = "<group>"; };
 		66D4D8BD268E56D900C5B565 /* PlayerScrobblerReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScrobblerReducer.swift; sourceTree = "<group>"; };
@@ -221,6 +229,7 @@
 				6650D2D32683CC77003279A0 /* Player */,
 				66F8F7AC2651AA39007AA13F /* Track.swift */,
 				6677B520266C296900E54145 /* SystemEnvironment.swift */,
+				6678E668269DB26F005E78E6 /* VoidEnvironment.swift */,
 				6677B522266C2AA200E54145 /* Publisher+.swift */,
 				66CF7F86266E853B00B4B418 /* Reducer+.swift */,
 				662A804F266FC2D300249A69 /* ArtworkDownloader.swift */,
@@ -257,7 +266,7 @@
 			children = (
 				661AD7D42639D5C100B0292D /* Info.plist */,
 				661AD7D22639D5C100B0292D /* PlayerReducerTests.swift */,
-				66D4D8B6268E2D9900C5B565 /* LastFmTimerReducerTests.swift */,
+				66D4D8B6268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift */,
 				66D4D8B8268E549B00C5B565 /* PlayerScrobblerReducerTests.swift */,
 				66828D8D2687B1610012F60A /* MockSettings.swift */,
 				66828D912687BB160012F60A /* MusicAppMock.swift */,
@@ -349,6 +358,9 @@
 				66D4D8BD268E56D900C5B565 /* PlayerScrobblerReducer.swift */,
 				66D4D8BF268E56ED00C5B565 /* PlayerScrobblerAction.swift */,
 				66D4D8C1268FA19F00C5B565 /* PlayerScrobblerEnvironment.swift */,
+				6678E662269DB133005E78E6 /* ScrobblerTimerState.swift */,
+				6678E664269DB15B005E78E6 /* ScrobblerTimerReducer.swift */,
+				6678E666269DB1C4005E78E6 /* ScrobblerTimerAction.swift */,
 			);
 			path = PlayerScrobbler;
 			sourceTree = "<group>";
@@ -481,10 +493,13 @@
 				66A1DB292666C72E006BD2DD /* LastFmClient+.swift in Sources */,
 				663392F22649B4EB00930323 /* MusicApp.swift in Sources */,
 				6650D2D02683C66B003279A0 /* PlayerTrackReducer.swift in Sources */,
+				6678E667269DB1C4005E78E6 /* ScrobblerTimerAction.swift in Sources */,
 				663A9B58264DA56B0038CD06 /* AppState.swift in Sources */,
 				6629725E2694A84A00D31DCD /* SpotifyBridge.swift in Sources */,
 				66F8F7AD2651AA39007AA13F /* Track.swift in Sources */,
 				668749A7264F278500BAF594 /* OnboardingState.swift in Sources */,
+				6678E663269DB133005E78E6 /* ScrobblerTimerState.swift in Sources */,
+				6678E665269DB15B005E78E6 /* ScrobblerTimerReducer.swift in Sources */,
 				6650D2D22683C89D003279A0 /* PlayerReducer.swift in Sources */,
 				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
 				6677B523266C2AA200E54145 /* Publisher+.swift in Sources */,
@@ -498,6 +513,7 @@
 				663A9B56264D011E0038CD06 /* MusicTrackInfo.swift in Sources */,
 				6629725C2694A39500D31DCD /* SpotifyScript.applescript in Sources */,
 				668749A9264F278E00BAF594 /* OnboardingAction.swift in Sources */,
+				6678E669269DB26F005E78E6 /* VoidEnvironment.swift in Sources */,
 				662972602694B7AE00D31DCD /* SpotifyTrackInfo.swift in Sources */,
 				663392FB2649C69400930323 /* MusicBridge.swift in Sources */,
 				6677B521266C296900E54145 /* SystemEnvironment.swift in Sources */,
@@ -524,7 +540,7 @@
 				66828D922687BB160012F60A /* MusicAppMock.swift in Sources */,
 				661AD7D32639D5C100B0292D /* PlayerReducerTests.swift in Sources */,
 				6678E661269CCE53005E78E6 /* SpotifyMock.swift in Sources */,
-				66D4D8B7268E2D9900C5B565 /* LastFmTimerReducerTests.swift in Sources */,
+				66D4D8B7268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
