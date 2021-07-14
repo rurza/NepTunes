@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import LastFmKit
 
 public struct LastFmEnvironment {
     

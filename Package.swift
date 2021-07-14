@@ -34,7 +34,9 @@ let package = Package(
             name: "PlayersBridge",
             dependencies: [
                 "Shared"
-            ]),
+            ],
+            exclude: ["Scripts"],
+            resources: [.copy("MusicScript.scpt"), .copy("SpotifyScript.scpt")]),
         .target(
             name: "LastFm",
             dependencies: [
@@ -42,7 +44,10 @@ let package = Package(
                 .product(name: "LastFmKit", package: "LastFmKit"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]),
-        .testTarget(name: "LastFmTests", dependencies: ["LastFm"]),
+        .testTarget(
+            name: "LastFmTests",
+            dependencies: ["LastFm"],
+            resources: [.process("Resources/")]),
         .target(
             name: "Scrobbler",
             dependencies: [

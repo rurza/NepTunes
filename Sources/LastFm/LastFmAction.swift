@@ -22,8 +22,9 @@ public enum LastFmTrackAction: Equatable {
 
 
 public enum LastFmUserAction: Equatable {
-    case getUserAvatar(username: String)
-    case logIn(username: String, password: String)
+
+    case getUserAvatar
+    case logIn
     case userLoginResponse(Result<LastFmSession, Error>)
     case setUsername(String)
     case password(String)
@@ -35,13 +36,15 @@ public enum LastFmUserAction: Equatable {
             switch (lhsResult, rhsResult) {
             case let (.success(lhsSession), .success(rhsSession)):
                 return lhsSession == rhsSession
+            case (.failure, .failure):
+                return true
             default:
                 return false
             }
-        case let (.logIn(username: lhsUsername, password: lhsPassword), .logIn(username: rhsUsername, password: rhsPassword)):
-            return lhsUsername == rhsUsername && lhsPassword == rhsPassword
-        case let (.getUserAvatar(username: lhsUsername), .getUserAvatar(username: rhsUsername)):
-            return lhsUsername == rhsUsername
+        case (.logIn, .logIn):
+            return true
+        case (.getUserAvatar, .getUserAvatar):
+            return true
         case let (.setUsername(lhsUsername), .setUsername(rhsUsername)):
             return lhsUsername == rhsUsername
         case let (.password(lhsPassword), .password(rhsPassword)):

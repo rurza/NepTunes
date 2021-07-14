@@ -22,9 +22,9 @@ class PlayerReducerTests: XCTestCase {
         let newPlayerLaunched = PassthroughSubject<PlayerType, Never>()
         let playerDidQuit = PassthroughSubject<PlayerType, Never>()
         
-        var runningPlayers: [PlayerType] = [.musicApp, .spotify]
+        let runningPlayers: [PlayerType] = [.musicApp, .spotify]
         
-        var currentlyRunningPlayers: () -> [PlayerType]? = {
+        let currentlyRunningPlayers: () -> [PlayerType]? = {
             if runningPlayers.count > 0 {
                 return runningPlayers
             } else {
@@ -36,7 +36,7 @@ class PlayerReducerTests: XCTestCase {
                                                         newPlayerLaunched: newPlayerLaunched.eraseToEffect(),
                                                         playerQuit: playerDidQuit.eraseToEffect())
         
-  
+
         
         let store = TestStore(
             initialState: PlayerState(),
@@ -66,7 +66,6 @@ class PlayerReducerTests: XCTestCase {
         
         store.receive(.startObservingPlayer(.musicApp))
 
-        
         // stop observing shit
         store.send(.stopObservingPlayers)
         

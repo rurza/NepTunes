@@ -10,9 +10,11 @@ import Shared
 
 let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
     switch action {
-    case let .logIn(username: username, password: password):
+    case .logIn:
+        guard let username = state.loginState?.username,
+              let password = state.loginState?.password else { return .none }
         return environment.lastFmClient
-            .logInUser(username, password: password)
+            .logInUser(username, password)
             .catchToEffect()
             .map(LastFmUserAction.userLoginResponse)
     case let .userLoginResponse(.success(session)):
@@ -22,9 +24,11 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment
         return .none
     case let .userLoginResponse(.failure(error)):
         #warning("handle")
-        ()
         return .none
-    case .getUserAvatar(username: let username):
+    case .getUserAvatar:
+        guard let username = environment.settings.username else { return .none }
+//        return environment.lastFmClient.getAvatar(username).ca
+        #warning("handle")
         return .none
     case .logOut:
         environment.settings.session = nil
@@ -32,17 +36,15 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment
         state.loginState = nil
         return .none
     case let .setUsername(username):
-        if var loginState = state.loginState {
-            loginState.username = username
-            state.loginState = loginState
+        if state.loginState != nil {
+            state.loginState?.username = username
         } else {
             state.loginState = LastFmLoginState(username: username, password: nil)
         }
         return .none
     case let .password(password):
-        if var loginState = state.loginState {
-            loginState.password = password
-            state.loginState = loginState
+        if state.loginState != nil {
+            state.loginState?.password = password
         } else {
             state.loginState = LastFmLoginState(username: nil, password: password)
         }

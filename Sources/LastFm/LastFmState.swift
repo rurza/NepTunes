@@ -18,5 +18,4 @@ public struct LastFmState: Equatable {
 public struct LastFmLoginState: Equatable {
     var username: String?
     var password: String?
-    
 }

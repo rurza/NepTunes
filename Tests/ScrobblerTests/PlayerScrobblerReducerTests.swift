@@ -17,7 +17,7 @@ class PlayerScrobblerReducerTests: XCTestCase {
     func testTimerTickedAction() throws {
         /// Saturday, June 26, 2021 7:47:30 PM GMT
         var date = Date(timeIntervalSince1970: 1624736850)
-        var musicApp = MusicAppMock()
+        let musicApp = MusicAppMock()
         let spotify = SpotifyMock()
         let runLoop = RunLoop.test
         

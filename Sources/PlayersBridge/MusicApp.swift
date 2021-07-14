@@ -45,7 +45,7 @@ public class MusicApp: Player {
     
     private lazy var bridge: MusicBridge = {
         // AppleScriptObjC setup
-        Bundle.main.loadAppleScriptObjectiveCScripts()
+        Bundle.module.loadAppleScriptObjectiveCScripts()
         // create an instance of MusicBridge script object for Swift code to use
         
         let musicAppleScriptClass: AnyClass = NSClassFromString("MusicScript")!

@@ -46,7 +46,7 @@ public class SpotifyApp: Player {
     
     private lazy var bridge: SpotifyBridge = {
         // AppleScriptObjC setup
-        Bundle.main.loadAppleScriptObjectiveCScripts()
+        Bundle.module.loadAppleScriptObjectiveCScripts()
         // create an instance of MusicBridge script object for Swift code to use
         let musicAppleScriptClass: AnyClass = NSClassFromString("SpotifyScript")!
         let bridge = musicAppleScriptClass.alloc() as! SpotifyBridge
