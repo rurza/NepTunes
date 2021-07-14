@@ -7,7 +7,7 @@
 
 import Combine
 
-extension Publisher {
+public extension Publisher {
     func retry<T: Scheduler>(
         _ retries: Int,
         delay: T.SchedulerTimeType.Stride,

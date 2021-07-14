@@ -18,6 +18,8 @@ final class UserReducerTests: XCTestCase {
         
         let uuid = UUID().uuidString
         
+        let avatarData = Data()
+        
         let session: (String) -> LastFmSession = { username in
             LastFmSession(name: username,
                           key: uuid,
@@ -27,7 +29,7 @@ final class UserReducerTests: XCTestCase {
         let lastFmClientMock = LastFm.LastFmClient { username, _ in
             return Effect(value: session(username))
         } getAvatar: { _ in
-            return Effect(value: Data())
+            return Effect(value: avatarData)
         }
         
         
@@ -54,7 +56,7 @@ final class UserReducerTests: XCTestCase {
         }
         
         let password = "Password"
-        testStore.send(.password(password)) { state in
+        testStore.send(.setPassword(password)) { state in
             state.loginState = LastFmLoginState(username: username, password: password)
         }
         
@@ -63,7 +65,7 @@ final class UserReducerTests: XCTestCase {
         }
         
         // now we'll change the order of first providing password and then the username
-        testStore.send(.password(password)) { state in
+        testStore.send(.setPassword(password)) { state in
             state.loginState = LastFmLoginState(username: nil, password: password)
         }
         
@@ -79,16 +81,36 @@ final class UserReducerTests: XCTestCase {
         //
         // user login
         //
+        XCTAssertNil(settings.session)
         testStore.send(.setUsername(username)) { state in
             state.loginState = LastFmLoginState(username: username, password: nil)
         }
-        testStore.send(.password(password)) { state in
+        testStore.send(.setPassword(password)) { state in
             state.loginState = LastFmLoginState(username: username, password: password)
         }
         testStore.send(.logIn)
         
         testStore.receive(.userLoginResponse(.success(session(username)))) { state in
             state.loginState = nil
+        }
+        XCTAssertEqual(settings.session, session(username).key)
+        XCTAssertEqual(settings.username, session(username).name)
+
+        
+        //
+        // Get avatar
+        //
+        testStore.send(.getUserAvatar)
+        testStore.receive(.userAvatarResponse(.success(avatarData))) { state in
+            state.userAvatarData = avatarData
+        }
+        
+        //
+        // Log out
+        //
+        testStore.send(.logOut) { state in
+            state.loginState = nil
+            state.userAvatarData = nil
         }
         
     }

@@ -15,25 +15,41 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment
               let password = state.loginState?.password else { return .none }
         return environment.lastFmClient
             .logInUser(username, password)
+            .retry(2, delay: 2, scheduler: environment.mainQueue)
             .catchToEffect()
             .map(LastFmUserAction.userLoginResponse)
-    case let .userLoginResponse(.success(session)):
-        environment.settings.session = session.key
-        environment.settings.username = session.name
-        state.loginState = nil
-        return .none
-    case let .userLoginResponse(.failure(error)):
-        #warning("handle")
+    case let .userLoginResponse(response):
+        switch response {
+        case let .success(session):
+            environment.settings.session = session.key
+            environment.settings.username = session.name
+            state.loginState = nil
+        case let .failure(error):
+            
+            return .none
+        }
+
         return .none
     case .getUserAvatar:
         guard let username = environment.settings.username else { return .none }
-//        return environment.lastFmClient.getAvatar(username).ca
-        #warning("handle")
-        return .none
+        return environment.lastFmClient
+            .getAvatar(username)
+            .retry(2, delay: 2, scheduler: environment.mainQueue)
+            .catchToEffect()
+            .map(LastFmUserAction.userAvatarResponse)
+    case let .userAvatarResponse(response):
+        switch response {
+        case let .success(data):
+            state.userAvatarData = data
+            return .none
+        case let .failure(error):
+            return .none
+        }
     case .logOut:
         environment.settings.session = nil
         environment.settings.username = nil
         state.loginState = nil
+        state.userAvatarData = nil
         return .none
     case let .setUsername(username):
         if state.loginState != nil {
@@ -42,7 +58,7 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment
             state.loginState = LastFmLoginState(username: username, password: nil)
         }
         return .none
-    case let .password(password):
+    case let .setPassword(password):
         if state.loginState != nil {
             state.loginState?.password = password
         } else {

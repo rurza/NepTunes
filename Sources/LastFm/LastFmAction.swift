@@ -23,11 +23,12 @@ public enum LastFmTrackAction: Equatable {
 
 public enum LastFmUserAction: Equatable {
 
-    case getUserAvatar
     case logIn
     case userLoginResponse(Result<LastFmSession, Error>)
+    case getUserAvatar
+    case userAvatarResponse(Result<Data, Error>)
     case setUsername(String)
-    case password(String)
+    case setPassword(String)
     case logOut
     
     public static func == (lhs: LastFmUserAction, rhs: LastFmUserAction) -> Bool {
@@ -47,10 +48,19 @@ public enum LastFmUserAction: Equatable {
             return true
         case let (.setUsername(lhsUsername), .setUsername(rhsUsername)):
             return lhsUsername == rhsUsername
-        case let (.password(lhsPassword), .password(rhsPassword)):
+        case let (.setPassword(lhsPassword), .setPassword(rhsPassword)):
             return lhsPassword == rhsPassword
         case (.logOut, .logOut):
             return true
+        case let (.userAvatarResponse(lhsResult), .userAvatarResponse(rhsResult)):
+            switch (lhsResult, rhsResult) {
+            case let (.success(lhsAvatarData), .success(rhsAvatarData)):
+                return lhsAvatarData == rhsAvatarData
+            case (.failure, .failure):
+                return true
+            default:
+                return false
+            }
         default:
             return false
         }

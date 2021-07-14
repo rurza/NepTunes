@@ -9,9 +9,12 @@ import Foundation
 
 public struct LastFmState: Equatable {
     var loginState: LastFmLoginState?
+    var userAvatarData: Data? = nil
     
-    public init(loginState: LastFmLoginState? = nil) {
+    public init(loginState: LastFmLoginState? = nil,
+                userAvatarData: Data? = nil) {
         self.loginState = loginState
+        self.userAvatarData = userAvatarData
     }
 }
 
