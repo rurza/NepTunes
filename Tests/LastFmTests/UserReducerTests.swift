@@ -26,14 +26,21 @@ final class UserReducerTests: XCTestCase {
                           subscriber: 1)
         }
         
-        let lastFmClientMock = LastFm.LastFmClient { username, _ in
+        let lastFmClientMock = LastFm.LastFmUserClient { username, _ in
             return Effect(value: session(username))
         } getAvatar: { _ in
             return Effect(value: avatarData)
         }
         
+        struct NoError: Error { }
         
-        let lastFmEnvironment = LastFmEnvironment(lastFmClient: lastFmClientMock)
+        let scrobblerClientMock = ScrobblerClient(scrobbleTrack: { _, _, _ in Effect(error: NoError()) },
+                                                  updateNowPlayingTrack: { _, _ in Effect(error: NoError()) },
+                                                  loveTrack: { _, _ in Effect(error: NoError()) },
+                                                  unloveTrack: { _, _ in Effect(error: NoError()) })
+        
+        
+        let lastFmEnvironment = LastFmEnvironment(lastFmClient: lastFmClientMock, scrobblerClient: scrobblerClientMock)
         
         let settings = MockSettings()
         

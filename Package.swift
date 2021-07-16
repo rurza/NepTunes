@@ -80,6 +80,7 @@ let package = Package(
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "DeezerClient", package: "DeezerClient")
             ]),
-        .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
+        // test target for the AppCoreTests isn't needed for now
+//        .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
     ]
 )

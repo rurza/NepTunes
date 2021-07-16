@@ -70,14 +70,15 @@ let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment
 
 let lastFmTrackReducer = Reducer<LastFmState, LastFmTrackAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
     
+    guard let sessionKey = environment.settings.session else { return .none }
     switch action {
-    case .scrobbleNow(title: let title, artist: let artist, albumArtist: let albumArtist, album: let album):
+    case .scrobbleNow(let track):
+        return environment.scrobblerClient.scrobbleTrack(track, sessionKey, environment.date()).fireAndForget()
+    case .updateNowPlaying(let track):
+        return environment.scrobblerClient.updateNowPlayingTrack(track, sessionKey).fireAndForget()
+    case .love(let track):
         return .none
-    case .updateNowPlaying(title: let title, artist: let artist, albumArtist: let albumArtist, album: let album):
-        return .none
-    case .love(title: let title, artist: let artist):
-        return .none
-    case .unlove(title: let title, artist: let artist):
+    case .unlove(let track):
         return .none
     }
 }

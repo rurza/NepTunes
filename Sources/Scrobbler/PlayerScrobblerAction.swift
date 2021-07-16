@@ -13,6 +13,6 @@ public enum PlayerScrobblerAction: Equatable {
     case newEventFromPlayerWithTrack(Track)
     case playerChangedTheTrack(Track)
     case scrobblerTimerShouldStartForTrack(Track)
-    case scrobbleNow(title: String, artist: String, albumArtist: String?, album: String?)
-    case updateNowPlaying(title: String, artist: String, albumArtist: String?, album: String?)
+    case scrobbleNow(Track)
+    case updateNowPlaying(Track)
 }

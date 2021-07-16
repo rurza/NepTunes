@@ -20,7 +20,7 @@ public let appReducer = AppReducer.combine(
         .pullback(state: \.lastFmState,
                   action: /AppAction.lastFmAction,
                   environment: { _ in
-                    .live(environment: LastFmEnvironment(lastFmClient: .live))
+                    .live(environment: .live)
                   }),
     playerScrobblerReducer
         .pullback(state: \.playerScrobblerState,

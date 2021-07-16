@@ -1,0 +1,30 @@
+{
+  "scrobbles": {
+    "@attr": {
+      "accepted": 1,
+      "ignored": 0
+    },
+    "scrobble": {
+      "artist": {
+        "corrected": "0",
+        "#text": "Tool"
+      },
+      "ignoredMessage": {
+        "code": "0",
+        "#text": ""
+      },
+      "albumArtist": {
+        "corrected": "0",
+        "#text": "Tool"
+      },
+      "timestamp": "1620057941.9559",
+      "album": {
+        "corrected": "0"
+      },
+      "track": {
+        "corrected": "1",
+        "#text": "Ænima"
+      }
+    }
+  }
+}

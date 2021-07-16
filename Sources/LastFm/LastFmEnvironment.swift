@@ -9,10 +9,9 @@ import Foundation
 
 public struct LastFmEnvironment {
     
-    public var lastFmClient: LastFmClient
+    var lastFmClient: LastFmUserClient
+    var scrobblerClient: ScrobblerClient
     
-    public init(lastFmClient: LastFmClient) {
-        self.lastFmClient = lastFmClient
-    }
+    public static let live: Self = Self(lastFmClient: .live, scrobblerClient: .live)
 
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import LastFmKit
+import Shared
 
 public enum LastFmAction: Equatable {
     case trackAction(LastFmTrackAction)
@@ -14,10 +15,10 @@ public enum LastFmAction: Equatable {
 }
 
 public enum LastFmTrackAction: Equatable {
-    case scrobbleNow(title: String, artist: String, albumArtist: String?, album: String?)
-    case updateNowPlaying(title: String, artist: String, albumArtist: String?, album: String?)
-    case love(title: String, artist: String)
-    case unlove(title: String, artist: String)
+    case scrobbleNow(Track)
+    case updateNowPlaying(Track)
+    case love(Track)
+    case unlove(Track)
 }
 
 

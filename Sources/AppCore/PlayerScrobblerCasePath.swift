@@ -20,10 +20,10 @@ let playerScrobblerCasePath = CasePath<AppAction, PlayerScrobblerAction> { playe
         return .playerAction(.trackAction(.trackBasicInfoAvailable(track)))
     case let .timerAction(timerAction):
         return .scrobblerTimerAction(timerAction)
-    case let .scrobbleNow(title: title, artist: artist, albumArtist: albumArtist, album: album):
-        return .lastFmAction(.trackAction(.scrobbleNow(title: title, artist: artist, albumArtist: albumArtist, album: album)))
-    case let .updateNowPlaying(title: title, artist: artist, albumArtist: albumArtist, album: album):
-        return .lastFmAction(.trackAction(.updateNowPlaying(title: title, artist: artist, albumArtist: albumArtist, album: album)))
+    case let .scrobbleNow(track):
+        return .lastFmAction(.trackAction(.scrobbleNow(track)))
+    case let .updateNowPlaying(track):
+        return .lastFmAction(.trackAction(.updateNowPlaying(track)))
     }
 } extract: { appAction in
     switch appAction {
@@ -35,10 +35,10 @@ let playerScrobblerCasePath = CasePath<AppAction, PlayerScrobblerAction> { playe
         return .scrobblerTimerShouldStartForTrack(track)
     case let .scrobblerTimerAction(action):
         return .timerAction(action)
-    case let .lastFmAction(.trackAction(.scrobbleNow(title: title, artist: artist, albumArtist: albumArtist, album: album))):
-        return .scrobbleNow(title: title, artist: artist, albumArtist: albumArtist, album: album)
-    case let .lastFmAction(.trackAction(.updateNowPlaying(title: title, artist: artist, albumArtist: albumArtist, album: album))):
-        return .updateNowPlaying(title: title, artist: artist, albumArtist: albumArtist, album: album)
+    case let .lastFmAction(.trackAction(.scrobbleNow(track))):
+        return .scrobbleNow(track)
+    case let .lastFmAction(.trackAction(.updateNowPlaying(track))):
+        return .updateNowPlaying(track)
     default:
         return nil
     }

@@ -9,12 +9,12 @@ import Foundation
 import ComposableArchitecture
 import LastFmKit
 
-public struct LastFmClient {
-    public var logInUser: (String, String) -> Effect<LastFmSession, Error>
-    public var getAvatar: (String) -> Effect<Data, Error>
+public struct LastFmUserClient {
+    var logInUser: (String, String) -> Effect<LastFmSession, Error>
+    var getAvatar: (String) -> Effect<Data, Error>
 }
 
-public extension LastFmClient {
+public extension LastFmUserClient {
     static let live: Self = {
         let client = LastFmKit.LastFmClient(secret: Secrets.lastFmApiSecret, apiKey: Secrets.lastFmApiKey)
         return Self(

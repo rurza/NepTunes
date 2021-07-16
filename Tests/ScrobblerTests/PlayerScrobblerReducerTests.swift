@@ -92,7 +92,7 @@ class PlayerScrobblerReducerTests: XCTestCase {
             state.timerState.fireInterval = 0
             state.timerState.startDate = nil
         }
-        testStore.receive(.scrobbleNow(title: track.title, artist: track.artist, albumArtist: track.albumArtist, album: track.album))
+        testStore.receive(.scrobbleNow(track))
         
         // Now we'll the situation where the NepTunes was launched, the music is paused
         // and we'll get the `playerInfo` notification with the `same` track that already is in the state

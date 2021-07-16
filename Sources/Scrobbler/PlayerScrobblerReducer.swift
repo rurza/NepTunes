@@ -27,10 +27,7 @@ public let playerScrobblerReducer = Reducer<PlayerScrobblerState, PlayerScrobble
                   let trackDuration = track.duration // the duration is a safety check here, in theory a track can have nil for the duration
             else { return Effect(value: .timerAction(.invalidate))}
 
-            return Effect(value: .scrobbleNow(title: track.title,
-                                              artist: track.artist,
-                                              albumArtist: track.albumArtist,
-                                              album: track.album))
+            return Effect(value: .scrobbleNow(track))
         case let .newEventFromPlayerWithTrack(track):
             guard let playerType = state.currentPlayerState?.playerType else { return .none }
             guard let currentTrack = state.currentPlayerState?.currentTrack else { return .none }
