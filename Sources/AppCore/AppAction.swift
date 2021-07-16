@@ -14,4 +14,5 @@ public enum AppAction {
     case playerAction(PlayerAction)
     case lastFmAction(LastFmAction)
     case scrobblerTimerAction(ScrobblerTimerAction)
+    case appLifecycleAction(AppLifecycleAction)
 }

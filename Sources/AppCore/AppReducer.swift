@@ -45,5 +45,7 @@ public let appReducer = AppReducer.combine(
         default:
             return .none
         }
-    }
+    },
+    // this reducer is for the app lifecycle
+    appLifecycleReducer
 )

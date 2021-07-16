@@ -21,11 +21,16 @@
 		661AD7C42639D5C100B0292D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C32639D5C100B0292D /* Preview Assets.xcassets */; };
 		661AD7C72639D5C100B0292D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 661AD7C52639D5C100B0292D /* Main.storyboard */; };
 		661AD7D32639D5C100B0292D /* PlayerReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661AD7D22639D5C100B0292D /* PlayerReducerTests.swift */; };
+		662A645726A2285F004ACD13 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 662A645626A2285F004ACD13 /* AVKit.framework */; };
+		662A645926A228D7004ACD13 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A645826A228D7004ACD13 /* PlayerViewModel.swift */; };
+		662A645B26A23B5C004ACD13 /* AVPlayerViewRepresented.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A645A26A23B5C004ACD13 /* AVPlayerViewRepresented.swift */; };
+		662A645F26A24AE0004ACD13 /* NSWindow+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A645E26A24AE0004ACD13 /* NSWindow+Center.swift */; };
 		663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663A9B53264B20480038CD06 /* AppleScriptObjC.framework */; };
 		6678E661269CCE53005E78E6 /* SpotifyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E660269CCE53005E78E6 /* SpotifyMock.swift */; };
 		66828D8E2687B1610012F60A /* MockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D8D2687B1610012F60A /* MockSettings.swift */; };
 		66828D922687BB160012F60A /* MusicAppMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D912687BB160012F60A /* MusicAppMock.swift */; };
-		66A1DB17266564D1006BD2DD /* AppLifecycleAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DB16266564D1006BD2DD /* AppLifecycleAction.swift */; };
+		668728CF26A222BA00EDF8BE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668728CE26A222BA00EDF8BE /* Store.swift */; };
+		668728D126A2252F00EDF8BE /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668728D026A2252F00EDF8BE /* WelcomeView.swift */; };
 		66D4D8B7268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8B6268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift */; };
 		66D4D8B9268E549B00C5B565 /* PlayerScrobblerReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D4D8B8268E549B00C5B565 /* PlayerScrobblerReducerTests.swift */; };
 /* End PBXBuildFile section */
@@ -76,15 +81,16 @@
 		661AD7CE2639D5C100B0292D /* NepTunesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NepTunesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		661AD7D22639D5C100B0292D /* PlayerReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerReducerTests.swift; sourceTree = "<group>"; };
 		661AD7D42639D5C100B0292D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		662A645626A2285F004ACD13 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		662A645826A228D7004ACD13 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
+		662A645A26A23B5C004ACD13 /* AVPlayerViewRepresented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerViewRepresented.swift; sourceTree = "<group>"; };
+		662A645E26A24AE0004ACD13 /* NSWindow+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindow+Center.swift"; sourceTree = "<group>"; };
 		663A9B53264B20480038CD06 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
 		6678E660269CCE53005E78E6 /* SpotifyMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyMock.swift; sourceTree = "<group>"; };
 		66828D8D2687B1610012F60A /* MockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettings.swift; sourceTree = "<group>"; };
 		66828D912687BB160012F60A /* MusicAppMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAppMock.swift; sourceTree = "<group>"; };
-		668749A6264F278500BAF594 /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
-		668749A8264F278E00BAF594 /* OnboardingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAction.swift; sourceTree = "<group>"; };
-		66A1DB16266564D1006BD2DD /* AppLifecycleAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleAction.swift; sourceTree = "<group>"; };
-		66CDC3A3266FEED800AF773E /* SharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedState.swift; sourceTree = "<group>"; };
-		66CF7F86266E853B00B4B418 /* Reducer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reducer+.swift"; sourceTree = "<group>"; };
+		668728CE26A222BA00EDF8BE /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		668728D026A2252F00EDF8BE /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		66D4D8B6268E2D9900C5B565 /* ScrobblerTimerReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobblerTimerReducerTests.swift; sourceTree = "<group>"; };
 		66D4D8B8268E549B00C5B565 /* PlayerScrobblerReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScrobblerReducerTests.swift; sourceTree = "<group>"; };
 		66DCE6A5269F6B320091BDAD /* NepTunes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = NepTunes; path = ..; sourceTree = "<group>"; };
@@ -103,6 +109,7 @@
 				6600BA00269E2BC6008A169F /* Shared in Frameworks */,
 				6600B9F4269E2BBA008A169F /* ComposableArchitecture in Frameworks */,
 				663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */,
+				662A645726A2285F004ACD13 /* AVKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,11 +147,11 @@
 			isa = PBXGroup;
 			children = (
 				661AD7BC2639D5C000B0292D /* AppDelegate.swift */,
-				66A1DB16266564D1006BD2DD /* AppLifecycleAction.swift */,
-				66CF7F86266E853B00B4B418 /* Reducer+.swift */,
-				66CDC3A3266FEED800AF773E /* SharedState.swift */,
-				66A1DB202666B9E9006BD2DD /* Onboarding */,
+				668728CE26A222BA00EDF8BE /* Store.swift */,
 				661AD7BE2639D5C000B0292D /* ContentView.swift */,
+				662A645E26A24AE0004ACD13 /* NSWindow+Center.swift */,
+				662A645A26A23B5C004ACD13 /* AVPlayerViewRepresented.swift */,
+				668728D226A2253700EDF8BE /* Onboarding */,
 				661AD7C02639D5C100B0292D /* Assets.xcassets */,
 				661AD7C52639D5C100B0292D /* Main.storyboard */,
 				661AD7C82639D5C100B0292D /* Info.plist */,
@@ -177,18 +184,19 @@
 			path = NepTunesTests;
 			sourceTree = "<group>";
 		};
-		66A1DB202666B9E9006BD2DD /* Onboarding */ = {
+		668728D226A2253700EDF8BE /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				668749A6264F278500BAF594 /* OnboardingState.swift */,
-				668749A8264F278E00BAF594 /* OnboardingAction.swift */,
+				668728D026A2252F00EDF8BE /* WelcomeView.swift */,
+				662A645826A228D7004ACD13 /* PlayerViewModel.swift */,
 			);
-			path = Onboarding;
+			name = Onboarding;
 			sourceTree = "<group>";
 		};
 		66D043CE263B234F008E07B2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				662A645626A2285F004ACD13 /* AVKit.framework */,
 				663A9B53264B20480038CD06 /* AppleScriptObjC.framework */,
 			);
 			name = Frameworks;
@@ -309,10 +317,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66A1DB17266564D1006BD2DD /* AppLifecycleAction.swift in Sources */,
+				668728D126A2252F00EDF8BE /* WelcomeView.swift in Sources */,
 				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,
+				662A645926A228D7004ACD13 /* PlayerViewModel.swift in Sources */,
+				662A645B26A23B5C004ACD13 /* AVPlayerViewRepresented.swift in Sources */,
+				662A645F26A24AE0004ACD13 /* NSWindow+Center.swift in Sources */,
 				661AD7BD2639D5C000B0292D /* AppDelegate.swift in Sources */,
+				668728CF26A222BA00EDF8BE /* Store.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

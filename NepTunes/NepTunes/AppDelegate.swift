@@ -9,28 +9,16 @@ import Cocoa
 import SwiftUI
 import ComposableArchitecture
 import AppCore
-import Shared
+import Combine
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var window: NSWindow!
-    var timer: Timer?
-    
-    let store = Store(initialState: AppState(), reducer: appReducer, environment: SystemEnvironment.live(environment: AppEnvironment.live))
+    var onboardingWindow: NSWindow?
+    let viewStore = ViewStore(store)
+    private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Create the SwiftUI view that provides the window contents.
-//        let bundle = Bundle.main
-//        let pluginsPath = bundle.builtInPlugInsPath!
-//        let statusBarPlugin = Bundle(path: pluginsPath + "/StatusBarInfo.nepext")
-//        let principalClass = statusBarPlugin?.principalClass as? PluginsInterface.Type
-//        pluginInstance = initPlugin(from: principalClass)
-//
-//        Bundle.main.loadAppleScriptObjectiveCScripts()
-//        let musicAppleScriptClass: AnyClass = NSClassFromString("MusicScript")!
-//        let bridge = musicAppleScriptClass.alloc() as! MusicBridge
-
 
 //        note = DistributedNotificationCenter.default().addObserver(forName: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"), object: nil, queue: nil) { note in
 //        //    print(note.userInfo as Any?)
@@ -39,29 +27,57 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //                self.pluginInstance?.trackDidChange(track.title, byArtist: track.artist)
 //            }
 //        }
-
-
-
-        
-        let contentView = ContentView(store: store.scope(state: \.playerState, action: AppAction.playerAction))
-        // Create the window and set the content view.
-        window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        window.isReleasedWhenClosed = false
-        window.center()
-        window.setFrameAutosaveName("Main Window")
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(nil)
-        let viewStore = ViewStore(store)
-        viewStore.send(.playerAction(.appAction(.startObservingPlayers)))
+        setUpBindings()
+        viewStore.send(.appLifecycleAction(.appDidLaunch))
     }
+    
+    func setUpBindings() {
+        viewStore.publisher
+            .shouldShowOnboarding
+            .sink { [weak self] shouldShowOnboarding in
+                guard shouldShowOnboarding else { return }
+                self?.showOnboarding()
+            }
+            .store(in: &cancellables)
+    }
+    
+    func showOnboarding() {
+        
+        let welcomeView = WelcomeView()
+        // Create the window and set the content view.
+        let window  = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 400, height: 400),
+            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        
+        window.isReleasedWhenClosed = true
+        window.titleVisibility = .hidden
+        window.titlebarAppearsTransparent = true
+        window.setFrameAutosaveName("NepTunes Quick Start Guide")
+        window.contentView = NSHostingView(rootView: welcomeView)
+        window.makeKeyAndOrderFront(nil)
+        window.center()
+        window.title = "NepTunes Quick Start Guide"
+        self.onboardingWindow = window
+    }
+    
 
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
+    
+    // Plugins
+    
+    //        let bundle = Bundle.main
+    //        let pluginsPath = bundle.builtInPlugInsPath!
+    //        let statusBarPlugin = Bundle(path: pluginsPath + "/StatusBarInfo.nepext")
+    //        let principalClass = statusBarPlugin?.principalClass as? PluginsInterface.Type
+    //        pluginInstance = initPlugin(from: principalClass)
+    //
+    //        Bundle.main.loadAppleScriptObjectiveCScripts()
+    //        let musicAppleScriptClass: AnyClass = NSClassFromString("MusicScript")!
+    //        let bridge = musicAppleScriptClass.alloc() as! MusicBridge
     
     func application(_ sender: NSApplication, openFile filename: String) -> Bool {
         let fs = FileManager.default

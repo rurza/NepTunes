@@ -12,6 +12,7 @@ public protocol SettingsProvider: AnyObject {
     var username: String? { get set }
     var scrobblePercentage: UInt { get set }
     var showCover: Bool { get set }
+    var onboardingIsDone: Bool { get set }
 }
 
 public class Settings: SettingsProvider {
@@ -24,5 +25,7 @@ public class Settings: SettingsProvider {
     @UserDefault(key: "scrobblePercentage", defaultValue: 50) public var scrobblePercentage: UInt
     
     @UserDefault(key: "showCover", defaultValue: true) public var showCover: Bool
+    
+    @UserDefault(key: "onboardingIsDone", defaultValue: false) public var onboardingIsDone: Bool
     
 }

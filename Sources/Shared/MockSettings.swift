@@ -16,4 +16,6 @@ class MockSettings: SettingsProvider {
     
     var showCover: Bool = true
     
+    var onboardingIsDone: Bool = true
+    
 }

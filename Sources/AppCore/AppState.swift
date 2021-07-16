@@ -15,6 +15,7 @@ public struct AppState: Equatable {
     public var playerState = PlayerState()
     public var lastFmState = LastFmState()
     public var scrobblerTimerState = ScrobblerTimerState()
+    public var shouldShowOnboarding = false
     
     public var playerScrobblerState: PlayerScrobblerState {
         get {
