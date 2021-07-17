@@ -43,7 +43,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func showOnboarding() {
         
-        let welcomeView = WelcomeView()
+        let onboardingView = OnboardingContainerView()
         // Create the window and set the content view.
         let window  = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 400, height: 400),
@@ -54,7 +54,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
         window.setFrameAutosaveName("NepTunes Quick Start Guide")
-        window.contentView = NSHostingView(rootView: welcomeView)
+        window.contentView = NSHostingView(rootView: onboardingView)
         window.makeKeyAndOrderFront(nil)
         window.center()
         window.title = "NepTunes Quick Start Guide"

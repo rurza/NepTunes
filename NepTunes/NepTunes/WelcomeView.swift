@@ -14,20 +14,15 @@ struct WelcomeView: View {
     
     var body: some View {
         VStack {
-            AVPlayerViewRepresented(player: model.player)
-                .frame(height: 240)
-            VStack(spacing: 20) {
-                Text("Welcome in NepTunes 2")
-                    .font(.title)
-                Text("NepTunes 2 is the best Apple Music and Spotify controller with built-in Last.fm scrobbler, editable hotkeys for common actions and beautiful themes.")
-                    .font(.callout)
-                    .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding()
+            Color.red
+                .frame(maxHeight: 250)
+            Text("A gem for music lovers")
+                .font(.title)
+            Text("NepTunes 2 is the best Apple Music and Spotify controller with built-in Last.fm scrobbler, editable hotkeys for common actions and beautiful themes.")
+                .font(.callout)
+                .lineLimit(nil)
+                .padding()
         }
-        .frame(minWidth: 460)
-        .ignoresSafeArea(.container, edges: .top)
         .onAppear {
             model.play()
         }
@@ -37,5 +32,6 @@ struct WelcomeView: View {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView()
+            .frame(width: 460)
     }
 }

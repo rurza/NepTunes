@@ -24,7 +24,10 @@
 		662A645726A2285F004ACD13 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 662A645626A2285F004ACD13 /* AVKit.framework */; };
 		662A645926A228D7004ACD13 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A645826A228D7004ACD13 /* PlayerViewModel.swift */; };
 		662A645B26A23B5C004ACD13 /* AVPlayerViewRepresented.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A645A26A23B5C004ACD13 /* AVPlayerViewRepresented.swift */; };
-		662A645F26A24AE0004ACD13 /* NSWindow+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A645E26A24AE0004ACD13 /* NSWindow+Center.swift */; };
+		662A646126A2D212004ACD13 /* OnboardingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646026A2D212004ACD13 /* OnboardingContainerView.swift */; };
+		662A646326A2D2F5004ACD13 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646226A2D2F4004ACD13 /* PageViewController.swift */; };
+		662A646526A2E544004ACD13 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646426A2E544004ACD13 /* PageView.swift */; };
+		662A646A26A3421D004ACD13 /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646926A3421D004ACD13 /* PermissionsView.swift */; };
 		663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663A9B53264B20480038CD06 /* AppleScriptObjC.framework */; };
 		6678E661269CCE53005E78E6 /* SpotifyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E660269CCE53005E78E6 /* SpotifyMock.swift */; };
 		66828D8E2687B1610012F60A /* MockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D8D2687B1610012F60A /* MockSettings.swift */; };
@@ -84,7 +87,10 @@
 		662A645626A2285F004ACD13 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		662A645826A228D7004ACD13 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		662A645A26A23B5C004ACD13 /* AVPlayerViewRepresented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerViewRepresented.swift; sourceTree = "<group>"; };
-		662A645E26A24AE0004ACD13 /* NSWindow+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindow+Center.swift"; sourceTree = "<group>"; };
+		662A646026A2D212004ACD13 /* OnboardingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerView.swift; sourceTree = "<group>"; };
+		662A646226A2D2F4004ACD13 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		662A646426A2E544004ACD13 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
+		662A646926A3421D004ACD13 /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
 		663A9B53264B20480038CD06 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
 		6678E660269CCE53005E78E6 /* SpotifyMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyMock.swift; sourceTree = "<group>"; };
 		66828D8D2687B1610012F60A /* MockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettings.swift; sourceTree = "<group>"; };
@@ -149,7 +155,6 @@
 				661AD7BC2639D5C000B0292D /* AppDelegate.swift */,
 				668728CE26A222BA00EDF8BE /* Store.swift */,
 				661AD7BE2639D5C000B0292D /* ContentView.swift */,
-				662A645E26A24AE0004ACD13 /* NSWindow+Center.swift */,
 				662A645A26A23B5C004ACD13 /* AVPlayerViewRepresented.swift */,
 				668728D226A2253700EDF8BE /* Onboarding */,
 				661AD7C02639D5C100B0292D /* Assets.xcassets */,
@@ -188,7 +193,11 @@
 			isa = PBXGroup;
 			children = (
 				668728D026A2252F00EDF8BE /* WelcomeView.swift */,
+				662A646926A3421D004ACD13 /* PermissionsView.swift */,
 				662A645826A228D7004ACD13 /* PlayerViewModel.swift */,
+				662A646026A2D212004ACD13 /* OnboardingContainerView.swift */,
+				662A646226A2D2F4004ACD13 /* PageViewController.swift */,
+				662A646426A2E544004ACD13 /* PageView.swift */,
 			);
 			name = Onboarding;
 			sourceTree = "<group>";
@@ -318,11 +327,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				668728D126A2252F00EDF8BE /* WelcomeView.swift in Sources */,
+				662A646126A2D212004ACD13 /* OnboardingContainerView.swift in Sources */,
 				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
+				662A646A26A3421D004ACD13 /* PermissionsView.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,
 				662A645926A228D7004ACD13 /* PlayerViewModel.swift in Sources */,
+				662A646526A2E544004ACD13 /* PageView.swift in Sources */,
 				662A645B26A23B5C004ACD13 /* AVPlayerViewRepresented.swift in Sources */,
-				662A645F26A24AE0004ACD13 /* NSWindow+Center.swift in Sources */,
+				662A646326A2D2F5004ACD13 /* PageViewController.swift in Sources */,
 				661AD7BD2639D5C000B0292D /* AppDelegate.swift in Sources */,
 				668728CF26A222BA00EDF8BE /* Store.swift in Sources */,
 			);
