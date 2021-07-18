@@ -28,6 +28,7 @@
 		662A646326A2D2F5004ACD13 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646226A2D2F4004ACD13 /* PageViewController.swift */; };
 		662A646526A2E544004ACD13 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646426A2E544004ACD13 /* PageView.swift */; };
 		662A646A26A3421D004ACD13 /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646926A3421D004ACD13 /* PermissionsView.swift */; };
+		662A646C26A4B20E004ACD13 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646B26A4B20E004ACD13 /* PageControl.swift */; };
 		663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663A9B53264B20480038CD06 /* AppleScriptObjC.framework */; };
 		6678E661269CCE53005E78E6 /* SpotifyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6678E660269CCE53005E78E6 /* SpotifyMock.swift */; };
 		66828D8E2687B1610012F60A /* MockSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66828D8D2687B1610012F60A /* MockSettings.swift */; };
@@ -91,6 +92,7 @@
 		662A646226A2D2F4004ACD13 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		662A646426A2E544004ACD13 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		662A646926A3421D004ACD13 /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
+		662A646B26A4B20E004ACD13 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		663A9B53264B20480038CD06 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
 		6678E660269CCE53005E78E6 /* SpotifyMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyMock.swift; sourceTree = "<group>"; };
 		66828D8D2687B1610012F60A /* MockSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettings.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				662A646026A2D212004ACD13 /* OnboardingContainerView.swift */,
 				662A646226A2D2F4004ACD13 /* PageViewController.swift */,
 				662A646426A2E544004ACD13 /* PageView.swift */,
+				662A646B26A4B20E004ACD13 /* PageControl.swift */,
 			);
 			name = Onboarding;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 			files = (
 				668728D126A2252F00EDF8BE /* WelcomeView.swift in Sources */,
 				662A646126A2D212004ACD13 /* OnboardingContainerView.swift in Sources */,
+				662A646C26A4B20E004ACD13 /* PageControl.swift in Sources */,
 				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
 				662A646A26A3421D004ACD13 /* PermissionsView.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,

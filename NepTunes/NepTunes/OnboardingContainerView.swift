@@ -20,27 +20,20 @@ struct OnboardingContainerView: View {
                     PermissionsView()
                 }
             }
-            HStack {
-                if currentPage > 0 {
-                    Button("Previous") {
-                        withAnimation {
-                            currentPage -= 1
-                        }
-                    }
-                }
-                Spacer()
-                Button("Next") {
-                    withAnimation {
-                        currentPage += 1
-                    }
-                }
-            }
-            .padding()
-            .animation(nil)
-        }
-        .ignoresSafeArea(.all, edges: .top)
-        .frame(width: 460)
+            .ignoresSafeArea(.all, edges: .top)
 
+            ZStack {
+                HStack {
+                    if currentPage > 0 {
+                        Button("Previous") { currentPage -= 1 }
+                    }
+                    Spacer()
+                    Button("Next") { currentPage += 1 }
+                }
+                .padding()
+                PageControl(count: 2, currentIndex: $currentPage)
+            }
+        }
     }
 }
 
@@ -48,5 +41,6 @@ struct OnboardingContainerView_Previews: PreviewProvider {
     static var previews: some View {
         OnboardingContainerView()
             .frame(width: 460)
+    
     }
 }

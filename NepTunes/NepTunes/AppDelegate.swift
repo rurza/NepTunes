@@ -43,10 +43,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func showOnboarding() {
         
-        let onboardingView = OnboardingContainerView()
+        let onboardingView = OnboardingContainerView().frame(width: 460).fixedSize()
+
         // Create the window and set the content view.
         let window  = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 400, height: 400),
+            contentRect: NSRect(x: 0, y: 0, width: 1, height: 1000),
             styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
             backing: .buffered, defer: false)
         
@@ -58,6 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
         window.center()
         window.title = "NepTunes Quick Start Guide"
+        window.layoutIfNeeded()
         self.onboardingWindow = window
     }
     
