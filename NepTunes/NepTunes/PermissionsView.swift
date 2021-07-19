@@ -12,13 +12,15 @@ struct PermissionsView: View {
     @StateObject private var model = PlayerViewModel(name: "tutorial")
     
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 20) {
             AVPlayerViewRepresented(player: model.player)
                 .frame(height: 240)
             Text("Access to the apps")
                 .font(.title)
         }
-        .onAppear { model.play() }
+        .onAppear {
+            model.play()
+        }
     }
 }
 

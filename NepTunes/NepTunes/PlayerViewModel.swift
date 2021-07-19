@@ -45,6 +45,9 @@ class PlayerViewModel: ObservableObject {
         player.play()
     }
     
+    var isPlaying: Bool {
+        player.timeControlStatus == .playing
+    }
     
 
 }

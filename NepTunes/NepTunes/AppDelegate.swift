@@ -11,22 +11,17 @@ import ComposableArchitecture
 import AppCore
 import Combine
 
-@main
+
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var onboardingWindow: NSWindow?
-    let viewStore = ViewStore(store)
+    private var onboardingWindow: NSWindow?
+    private let viewStore = ViewStore(store)
     private var cancellables = Set<AnyCancellable>()
+    private lazy var statusBarMenuController = StatusBarMenuController(viewStore: viewStore)
+    private lazy var statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-
-//        note = DistributedNotificationCenter.default().addObserver(forName: NSNotification.Name(rawValue: "com.apple.Music.playerInfo"), object: nil, queue: nil) { note in
-//        //    print(note.userInfo as Any?)
-//            print(bridge.currentTrack)
-//            if let track = bridge.currentTrack {
-//                self.pluginInstance?.trackDidChange(track.title, byArtist: track.artist)
-//            }
-//        }
+        addMenuToStatusBar()
         setUpBindings()
         viewStore.send(.appLifecycleAction(.appDidLaunch))
     }
@@ -43,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func showOnboarding() {
         
-        let onboardingView = OnboardingContainerView().frame(width: 460).fixedSize()
+        let onboardingView = OnboardingContainerView().frame(minWidth: 460, maxWidth: 460, minHeight: 480).fixedSize(horizontal: false, vertical: true)//
 
         // Create the window and set the content view.
         let window  = NSWindow(
@@ -54,16 +49,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.isReleasedWhenClosed = true
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
-        window.setFrameAutosaveName("NepTunes Quick Start Guide")
         window.contentView = NSHostingView(rootView: onboardingView)
-        window.makeKeyAndOrderFront(nil)
         window.center()
         window.title = "NepTunes Quick Start Guide"
-        window.layoutIfNeeded()
+        
+        window.makeKeyAndOrderFront(nil)
         self.onboardingWindow = window
     }
     
-
+    func addMenuToStatusBar() {
+        statusItem.menu = statusBarMenuController.menu()
+        statusItem.button?.title = "N"
+    }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
@@ -100,7 +97,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         return false
     }
-
 
 }
 
