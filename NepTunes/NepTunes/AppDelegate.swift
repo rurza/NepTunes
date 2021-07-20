@@ -10,7 +10,7 @@ import SwiftUI
 import ComposableArchitecture
 import AppCore
 import Combine
-
+import Onboarding
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -21,24 +21,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private lazy var statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        NSApp.mainMenu = MainMenuFactory.mainMenu()
         addMenuToStatusBar()
         setUpBindings()
         viewStore.send(.appLifecycleAction(.appDidLaunch))
+        
+        NSApp.activate(ignoringOtherApps: true)
     }
     
     func setUpBindings() {
-        viewStore.publisher
-            .shouldShowOnboarding
-            .sink { [weak self] shouldShowOnboarding in
-                guard shouldShowOnboarding else { return }
-                self?.showOnboarding()
-            }
-            .store(in: &cancellables)
+
+        let onboardingStore: Store<OnboardingState?, OnboardingAction>
+            = store.scope(state: \.onboardingState, action: AppAction.onboardingAction)
+        onboardingStore
+            .ifLet { [weak self] store in
+                self?.showOnboarding(store: store)
+        }
+        .store(in: &cancellables)
     }
     
-    func showOnboarding() {
+    func showOnboarding(store: Store<OnboardingState, OnboardingAction>) {
         
-        let onboardingView = OnboardingContainerView().frame(minWidth: 460, maxWidth: 460, minHeight: 480).fixedSize(horizontal: false, vertical: true)//
+        let onboardingView = OnboardingContainerView(store: store).frame(minWidth: 460, maxWidth: 460, minHeight: 480).fixedSize(horizontal: false, vertical: true)//
 
         // Create the window and set the content view.
         let window  = NSWindow(
@@ -58,8 +62,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func addMenuToStatusBar() {
-        statusItem.menu = statusBarMenuController.menu()
-        statusItem.button?.title = "N"
+        let menu = statusBarMenuController.menu()
+        statusItem.menu = menu
+        statusItem.button?.image = NSImage(named: "status bar icon")
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

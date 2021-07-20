@@ -7,6 +7,8 @@
 
 import Cocoa
 
-let appDelegate = AppDelegate()
-NSApplication.shared.delegate = appDelegate
+private let app = NSApplication.shared
+private let appDelegate = AppDelegate()
+
+app.delegate = appDelegate
 _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)

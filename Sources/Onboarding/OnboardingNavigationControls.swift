@@ -6,30 +6,28 @@
 //
 
 import SwiftUI
+import Shared
 
 struct OnboardingNavigationControls: View {
 
-    @Binding var currentPage: Int
-    @Binding var oldPage: Int
+    @Binding var index: PageIndex
     let numberOfPages: Int
 
     var body: some View {
         ZStack {
             HStack {
-                if currentPage > 0 {
+                if index > 0 {
                     Button("Previous") {
                         withAnimation {
-                            oldPage = currentPage
-                            currentPage -= 1
+                            index -= 1
                         }
                     }
                 }
                 Spacer()
-                if currentPage != numberOfPages - 1 {
+                if index != numberOfPages - 1 {
                     Button("Next") {
                         withAnimation {
-                            oldPage = currentPage
-                            currentPage += 1
+                            index += 1
                         }
                     }
                 }
@@ -37,7 +35,7 @@ struct OnboardingNavigationControls: View {
             .niceButton()
             .padding()
 
-            PageControl(count: numberOfPages, currentIndex: $currentPage, oldIndex: $oldPage)
+            PageControl(count: numberOfPages, index: $index)
         }
         .animation(nil)
     }
@@ -45,6 +43,6 @@ struct OnboardingNavigationControls: View {
 
 struct PageViewControls_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardingNavigationControls(currentPage: .constant(0), oldPage: .constant(1), numberOfPages: 3)
+        OnboardingNavigationControls(index: .constant(0), numberOfPages: 3)
     }
 }

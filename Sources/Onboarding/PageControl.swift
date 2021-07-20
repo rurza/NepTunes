@@ -10,20 +10,18 @@ import SwiftUI
 struct PageControl: View {
     
     let count: Int
-    @Binding var currentIndex: Int
-    @Binding var oldIndex: Int
-    let size: CGFloat = 8
+    @Binding var index: PageIndex
+    private let size: CGFloat = 8
     
     var body: some View {
         ZStack {
             HStack(spacing: size) {
-                ForEach(0..<count) { index in
+                ForEach(0..<count) { i in
                     Rectangle()
                         .foregroundColor(Color(NSColor.tertiaryLabelColor))
                         .onTapGesture {
                             withAnimation {
-                                oldIndex = currentIndex
-                                currentIndex = index
+                                index = PageIndex(currentIndex: i, oldIndex: index.currentIndex)
                             }
                         }
                 }
@@ -31,8 +29,8 @@ struct PageControl: View {
             Circle()
                 .foregroundColor(Color(NSColor.secondaryLabelColor))
                 .frame(width: size, height: size)
-                .position(x: size/2 + CGFloat(currentIndex) * 2 * size, y: size/2)
-                .animation(.spring(), value: currentIndex)
+                .position(x: size/2 + CGFloat(index.currentIndex) * 2 * size, y: size/2)
+                .animation(.spring(), value: index.currentIndex)
         }
         .mask(
             HStack(spacing: size) {
@@ -55,6 +53,6 @@ struct PageControl: View {
 
 struct PageControl_Previews: PreviewProvider {
     static var previews: some View {
-        PageControl(count: 4, currentIndex: .constant(2), oldIndex: .constant(2))
+        PageControl(count: 4, index: .constant(2))
     }
 }

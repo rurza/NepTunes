@@ -6,35 +6,42 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
-struct OnboardingContainerView: View {
+public struct OnboardingContainerView: View {
     
-    @State private var currentPage = 0
-    @State private var oldPage = 0
+    public let store: Store<OnboardingState, OnboardingAction>
     
-    var body: some View {
-        VStack(spacing: 0) {
-            Group {
-                if currentPage == 0 {
-                    WelcomeView()
-                } else if currentPage == 1 {
-                    PermissionsView()
+    public init(store: Store<OnboardingState, OnboardingAction>) {
+        self.store = store
+    }
+    
+    public var body: some View {
+        WithViewStore(store) { viewStore in
+            VStack(spacing: 0) {
+                Group {
+                    if viewStore.index == 0 {
+                        WelcomeView()
+                    } else if viewStore.index == 1 {
+                        PermissionsView()
+                    }
                 }
+                .transition(.stackTransition(oldIndex: viewStore.index.oldIndex, newIndex: viewStore.index.currentIndex))
+                .ignoresSafeArea(.all, edges: .top)
+                Spacer(minLength: 0)
+                OnboardingNavigationControls(index: viewStore.binding(get: \.index, send: OnboardingAction.changePage), numberOfPages: 4)
             }
-            .transition(.stackTransition(oldIndex: oldPage, newIndex: currentPage))
-            .ignoresSafeArea(.all, edges: .top)
-            Spacer(minLength: 0)
-            OnboardingNavigationControls(currentPage: $currentPage, oldPage: $oldPage, numberOfPages: 4)
+            .animation(.spring(), value: viewStore.index)
         }
-        .animation(.spring(), value: currentPage)
-
     }
 
 }
 
+import Shared
+import LastFm
 struct OnboardingContainerView_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardingContainerView()
+        OnboardingContainerView(store: Store(initialState: OnboardingState(lastFmState: LastFmState()), reducer: onboardingReducer, environment: .live(environment: .live)))
             .frame(width: 460)
             .previewLayout(.sizeThatFits)
     }

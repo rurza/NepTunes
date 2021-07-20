@@ -13,7 +13,8 @@ let package = Package(
         .library(name: "LastFm", targets: ["LastFm"]),
         .library(name: "Scrobbler", targets: ["Scrobbler"]),
         .library(name: "PlayersBridge", targets: ["PlayersBridge"]),
-        .library(name: "Player", targets: ["Player"])
+        .library(name: "Player", targets: ["Player"]),
+        .library(name: "Onboarding", targets: ["Onboarding"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -77,10 +78,18 @@ let package = Package(
                 "Scrobbler",
                 "LastFm",
                 "Player",
+                "Onboarding",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "DeezerClient", package: "DeezerClient")
             ]),
         // test target for the AppCoreTests isn't needed for now
 //        .testTarget(name: "AppCoreTests", dependencies: ["AppCore"]),
+        .target(
+            name: "Onboarding",
+            dependencies: [
+                "Shared",
+                "LastFm",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ])
     ]
 )

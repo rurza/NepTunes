@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct NiceButtonStyle: ButtonStyle {
-    var foregroundColor: Color
-    var pressedColor: Color
+public struct NiceButtonStyle: ButtonStyle {
+    public var foregroundColor: Color
+    public var pressedColor: Color
 
     @State private var hover = false
     @Environment(\.colorScheme) var currentScheme
 
-    func makeBody(configuration: Self.Configuration) -> some View {
+    public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .font(.system(size: 14, weight: .medium, design: .default))
             .padding(.horizontal, 12)
@@ -29,7 +29,7 @@ struct NiceButtonStyle: ButtonStyle {
     }
 }
 
-extension View {
+public extension View {
     func niceButton(
         foregroundColor: Color = .accentColor,
         pressedColor: Color = .gray

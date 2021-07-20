@@ -10,6 +10,7 @@ import Shared
 import Scrobbler
 import LastFm
 import Player
+import Onboarding
 
 typealias AppReducer = Reducer<AppState, AppAction, SystemEnvironment<AppEnvironment>>
 
@@ -47,5 +48,8 @@ public let appReducer = AppReducer.combine(
         }
     },
     // this reducer is for the app lifecycle
-    appLifecycleReducer
+    appLifecycleReducer,
+    onboardingReducer
+        .optional()
+        .pullback(state: \.onboardingState, action: /AppAction.onboardingAction, environment: { $0.map { $0.lastFmEnvironment } })
 )

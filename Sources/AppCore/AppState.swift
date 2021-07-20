@@ -9,13 +9,14 @@ import Foundation
 import LastFm
 import Scrobbler
 import Player
+import Onboarding
 
 public struct AppState: Equatable {
 
     public var playerState = PlayerState()
     public var lastFmState = LastFmState()
     public var scrobblerTimerState = ScrobblerTimerState()
-    public var shouldShowOnboarding = false
+    private var onboardingSubstate: OnboardingSubstate? = nil
     
     public var playerScrobblerState: PlayerScrobblerState {
         get {
@@ -27,6 +28,22 @@ public struct AppState: Equatable {
             // because the reducer doesn't change it
             
             scrobblerTimerState = newValue.timerState
+        }
+    }
+    
+    public var onboardingState: OnboardingState? {
+        get {
+            if let onboardingSubstate = onboardingSubstate {
+                return OnboardingState(onboardingSubstate: onboardingSubstate, lastFmState: lastFmState)
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let state = newValue {
+                lastFmState = state.lastFmState
+            }
+            onboardingSubstate = newValue?.onboardingSubstate
         }
     }
     

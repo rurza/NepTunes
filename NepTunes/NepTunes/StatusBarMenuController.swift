@@ -19,11 +19,21 @@ class StatusBarMenuController: NSObject {
     
     func menu() -> NSMenu {
         let menu = NSMenu()
-        
-        let preferencesMenuItem = NSMenuItem(title: "Preferences", action: #selector(openPreferences), keyEquivalent: ",")
+        //
+        //
+        let preferencesMenuItem = NSMenuItem(title: "Preferences", action: nil, keyEquivalent: ",")
         preferencesMenuItem.target = self
-//        menu.autoenablesItems = false
+        //
+        //
         menu.addItem(preferencesMenuItem)
+        //
+        //
+        menu.addItem(NSMenuItem.separator())
+        let quitMenuItem = NSMenuItem(title: "Quit NepTunes", action: #selector(NSApp.terminate), keyEquivalent: "q")
+        quitMenuItem.allowsKeyEquivalentWhenHidden = true
+        menu.addItem(quitMenuItem)
+        //
+        //
         return menu
     }
     

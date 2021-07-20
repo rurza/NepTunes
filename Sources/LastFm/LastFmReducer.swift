@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Shared
 
-let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
+public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
     switch action {
     case .logIn:
         guard let username = state.loginState?.username,

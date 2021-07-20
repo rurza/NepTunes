@@ -8,8 +8,8 @@
 import Foundation
 
 public struct LastFmState: Equatable {
-    var loginState: LastFmLoginState?
-    var userAvatarData: Data? = nil
+    public var loginState: LastFmLoginState?
+    public var userAvatarData: Data? = nil
     
     public init(loginState: LastFmLoginState? = nil,
                 userAvatarData: Data? = nil) {

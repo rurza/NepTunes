@@ -9,10 +9,14 @@ import Cocoa
 import SwiftUI
 import AVKit
 
-struct AVPlayerViewRepresented : NSViewRepresentable {
-    var player : AVPlayer
+public struct AVPlayerViewRepresented : NSViewRepresentable {
+    public var player : AVPlayer
     
-    func makeNSView(context: Context) -> AVPlayerView {
+    public init(player: AVPlayer) {
+        self.player = player
+    }
+    
+    public func makeNSView(context: Context) -> AVPlayerView {
         let view = AVPlayerView(frame: .zero)
         view.autoresizingMask = [.height, .width]
         view.controlsStyle = .none
@@ -21,7 +25,6 @@ struct AVPlayerViewRepresented : NSViewRepresentable {
         return view
     }
     
-    func updateNSView(_ nsView: AVPlayerView, context: Context) {
-
-    }
+    public func updateNSView(_ nsView: AVPlayerView, context: Context) { }
+    
 }

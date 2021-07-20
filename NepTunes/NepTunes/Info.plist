@@ -39,6 +39,8 @@
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>LSUIElement</key>
+	<true/>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>NepTunes uses Apple Events to get info about currently playing music.</string>
 	<key>NSPrincipalClass</key>

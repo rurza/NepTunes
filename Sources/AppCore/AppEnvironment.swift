@@ -12,11 +12,11 @@ import Player
 
 public struct AppEnvironment {
 
-    public var lastFmClient: LastFmUserClient
+    public var lastFmEnvironment: LastFmEnvironment
     public var playerEnvironment: PlayerEnvironment
     
     public static let live = Self(
-        lastFmClient: .live,
+        lastFmEnvironment: .live,
         playerEnvironment: .live
     )
     
