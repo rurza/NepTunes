@@ -13,3 +13,14 @@ public enum OnboardingAction: Equatable {
     case toggleLaunchAtLogin
     case changePage(index: PageIndex)
 }
+
+extension OnboardingAction {
+    static func view(_ localAction: LoginView.ViewAction) -> Self {
+        switch localAction {
+        case .setPassword(let password):
+            return .lastUserFmAction(.setPassword(password))
+        case .setUsername(let username):
+            return .lastUserFmAction(.setUsername(username))
+        }
+    }
+}

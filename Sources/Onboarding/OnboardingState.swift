@@ -34,3 +34,10 @@ public struct OnboardingSubstate: Equatable {
     public init() { }
 
 }
+
+
+extension OnboardingState {
+    var loginViewState: LoginView.ViewState {
+        .init(username: lastFmState.loginState?.username ?? "", password: lastFmState.loginState?.password ?? "")
+    }
+}

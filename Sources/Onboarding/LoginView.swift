@@ -11,10 +11,22 @@ import Shared
 
 struct LoginView: View {
     
-    let store: Store<OnboardingState, OnboardingAction>
-    @State var username: String = ""
-    @State var password: String = ""
+    struct ViewState: Equatable {
+        var username: String = ""
+        var password: String = ""
+        
+        var unableToLogin: Bool {
+            username.count == 0 || password.count == 0
+        }
+    }
     
+    enum ViewAction: Equatable {
+        case setUsername(String)
+        case setPassword(String)
+    }
+    
+    let store: Store<ViewState, ViewAction>
+
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
@@ -27,18 +39,18 @@ struct LoginView: View {
                         .frame(width: 70)
                         .foregroundColor(.white)
                 }
-//                Form {
+                Form {
                     VStack {
-                        TextField("username", text: $username)
+                        TextField("username", text: viewStore.binding(get: \.username, send: ViewAction.setUsername))
+                        #warning("support select all etc.")
 //                            .textContentType(.username)
-                        TextField("password", text: $password)
-                            .textContentType(.password)
+                        SecureField("password", text: viewStore.binding(get: \.password, send: ViewAction.setPassword))
                         Button("Log in") { }
                             .frame(minWidth: 120)
                             .padding()
-                            .disabled(viewStore.lastFmState.loginState?.username != nil && viewStore.lastFmState.loginState?.password != nil)
+                            .disabled(viewStore.unableToLogin)
                     }
-//                }
+                }
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .frame(maxWidth: 240)
                 .padding()
@@ -47,13 +59,13 @@ struct LoginView: View {
     }
 }
 
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView(store: Store(
-                    initialState: OnboardingState(lastFmState: .init()),
-                    reducer: onboardingReducer,
-                    environment: .mock(environment: .live)
-        ))
-        .frame(width: 460)
-    }
-}
+//struct LoginView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoginView(store: Store(
+//                    initialState: ),
+//                    reducer: onboardingReducer,
+//                    environment: .mock(environment: .live)
+//        ))
+//        .frame(width: 460)
+//    }
+//}

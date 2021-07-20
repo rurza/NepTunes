@@ -23,7 +23,7 @@ public struct OnboardingContentView: View {
                     if viewStore.index == 0 {
                         WelcomeView()
                     } else if viewStore.index == 1 {
-                        LoginView(store: store)
+                        LoginView(store: store.scope(state: \.loginViewState, action: { OnboardingAction.view($0) } ))
                     }
                 }
                 .transition(.scrollTransition(oldIndex: viewStore.index.oldIndex, newIndex: viewStore.index.currentIndex))
