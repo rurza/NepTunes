@@ -42,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func showOnboarding(store: Store<OnboardingState, OnboardingAction>) {
         
-        let onboardingView = OnboardingContainerView(store: store).frame(minWidth: 460, maxWidth: 460, minHeight: 480).fixedSize(horizontal: false, vertical: true)//
+        let onboardingView = OnboardingContentView(store: store).frame(minWidth: 460, maxWidth: 460, minHeight: 480).fixedSize(horizontal: false, vertical: true)//
 
         // Create the window and set the content view.
         let window  = NSWindow(

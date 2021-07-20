@@ -11,11 +11,24 @@ import ComposableArchitecture
 
 @dynamicMemberLookup
 public struct SystemEnvironment<Environment> {
+    
     public var localEnvironment: Environment
     public var mainQueue: AnySchedulerOf<DispatchQueue>
     public var runLoop: AnySchedulerOf<RunLoop>
     public var date: () -> Date
     public var settings: SettingsProvider
+    
+    public init(localEnvironment: Environment,
+                mainQueue: AnySchedulerOf<DispatchQueue>,
+                runLoop: AnySchedulerOf<RunLoop>,
+                date: @escaping () -> Date,
+                settings: SettingsProvider) {
+        self.localEnvironment = localEnvironment
+        self.mainQueue = mainQueue
+        self.runLoop = runLoop
+        self.date = date
+        self.settings = settings
+    }
     
     public subscript<Dependency>(
         dynamicMember keyPath: WritableKeyPath<Environment, Dependency>

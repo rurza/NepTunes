@@ -1,5 +1,5 @@
 //
-//  OnboardingNavigationControls.swift
+//  NavigationControls.swift
 //  NepTunes
 //
 //  Created by rurza on 19/07/2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Shared
 
-struct OnboardingNavigationControls: View {
+struct NavigationControls: View {
 
     @Binding var index: PageIndex
     let numberOfPages: Int
@@ -43,6 +43,6 @@ struct OnboardingNavigationControls: View {
 
 struct PageViewControls_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardingNavigationControls(index: .constant(0), numberOfPages: 3)
+        NavigationControls(index: .constant(0), numberOfPages: 3)
     }
 }

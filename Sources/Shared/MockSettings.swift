@@ -5,7 +5,6 @@
 //  Created by Adam Różyński on 26/06/2021.
 //
 
-
 class MockSettings: SettingsProvider {
 
     var session: String? = nil
