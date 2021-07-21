@@ -47,4 +47,8 @@ public struct PageIndex: ExpressibleByIntegerLiteral, Equatable {
     internal static func >(lhs: PageIndex, rhs: Int) -> Bool {
         lhs.currentIndex > rhs
     }
+    
+    internal static func <(lhs: PageIndex, rhs: Int) -> Bool {
+        lhs.currentIndex < rhs
+    }
 }

@@ -7,25 +7,36 @@
 
 import ComposableArchitecture
 import Shared
+import LastFmKit
 
 public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
     switch action {
     case .logIn:
         guard let username = state.loginState?.username,
               let password = state.loginState?.password else { return .none }
+        state.loginState?.loading = true
         return environment.lastFmClient
             .logInUser(username, password)
             .retry(2, delay: 2, scheduler: environment.mainQueue)
             .catchToEffect()
             .map(LastFmUserAction.userLoginResponse)
     case let .userLoginResponse(response):
+        state.loginState?.loading = false
         switch response {
         case let .success(session):
             environment.settings.session = session.key
             environment.settings.username = session.name
             state.loginState = nil
         case let .failure(error):
-            
+            let message: String
+            if let error = error as? LastFmError {
+                message = error.message
+            } else {
+                message = error.localizedDescription
+            }
+            state.loginState?.alert = AlertState(title: TextState("Sign in error"),
+                                                 message: TextState(message),
+                                                 dismissButton: .default(TextState("OK"), send: .dismissError))
             return .none
         }
 
@@ -64,6 +75,13 @@ public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvi
         } else {
             state.loginState = LastFmLoginState(username: nil, password: password)
         }
+        return .none
+    case .signUp:
+        return environment
+            .signUp(URL(string: "https://www.last.fm/join")!)
+            .fireAndForget()
+    case .dismissError:
+        state.loginState?.alert = nil
         return .none
     }
 }

@@ -17,7 +17,7 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, System
     case .changePage(index: let index):
         state.index = index
         return .none
-    default:
+    case .lastUserFmAction:
         return .none
     }
 }

@@ -31,6 +31,8 @@ public enum LastFmUserAction: Equatable {
     case setUsername(String)
     case setPassword(String)
     case logOut
+    case signUp
+    case dismissError
     
     public static func == (lhs: LastFmUserAction, rhs: LastFmUserAction) -> Bool {
         switch (lhs, rhs) {
@@ -62,6 +64,8 @@ public enum LastFmUserAction: Equatable {
             default:
                 return false
             }
+        case (.signUp, .signUp):
+            return true
         default:
             return false
         }

@@ -39,8 +39,9 @@ final class UserReducerTests: XCTestCase {
                                                   loveTrack: { _, _ in Effect(error: NoError()) },
                                                   unloveTrack: { _, _ in Effect(error: NoError()) })
         
+        let signUpMock: (URL) -> Effect<Void, Never> = { _ in Effect(value: ()) }
         
-        let lastFmEnvironment = LastFmEnvironment(lastFmClient: lastFmClientMock, scrobblerClient: scrobblerClientMock)
+        let lastFmEnvironment = LastFmEnvironment(lastFmClient: lastFmClientMock, scrobblerClient: scrobblerClientMock, signUp: signUpMock)
         
         let settings = MockSettings()
         

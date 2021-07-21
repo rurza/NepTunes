@@ -50,7 +50,7 @@ final class ScrobblerReducerTests: XCTestCase {
         unloveTrack: { _, _ in Effect(value: ()) })
         
         
-        let lastFmEnvironment = LastFmEnvironment(lastFmClient: lastFmClientMock, scrobblerClient: scrobblerClientMock)
+        let lastFmEnvironment = LastFmEnvironment(lastFmClient: lastFmClientMock, scrobblerClient: scrobblerClientMock, signUp: { _ in Effect(value: ()) })
         
         let settings = MockSettings()
         
