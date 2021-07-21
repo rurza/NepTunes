@@ -43,6 +43,8 @@
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>NepTunes uses Apple Events to get info about currently playing music.</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>

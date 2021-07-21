@@ -12,6 +12,7 @@ import AppCore
 import Combine
 import Onboarding
 
+@main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var onboardingWindow: NSWindow?
@@ -21,7 +22,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private lazy var statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        NSApp.mainMenu = MainMenuFactory.mainMenu()
         addMenuToStatusBar()
         setUpBindings()
         viewStore.send(.appLifecycleAction(.appDidLaunch))

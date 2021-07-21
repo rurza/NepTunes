@@ -22,9 +22,9 @@
 		662A645726A2285F004ACD13 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 662A645626A2285F004ACD13 /* AVKit.framework */; };
 		662A646526A2E544004ACD13 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662A646426A2E544004ACD13 /* PageView.swift */; };
 		663A9B54264B20480038CD06 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663A9B53264B20480038CD06 /* AppleScriptObjC.framework */; };
+		6649559C26A7F459002F8DDD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6649559B26A7F458002F8DDD /* MainMenu.xib */; };
 		66843E9B26A75C570008C1BC /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = 66843E9A26A75C570008C1BC /* Onboarding */; };
 		668728CF26A222BA00EDF8BE /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668728CE26A222BA00EDF8BE /* Store.swift */; };
-		669B15E626A61A4700EACBD5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B15E526A61A4700EACBD5 /* main.swift */; };
 		669B15E826A61A8D00EACBD5 /* StatusBarMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B15E726A61A8D00EACBD5 /* StatusBarMenuController.swift */; };
 		669B15EA26A62AA200EACBD5 /* MainMenuFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B15E926A62AA200EACBD5 /* MainMenuFactory.swift */; };
 		669B15EC26A62F7C00EACBD5 /* MainMenuFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B15EB26A62F7C00EACBD5 /* MainMenuFactoryTests.swift */; };
@@ -77,8 +77,8 @@
 		662A645626A2285F004ACD13 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		662A646426A2E544004ACD13 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		663A9B53264B20480038CD06 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
+		6649559B26A7F458002F8DDD /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		668728CE26A222BA00EDF8BE /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		669B15E526A61A4700EACBD5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		669B15E726A61A8D00EACBD5 /* StatusBarMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarMenuController.swift; sourceTree = "<group>"; };
 		669B15E926A62AA200EACBD5 /* MainMenuFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuFactory.swift; sourceTree = "<group>"; };
 		669B15EB26A62F7C00EACBD5 /* MainMenuFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuFactoryTests.swift; sourceTree = "<group>"; };
@@ -137,11 +137,11 @@
 			isa = PBXGroup;
 			children = (
 				661AD7BC2639D5C000B0292D /* AppDelegate.swift */,
-				669B15E526A61A4700EACBD5 /* main.swift */,
 				668728CE26A222BA00EDF8BE /* Store.swift */,
 				661AD7BE2639D5C000B0292D /* ContentView.swift */,
 				669B15E726A61A8D00EACBD5 /* StatusBarMenuController.swift */,
 				669B15E926A62AA200EACBD5 /* MainMenuFactory.swift */,
+				6649559B26A7F458002F8DDD /* MainMenu.xib */,
 				668728D226A2253700EDF8BE /* Onboarding */,
 				661AD7C02639D5C100B0292D /* Assets.xcassets */,
 				661AD7C82639D5C100B0292D /* Info.plist */,
@@ -285,6 +285,7 @@
 			files = (
 				661AD7C42639D5C100B0292D /* Preview Assets.xcassets in Resources */,
 				661AD7C12639D5C100B0292D /* Assets.xcassets in Resources */,
+				6649559C26A7F459002F8DDD /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,7 +307,6 @@
 				660BBA15265D84BC0010EC56 /* NepTunesInterface.swift in Sources */,
 				661AD7BF2639D5C000B0292D /* ContentView.swift in Sources */,
 				669B15E826A61A8D00EACBD5 /* StatusBarMenuController.swift in Sources */,
-				669B15E626A61A4700EACBD5 /* main.swift in Sources */,
 				662A646526A2E544004ACD13 /* PageView.swift in Sources */,
 				661AD7BD2639D5C000B0292D /* AppDelegate.swift in Sources */,
 				668728CF26A222BA00EDF8BE /* Store.swift in Sources */,
