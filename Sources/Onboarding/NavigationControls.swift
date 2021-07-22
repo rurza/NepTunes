@@ -32,7 +32,7 @@ struct NavigationControls: View {
                     }
                 }
             }
-            .niceButton()
+            .highlightedButton()
             .padding()
 
             PageControl(count: numberOfPages, index: $index)

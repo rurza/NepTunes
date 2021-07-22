@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 public protocol SettingsProvider: AnyObject {
     var session: String? { get set }
@@ -17,10 +18,12 @@ public protocol SettingsProvider: AnyObject {
 
 public class Settings: SettingsProvider {
     /// in the version of the app the key was stored in 'pl.micropixels.neptunes.sessionKey'
-    @UserDefault(key: "lastFmSession", defaultValue: nil) public var session: String?
+//    @UserDefault(key: "lastFmSession", defaultValue: nil) public var session: String?
+    
+    @AppStorage("lastFmSession") public var session: String?
     
     /// in the version of the app the key was stored in 'pl.micropixels.neptunes.usernameKey'
-    @UserDefault(key: "lastFmUser", defaultValue: nil) public var username: String?
+    @AppStorage("lastFmUser") public var username: String?
     
     @UserDefault(key: "scrobblePercentage", defaultValue: 50) public var scrobblePercentage: UInt
     

@@ -8,6 +8,7 @@
 import Foundation
 import ComposableArchitecture
 import LastFmKit
+import Combine
 
 public struct LastFmUserClient {
     var logInUser: (String, String) -> Effect<LastFmSession, Error>
@@ -23,10 +24,11 @@ public extension LastFmUserClient {
             },
             getAvatar: { username in
                 client.getUserInfo(username)
-                    .compactMap { $0.images?.first?.url }
-                    .flatMap { avatarURL in
+                    .compactMap { $0.images?.last?.url }
+                    .map { URLRequest(url: $0, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30) }
+                    .flatMap { request -> AnyPublisher<(data: Data, response: URLResponse), Error> in
                         URLSession.shared
-                            .dataTaskPublisher(for: avatarURL)
+                            .dataTaskPublisher(for: request)
                             .mapError { $0 as Error }
                             .eraseToAnyPublisher()
                     }

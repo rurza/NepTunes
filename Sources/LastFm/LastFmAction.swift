@@ -24,15 +24,15 @@ public enum LastFmTrackAction: Equatable {
 
 public enum LastFmUserAction: Equatable {
 
-    case logIn
+    case signIn
+    case signOut
+    case signUp
     case userLoginResponse(Result<LastFmSession, Error>)
     case getUserAvatar
     case userAvatarResponse(Result<Data, Error>)
     case setUsername(String)
     case setPassword(String)
-    case logOut
-    case signUp
-    case dismissError
+    case dismissAlert
     
     public static func == (lhs: LastFmUserAction, rhs: LastFmUserAction) -> Bool {
         switch (lhs, rhs) {
@@ -45,16 +45,6 @@ public enum LastFmUserAction: Equatable {
             default:
                 return false
             }
-        case (.logIn, .logIn):
-            return true
-        case (.getUserAvatar, .getUserAvatar):
-            return true
-        case let (.setUsername(lhsUsername), .setUsername(rhsUsername)):
-            return lhsUsername == rhsUsername
-        case let (.setPassword(lhsPassword), .setPassword(rhsPassword)):
-            return lhsPassword == rhsPassword
-        case (.logOut, .logOut):
-            return true
         case let (.userAvatarResponse(lhsResult), .userAvatarResponse(rhsResult)):
             switch (lhsResult, rhsResult) {
             case let (.success(lhsAvatarData), .success(rhsAvatarData)):
@@ -64,7 +54,19 @@ public enum LastFmUserAction: Equatable {
             default:
                 return false
             }
+        case let (.setUsername(lhsUsername), .setUsername(rhsUsername)):
+            return lhsUsername == rhsUsername
+        case let (.setPassword(lhsPassword), .setPassword(rhsPassword)):
+            return lhsPassword == rhsPassword
+        case (.signOut, .signOut):
+            return true
         case (.signUp, .signUp):
+            return true
+        case (.signIn, .signIn):
+            return true
+        case (.getUserAvatar, .getUserAvatar):
+            return true
+        case (.dismissAlert, .dismissAlert):
             return true
         default:
             return false

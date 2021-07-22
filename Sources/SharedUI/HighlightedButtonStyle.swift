@@ -1,5 +1,5 @@
 //
-//  NiceButtonStyle.swift
+//  HighlightedButtonStyle.swift
 //  NepTunes
 //
 //  Created by Adam Różyński on 19/07/2021.
@@ -8,9 +8,8 @@
 import Foundation
 import SwiftUI
 
-public struct NiceButtonStyle: ButtonStyle {
+public struct HighlightedButtonStyle: ButtonStyle {
     public var foregroundColor: Color
-    public var pressedColor: Color
 
     @State private var hover = false
     @Environment(\.colorScheme) var currentScheme
@@ -30,14 +29,12 @@ public struct NiceButtonStyle: ButtonStyle {
 }
 
 public extension View {
-    func niceButton(
-        foregroundColor: Color = .accentColor,
-        pressedColor: Color = .gray
+    func highlightedButton(
+        foregroundColor: Color = .accentColor
     ) -> some View {
         self.buttonStyle(
-            NiceButtonStyle(
-                foregroundColor: foregroundColor,
-                pressedColor: pressedColor
+            HighlightedButtonStyle(
+                foregroundColor: foregroundColor
             )
         )
     }

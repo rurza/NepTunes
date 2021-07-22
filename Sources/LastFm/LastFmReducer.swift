@@ -8,16 +8,19 @@
 import ComposableArchitecture
 import Shared
 import LastFmKit
+import SwiftUI
 
 public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvironment<LastFmEnvironment>> { state, action, environment in
     switch action {
-    case .logIn:
+    case .signIn:
         guard let username = state.loginState?.username,
               let password = state.loginState?.password else { return .none }
         state.loginState?.loading = true
         return environment.lastFmClient
             .logInUser(username, password)
-            .retry(2, delay: 2, scheduler: environment.mainQueue)
+            .retry(3, delay: 2, scheduler: environment.mainQueue, condition: { error in
+                error is URLError
+            })
             .catchToEffect()
             .map(LastFmUserAction.userLoginResponse)
     case let .userLoginResponse(response):
@@ -26,7 +29,10 @@ public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvi
         case let .success(session):
             environment.settings.session = session.key
             environment.settings.username = session.name
+            state.userSessionKey = session.key
             state.loginState = nil
+            state.username = session.name
+            return Effect(value: .getUserAvatar)
         case let .failure(error):
             let message: String
             if let error = error as? LastFmError {
@@ -34,13 +40,13 @@ public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvi
             } else {
                 message = error.localizedDescription
             }
+            state.loginState?.password = nil
             state.loginState?.alert = AlertState(title: TextState("Sign in error"),
                                                  message: TextState(message),
-                                                 dismissButton: .default(TextState("OK"), send: .dismissError))
+                                                 dismissButton: .cancel(TextState("OK")))
             return .none
         }
 
-        return .none
     case .getUserAvatar:
         guard let username = environment.settings.username else { return .none }
         return environment.lastFmClient
@@ -56,11 +62,13 @@ public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvi
         case let .failure(error):
             return .none
         }
-    case .logOut:
+    case .signOut:
         environment.settings.session = nil
         environment.settings.username = nil
         state.loginState = nil
         state.userAvatarData = nil
+        state.username = nil
+        state.userSessionKey = nil
         return .none
     case let .setUsername(username):
         if state.loginState != nil {
@@ -80,7 +88,7 @@ public let lastFmUserReducer = Reducer<LastFmState, LastFmUserAction, SystemEnvi
         return environment
             .signUp(URL(string: "https://www.last.fm/join")!)
             .fireAndForget()
-    case .dismissError:
+    case .dismissAlert:
         state.loginState?.alert = nil
         return .none
     }

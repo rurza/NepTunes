@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Shared
+import SharedUI
 
 struct PermissionsView: View {
     

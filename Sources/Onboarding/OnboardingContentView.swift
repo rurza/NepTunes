@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import LastFm
 
 public struct OnboardingContentView: View {
     
@@ -33,6 +34,9 @@ public struct OnboardingContentView: View {
             }
             .animation(.spring(), value: viewStore.index)
         }
+        .alert(store.scope(state: { $0.lastFmState.loginState?.alert },
+                           action: { OnboardingAction.lastUserFmAction($0) }),
+               dismiss: LastFmUserAction.dismissAlert)
     }
 
 }

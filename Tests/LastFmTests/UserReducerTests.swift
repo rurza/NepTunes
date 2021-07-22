@@ -68,7 +68,7 @@ final class UserReducerTests: XCTestCase {
             state.loginState = LastFmLoginState(username: username, password: password)
         }
         
-        testStore.send(.logOut) { state in
+        testStore.send(.signOut) { state in
             state.loginState = nil
         }
         
@@ -82,7 +82,7 @@ final class UserReducerTests: XCTestCase {
         }
         
         
-        testStore.send(.logOut) { state in
+        testStore.send(.signOut) { state in
             state.loginState = nil
         }
         
@@ -96,14 +96,22 @@ final class UserReducerTests: XCTestCase {
         testStore.send(.setPassword(password)) { state in
             state.loginState = LastFmLoginState(username: username, password: password)
         }
-        testStore.send(.logIn)
+        testStore.send(.signIn) { state in
+            state.loginState?.loading = true
+        }
         
         testStore.receive(.userLoginResponse(.success(session(username)))) { state in
             state.loginState = nil
+            state.userSessionKey = uuid
+            state.username = username
         }
         XCTAssertEqual(settings.session, session(username).key)
         XCTAssertEqual(settings.username, session(username).name)
 
+        testStore.receive(.getUserAvatar)
+        testStore.receive(.userAvatarResponse(.success(avatarData))) { state in
+            state.userAvatarData = avatarData
+        }
         
         //
         // Get avatar
@@ -116,9 +124,11 @@ final class UserReducerTests: XCTestCase {
         //
         // Log out
         //
-        testStore.send(.logOut) { state in
+        testStore.send(.signOut) { state in
             state.loginState = nil
             state.userAvatarData = nil
+            state.username = nil
+            state.userSessionKey = nil
         }
         
     }

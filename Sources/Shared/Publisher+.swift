@@ -21,4 +21,25 @@ public extension Publisher {
         }
         .eraseToAnyPublisher()
     }
+    
+    func retry<T: Scheduler>(
+        _ retries: Int,
+        delay: T.SchedulerTimeType.Stride,
+        scheduler: T,
+        condition: @escaping (Failure) -> Bool
+    ) -> AnyPublisher<Output, Failure> {
+        return self.catch { (error: Failure) -> AnyPublisher<Output, Failure> in
+            if condition(error) {
+                return Just(())
+                    .delay(for: delay, scheduler: scheduler)
+                    .flatMap { _ in self }
+                    .retry(retries > 0 ? retries - 1 : 0)
+                    .eraseToAnyPublisher()
+            } else {
+                return Fail(error: error).eraseToAnyPublisher()
+            }
+        }
+        .eraseToAnyPublisher()
+        
+    }
 }
